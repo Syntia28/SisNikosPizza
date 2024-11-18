@@ -1,0 +1,38 @@
+﻿
+using Microsoft.EntityFrameworkCore;
+using SisNikosPizza.Domain.Models;
+using System.Collections.Generic;
+using System.Reflection;
+using System.Reflection.Emit;
+
+
+namespace SisNikosPizza.Infrastructure.Context;
+
+public class SisNikosPizzaBbContext : DbContext
+{
+    public SisNikosPizzaBbContext(DbContextOptions<SisNikosPizzaBbContext> options) : base(options)
+    { }
+
+    // Agregar los modelos que van a mapear a la base de datos
+    public DbSet<Categoria> categoria { get; set; }
+    public DbSet<Producto> producto { get; set; }
+
+    protected override void OnModelCreating(ModelBuilder modelBuilder)
+    {
+        base.OnModelCreating(modelBuilder);
+
+        //FluentAPI tiene mayor prevalencia que Data Annotations
+
+        // Fluent API para categorías
+        //modelBuilder.Entity<Category>().ToTable("Category");
+        //modelBuilder.Entity<Category>()
+        //    .HasKey(x => x.CategoryId);
+        //modelBuilder.Entity<Category>()
+        //    .Property(x => x.Name)
+        //    .HasMaxLength(60)
+        //    .IsRequired()
+        //    .IsUnicode();
+
+        modelBuilder.ApplyConfigurationsFromAssembly(Assembly.GetExecutingAssembly());
+    }
+}
