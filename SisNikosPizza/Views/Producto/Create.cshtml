@@ -39,10 +39,10 @@
                         <div class="form-group row mb-3">
                             <label class="col-md-3 col-form-label text-md-end">Categoría</label>
                             <div class="col-md-9">
-                                <select asp-for="Categoriaid" asp-items="@ViewBag.CategoriesList" class="form-select">
+                                <select asp-for="CategoriaId" asp-items="@ViewBag.CategoriesList" class="form-select">
                                     <option selected disabled>--Seleccionar categoría--</option>
                                 </select>
-                                <span asp-validation-for="Categoriaid" class="text-danger"></span>
+                                <span asp-validation-for="CategoriaId" class="text-danger"></span>
                             </div>
                         </div>
 
@@ -85,7 +85,7 @@
                                 <button type="submit" class="btn btn-success">
                                     <i class="bi bi-floppy"></i>&nbsp;Guardar
                                 </button>
-                                <a asp-controller="Categories" asp-action="Index" class="btn btn-secondary">
+                                <a asp-controller="Categoria" asp-action="Index" class="btn btn-secondary">
                                     <i class="bi bi-box-arrow-left"></i>&nbsp;Cancelar
                                 </a>
                             </div>
