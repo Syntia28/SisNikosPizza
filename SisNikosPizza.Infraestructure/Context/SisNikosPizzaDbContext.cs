@@ -16,6 +16,7 @@ public class SisNikosPizzaBbContext : DbContext
     // Agregar los modelos que van a mapear a la base de datos
     public DbSet<Categoria> categoria { get; set; }
     public DbSet<Producto> producto { get; set; }
+    public DbSet<Proveedor> proveedor { get; set; }
 
     protected override void OnModelCreating(ModelBuilder modelBuilder)
     {

@@ -12,8 +12,8 @@ using SisNikosPizza.Infrastructure.Context;
 namespace SisNikosPizza.Infraestructure.Migrations
 {
     [DbContext(typeof(SisNikosPizzaBbContext))]
-    [Migration("20241118235720_ProductoActualizadoCreatedataTable")]
-    partial class ProductoActualizadoCreatedataTable
+    [Migration("20241119164106_proveedorCreateTable")]
+    partial class proveedorCreateTable
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -72,6 +72,9 @@ namespace SisNikosPizza.Infraestructure.Migrations
                     b.Property<bool>("Estado")
                         .HasColumnType("bit");
 
+                    b.Property<string>("ImagenUrl")
+                        .HasColumnType("nvarchar(max)");
+
                     b.Property<string>("Nombre")
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
@@ -86,10 +89,6 @@ namespace SisNikosPizza.Infraestructure.Migrations
                     b.Property<DateTime>("UpdatedAt")
                         .HasColumnType("datetime2");
 
-                    b.Property<string>("urlImagen")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
-
                     b.HasKey("ProductoId");
 
                     b.HasIndex("CategoriaId");
@@ -97,15 +96,52 @@ namespace SisNikosPizza.Infraestructure.Migrations
                     b.ToTable("producto");
                 });
 
+            modelBuilder.Entity("SisNikosPizza.Domain.Models.Proveedor", b =>
+                {
+                    b.Property<int>("ProveedorId")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("ProveedorId"));
+
+                    b.Property<int>("Ccantidad")
+                        .HasColumnType("int");
+
+                    b.Property<DateTime>("CreatedAt")
+                        .HasColumnType("datetime2");
+
+                    b.Property<string>("Empresa")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<bool>("Estado")
+                        .HasColumnType("bit");
+
+                    b.Property<string>("Nombre")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("Producto")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<DateTime>("UpdatedAt")
+                        .HasColumnType("datetime2");
+
+                    b.HasKey("ProveedorId");
+
+                    b.ToTable("proveedor");
+                });
+
             modelBuilder.Entity("SisNikosPizza.Domain.Models.Producto", b =>
                 {
-                    b.HasOne("SisNikosPizza.Domain.Models.Categoria", "Categoriaid")
+                    b.HasOne("SisNikosPizza.Domain.Models.Categoria", "categoria")
                         .WithMany()
                         .HasForeignKey("CategoriaId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
-                    b.Navigation("Categoriaid");
+                    b.Navigation("categoria");
                 });
 #pragma warning restore 612, 618
         }

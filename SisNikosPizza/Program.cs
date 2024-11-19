@@ -13,6 +13,7 @@ builder.Services.AddControllersWithViews();
 /// Agregar las refercnias de unitwork
 builder.Services.AddScoped<IUniwork, UnitWork>();
 builder.Services.AddScoped<ICategoriaRepository, CategoriaRepository>();
+builder.Services.AddScoped<IProveedorRepository, ProveedorRepository>();
 
 var app = builder.Build();
 

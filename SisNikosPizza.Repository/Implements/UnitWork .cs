@@ -14,12 +14,13 @@ namespace SisNikosPizza.Repository.Implements
 
         public ICategoriaRepository CategoriaRepo { get; private set; }
         public IProductoRepository ProductoRepo { get; private set; }
-
+        public IProveedorRepository ProveedorRepo { get; private set; }
         public UnitWork(SisNikosPizzaBbContext db)
         {
             _db = db;
             CategoriaRepo = new CategoriaRepository(_db);
             ProductoRepo = new ProductoRepository(_db);
+            ProveedorRepo = new ProveedorRepository(_db);
 
         }
         public void Dispose()
@@ -37,6 +38,11 @@ namespace SisNikosPizza.Repository.Implements
         }
 
         public async Task GuardarProducto(){
+            await _db.SaveChangesAsync();
+        }
+
+        public async Task GuardarProveedor()
+        {
             await _db.SaveChangesAsync();
         }
     }

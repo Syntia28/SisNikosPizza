@@ -6,24 +6,26 @@ using Microsoft.EntityFrameworkCore.Migrations;
 namespace SisNikosPizza.Infraestructure.Migrations
 {
     /// <inheritdoc />
-    public partial class ProductoCreateTable : Migration
+    public partial class nitial : Migration
     {
         /// <inheritdoc />
         protected override void Up(MigrationBuilder migrationBuilder)
         {
-            migrationBuilder.AddColumn<DateTime>(
-                name: "CreatedAt",
-                table: "categoria",
-                type: "datetime2",
-                nullable: false,
-                defaultValue: new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified));
-
-            migrationBuilder.AddColumn<DateTime>(
-                name: "UpdatedAt",
-                table: "categoria",
-                type: "datetime2",
-                nullable: false,
-                defaultValue: new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified));
+            migrationBuilder.CreateTable(
+                name: "categoria",
+                columns: table => new
+                {
+                    CategoriaId = table.Column<int>(type: "int", nullable: false)
+                        .Annotation("SqlServer:Identity", "1, 1"),
+                    nombre = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    Estado = table.Column<bool>(type: "bit", nullable: false),
+                    CreatedAt = table.Column<DateTime>(type: "datetime2", nullable: false),
+                    UpdatedAt = table.Column<DateTime>(type: "datetime2", nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_categoria", x => x.CategoriaId);
+                });
 
             migrationBuilder.CreateTable(
                 name: "producto",
@@ -34,7 +36,8 @@ namespace SisNikosPizza.Infraestructure.Migrations
                     CategoriaId = table.Column<int>(type: "int", nullable: false),
                     Nombre = table.Column<string>(type: "nvarchar(max)", nullable: false),
                     Descripcion = table.Column<string>(type: "nvarchar(max)", nullable: false),
-                    Precio = table.Column<decimal>(type: "decimal(18,2)", nullable: false),
+                    ImagenUrl = table.Column<string>(type: "nvarchar(max)", nullable: true),
+                    Precio = table.Column<float>(type: "real", nullable: false),
                     Stock = table.Column<string>(type: "nvarchar(max)", nullable: false),
                     Estado = table.Column<bool>(type: "bit", nullable: false),
                     CreatedAt = table.Column<DateTime>(type: "datetime2", nullable: false),
@@ -63,13 +66,8 @@ namespace SisNikosPizza.Infraestructure.Migrations
             migrationBuilder.DropTable(
                 name: "producto");
 
-            migrationBuilder.DropColumn(
-                name: "CreatedAt",
-                table: "categoria");
-
-            migrationBuilder.DropColumn(
-                name: "UpdatedAt",
-                table: "categoria");
+            migrationBuilder.DropTable(
+                name: "categoria");
         }
     }
 }

@@ -56,7 +56,7 @@ namespace SisNikosPizza.Infraestructure.Migrations
 
                     SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("ProductoId"));
 
-                    b.Property<int>("Categoriaid")
+                    b.Property<int>("CategoriaId")
                         .HasColumnType("int");
 
                     b.Property<DateTime>("CreatedAt")
@@ -88,20 +88,57 @@ namespace SisNikosPizza.Infraestructure.Migrations
 
                     b.HasKey("ProductoId");
 
-                    b.HasIndex("Categoriaid");
+                    b.HasIndex("CategoriaId");
 
                     b.ToTable("producto");
                 });
 
+            modelBuilder.Entity("SisNikosPizza.Domain.Models.Proveedor", b =>
+                {
+                    b.Property<int>("ProveedorId")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("ProveedorId"));
+
+                    b.Property<int>("Ccantidad")
+                        .HasColumnType("int");
+
+                    b.Property<DateTime>("CreatedAt")
+                        .HasColumnType("datetime2");
+
+                    b.Property<string>("Empresa")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<bool>("Estado")
+                        .HasColumnType("bit");
+
+                    b.Property<string>("Nombre")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("Producto")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<DateTime>("UpdatedAt")
+                        .HasColumnType("datetime2");
+
+                    b.HasKey("ProveedorId");
+
+                    b.ToTable("proveedor");
+                });
+
             modelBuilder.Entity("SisNikosPizza.Domain.Models.Producto", b =>
                 {
-                    b.HasOne("SisNikosPizza.Domain.Models.Categoria", "Category")
+                    b.HasOne("SisNikosPizza.Domain.Models.Categoria", "categoria")
                         .WithMany()
-                        .HasForeignKey("Categoriaid")
+                        .HasForeignKey("CategoriaId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
-                    b.Navigation("Category");
+                    b.Navigation("categoria");
                 });
 #pragma warning restore 612, 618
         }

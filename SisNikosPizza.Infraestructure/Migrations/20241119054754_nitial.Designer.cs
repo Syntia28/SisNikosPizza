@@ -12,8 +12,8 @@ using SisNikosPizza.Infrastructure.Context;
 namespace SisNikosPizza.Infraestructure.Migrations
 {
     [DbContext(typeof(SisNikosPizzaBbContext))]
-    [Migration("20241119031712_AddUrlImagenToProductXd")]
-    partial class AddUrlImagenToProductXd
+    [Migration("20241119054754_nitial")]
+    partial class nitial
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -72,6 +72,9 @@ namespace SisNikosPizza.Infraestructure.Migrations
                     b.Property<bool>("Estado")
                         .HasColumnType("bit");
 
+                    b.Property<string>("ImagenUrl")
+                        .HasColumnType("nvarchar(max)");
+
                     b.Property<string>("Nombre")
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
@@ -86,10 +89,6 @@ namespace SisNikosPizza.Infraestructure.Migrations
                     b.Property<DateTime>("UpdatedAt")
                         .HasColumnType("datetime2");
 
-                    b.Property<string>("UrlImagen")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
-
                     b.HasKey("ProductoId");
 
                     b.HasIndex("CategoriaId");
@@ -99,13 +98,13 @@ namespace SisNikosPizza.Infraestructure.Migrations
 
             modelBuilder.Entity("SisNikosPizza.Domain.Models.Producto", b =>
                 {
-                    b.HasOne("SisNikosPizza.Domain.Models.Categoria", "Categoriaid")
+                    b.HasOne("SisNikosPizza.Domain.Models.Categoria", "categoria")
                         .WithMany()
                         .HasForeignKey("CategoriaId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
-                    b.Navigation("Categoriaid");
+                    b.Navigation("categoria");
                 });
 #pragma warning restore 612, 618
         }
