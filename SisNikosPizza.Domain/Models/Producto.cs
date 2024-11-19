@@ -9,10 +9,11 @@ namespace SisNikosPizza.Domain.Models
     public  class Producto : EntididadBase
     {
         public int ProductoId { get; set; }
-        public Categoria Categoriaid { get; set; }
+        public int Categoriaid { get; set; }
+        public Categoria? Category { get; set; }
         public string Nombre { get; set; }
         public string Descripcion {  get; set; }
-        public string urlImagen { get; set; }
+        public string? ImagenUrl { get; set; }
         public  float Precio { get; set; }
         public string Stock { get; set; }
 

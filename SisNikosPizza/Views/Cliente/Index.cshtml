@@ -1,0 +1,98 @@
+﻿@model IEnumerable<SisNikosPizza.Domain.Models.Categoria>
+
+@{
+    ViewData["Title"] = "Lista de Proveedores";
+    Layout = "~/Views/Shared/_Admin.cshtml";
+}
+
+<div class="container-fluid py-4">
+    <div class="card shadow-sm">
+        <!-- Cabecera -->
+        <div class="card-header d-flex justify-content-between align-items-center">
+            <h2 class="mb-0">Categorías</h2>
+            <a class="btn btn-success btn-sm" asp-controller="Categoria" asp-action="Create">
+                <i class="bi bi-plus-circle"></i>&nbsp;Nueva Categoría
+            </a>
+        </div>
+
+        <!-- Filtros y Opciones -->
+        <div class="card-body">
+            <div class="d-flex justify-content-between mb-3">
+                <div>
+                    <label for="entries" class="form-label me-2">Mostrar</label>
+                    <select id="entries" class="form-select d-inline-block" style="width: auto;">
+                        <option>10</option>
+                        <option>25</option>
+                        <option>50</option>
+                        <option>100</option>
+                    </select>
+                    <span>registros por página</span>
+                </div>
+                <div>
+                    <input type="search" class="form-control" placeholder="Buscar" style="width: 300px;" />
+                </div>
+            </div>
+
+            <!-- Tabla -->
+            <div class="table-responsive">
+                <table class="table table-bordered table-striped align-middle">
+                    <thead class="table-light text-center">
+                        <tr>
+                            <th>Opciones</th>
+                            <th>ID</th>
+                            <th>Nombre</th>
+                            <th>Estado</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        @foreach (var categoria in Model)
+                        {
+                            <tr>
+                                <!-- Opciones -->
+                                <td class="text-center">
+                                    <a class="btn btn-info btn-sm me-1" asp-controller="Categoria" asp-action="Details" asp-route-id="@categoria.CategoriaId" title="Ver">
+                                        <i class="bi bi-eye"></i>
+                                    </a>
+                                    <a class="btn btn-warning btn-sm me-1" asp-controller="Categoria" asp-action="Edit" asp-route-id="@categoria.CategoriaId" title="Editar">
+                                        <i class="bi bi-pencil-square"></i>
+                                    </a>
+                                    <a class="btn btn-danger btn-sm" asp-controller="Categoria" asp-action="Delete" asp-route-id="@categoria.CategoriaId" title="Eliminar">
+                                        <i class="bi bi-trash"></i>
+                                    </a>
+                                </td>
+
+                                <!-- Datos -->
+                                <td class="text-center">@categoria.CategoriaId</td>
+                                <td>@categoria.nombre</td>
+                                <td class="text-center">
+                                    @if (categoria.Estado)
+                                    {
+                                        <span class="badge bg-success">Activo</span>
+                                    }
+                                    else
+                                    {
+                                        <span class="badge bg-danger">Inactivo</span>
+                                    }
+                                </td>
+                            </tr>
+                        }
+                    </tbody>
+                </table>
+            </div>
+
+            <!-- Paginación -->
+            <div class="d-flex justify-content-between align-items-center mt-3">
+                <span class="text-muted">Pág. 1 de 1 - Mostrando del 1 al @Model.Count() de @Model.Count() registros</span>
+                <nav>
+                    <ul class="pagination mb-0">
+                        <li class="page-item disabled"><a class="page-link" href="#">Primero</a></li>
+                        <li class="page-item disabled"><a class="page-link" href="#">Anterior</a></li>
+                        <li class="page-item active"><a class="page-link" href="#">1</a></li>
+                        <li class="page-item disabled"><a class="page-link" href="#">Siguiente</a></li>
+                        <li class="page-item disabled"><a class="page-link" href="#">Último</a></li>
+                    </ul>
+                </nav>
+            </div>
+        </div>
+    </div>
+</div>

@@ -10,10 +10,10 @@
             <div class="card">
                 <div class="card-header">
                     <div class="d-flex justify-content-between">
-                        <h2>Categorías</h2>
+                        <h2>Productos</h2>
                         <div>
-                            <a class="btn btn-success btn-sm mt-2" asp-controller="Index" asp-action="Create">
-                                <i class="bi bi-file-earmark-plus"></i>&nbsp;Nueva Categoría
+                            <a class="btn btn-success btn-sm mt-2" asp-controller="Producto" asp-action="Create">
+                                <i class="bi bi-file-earmark-plus"></i>&nbsp;Nueva Producto
                             </a>
                         </div>
                     </div>
@@ -32,7 +32,7 @@
                         <td>@producto.Precio</td>
                         <td>@producto.Descripcion</td>
                         <td>@producto.Estado</td>
-                        <td>@producto.urlImagen</td>
+                        <td>@producto.ImagenUrl</td>
                         <td>@producto.Stock</td>
                     </tr>
                 }
