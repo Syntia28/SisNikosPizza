@@ -1,4 +1,4 @@
-﻿@model IEnumerable<SisNikosPizza.Domain.Models.Categoria>
+﻿@model IEnumerable<SisNikosPizza.Domain.Models.Proveedor>
 
 @{
     ViewData["Title"] = "Lista de Proveedores";
@@ -9,9 +9,9 @@
     <div class="card shadow-sm">
         <!-- Cabecera -->
         <div class="card-header d-flex justify-content-between align-items-center">
-            <h2 class="mb-0">Categorías</h2>
-            <a class="btn btn-success btn-sm" asp-controller="Categoria" asp-action="Create">
-                <i class="bi bi-plus-circle"></i>&nbsp;Nueva Categoría
+            <h2 class="mb-0">Proveedores</h2>
+            <a class="btn btn-success btn-sm" asp-controller="Proveedores" asp-action="Create">
+                <i class="bi bi-plus-circle"></i>&nbsp;Nuevo Proveedor
             </a>
         </div>
 
@@ -41,31 +41,33 @@
                             <th>Opciones</th>
                             <th>ID</th>
                             <th>Nombre</th>
-                            <th>Estado</th>
+                            <th>Empresa</th>
+                            <th>Producto</th>
+                            <th>Cantidad</th>
                         </tr>
                     </thead>
                     <tbody>
-                        @foreach (var categoria in Model)
+                        @foreach (var proveedor in Model)
                         {
                             <tr>
                                 <!-- Opciones -->
                                 <td class="text-center">
-                                    <a class="btn btn-info btn-sm me-1" asp-controller="Categoria" asp-action="Details" asp-route-id="@categoria.CategoriaId" title="Ver">
+                                    <a class="btn btn-info btn-sm me-1" asp-controller="Proveedor" asp-action="Details" asp-route-id="@proveedor.ProveedorId" title="Ver">
                                         <i class="bi bi-eye"></i>
                                     </a>
-                                    <a class="btn btn-warning btn-sm me-1" asp-controller="Categoria" asp-action="Edit" asp-route-id="@categoria.CategoriaId" title="Editar">
+                                    <a class="btn btn-warning btn-sm me-1" asp-controller="Proveedor" asp-action="Edit" asp-route-id="@proveedor.ProveedorId" title="Editar">
                                         <i class="bi bi-pencil-square"></i>
                                     </a>
-                                    <a class="btn btn-danger btn-sm" asp-controller="Categoria" asp-action="Delete" asp-route-id="@categoria.CategoriaId" title="Eliminar">
+                                    <a class="btn btn-danger btn-sm" asp-controller="Categoria" asp-action="Delete" asp-route-id="@proveedor.ProveedorId" title="Eliminar">
                                         <i class="bi bi-trash"></i>
                                     </a>
                                 </td>
 
                                 <!-- Datos -->
-                                <td class="text-center">@categoria.CategoriaId</td>
-                                <td>@categoria.nombre</td>
+                                <td class="text-center">@proveedor.ProveedorId</td>
+                                <td>@proveedor.Nombre</td>
                                 <td class="text-center">
-                                    @if (categoria.Estado)
+                                    @if (proveedor.Estado)
                                     {
                                         <span class="badge bg-success">Activo</span>
                                     }
