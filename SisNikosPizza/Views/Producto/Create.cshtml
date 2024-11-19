@@ -8,7 +8,7 @@
 <section class="content container-fluid">
     <div class="row justify-content-center">
         <div class="col-md-8">
-            <form method="post" asp-controller="Producto" asp-action="Create">
+            <form method="post" asp-controller="Producto" asp-action="Create" enctype="multipart/form-data">
                 <div class="card card-default shadow-sm">
                     <div class="card-header bg-primary text-white">
                         <h2 class="card-title mb-0">Nuevo Producto</h2>
@@ -39,10 +39,14 @@
                         <div class="form-group row mb-3">
                             <label class="col-md-3 col-form-label text-md-end">Categoría</label>
                             <div class="col-md-9">
-                                <input type="text" asp-for="Categoriaid" class="form-control" placeholder="ID de la categoría" />
+                                <select asp-for="Categoriaid" asp-items="@ViewBag.CategoriesList" class="form-select">
+                                    <option selected disabled>--Seleccionar categoría--</option>
+                                </select>
                                 <span asp-validation-for="Categoriaid" class="text-danger"></span>
                             </div>
                         </div>
+
+                       
 
                         <!-- Precio -->
                         <div class="form-group row mb-3">
@@ -56,11 +60,12 @@
                         <!-- URL Imagen -->
                         <div class="form-group row mb-3">
                             <label class="col-md-3 col-form-label text-md-end">Imagen</label>
-                            <div class="col-md-9">
-                                <input type="url" asp-for="urlImagen" class="form-control" placeholder="URL de la imagen del producto" />
-                                <span asp-validation-for="urlImagen" class="text-danger"></span>
+                            <div class="col-12 col-md-9">
+                                <input type="file" name="imageFile" class="form-control" accept="image/*" />
+                                <span asp-validation-for="ImagenUrl" class="text-danger"></span>
                             </div>
                         </div>
+                      -
 
                         <!-- Estado -->
                         <div class="form-group row mb-3">

@@ -1,4 +1,5 @@
 using Microsoft.EntityFrameworkCore;
+using Microsoft.Extensions.FileProviders;
 using SisNikosPizza.Infrastructure.Context;
 using SisNikosPizza.Repository.Implements;
 using SisNikosPizza.Repository.Interfaces;
@@ -25,6 +26,16 @@ if (!app.Environment.IsDevelopment())
 
 app.UseHttpsRedirection();
 app.UseStaticFiles();
+
+
+
+// Configurar una ruta espec�fica para las im�genes
+app.UseStaticFiles(new StaticFileOptions
+{
+    FileProvider = new PhysicalFileProvider(
+        Path.Combine(builder.Environment.ContentRootPath, "wwwroot", "images")),
+    RequestPath = "/images"
+});
 
 app.UseRouting();
 

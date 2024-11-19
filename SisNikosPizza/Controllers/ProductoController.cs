@@ -1,4 +1,6 @@
 ﻿using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.Mvc.Rendering;
+using Microsoft.EntityFrameworkCore;
 using SisNikosPizza.Domain.Models;
 using SisNikosPizza.Repository.Interfaces;
 using SisNikosPizza.Utilidades;
@@ -8,14 +10,18 @@ namespace SisNikosPizza.Controllers
     public class ProductoController : Controller
     {
         private readonly IUniwork _unitWork;
+         private readonly IWebHostEnvironment _webHostEnvironment;
 
         public ProductoController(
             //HotelElCieloDbContext context,
-            IUniwork unitWork
+            IUniwork unitWork,
+            IWebHostEnvironment webHostEnvironment
             )
         {
             //_context = context;
             _unitWork = unitWork;
+               _webHostEnvironment = webHostEnvironment ?? throw new ArgumentNullException(nameof(webHostEnvironment));
+  
         }
 
         // Categories/Index
@@ -28,20 +34,55 @@ namespace SisNikosPizza.Controllers
         }
 
         // Categories/Create
+        // Rooms/Create
         [HttpGet]
-        public IActionResult Create()
+        public async Task<IActionResult> Create()
         {
+            // Enviar la lista de categorias
+            var categories = await _unitWork.CategoriaRepo.ObtenerTodosAsync();
+            IEnumerable<SelectListItem> categoriesList = categories.Select(c => new SelectListItem
+            {
+                Text = c.nombre,
+                Value = c.CategoriaId.ToString()
+            }).ToList();
+            // select CategoryId, Name from Categories
+            // _context.Category.ToList();
+            // ViewData, ViewBag
+            //ViewData["CategoriesList"] = categoriesList;
+            ViewBag.CategoriesList = categoriesList;
             return View();
         }
 
-        // Categories/Create
-        [HttpPost]
-        [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Create(Producto producto)
+          [HttpPost]
+    [ValidateAntiForgeryToken]
+    public async Task<IActionResult> Create(Producto producto, IFormFile imageFile)
+    {
+        if (imageFile == null || imageFile.Length == 0)
         {
-            if (ModelState.IsValid) // Si todos los datos enviados son correctos
+            ModelState.AddModelError("ImagenUrl", "La imagen es obligatoria.");
+        }
+
+        if (ModelState.IsValid)
+        {
+            if (imageFile != null && imageFile.Length > 0)
             {
+                string uploadsFolder = Path.Combine(_webHostEnvironment.WebRootPath, "images");
+                string uniqueFileName = Guid.NewGuid().ToString() + "_" + imageFile.FileName;
+                string filePath = Path.Combine(uploadsFolder, uniqueFileName);
+
+                // Asegurarse de que el directorio existe
+                Directory.CreateDirectory(uploadsFolder);
+
+                using (var fileStream = new FileStream(filePath, FileMode.Create))
+                {
+                    await imageFile.CopyToAsync(fileStream);
+                }
+
+                producto.ImagenUrl = uniqueFileName; // Guardar solo el nombre del archivo en la base de datos
+            }
+          
                 //producto.Nombre = producto.Nombre.ToString();
+             producto.Stock ="1 Unidad";
 
                 producto.CreatedAt = DateTime.Now;
                 producto.UpdatedAt = DateTime.Now;
@@ -54,13 +95,23 @@ namespace SisNikosPizza.Controllers
                 //return RedirectToAction("Index");
                 //return RedirectToAction("Details", new(category.CategoryId.ToString()));
                 return RedirectToAction("Details", new { id = producto.ProductoId });
-            }
+           
+        }
+
+        var categories = await _unitWork.CategoriaRepo.ObtenerTodosAsync();
+        ViewBag.CategoriesList = categories.Select(c => new SelectListItem
+        {
+            Text = c.nombre,
+            Value = c.CategoriaId.ToString()
+        }).ToList();
 
             // En caso de errores se retorna a la vista
             TempData[VCG.Errado] = "No se pudo guardar el producto, intente de nuevo.";
             return View(producto);
+    }
 
-        }
+
+        
 
         // Categories/Edit/5
         [HttpGet]
