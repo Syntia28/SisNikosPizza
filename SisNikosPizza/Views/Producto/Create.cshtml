@@ -1,0 +1,69 @@
+﻿@model SisNikosPizza.Domain.Models.Producto
+
+@{
+    ViewData["Title"] = "Crear Producto";
+    Layout = "~/Views/Shared/_Admin.cshtml";
+}
+
+<section class="content container-fluid">
+    <div class="row justify-content-center">
+        <div class="col-md-8">
+            <form method="post" asp-controller="Producto" asp-action="Create">
+                <div class="card card-default">
+                    <div class="card-header">
+                        <span class="card-title"><h2>Nuevo Producto</h2></span>
+                    </div>
+                    <div class="card-body">
+                        <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+
+                        <div class="form-group row mb-2">
+                            <div class="col-12 col-md-2 col-form-label text-md-end">
+                                <label>Nombre</label>
+                            </div>
+                            <div class="col-12 col-md-9">
+                                <input type="text" asp-for="Nombre" class="form-control" placeholder="Nombre del Nuevo Producto" />
+                                <span asp-validation-for="Nombre" class="text-danger"></span>
+                            </div>
+                            <div class="col-12 col-md-9">
+                                <input type="text" asp-for="Descripcion" class="form-control" placeholder="Agregar la Descripcion" />
+                                <span asp-validation-for="Descripcion" class="text-danger"></span>
+                            </div>
+                            <div class="col-12 col-md-9">
+                                <input type="text" asp-for="Categoriaid" class="form-control" placeholder="Agregar la Categoria que Pertenece" />
+                                <span asp-validation-for="Categoriaid" class="text-danger"></span>
+                            </div>
+                            <div class="col-12 col-md-9">
+                                <input type="text" asp-for="Precio" class="form-control" placeholder="Agregar Precio " />
+                                <span asp-validation-for="Precio" class="text-danger"></span>
+                            </div>
+                            <div class="col-12 col-md-9">
+                                <input type="text" asp-for="urlImagen" class="form-control" placeholder="Agrega la imagen del producto" />
+                                <span asp-validation-for="urlImagen" class="text-danger"></span>
+                            </div>
+                        </div>
+                        <div class="form-group row mb-2">
+                            <div class="col-12 col-md-2 col-form-label text-md-end">
+                                <label>Estado</label>
+                            </div>
+                            <div class="col-12 col-md-9">
+                                <select asp-for="Estado" class="form-select">
+                                    <option value="true">ACTIVO</option>
+                                    <option value="false">INACTIVO</option>
+                                </select>
+                                <span asp-validation-for="Estado" class="text-danger"></span>
+                            </div>
+                        </div>
+                        <div class="d-grid column-gap-2 d-md-block offset-0 offset-md-3 offset-lg-4 mt-2">
+                            <button type="submit" class="btn btn-success">
+                                <i class="bi bi-floppy"></i>&nbsp;Guardar
+                            </button>
+                            <a asp-controller="Categories" asp-action="Index" class="btn btn-primary">
+                                <i class="bi bi-box-arrow-left"></i>&nbsp;Cancelar
+                            </a>
+                        </div>
+                    </div>
+                </div>
+            </form>
+        </div>
+    </div>
+</section>
