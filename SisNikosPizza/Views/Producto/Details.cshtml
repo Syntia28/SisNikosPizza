@@ -1,21 +1,27 @@
 ﻿@model SisNikosPizza.Domain.Models.Producto
+
 @{
-    ViewData["Title"] = "Detalle Categoría";
+    ViewData["Title"] = "Detalle Producto";
     Layout = "~/Views/Shared/_Admin.cshtml";
-    // Layout = "~/Views/Shared/_Layout.cshtml";
-    // Layout = null;
 }
 
-<div class="container-fluid">
+<div class="container my-5">
     <div class="row justify-content-center">
-        <div class="col-10 col-md-8">
-            <div class="card border border-secondary">
-                <div class="card-header bg-secondary bg-opacity-75 text-center">
-                    <h2>Detalle de Categoría</h2>
+        <div class="col-12 col-md-10 col-lg-8">
+            <div class="card shadow-lg border-0">
+                <div class="card-header bg-primary text-white text-center">
+                    <h2 class="mb-0">Detalle del Producto</h2>
                 </div>
-                <div class="card-body">
+                <div class="card-body p-4">
+                    @if (!string.IsNullOrEmpty(Model.ImagenUrl))
+                    {
+                        <div class="text-center mb-4">
+                            <img src="@Model.ImagenUrl" alt="Imagen del producto" class="img-fluid rounded shadow-sm" style="max-height: 300px; object-fit: cover;" />
+                        </div>
+                    }
+
                     <div class="row p-2 border-bottom">
-                        <div class="col-4 text-end"><strong>Categoría ID:</strong></div>
+                        <div class="col-4 text-end"><strong>Producto ID:</strong></div>
                         <div class="col">@Model.ProductoId</div>
                     </div>
                     <div class="row p-2 border-bottom">
@@ -23,32 +29,49 @@
                         <div class="col">@Model.Nombre</div>
                     </div>
                     <div class="row p-2 border-bottom">
+                        <div class="col-4 text-end"><strong>Categoría ID:</strong></div>
+                        <div class="col">@Model.CategoriaId</div>
+                    </div>
+                    <div class="row p-2 border-bottom">
                         <div class="col-4 text-end"><strong>Estado:</strong></div>
                         <div class="col">
                             @if (Model.Estado)
                             {
-                                <span class="text-success">ACTIVO</span>
+                                <span class="badge bg-success">ACTIVO</span>
                             }
                             else
                             {
-                                <span class="text-info">INACTIVO</span>
+                                <span class="badge bg-danger">INACTIVO</span>
                             }
                         </div>
                     </div>
                     <div class="row p-2 border-bottom">
+                        <div class="col-4 text-end"><strong>Precio:</strong></div>
+                        <div class="col">S/. @Model.Precio.ToString("F2")</div>
+                    </div>
+                    <div class="row p-2 border-bottom">
+                        <div class="col-4 text-end"><strong>Stock:</strong></div>
+                        <div class="col">@Model.Stock</div>
+                    </div>
+                    <div class="row p-2 border-bottom">
+                        <div class="col-4 text-end"><strong>Descripción:</strong></div>
+                        <div class="col">@Model.Descripcion</div>
+                    </div>
+                    <div class="row p-2 border-bottom">
                         <div class="col-4 text-end"><strong>Creado el:</strong></div>
-                        <div class="col">@Model.CreatedAt</div>
+                        <div class="col">@Model.CreatedAt.ToString("dd/MM/yyyy HH:mm")</div>
                     </div>
                     <div class="row p-2 border-bottom">
                         <div class="col-4 text-end"><strong>Actualizado el:</strong></div>
-                        <div class="col">@Model.UpdatedAt</div>
+                        <div class="col">@Model.UpdatedAt.ToString("dd/MM/yyyy HH:mm")</div>
                     </div>
-                    <div class="d-grid column-gap-2 d-md-block offset-0 offset-md-3 offset-lg-4 mt-2">
-                        <a asp-action="Edit" asp-route-id="@Model.ProductoId" class="btn btn-warning mb-1 mb-md-0">
-                            <i class="bi bi-pencil-square"></i>&nbspEditar
+
+                    <div class="d-flex justify-content-center mt-4">
+                        <a asp-action="Edit" asp-route-id="@Model.ProductoId" class="btn btn-warning me-2">
+                            <i class="bi bi-pencil-square"></i> Editar
                         </a>
-                        <a asp-action="Index" class="btn btn-primary">
-                            <i class="bi bi-arrow-return-left"></i>&nbsp; Regresar
+                        <a asp-action="Index" class="btn btn-secondary">
+                            <i class="bi bi-arrow-return-left"></i> Regresar
                         </a>
                     </div>
                 </div>
@@ -56,4 +79,3 @@
         </div>
     </div>
 </div>
-

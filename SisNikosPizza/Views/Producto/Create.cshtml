@@ -57,6 +57,15 @@
                             </div>
                         </div>
 
+                        <!-- Precio -->
+                        <div class="form-group row mb-3">
+                            <label class="col-md-3 col-form-label text-md-end">Stock</label>
+                            <div class="col-md-9">
+                                <input type="string" asp-for="Stock" class="form-control" placeholder="Stock del producto" step="0.01" />
+                                <span asp-validation-for="Stock" class="text-danger"></span>
+                            </div>
+                        </div>
+
                         <!-- URL Imagen -->
                         <div class="form-group row mb-3">
                             <label class="col-md-3 col-form-label text-md-end">Imagen</label>
@@ -85,7 +94,7 @@
                                 <button type="submit" class="btn btn-success">
                                     <i class="bi bi-floppy"></i>&nbsp;Guardar
                                 </button>
-                                <a asp-controller="Categoria" asp-action="Index" class="btn btn-secondary">
+                                <a asp-controller="Producto" asp-action="Index" class="btn btn-secondary">
                                     <i class="bi bi-box-arrow-left"></i>&nbsp;Cancelar
                                 </a>
                             </div>
