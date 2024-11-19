@@ -3,6 +3,7 @@ using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using SisNikosPizza.Infrastructure.Context;
 
@@ -11,9 +12,11 @@ using SisNikosPizza.Infrastructure.Context;
 namespace SisNikosPizza.Infraestructure.Migrations
 {
     [DbContext(typeof(SisNikosPizzaBbContext))]
-    partial class SisNikosPizzaBbContextModelSnapshot : ModelSnapshot
+    [Migration("20241119034406_addedimagenurl")]
+    partial class addedimagenurl
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -56,7 +59,7 @@ namespace SisNikosPizza.Infraestructure.Migrations
 
                     SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("ProductoId"));
 
-                    b.Property<int>("Categoriaid")
+                    b.Property<int>("CategoriaId")
                         .HasColumnType("int");
 
                     b.Property<DateTime>("CreatedAt")
@@ -70,6 +73,7 @@ namespace SisNikosPizza.Infraestructure.Migrations
                         .HasColumnType("bit");
 
                     b.Property<string>("ImagenUrl")
+                        .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
                     b.Property<string>("Nombre")
@@ -88,20 +92,20 @@ namespace SisNikosPizza.Infraestructure.Migrations
 
                     b.HasKey("ProductoId");
 
-                    b.HasIndex("Categoriaid");
+                    b.HasIndex("CategoriaId");
 
                     b.ToTable("producto");
                 });
 
             modelBuilder.Entity("SisNikosPizza.Domain.Models.Producto", b =>
                 {
-                    b.HasOne("SisNikosPizza.Domain.Models.Categoria", "Category")
+                    b.HasOne("SisNikosPizza.Domain.Models.Categoria", "Categoriaid")
                         .WithMany()
-                        .HasForeignKey("Categoriaid")
+                        .HasForeignKey("CategoriaId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
-                    b.Navigation("Category");
+                    b.Navigation("Categoriaid");
                 });
 #pragma warning restore 612, 618
         }

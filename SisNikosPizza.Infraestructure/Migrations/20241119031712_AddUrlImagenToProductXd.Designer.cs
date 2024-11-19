@@ -3,6 +3,7 @@ using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using SisNikosPizza.Infrastructure.Context;
 
@@ -11,9 +12,11 @@ using SisNikosPizza.Infrastructure.Context;
 namespace SisNikosPizza.Infraestructure.Migrations
 {
     [DbContext(typeof(SisNikosPizzaBbContext))]
-    partial class SisNikosPizzaBbContextModelSnapshot : ModelSnapshot
+    [Migration("20241119031712_AddUrlImagenToProductXd")]
+    partial class AddUrlImagenToProductXd
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -56,7 +59,7 @@ namespace SisNikosPizza.Infraestructure.Migrations
 
                     SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("ProductoId"));
 
-                    b.Property<int>("Categoriaid")
+                    b.Property<int>("CategoriaId")
                         .HasColumnType("int");
 
                     b.Property<DateTime>("CreatedAt")
@@ -68,9 +71,6 @@ namespace SisNikosPizza.Infraestructure.Migrations
 
                     b.Property<bool>("Estado")
                         .HasColumnType("bit");
-
-                    b.Property<string>("ImagenUrl")
-                        .HasColumnType("nvarchar(max)");
 
                     b.Property<string>("Nombre")
                         .IsRequired()
@@ -86,22 +86,26 @@ namespace SisNikosPizza.Infraestructure.Migrations
                     b.Property<DateTime>("UpdatedAt")
                         .HasColumnType("datetime2");
 
+                    b.Property<string>("UrlImagen")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
                     b.HasKey("ProductoId");
 
-                    b.HasIndex("Categoriaid");
+                    b.HasIndex("CategoriaId");
 
                     b.ToTable("producto");
                 });
 
             modelBuilder.Entity("SisNikosPizza.Domain.Models.Producto", b =>
                 {
-                    b.HasOne("SisNikosPizza.Domain.Models.Categoria", "Category")
+                    b.HasOne("SisNikosPizza.Domain.Models.Categoria", "Categoriaid")
                         .WithMany()
-                        .HasForeignKey("Categoriaid")
+                        .HasForeignKey("CategoriaId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
-                    b.Navigation("Category");
+                    b.Navigation("Categoriaid");
                 });
 #pragma warning restore 612, 618
         }
