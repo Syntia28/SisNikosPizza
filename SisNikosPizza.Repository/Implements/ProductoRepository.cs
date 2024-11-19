@@ -25,7 +25,7 @@ namespace SisNikosPizza.Repository.Implements
             if (productoDB is not null)
             {
 
-                productoDB.Categoriaid = producto.Categoriaid;
+                productoDB.CategoriaId = producto.CategoriaId;
                 productoDB.Nombre = producto.Nombre;
                 productoDB.Descripcion = producto.Descripcion;
                 productoDB.Precio = producto.Precio;

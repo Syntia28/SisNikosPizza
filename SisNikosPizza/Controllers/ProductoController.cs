@@ -24,13 +24,22 @@ namespace SisNikosPizza.Controllers
   
         }
 
-        // Categories/Index
         [HttpGet]
         public async Task<IActionResult> Index()
         {
-            
-            var producto = await _unitWork.ProductoRepo.ObtenerTodosAsync(ordenarPor: c => c.OrderByDescending(c => c.ProductoId));
-            return View(producto);
+            var productos = await _unitWork.ProductoRepo.ObtenerTodosAsync(ordenarPor: c => c.OrderByDescending(c => c.ProductoId));
+
+            // Construir la URL completa para cada producto
+            string baseUrl = $"{Request.Scheme}://{Request.Host}/images";
+            foreach (var producto in productos)
+            {
+                if (!string.IsNullOrEmpty(producto.ImagenUrl))
+                {
+                    producto.ImagenUrl = $"{baseUrl}/{producto.ImagenUrl}";
+                }
+            }
+
+            return View(productos);
         }
 
         // Categories/Create
@@ -53,65 +62,96 @@ namespace SisNikosPizza.Controllers
             return View();
         }
 
-          [HttpPost]
-    [ValidateAntiForgeryToken]
-    public async Task<IActionResult> Create(Producto producto, IFormFile imageFile)
-    {
-        if (imageFile == null || imageFile.Length == 0)
-        {
-            ModelState.AddModelError("ImagenUrl", "La imagen es obligatoria.");
-        }
 
-        if (ModelState.IsValid)
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public async Task<IActionResult> Create(Producto producto, IFormFile imageFile)
         {
-            if (imageFile != null && imageFile.Length > 0)
+            // Depuración: Verificar los valores recibidos
+            Console.WriteLine($"CategoriaId: {producto.CategoriaId}");
+            Console.WriteLine($"Nombre: {producto.Nombre}");
+            Console.WriteLine($"Precio: {producto.Precio}");
+            Console.WriteLine($"Imagen recibida: {(imageFile != null ? "Sí" : "No")}");
+
+            // Validar si se subió una imagen
+            if (imageFile == null || imageFile.Length == 0)
             {
-                string uploadsFolder = Path.Combine(_webHostEnvironment.WebRootPath, "images");
-                string uniqueFileName = Guid.NewGuid().ToString() + "_" + imageFile.FileName;
-                string filePath = Path.Combine(uploadsFolder, uniqueFileName);
+                ModelState.AddModelError("ImagenUrl", "La imagen es obligatoria.");
+            }
 
-                // Asegurarse de que el directorio existe
-                Directory.CreateDirectory(uploadsFolder);
-
-                using (var fileStream = new FileStream(filePath, FileMode.Create))
+            // Validar el estado del modelo
+            if (!ModelState.IsValid)
+            {
+                Console.WriteLine("Modelo no válido");
+                foreach (var key in ModelState.Keys)
                 {
-                    await imageFile.CopyToAsync(fileStream);
+                    Console.WriteLine($"{key}: {string.Join(", ", ModelState[key].Errors.Select(e => e.ErrorMessage))}");
                 }
 
-                producto.ImagenUrl = uniqueFileName; // Guardar solo el nombre del archivo en la base de datos
-            }
-          
-                //producto.Nombre = producto.Nombre.ToString();
-             producto.Stock ="1 Unidad";
+                // Obtener las categorías nuevamente para la vista
+                var categories = await _unitWork.CategoriaRepo.ObtenerTodosAsync();
+                ViewBag.CategoriesList = categories.Select(c => new SelectListItem
+                {
+                    Text = c.nombre,
+                    Value = c.CategoriaId.ToString()
+                }).ToList();
 
+                TempData["Error"] = "No se pudo guardar el producto. Verifica los datos ingresados.";
+                return View(producto);
+            }
+
+            try
+            {
+                // Guardar la imagen si se subió
+                if (imageFile != null && imageFile.Length > 0)
+                {
+                    string uploadsFolder = Path.Combine(_webHostEnvironment.WebRootPath, "images");
+                    string uniqueFileName = Guid.NewGuid().ToString() + "_" + Path.GetFileName(imageFile.FileName);
+                    string filePath = Path.Combine(uploadsFolder, uniqueFileName);
+
+                    // Crear el directorio si no existe
+                    Directory.CreateDirectory(uploadsFolder);
+
+                    using (var fileStream = new FileStream(filePath, FileMode.Create))
+                    {
+                        await imageFile.CopyToAsync(fileStream);
+                    }
+
+                    // Guardar solo el nombre del archivo en la base de datos
+                    producto.ImagenUrl = uniqueFileName;
+                }
+
+                // Asignar valores predeterminados
+                producto.Stock = "1 Unidad"; // O cambia esto según tu lógica
                 producto.CreatedAt = DateTime.Now;
                 producto.UpdatedAt = DateTime.Now;
-               
-                //await _context.Category.AddAsync(category);
-                //await _context.SaveChangesAsync();
+
+                // Guardar el producto en la base de datos
                 await _unitWork.ProductoRepo.AgregarAsync(producto);
                 await _unitWork.GuardarProducto();
-                TempData[VCG.Satisfactorio] = "Producto actualizada correctamente";
-                //return RedirectToAction("Index");
-                //return RedirectToAction("Details", new(category.CategoryId.ToString()));
+
+                TempData["Satisfactorio"] = "Producto creado correctamente.";
                 return RedirectToAction("Details", new { id = producto.ProductoId });
-           
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine($"Error al guardar el producto: {ex.Message}");
+                TempData["Error"] = "Ocurrió un error al guardar el producto. Intenta nuevamente.";
+            }
+
+            // Si hay errores, volver a cargar las categorías y mostrar el formulario
+            var categoriesFallback = await _unitWork.CategoriaRepo.ObtenerTodosAsync();
+            ViewBag.CategoriesList = categoriesFallback.Select(c => new SelectListItem
+            {
+                Text = c.nombre,
+                Value = c.CategoriaId.ToString()
+            }).ToList();
+
+            return View(producto);
         }
 
-        var categories = await _unitWork.CategoriaRepo.ObtenerTodosAsync();
-        ViewBag.CategoriesList = categories.Select(c => new SelectListItem
-        {
-            Text = c.nombre,
-            Value = c.CategoriaId.ToString()
-        }).ToList();
-
-            // En caso de errores se retorna a la vista
-            TempData[VCG.Errado] = "No se pudo guardar el producto, intente de nuevo.";
-            return View(producto);
-    }
 
 
-        
 
         // Categories/Edit/5
         [HttpGet]
@@ -159,10 +199,19 @@ namespace SisNikosPizza.Controllers
         public async Task<IActionResult> Details(int? id)
         {
             if (id is null) return NotFound();
-            var category = await _unitWork.ProductoRepo.ObtenerPrimeroAsync(filtro: c => c.ProductoId == id);
-            return View(category);
-        }
 
+            var producto = await _unitWork.ProductoRepo.ObtenerPrimeroAsync(filtro: c => c.ProductoId == id);
+            if (producto == null) return NotFound();
+
+            // Construir la URL completa de la imagen
+            if (!string.IsNullOrEmpty(producto.ImagenUrl))
+            {
+                string baseUrl = $"{Request.Scheme}://{Request.Host}/images";
+                producto.ImagenUrl = $"{baseUrl}/{producto.ImagenUrl}";
+            }
+
+            return View(producto);
+        }
         // Categories/Delete/5
         [HttpGet]
         public async Task<IActionResult> Delete(int id)
