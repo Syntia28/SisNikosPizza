@@ -3,10 +3,13 @@ using Microsoft.Extensions.FileProviders;
 using SisNikosPizza.Infrastructure.Context;
 using SisNikosPizza.Repository.Implements;
 using SisNikosPizza.Repository.Interfaces;
+using Microsoft.AspNetCore.Identity;
 
 var builder = WebApplication.CreateBuilder(args);
 var conexion = builder.Configuration.GetConnectionString("ConnectionSQLServer");
 builder.Services.AddDbContext<SisNikosPizzaBbContext>(options => options.UseSqlServer(conexion));
+
+builder.Services.AddDefaultIdentity<IdentityUser>(options => options.SignIn.RequireConfirmedAccount = true).AddEntityFrameworkStores<SisNikosPizzaBbContext>();
 // Add services to the container.
 builder.Services.AddControllersWithViews();
 
@@ -14,6 +17,9 @@ builder.Services.AddControllersWithViews();
 builder.Services.AddScoped<IUniwork, UnitWork>();
 builder.Services.AddScoped<ICategoriaRepository, CategoriaRepository>();
 builder.Services.AddScoped<IProveedorRepository, ProveedorRepository>();
+
+//builder.Services.AddRazorPages();
+
 
 var app = builder.Build();
 
@@ -45,5 +51,7 @@ app.UseAuthorization();
 app.MapControllerRoute(
     name: "default",
     pattern: "{controller=Home}/{action=Index}/{id?}");
+
+app.MapRazorPages();
 
 app.Run();
