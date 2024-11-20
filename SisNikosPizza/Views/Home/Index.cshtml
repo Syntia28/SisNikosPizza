@@ -1,9 +1,25 @@
-﻿@{
+﻿@model IEnumerable<SisNikosPizza.Domain.Models.Producto>
+@{
     ViewData["Title"] = "Home Page";
     Layout = "~/Views/Shared/_Admin.cshtml";
 }
 
+
 <div class="text-center">
- 
-  
+    <h1 class="display-4">Bienvenido a SisNikosPizza</h1>
+    <p class="lead">La mejor pizza de la ciudad</p>
+    <div>
+        @foreach (var pizza in Model)
+       {
+           <div class="card" style="width: 18rem; display: inline-block; margin: 10px;">
+               <img src="@pizza.ImagenUrl" class="card-img-top" alt="@pizza.Nombre">
+               <div class="card-body">
+                   <h5 class="card-title">@pizza.Nombre</h5>
+                   <p class="card-text">@pizza.Descripcion</p>
+                   <p class="card-text fw-bold">Precio: $@pizza.Precio</p>
+                   <button class="btn btn-primary w-100" onclick="">Agregar al carrito</button>
+               </div>
+            </div>
+       }
+    </div>
 </div>
