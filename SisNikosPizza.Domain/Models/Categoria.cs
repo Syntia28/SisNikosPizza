@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace SisNikosPizza.Domain.Models
 {
-    public class Categoria :EntididadBase
+    public class Categoria : EntididadBase
     {
         public int CategoriaId { get; set; }
         public string nombre { get; set; } 

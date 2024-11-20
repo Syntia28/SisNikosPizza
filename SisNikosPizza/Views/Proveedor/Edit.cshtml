@@ -1,0 +1,74 @@
+﻿@model SisNikosPizza.Domain.Models.Proveedor
+@{
+    ViewData["Title"] = "Editar Proveedor";
+    Layout = "~/Views/Shared/_Admin.cshtml";
+}
+
+<section class="content container-fluid">
+    <div class="row justify-content-center">
+        <div class="col-md-8">
+            <form method="post" asp-controller="Proveedor" asp-action="Edit">
+                <div class="card card-default">
+                    <div class="card-header">
+                        <span class="card-title"><h2>Editar Proveedor</h2></span>
+                    </div>
+                    <div class="card-body">
+                        <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+                        <input asp-for="ProveedorId" type="hidden" />
+
+                        <!-- Campo Nombre -->
+                        <div class="form-group row mb-2">
+                            <label class="col-12 col-md-2 col-form-label text-md-end">Nombre</label>
+                            <div class="col-12 col-md-9">
+                                <input type="text" asp-for="Nombre" class="form-control" placeholder="Nombre del Proveedor" />
+                                <span asp-validation-for="Nombre" class="text-danger"></span>
+                            </div>
+                        </div>
+
+                        <!-- Campo Producto -->
+                        <div class="form-group row mb-2">
+                            <label class="col-12 col-md-2 col-form-label text-md-end">Producto</label>
+                            <div class="col-12 col-md-9">
+                                <input type="text" asp-for="Producto" class="form-control" placeholder="Nombre del Producto" />
+                                <span asp-validation-for="Producto" class="text-danger"></span>
+                            </div>
+                        </div>
+
+                        <!-- Campo Cantidad -->
+                        <div class="form-group row mb-2">
+                            <label class="col-12 col-md-2 col-form-label text-md-end">Cantidad</label>
+                            <div class="col-12 col-md-9">
+                                <input type="text" asp-for="Ccantidad" class="form-control" placeholder="Modificar la cantidad" />
+                                <span asp-validation-for="Ccantidad" class="text-danger"></span>
+                            </div>
+                        </div>
+
+                        <!-- Campo Empresa -->
+                        <div class="form-group row mb-2">
+                            <label class="col-12 col-md-2 col-form-label text-md-end">Empresa</label>
+                            <div class="col-12 col-md-9">
+                                <input type="text" asp-for="Empresa" class="form-control" placeholder="Nombre de la Empresa" />
+                                <span asp-validation-for="Empresa" class="text-danger"></span>
+                            </div>
+                        </div>
+
+                        <!-- Campo Fecha de Registro -->
+                        <div class="form-group row mb-2">
+                            <label class="col-12 col-md-2 col-form-label text-md-end">Fecha de Registro</label>
+                            <div class="col-12 col-md-9">
+                                <input type="date" asp-for="FechaRegistro" class="form-control" placeholder="Fecha de Registro" />
+                                <span asp-validation-for="FechaRegistro" class="text-danger"></span>
+                            </div>
+                        </div>
+
+                        <!-- Botones de Guardar y Cancelar -->
+                        <div class="d-grid gap-2 d-md-flex justify-content-md-start mt-3">
+                            <button type="submit" class="btn btn-success"><i class="bi bi-download"></i>&nbsp;Guardar</button>
+                            <a asp-controller="Proveedor" asp-action="Index" class="btn btn-primary"><i class="bi bi-box-arrow-left"></i>&nbsp;Cancelar</a>
+                        </div>
+                    </div>
+                </div>
+            </form>
+        </div>
+    </div>
+</section>

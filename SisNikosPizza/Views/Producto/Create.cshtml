@@ -4,100 +4,83 @@
     ViewData["Title"] = "Crear Producto";
     Layout = "~/Views/Shared/_Admin.cshtml";
 }
-
 <section class="content container-fluid">
     <div class="row justify-content-center">
-        <div class="col-md-8">
+        <div class="col-md-10 col-lg-8">
             <form method="post" asp-controller="Producto" asp-action="Create" enctype="multipart/form-data">
-                <div class="card card-default shadow-sm">
-                    <div class="card-header bg-primary text-white">
-                        <h2 class="card-title mb-0">Nuevo Producto</h2>
+                <div class="card shadow-sm border-0">
+                    <!-- Encabezado -->
+                    <div class="card-header bg-primary text-white text-center py-3">
+                        <h3 class="card-title mb-0"><i class="bi bi-box-seam"></i> Nuevo Producto</h3>
                     </div>
-                    <div class="card-body">
+                    <div class="card-body bg-light">
                         <!-- Validation Summary -->
                         <div asp-validation-summary="ModelOnly" class="text-danger mb-3"></div>
 
                         <!-- Nombre -->
-                        <div class="form-group row mb-3">
-                            <label class="col-md-3 col-form-label text-md-end">Nombre</label>
-                            <div class="col-md-9">
-                                <input type="text" asp-for="Nombre" class="form-control" placeholder="Nombre del producto" />
-                                <span asp-validation-for="Nombre" class="text-danger"></span>
-                            </div>
+                        <div class="mb-4">
+                            <label class="form-label fw-bold">Nombre <span class="text-danger">*</span></label>
+                            <input type="text" asp-for="Nombre" class="form-control form-control-lg" placeholder="Nombre del producto" />
+                            <span asp-validation-for="Nombre" class="text-danger"></span>
                         </div>
 
                         <!-- Descripción -->
-                        <div class="form-group row mb-3">
-                            <label class="col-md-3 col-form-label text-md-end">Descripción</label>
-                            <div class="col-md-9">
-                                <textarea asp-for="Descripcion" class="form-control" rows="3" placeholder="Descripción del producto"></textarea>
-                                <span asp-validation-for="Descripcion" class="text-danger"></span>
-                            </div>
+                        <div class="mb-4">
+                            <label class="form-label fw-bold">Descripción</label>
+                            <textarea asp-for="Descripcion" class="form-control" rows="4" placeholder="Descripción del producto"></textarea>
+                            <span asp-validation-for="Descripcion" class="text-danger"></span>
                         </div>
 
                         <!-- Categoría -->
-                        <div class="form-group row mb-3">
-                            <label class="col-md-3 col-form-label text-md-end">Categoría</label>
-                            <div class="col-md-9">
-                                <select asp-for="CategoriaId" asp-items="@ViewBag.CategoriesList" class="form-select">
-                                    <option selected disabled>--Seleccionar categoría--</option>
-                                </select>
-                                <span asp-validation-for="CategoriaId" class="text-danger"></span>
-                            </div>
+                        <div class="mb-4">
+                            <label class="form-label fw-bold">Categoría <span class="text-danger">*</span></label>
+                            <select asp-for="CategoriaId" asp-items="@ViewBag.CategoriesList" class="form-select">
+                                <option selected disabled>--Seleccionar categoría--</option>
+                            </select>
+                            <span asp-validation-for="CategoriaId" class="text-danger"></span>
                         </div>
 
-                       
-
                         <!-- Precio -->
-                        <div class="form-group row mb-3">
-                            <label class="col-md-3 col-form-label text-md-end">Precio</label>
-                            <div class="col-md-9">
+                        <div class="row">
+                            <div class="col-md-6 mb-4">
+                                <label class="form-label fw-bold">Precio <span class="text-danger">*</span></label>
                                 <input type="number" asp-for="Precio" class="form-control" placeholder="Precio del producto" step="0.01" />
                                 <span asp-validation-for="Precio" class="text-danger"></span>
                             </div>
-                        </div>
 
-                        <!-- Precio -->
-                        <div class="form-group row mb-3">
-                            <label class="col-md-3 col-form-label text-md-end">Stock</label>
-                            <div class="col-md-9">
-                                <input type="string" asp-for="Stock" class="form-control" placeholder="Stock del producto" step="0.01" />
+                            <!-- Stock -->
+                            <div class="col-md-6 mb-4">
+                                <label class="form-label fw-bold">Stock <span class="text-danger">*</span></label>
+                                <input type="text" asp-for="Stock" class="form-control" placeholder="Stock del producto" />
                                 <span asp-validation-for="Stock" class="text-danger"></span>
                             </div>
                         </div>
 
-                        <!-- URL Imagen -->
-                        <div class="form-group row mb-3">
-                            <label class="col-md-3 col-form-label text-md-end">Imagen</label>
-                            <div class="col-12 col-md-9">
-                                <input type="file" name="imageFile" class="form-control" accept="image/*" />
-                                <span asp-validation-for="ImagenUrl" class="text-danger"></span>
-                            </div>
+                        <!-- Imagen -->
+                        <div class="mb-4">
+                            <label class="form-label fw-bold">Imagen</label>
+                            <input type="file" name="imageFile" class="form-control" accept="image/*" />
+                            <span asp-validation-for="ImagenUrl" class="text-danger"></span>
                         </div>
-                      -
 
                         <!-- Estado -->
-                        <div class="form-group row mb-3">
-                            <label class="col-md-3 col-form-label text-md-end">Estado</label>
-                            <div class="col-md-9">
-                                <select asp-for="Estado" class="form-select">
-                                    <option value="true">Activo</option>
-                                    <option value="false">Inactivo</option>
-                                </select>
-                                <span asp-validation-for="Estado" class="text-danger"></span>
-                            </div>
+                        <div class="mb-4">
+                            <label class="form-label fw-bold">Estado <span class="text-danger">*</span></label>
+                            <select asp-for="Estado" class="form-select">
+                                <option value="true">Activo</option>
+                                <option value="false">Inactivo</option>
+                            </select>
+                            <span asp-validation-for="Estado" class="text-danger"></span>
                         </div>
 
                         <!-- Botones -->
-                        <div class="form-group row">
-                            <div class="col-md-9 offset-md-3 d-flex justify-content-between">
-                                <button type="submit" class="btn btn-success">
-                                    <i class="bi bi-floppy"></i>&nbsp;Guardar
-                                </button>
-                                <a asp-controller="Producto" asp-action="Index" class="btn btn-secondary">
-                                    <i class="bi bi-box-arrow-left"></i>&nbsp;Cancelar
-                                </a>
-                            </div>
+                        <div class="d-flex justify-content-end mt-4">
+                            <button type="submit" class="btn btn-success btn-lg me-2">
+                                <i class="bi bi-floppy"></i> Guardar
+                            </button>
+                            <a asp-controller="Producto" asp-action="Index" class="btn btn-secondary btn-lg">
+                                <i class="bi bi-x-circle"></i> Cancelar
+                            </a>
                         </div>
                     </div>
                 </div>

@@ -1,0 +1,63 @@
+﻿@model SisNikosPizza.Domain.Models.Proveedor
+@{
+    ViewData["Title"] = "Detalle del Proveedor";
+    Layout = "~/Views/Shared/_Admin.cshtml";
+    // Layout = "~/Views/Shared/_Layout.cshtml";
+    // Layout = null;
+}
+
+<div class="container-fluid">
+    <div class="row justify-content-center">
+        <div class="col-10 col-md-8">
+            <div class="card border border-secondary">
+                <div class="card-header bg-secondary bg-opacity-75 text-center">
+                    <h2>Detalle del Proveedor</h2>
+                </div>
+                <div class="card-body">
+                    <div class="row p-2 border-bottom">
+                        <div class="col-4 text-end"><strong>Proveedor ID:</strong></div>
+                        <div class="col">@Model.ProveedorId</div>
+                    </div>
+                    <div class="row p-2 border-bottom">
+                        <div class="col-4 text-end"><strong>Nombre:</strong></div>
+                        <div class="col">@Model.Nombre</div>
+                    </div>
+                    <div class="row p-2 border-bottom">
+                        <div class="col-4 text-end"><strong>Producto:</strong></div>
+                        <div class="col">@Model.Producto</div>
+                    </div>
+                    <div class="row p-2 border-bottom">
+                        <div class="col-4 text-end"><strong>Empresa:</strong></div>
+                        <div class="col">@Model.Empresa</div>
+                    </div>
+                    <div class="row p-2 border-bottom">
+                        <div class="col-4 text-end"><strong>Cantidad:</strong></div>
+                        <div class="col">@Model.Ccantidad</div>
+                    </div
+                    <div class="row p-2 border-bottom">
+                        <div class="col-4 text-end"><strong>Fecha de Registro:</strong></div>
+                        <div class="col">@Model.FechaRegistro</div>
+                    </div>
+                    </div>
+                    <div class="row p-2 border-bottom">
+                        <div class="col-4 text-end"><strong>Creado el:</strong></div>
+                        <div class="col">@Model.CreatedAt</div>
+                    </div>
+                    <div class="row p-2 border-bottom">
+                        <div class="col-4 text-end"><strong>Actualizado el:</strong></div>
+                        <div class="col">@Model.UpdatedAt</div>
+                    </div>
+                    <div class="d-grid column-gap-2 d-md-block offset-0 offset-md-3 offset-lg-4 mt-2">
+                        <a asp-action="Edit" asp-route-id="@Model.ProveedorId" class="btn btn-warning mb-1 mb-md-0">
+                            <i class="bi bi-pencil-square"></i>&nbsp Editar
+                        </a>
+                        <a asp-action="Index" class="btn btn-primary">
+                            <i class="bi bi-arrow-return-left"></i>&nbsp; Regresar
+                        </a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+

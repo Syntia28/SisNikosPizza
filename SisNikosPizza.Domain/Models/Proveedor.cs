@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Microsoft.VisualBasic;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -12,7 +13,9 @@ namespace SisNikosPizza.Domain.Models
         public string Nombre { get; set; }
         public string Empresa { get; set; }
         public string Producto { get; set; }
-        public int Ccantidad { get; set; }
+        public string Ccantidad { get; set; }
+        public DateTime FechaRegistro { get; set; }
+
 
     }
 }
