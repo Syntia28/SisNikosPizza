@@ -2,9 +2,10 @@
 
 @{
     ViewData["Title"] = "Crear Proveedor";
+    Layout = "~/Views/Shared/_Admin.cshtml";
 }
 
-<div class="container my-5">
+<div class="container py-5">
     <div class="row justify-content-center">
         <div class="col-lg-6 col-md-8">
             <div class="card border border-secondary">
@@ -50,8 +51,12 @@
 
                         <!-- Botones Guardar y Cancelar -->
                         <div class="d-flex justify-content-end gap-3">
-                            <button type="submit" class="btn btn-success px-4">Guardar</button>
-                            <a asp-action="Index" class="btn btn-secondary px-4">Cancelar</a>
+                            <button type="submit" class="btn btn-success px-4">
+                                Guardar
+                            </button>
+                            <a asp-controller="Proveedor" asp-action="Index" class="btn btn-secondary px-4">
+                                Cancelar
+                            </a>
                         </div>
                     </form>
                 </div>

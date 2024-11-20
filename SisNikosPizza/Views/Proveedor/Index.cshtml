@@ -10,7 +10,7 @@
         <!-- Cabecera -->
         <div class="card-header d-flex justify-content-between align-items-center">
             <h2 class="mb-0">Proveedores</h2>
-            <a class="btn btn-success btn-sm" asp-controller="Proveedores" asp-action="Create">
+            <a class="btn btn-success btn-sm" asp-controller="Proveedor" asp-action="Create">
                 <i class="bi bi-plus-circle"></i>&nbsp;Nuevo Proveedor
             </a>
         </div>
@@ -58,29 +58,23 @@
                                     <a class="btn btn-warning btn-sm me-1" asp-controller="Proveedor" asp-action="Edit" asp-route-id="@proveedor.ProveedorId" title="Editar">
                                         <i class="bi bi-pencil-square"></i>
                                     </a>
-                                    <a class="btn btn-danger btn-sm" asp-controller="Categoria" asp-action="Delete" asp-route-id="@proveedor.ProveedorId" title="Eliminar">
+                                    <a class="btn btn-danger btn-sm" asp-controller="Proveedor" asp-action="Delete" asp-route-id="@proveedor.ProveedorId" title="Eliminar">
                                         <i class="bi bi-trash"></i>
                                     </a>
                                 </td>
-
-                                <!-- Datos -->
                                 <td class="text-center">@proveedor.ProveedorId</td>
                                 <td>@proveedor.Nombre</td>
-                                <td class="text-center">
-                                    @if (proveedor.Estado)
-                                    {
-                                        <span class="badge bg-success">Activo</span>
-                                    }
-                                    else
-                                    {
-                                        <span class="badge bg-danger">Inactivo</span>
-                                    }
-                                </td>
+                                <td>@proveedor.Empresa</td>
+                                <td>@proveedor.Producto</td>
+                                <td>@proveedor.Ccantidad</td>
+
+                               
                             </tr>
                         }
                     </tbody>
                 </table>
             </div>
+        
 
             <!-- Paginación -->
             <div class="d-flex justify-content-between align-items-center mt-3">
