@@ -1,4 +1,5 @@
 ﻿
+using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore;
 using SisNikosPizza.Domain.Models;
 using System.Collections.Generic;
@@ -8,7 +9,7 @@ using System.Reflection.Emit;
 
 namespace SisNikosPizza.Infrastructure.Context;
 
-public class SisNikosPizzaBbContext : DbContext
+public class SisNikosPizzaBbContext : IdentityDbContext
 {
     public SisNikosPizzaBbContext(DbContextOptions<SisNikosPizzaBbContext> options) : base(options)
     { }
