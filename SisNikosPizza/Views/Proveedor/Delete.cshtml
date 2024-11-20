@@ -24,6 +24,33 @@
                                 <span asp-validation-for="Nombre" class="text-danger"></span>
                             </div>
                         </div>
+                        <div class="form-group row mb-2">
+                            <div class="col-12 col-md-2 col-form-label text-md-end">
+                                <label>Producto</label>
+                            </div>
+                            <div class="col-12 col-md-9">
+                                <input type="text" asp-for="Producto" class="form-control" placeholder="Nombre del producto" disabled />
+                                <span asp-validation-for="Producto" class="text-danger"></span>
+                            </div>
+                        </div>
+                        <div class="form-group row mb-2">
+                            <div class="col-12 col-md-2 col-form-label text-md-end">
+                                <label>Cantidad</label>
+                            </div>
+                            <div class="col-12 col-md-9">
+                                <input type="text" asp-for="Ccantidad" class="form-control" placeholder="Colocar la cantidad" disabled />
+                                <span asp-validation-for="Ccantidad" class="text-danger"></span>
+                            </div>
+                        </div>
+                        <div class="form-group row mb-2">
+                            <div class="col-12 col-md-2 col-form-label text-md-end">
+                                <label>Empresa</label>
+                            </div>
+                            <div class="col-12 col-md-9">
+                                <input type="text" asp-for="Empresa" class="form-control" placeholder="Nombre de la Empresa proveedora" disabled />
+                                <span asp-validation-for="Empresa" class="text-danger"></span>
+                            </div>
+                        </div>
                         <div>
                             <button type="submit" class="btn btn-danger">Eliminar</button>
                             <a asp-controller="Proveedor" asp-action="Index" class="btn btn-primary">Cancelar</a>
