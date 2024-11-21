@@ -10,6 +10,7 @@ using System.Text;
 using System.Text.Encodings.Web;
 using System.Threading;
 using System.Threading.Tasks;
+using HotelElCielo.Domain.Models;
 using Microsoft.AspNetCore.Authentication;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
@@ -18,6 +19,7 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
 using Microsoft.AspNetCore.WebUtilities;
 using Microsoft.Extensions.Logging;
+using SisNikosPizza.Utilidades;
 
 namespace SisNikosPizza.Areas.Identity.Pages.Account
 {
@@ -112,7 +114,13 @@ namespace SisNikosPizza.Areas.Identity.Pages.Account
             ExternalLogins = (await _signInManager.GetExternalAuthenticationSchemesAsync()).ToList();
             if (ModelState.IsValid)
             {
-                var user = CreateUser();
+                var user = new ApplicationUser
+                {
+                    Email = Input.Email,
+                    UserName = Input.Email,
+                    Nombre = Input.Email,
+                };
+
 
                 await _userStore.SetUserNameAsync(user, Input.Email, CancellationToken.None);
                 await _emailStore.SetEmailAsync(user, Input.Email, CancellationToken.None);
@@ -120,19 +128,21 @@ namespace SisNikosPizza.Areas.Identity.Pages.Account
 
                 if (result.Succeeded)
                 {
+                    await _userManager.AddToRoleAsync(user, VCG.Role_Employee);
+
                     _logger.LogInformation("User created a new account with password.");
 
                     var userId = await _userManager.GetUserIdAsync(user);
-                    var code = await _userManager.GenerateEmailConfirmationTokenAsync(user);
-                    code = WebEncoders.Base64UrlEncode(Encoding.UTF8.GetBytes(code));
-                    var callbackUrl = Url.Page(
-                        "/Account/ConfirmEmail",
-                        pageHandler: null,
-                        values: new { area = "Identity", userId = userId, code = code, returnUrl = returnUrl },
-                        protocol: Request.Scheme);
+                    //var code = await _userManager.GenerateEmailConfirmationTokenAsync(user);
+                    //code = WebEncoders.Base64UrlEncode(Encoding.UTF8.GetBytes(code));
+                    //var callbackUrl = Url.Page(
+                    //    "/Account/ConfirmEmail",
+                    //    pageHandler: null,
+                    //    values: new { area = "Identity", userId = userId, code = code, returnUrl = returnUrl },
+                    //    protocol: Request.Scheme);
 
-                    await _emailSender.SendEmailAsync(Input.Email, "Confirm your email",
-                        $"Please confirm your account by <a href='{HtmlEncoder.Default.Encode(callbackUrl)}'>clicking here</a>.");
+                    //await _emailSender.SendEmailAsync(Input.Email, "Confirm your email",
+                    //    $"Please confirm your account by <a href='{HtmlEncoder.Default.Encode(callbackUrl)}'>clicking here</a>.");
 
                     if (_userManager.Options.SignIn.RequireConfirmedAccount)
                     {

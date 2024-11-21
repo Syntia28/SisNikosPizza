@@ -4,12 +4,19 @@ using SisNikosPizza.Infrastructure.Context;
 using SisNikosPizza.Repository.Implements;
 using SisNikosPizza.Repository.Interfaces;
 using Microsoft.AspNetCore.Identity;
+using Microsoft.AspNetCore.Authorization;
+using SisNikosPizza;
 
 var builder = WebApplication.CreateBuilder(args);
 var conexion = builder.Configuration.GetConnectionString("ConnectionSQLServer");
 builder.Services.AddDbContext<SisNikosPizzaBbContext>(options => options.UseSqlServer(conexion));
 
-builder.Services.AddDefaultIdentity<IdentityUser>(options => options.SignIn.RequireConfirmedAccount = true).AddEntityFrameworkStores<SisNikosPizzaBbContext>();
+// Configuraci�n de Identity con roles
+builder.Services.AddIdentity<IdentityUser, IdentityRole>(options => options.SignIn.RequireConfirmedAccount = false)
+    .AddDefaultUI()
+    .AddEntityFrameworkStores<SisNikosPizzaBbContext>();
+
+
 // Add services to the container.
 builder.Services.AddControllersWithViews();
 
@@ -18,10 +25,32 @@ builder.Services.AddScoped<IUniwork, UnitWork>();
 builder.Services.AddScoped<ICategoriaRepository, CategoriaRepository>();
 builder.Services.AddScoped<IProveedorRepository, ProveedorRepository>();
 
-//builder.Services.AddRazorPages();
+builder.Services.AddRazorPages();
+
+//builder.Services.AddAuthorization(options =>
+//{
+//    options.FallbackPolicy = new AuthorizationPolicyBuilder()
+//        .RequireAuthenticatedUser()
+//        .Build();
+//});
 
 
 var app = builder.Build();
+
+
+using (var scope = app.Services.CreateScope())
+{
+    var services = scope.ServiceProvider;
+    var context = services.GetRequiredService<SisNikosPizzaBbContext>();
+    context.Database.Migrate();
+    // requires using Microsoft.Extensions.Configuration;
+    // Set password with the Secret Manager tool.
+    // dotnet user-secrets set SeedUserPW <pw>
+
+    var testUserPw = builder.Configuration.GetValue<string>("SeedUserPW");
+
+    await SeedData.Initialize(services, testUserPw);
+}
 
 // Configure the HTTP request pipeline.
 if (!app.Environment.IsDevelopment())
