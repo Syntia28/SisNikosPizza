@@ -20,3 +20,30 @@ html {
 body {
   margin-bottom: 60px;
 }
+.bg-dark {
+    background-color: #121212 !important;
+}
+
+.bg-body {
+    background-color: #1c1c1c !important;
+    border-left: 1px solid #444;
+}
+
+.text-white {
+    color: #fff !important;
+}
+
+.bg-image {
+    position: relative;
+}
+
+.overlay {
+    background: rgba(0, 0, 0, 0.6);
+    width: 100%;
+    height: 100%;
+    padding: 20px;
+}
+
+.form-control {
+    border-radius: 0.25rem;
+}

@@ -4,27 +4,45 @@
     ViewData["Title"] = "Register";
 }
 
-<h1>@ViewData["Title"]</h1>
-<h2 id="external-login-title">Associate your @Model.ProviderDisplayName account.</h2>
-<hr />
-
-<p id="external-login-description" class="text-info">
-    You've successfully authenticated with <strong>@Model.ProviderDisplayName</strong>.
-    Please enter an email address for this site below and click the Register button to finish
-    logging in.
-</p>
-
-<div class="row">
-    <div class="col-md-4">
-        <form asp-page-handler="Confirmation" asp-route-returnUrl="@Model.ReturnUrl" method="post">
-            <div asp-validation-summary="ModelOnly" class="text-danger" role="alert"></div>
-            <div class="form-floating mb-3">
-                <input asp-for="Input.Email" class="form-control" autocomplete="email" placeholder="Please enter your email."/>
-                <label asp-for="Input.Email" class="form-label"></label>
-                <span asp-validation-for="Input.Email" class="text-danger"></span>
+<div class="container-fluid vh-100 d-flex align-items-center justify-content-center bg-dark">
+    <div class="row w-100">
+        <!-- Imagen a la izquierda -->
+        <div class="col-lg-6 col-md-6 d-none d-md-block p-0">
+            <div class="h-100 w-100 bg-image"
+                 style="background-image: url('https://via.placeholder.com/800x600'); background-size: cover; background-position: center;">
+                <div class="overlay d-flex align-items-end p-4 text-white">
+                    <div>
+                        <h3 class="fw-bold">La siguiente revolución digital.</h3>
+                        <p>La nueva etapa de la revolución digital se aproxima.</p>
+                    </div>
+                </div>
             </div>
-            <button type="submit" class="w-100 btn btn-lg btn-primary">Register</button>
-        </form>
+        </div>
+
+        <!-- Formulario de registro a la derecha -->
+        <div class="col-lg-6 col-md-6 p-5 bg-body text-white">
+            <div class="text-center">
+                <h1 class="mb-4">@ViewData["Title"]</h1>
+                <h2 id="external-login-title">Associate your @Model.ProviderDisplayName account.</h2>
+                <p id="external-login-description" class="text-info">
+                    You've successfully authenticated with <strong>@Model.ProviderDisplayName</strong>.
+                </p>
+            </div>
+
+            <form asp-page-handler="Confirmation" asp-route-returnUrl="@Model.ReturnUrl" method="post">
+                <div asp-validation-summary="ModelOnly" class="text-danger mb-3" role="alert"></div>
+
+                <!-- Correo electrónico -->
+                <div class="form-floating mb-3">
+                    <input asp-for="Input.Email" class="form-control text-white bg-dark border-light" autocomplete="email" placeholder="Por favor ingrese su correo " />
+                    <label asp-for="Input.Email">Please enter your email</label>
+                    <span asp-validation-for="Input.Email" class="text-danger"></span>
+                </div>
+
+                <!-- Botón de registro -->
+                <button type="submit" class="btn btn-primary btn-lg w-100 mt-4">Register</button>
+            </form>
+        </div>
     </div>
 </div>
 
