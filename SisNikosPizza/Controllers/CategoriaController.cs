@@ -1,4 +1,5 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Mvc;
 using SisNikosPizza.Domain.Models;
 using SisNikosPizza.Repository.Interfaces;
 using SisNikosPizza.Utilidades;
@@ -28,8 +29,11 @@ namespace SisNikosPizza.Controllers
             return View(Categorias);
         }
 
+
+       
         // Categories/Create
         [HttpGet]
+        [Authorize(Roles = VCG.Role_Admin)]
         public IActionResult Create()
         {
             return View();

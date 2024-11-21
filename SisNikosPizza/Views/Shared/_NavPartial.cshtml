@@ -1,4 +1,5 @@
 ﻿@using Microsoft.AspNetCore.Identity
+@using SisNikosPizza.Utilidades
 
 @inject SignInManager<IdentityUser> SignInManager
 @inject UserManager<IdentityUser> UserManager
@@ -10,36 +11,44 @@
             <div class="sb-sidenav-menu-heading">Core</div>
             <a class="nav-link" asp-controller="Home" asp-action="Index">
                 <div class="sb-nav-link-icon"><i class="fas fa-tachometer-alt"></i></div>
-                Panel de Control
+                Pizzas
             </a>
 
-            <div class="sb-sidenav-menu-heading">Gestión</div>
-            <a class="nav-link" asp-controller="Cliente" asp-action="Index">
-                <div class="sb-nav-link-icon"><i class="fas fa-user"></i></div>
-                Clientes
-            </a>
-            <a class="nav-link" asp-controller="Proveedor" asp-action="Index">
-                <div class="sb-nav-link-icon"><i class="fas fa-truck"></i></div>
-                Proveedores
-            </a>
-            <a class="nav-link" asp-controller="Producto" asp-action="Index">
-                <div class="sb-nav-link-icon"><i class="fas fa-box"></i></div>
-                Productos
-            </a>
-            <a class="nav-link" asp-controller="Categoria" asp-action="Index">
-                <div class="sb-nav-link-icon"><i class="fas fa-tags"></i></div>
-                Categorías
+            <a class="nav-link" asp-controller="Home" asp-action="Index">
+                <div class="sb-nav-link-icon"><i class="fas fa-tachometer-alt"></i></div>
+                Pedidos
             </a>
 
-            <div class="sb-sidenav-menu-heading">Addons</div>
-            <a class="nav-link" asp-controller="Charts" asp-action="Index">
-                <div class="sb-nav-link-icon"><i class="fas fa-chart-area"></i></div>
-                Gráficos
-            </a>
-            <a class="nav-link" asp-controller="Tables" asp-action="Index">
-                <div class="sb-nav-link-icon"><i class="fas fa-table"></i></div>
-                Tablas
-            </a>
+            @if (User.IsInRole(VCG.Role_Admin)) // Corrección: cierre de paréntesis agregado aquí
+            {
+                <div class="sb-sidenav-menu-heading">Gestión</div>
+                <a class="nav-link" asp-controller="Cliente" asp-action="Index">
+                    <div class="sb-nav-link-icon"><i class="fas fa-user"></i></div>
+                    Clientes
+                </a>
+                <a class="nav-link" asp-controller="Proveedor" asp-action="Index">
+                    <div class="sb-nav-link-icon"><i class="fas fa-truck"></i></div>
+                    Proveedores
+                </a>
+                <a class="nav-link" asp-controller="Producto" asp-action="Index">
+                    <div class="sb-nav-link-icon"><i class="fas fa-box"></i></div>
+                    Productos
+                </a>
+                <a class="nav-link" asp-controller="Categoria" asp-action="Index">
+                    <div class="sb-nav-link-icon"><i class="fas fa-tags"></i></div>
+                    Categorías
+                </a>
+
+                <div class="sb-sidenav-menu-heading">Addons</div>
+                <a class="nav-link" asp-controller="Charts" asp-action="Index">
+                    <div class="sb-nav-link-icon"><i class="fas fa-chart-area"></i></div>
+                    Gráficos
+                </a>
+                <a class="nav-link" asp-controller="Tables" asp-action="Index">
+                    <div class="sb-nav-link-icon"><i class="fas fa-table"></i></div>
+                    Tablas
+                </a>
+            }
         </div>
     }
     else
@@ -50,9 +59,6 @@
                 <div class="sb-nav-link-icon"><i class="fas fa-tachometer-alt"></i></div>
                 Pizzas
             </a>
-
-          
-          
         </div>
     }
 </ul>
