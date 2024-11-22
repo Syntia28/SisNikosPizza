@@ -51,8 +51,7 @@ namespace SisNikosPizza.Controllers
                     // create pedido
                     var pedido = new Pedido();
                     pedido.FechaPedido = DateTime.Now;
-                    pedido.ProductoId = product.Result.ProductoId;
-                    pedido.Cantidad = 1;
+                    
                     pedido.OwnerId = loggedInUser?.Id != null ? loggedInUser.Id : "";
 
                     //guardar pedido
@@ -63,7 +62,7 @@ namespace SisNikosPizza.Controllers
 
                 }
                 var baseUrl = $"{Request.Scheme}://{Request.Host}/images";
-            var Pedidos = await _unitWork.PedidoRepo.ObtenerPedidos(baseUrl);
+            var Pedidos = new List<Pedido>();
 
             var model = new PedidoVistaModel
             {
