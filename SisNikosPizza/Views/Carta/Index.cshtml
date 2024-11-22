@@ -21,7 +21,20 @@
                     <h5 class="card-title">@pizza.Nombre</h5>
                     <p class="card-text">@pizza.Descripcion</p>
                     <p class="card-text fw-bold">Precio: $@pizza.Precio</p>
-                    <button class="btn btn-primary w-100" onclick="location.href='@Url.Action(SignInManager.IsSignedIn(User) ? "New" : "Login", SignInManager.IsSignedIn(User) ? "Pedidos" : "Account", new { area = SignInManager.IsSignedIn(User) ? "" : "Identity", addProduct = pizza.ProductoId })'">Agregar al carrito</button>
+
+                    @if (SignInManager.IsSignedIn(User))  {
+                        <a class="btn btn-primary w-100" href="/Pedidos/new?addProduct=@pizza.ProductoId", addProduct = pizza.ProductoId })">
+                            Agregar al carrito
+                        </a>
+                    }else
+                    {
+                        <a class="btn btn-primary w-100" href="/Identity/Account/Login">
+                            Agregar al carrito
+                        </a>
+                    }
+
+                   
+
                 </div>
             </div>
         }

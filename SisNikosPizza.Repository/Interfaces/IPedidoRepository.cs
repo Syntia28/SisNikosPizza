@@ -7,9 +7,9 @@ using System.Threading.Tasks;
 
 namespace SisNikosPizza.Repository.Interfaces
 {
-    public  interface ICategoriaRepository : IRepositoryBase<Categoria>
+    public interface IPedidoRepository : IRepositoryBase<Pedido>
     {
-        void ActualizarCategoria(Categoria categoria);
-      
+        Task <List<Pedido>> ObtenerPedidos(String baseUrl);
+
     }
 }

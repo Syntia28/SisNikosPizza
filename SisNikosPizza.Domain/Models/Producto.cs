@@ -17,5 +17,7 @@ namespace SisNikosPizza.Domain.Models
         public  float Precio { get; set; }
         public string Stock { get; set; }
 
+        //por implementar 
+        //proveedor
     }
 }
