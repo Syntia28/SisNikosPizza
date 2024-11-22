@@ -10,6 +10,7 @@ namespace SisNikosPizza.Domain.Models
 {
     public class DetallePedido
     {
+        public int DetallePedidoId { get; set; }
         public int PedidoId { get; set; }
         public string OwnerId { get; set; }
         public int ProductoId { get; set; }

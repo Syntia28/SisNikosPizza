@@ -21,7 +21,7 @@ namespace SisNikosPizza.Domain.Models
         public IdentityUser Owner { get; set; }
         [NotMapped]
         public float PrecioTotal { get; set; }
-        [NotMapped]
+       
 
 
     }

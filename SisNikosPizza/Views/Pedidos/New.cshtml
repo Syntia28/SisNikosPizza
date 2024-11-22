@@ -33,7 +33,7 @@
             @foreach (var pedido in Model.Pedidos)
             {
                 <li>
-                    @pedido.Producto.Nombre
+                    
                     <div style="display: flex; align-items: center;">
                         <!-- Botón para Decrease -->
                         <form method="post" action="/Pedido/Decrease" style="margin-right: 10px;">
@@ -42,7 +42,7 @@
                         </form>
 
                         <!-- Cantidad -->
-                        <span>@pedido.Cantidad</span>
+                       
 
                         <!-- Botón para Increase -->
                         <form method="post" action="/Pedido/Increase" style="margin-left: 10px;">
