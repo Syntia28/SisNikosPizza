@@ -4,24 +4,100 @@
 @inject UserManager<IdentityUser> UserManager
 
 <ul class="navbar-nav">
-@if (SignInManager.IsSignedIn(User))
-{
-    <li class="nav-item">
-        <a id="manage" class="nav-link text-white" asp-area="Identity" asp-page="/Account/Manage/Index" title="Manage">Hello @UserManager.GetUserName(User)!</a>
-    </li>
-    <li class="nav-item">
-        <form id="logoutForm" class="form-inline" asp-area="Identity" asp-page="/Account/Logout" asp-route-returnUrl="@Url.Action("Index", "Home", new { area = "" })">
-            <button id="logout" type="submit" class="nav-link btn btn-link text-white border-0">Logout</button>
-        </form>
-    </li>
-}
-else
-{
-    <li class="nav-item">
-        <a class="nav-link text-white" id="register" asp-area="Identity" asp-page="/Account/Register">Registrar</a>
-    </li>
-    <li class="nav-item">
-        <a class="nav-link text-whtie" id="login" asp-area="Identity" asp-page="/Account/Login">Iniciar Sesion</a>
-    </li>
-}
+    @if (SignInManager.IsSignedIn(User))
+    {
+        <ul class="navbar-nav ms-auto ms-md-0 me-3 me-lg-4">
+            <li class="nav-item dropdown">
+                <a class="nav-link dropdown-toggle" id="navbarDropdown" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false"><i class="fas fa-user fa-fw"></i></a>
+                <ul class="dropdown-menu dropdown-menu-end" aria-labelledby="navbarDropdown">
+                    <li>
+                            <a id="manage" class="dropdown-item text-black me-2" asp-area="Identity" asp-page="/Account/Manage/Index" title="Manage">
+                              Perfil
+                            </a>
+                 </li>
+                    <li><hr class="dropdown-divider" /></li>
+                    <li>
+                            <form id="logoutForm" class="form-inline dropdown-item" asp-area="Identity" asp-page="/Account/Logout" asp-route-returnUrl="@Url.Action("Index", "Home", new { area = "" })">
+                                <button id="logout" type="submit" class="text-danger border-0">
+                                    Cerrar Sesión
+                                </button>
+                            </form>
+                  </li>
+                </ul>
+            </li>
+        </ul>
+
+        <li class="nav-item">
+           
+        </li>
+        <li class="nav-item">
+           
+        </li>
+    }
+    else
+    {
+        <li class="nav-item">
+            <a class="nav-link btn btn-success text-white me-2" id="register" asp-area="Identity" asp-page="/Account/Register">
+                Registrar
+            </a>
+        </li>
+        <li class="nav-item">
+            <a class="nav-link btn btn-outline-primary text-primary" id="login" asp-area="Identity" asp-page="/Account/Login">
+                Iniciar Sesión
+            </a>
+        </li>
+    }
 </ul>
+
+<style>
+    .btn {
+        padding: 10px 20px;
+        border-radius: 5px;
+        font-weight: bold;
+        transition: all 0.3s ease;
+    }
+
+    .btn-primary {
+        background-color: #007bff;
+        border: none;
+    }
+
+    .btn-primary:hover {
+        background-color: #0056b3;
+        color: white;
+    }
+
+    .btn-danger {
+        background-color: #dc3545;
+        border: none;
+    }
+
+    .btn-danger:hover {
+        background-color: #a71d2a;
+        color: white;
+    }
+
+    .btn-success {
+        background-color: #28a745;
+        border: none;
+    }
+
+    .btn-success:hover {
+        background-color: #218838;
+        color: white;
+    }
+
+    .btn-outline-primary {
+        border-color: #007bff;
+    }
+
+    .btn-outline-primary:hover {
+        background-color: #007bff;
+        color: white;
+    }
+
+    /* Separación entre botones */
+    .nav-item {
+        margin-right: 10px;
+    }
+</style>

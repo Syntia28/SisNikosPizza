@@ -1,0 +1,26 @@
+﻿@using Microsoft.AspNetCore.Identity
+
+@inject SignInManager<IdentityUser> SignInManager
+@inject UserManager<IdentityUser> UserManager
+
+<ul class="navbar-nav">
+    @if (SignInManager.IsSignedIn(User))
+    {
+        <div class="sb-sidenav-footer">
+
+            <div class="small">Conectado como:</div>
+          <div>
+              <span>
+                    @UserManager.GetUserName(User)!
+              </span>
+          </div>
+        </div>
+
+    }
+    else
+    {
+      <div>
+          All righst reserved by nikos pizza.
+      </div>
+    }
+</ul>

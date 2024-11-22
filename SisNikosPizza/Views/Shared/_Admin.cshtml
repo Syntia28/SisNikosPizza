@@ -1,7 +1,6 @@
 ﻿@*
     Layout principal para las vistas de administración.
 *@
-
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -15,10 +14,72 @@
     <link href="/css/styles.css" rel="stylesheet" />
     <script src="https://use.fontawesome.com/releases/v6.3.0/js/all.js" crossorigin="anonymous"></script>
     @RenderSection("Styles", required: false)
+    <style>
+        /* Estilo personalizado */
+        body {
+            background-color: #f9e79f; /* Color de fondo principal */
+        }
+
+        .navbar {
+            background-color: #f9e79f !important;
+            color: #333 !important;
+        }
+
+            .navbar a.navbar-brand {
+                color: #333 !important;
+                font-weight: bold;
+            }
+
+                .navbar a.navbar-brand:hover {
+                    color: #555 !important;
+                }
+
+        .sb-sidenav {
+            background-color: #f9e79f !important;
+            color: #333 !important;
+        }
+
+            .sb-sidenav a {
+                color: #333 !important;
+            }
+
+                .sb-sidenav a:hover {
+                    background-color: #f8c471;
+                    color: white !important;
+                }
+
+        .sb-sidenav-footer {
+            background-color: #f9e79f !important;
+            color: #333 !important;
+        }
+
+        footer {
+            background-color: #f9e79f !important;
+            color: #333 !important;
+        }
+
+            footer a {
+                color: #333 !important;
+                text-decoration: none;
+            }
+
+                footer a:hover {
+                    text-decoration: underline;
+                }
+
+        .btn-primary {
+            background-color: #f8c471 !important;
+            border: none;
+        }
+
+            .btn-primary:hover {
+                background-color: #f7b248 !important;
+            }
+    </style>
 </head>
 <body class="sb-nav-fixed">
     <!-- Top Navbar -->
-    <nav class="sb-topnav navbar navbar-expand navbar-dark bg-dark">
+    <nav class="sb-topnav navbar navbar-expand navbar-light">
         <a class="navbar-brand ps-3 d-flex align-items-center" href="@Url.Action("Index", "Home")">
             <img src="/Imagenes/Logo.jpeg" alt="Logo" style="width: 40px; height: 40px; margin-right: 10px;" />
             NIKOS PIZZA
@@ -30,17 +91,6 @@
                 <button class="btn btn-primary" id="btnNavbarSearch" type="button"><i class="fas fa-search"></i></button>
             </div>
         </form>
-        <ul class="navbar-nav ms-auto ms-md-0 me-3 me-lg-4">
-            <li class="nav-item dropdown">
-                <a class="nav-link dropdown-toggle" id="navbarDropdown" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false"><i class="fas fa-user fa-fw"></i></a>
-                <ul class="dropdown-menu dropdown-menu-end" aria-labelledby="navbarDropdown">
-                    <li><a class="dropdown-item" href="#">Perfil</a></li>
-                    <li><a class="dropdown-item" href="#">Configuración</a></li>
-                    <li><hr class="dropdown-divider" /></li>
-                    <li><a class="dropdown-item" href="#">Cerrar Sesión</a></li>
-                </ul>
-            </li>
-        </ul>
         <partial name="_LoginPartial" />
     </nav>
 
@@ -48,14 +98,11 @@
     <div id="layoutSidenav">
         <!-- Sidebar -->
         <div id="layoutSidenav_nav">
-            <nav class="sb-sidenav accordion sb-sidenav-dark" id="sidenavAccordion">
+            <nav class="sb-sidenav accordion" id="sidenavAccordion">
                 <div class="sb-sidenav-menu">
                     <partial name="_NavPartial" />
                 </div>
-                <div class="sb-sidenav-footer">
-                    <div class="small">Conectado como:</div>
-                    Usuario Administrador
-                </div>
+             <partial name="_AccountPartial" />
             </nav>
         </div>
 
@@ -66,7 +113,7 @@
                     @RenderBody()
                 </div>
             </main>
-            <footer class="py-4 bg-light mt-auto">
+            <footer class="py-4 mt-auto">
                 <div class="container-fluid px-4">
                     <div class="d-flex align-items-center justify-content-between small">
                         <div class="text-muted">&copy; Nikos Pizza 2023</div>

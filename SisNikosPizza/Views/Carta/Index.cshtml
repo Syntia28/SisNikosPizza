@@ -1,0 +1,29 @@
+﻿@model IEnumerable<SisNikosPizza.Domain.Models.Producto>
+@using Microsoft.AspNetCore.Identity
+
+@inject SignInManager<IdentityUser> SignInManager
+@inject UserManager<IdentityUser> UserManager
+
+@{
+    ViewData["Title"] = "Home Page";
+    Layout = "~/Views/Shared/_Admin.cshtml";
+}
+
+
+<div class="text-center">
+    <h1 class="display-4">Bienvenido a SisNikosPizza</h1>
+    <div>
+        @foreach (var pizza in Model)
+        {
+            <div class="card" style="width: 18rem; display: inline-block; margin: 10px;">
+                <img src="@pizza.ImagenUrl" class="card-img-top" alt="@pizza.Nombre">
+                <div class="card-body">
+                    <h5 class="card-title">@pizza.Nombre</h5>
+                    <p class="card-text">@pizza.Descripcion</p>
+                    <p class="card-text fw-bold">Precio: $@pizza.Precio</p>
+                    <button class="btn btn-primary w-100" onclick="location.href='@Url.Action(SignInManager.IsSignedIn(User) ? "New" : "Login", SignInManager.IsSignedIn(User) ? "Pedidos" : "Account", new { area = SignInManager.IsSignedIn(User) ? "" : "Identity", addProduct = pizza.ProductoId })'">Agregar al carrito</button>
+                </div>
+            </div>
+        }
+    </div>
+</div>
