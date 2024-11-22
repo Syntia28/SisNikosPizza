@@ -3,6 +3,7 @@ using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using SisNikosPizza.Infrastructure.Context;
 
@@ -11,9 +12,11 @@ using SisNikosPizza.Infrastructure.Context;
 namespace SisNikosPizza.Infraestructure.Migrations
 {
     [DbContext(typeof(SisNikosPizzaBbContext))]
-    partial class SisNikosPizzaBbContextModelSnapshot : ModelSnapshot
+    [Migration("20241122053615_fixedowneridrelation")]
+    partial class fixedowneridrelation
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -266,9 +269,27 @@ namespace SisNikosPizza.Infraestructure.Migrations
                     b.Property<DateTime>("FechaPedido")
                         .HasColumnType("datetime2");
 
-                    b.Property<string>("OwnerId")
+                    b.Property<string>("ImagenUrl")
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("NombreProducto")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("NombreUsuario")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("OwnerId")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(450)");
+
+                    b.Property<float>("PrecioTotal")
+                        .HasColumnType("real");
+
+                    b.Property<float>("PrecioUnitario")
+                        .HasColumnType("real");
 
                     b.Property<int>("ProductoId")
                         .HasColumnType("int");
@@ -277,6 +298,8 @@ namespace SisNikosPizza.Infraestructure.Migrations
                         .HasColumnType("datetime2");
 
                     b.HasKey("PedidoId");
+
+                    b.HasIndex("OwnerId");
 
                     b.ToTable("pedido");
                 });
@@ -416,6 +439,17 @@ namespace SisNikosPizza.Infraestructure.Migrations
                         .HasForeignKey("UserId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
+                });
+
+            modelBuilder.Entity("SisNikosPizza.Domain.Models.Pedido", b =>
+                {
+                    b.HasOne("Microsoft.AspNetCore.Identity.IdentityUser", "Owner")
+                        .WithMany()
+                        .HasForeignKey("OwnerId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("Owner");
                 });
 
             modelBuilder.Entity("SisNikosPizza.Domain.Models.Producto", b =>
