@@ -4,22 +4,242 @@
     Layout = "~/Views/Shared/_Admin.cshtml";
 }
 
-
-<div class="text-center">
-    <h1 class="display-4">Bienvenido a SisNikosPizza</h1>
-    <p class="lead">La mejor pizza de la ciudad</p>
-    <div>
-        @foreach (var pizza in Model)
-       {
-           <div class="card" style="width: 18rem; display: inline-block; margin: 10px;">
-               <img src="@pizza.ImagenUrl" class="card-img-top" alt="@pizza.Nombre">
-               <div class="card-body">
-                   <h5 class="card-title">@pizza.Nombre</h5>
-                   <p class="card-text">@pizza.Descripcion</p>
-                   <p class="card-text fw-bold">Precio: $@pizza.Precio</p>
-                   <button class="btn btn-primary w-100" onclick="">Agregar al carrito</button>
-               </div>
+<div class="wrapper">
+    <div class="welcome">
+        <h1 class="welcome-title">¡Bienvenido a Nikos Pizza!</h1>
+        <p class="welcome-subtitle">Descubre las mejores pizzas y disfruta de una experiencia única.</p>
+    </div>
+    <div class="container">
+        <div class="card card-1">
+            <div class="card_content">
+                <h1 class="name">DULCE TENTACIÓN</h1>
+                <h4 class="group">Las más vendidas</h4>
             </div>
-       }
+        </div>
+
+        <div class="card card-2">
+            <div class="card_content">
+                <h1 class="name">PEPPERONI</h1>
+                <h4 class="group">Las más vendidas</h4>
+            </div>
+        </div>
+
+        <div class="card card-3">
+            <div class="card_content">
+                <h1 class="name">BISABOR</h1>
+                <h4 class="group">Las más vendidas</h4>
+            </div>
+        </div>
+
+        <div class="card card-4">
+            <div class="card_content">
+                <h1 class="name">FRUTAS</h1>
+                <h4 class="group">Las más vendidas</h4>
+            </div>
+        </div>
+
+        <div class="card card-5">
+            <div class="card_content">
+                <h1 class="name">HAWAIANA</h1>
+                <h4 class="group">Las más vendidas</h4>
+            </div>
+        </div>
     </div>
 </div>
+
+<style>
+    .welcome {
+        text-align: center;
+        margin-bottom: 40px;
+    }
+
+    .welcome-title {
+        font-size: 3rem;
+        font-weight: bold;
+        color: #d35400; /* Color llamativo */
+        text-shadow: 2px 2px 5px rgba(0, 0, 0, 0.3);
+    }
+
+    .welcome-subtitle {
+        font-size: 1.5rem;
+        color: #6c757d;
+        margin-top: 10px;
+    }
+</style>
+
+<
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="preconnect" href="https://z-p3-scontent.flim4-2.fna.fbcdn.net/v/t39.30808-6/264439390_119489787221083_793614291377048273_n.jpg?_nc_cat=101&ccb=1-7&_nc_sid=127cfc&_nc_eui2=AeEgqg69j-DH5QQsZbH2CUrfIj8ayJoO_i0iPxrImg7-LaF4-c2IeLJkAPmKbfFjtKIz0lyuQyYQBVsvKkiCyjP0&_nc_ohc=6QC4oa7329gQ7kNvgHrWie5&_nc_zt=23&_nc_ht=z-p3-scontent.flim4-2.fna&_nc_gid=AjF37tAo-y-Fg0952vQP3su&oh=00_AYDNLIuFigSrGWfJ29aPEnOBrb585oII1SoYGESH5v2hag&oe=6738588C">
+    <link rel="preconnect" href="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRllJ_yT5yyvXCC_5G1XXAo4WFY0OSPqL6-EQ&s" crossorigin>
+    <link href="https://z-p3-scontent.flim4-3.fna.fbcdn.net/v/t39.30808-6/357008573_274737951738302_3384724398961171597_n.jpg?_nc_cat=108&ccb=1-7&_nc_sid=833d8c&_nc_eui2=AeHPjsKenhEL-LYV4WZZkLPqDIq52Prj1ocMirnY-uPWh5S844qP7gopasnNa2-7uGkswQNWnXR8h9GrjAqQRmal&_nc_ohc=KKopNxEaL2QQ7kNvgFK4Adv&_nc_zt=23&_nc_ht=z-p3-scontent.flim4-3.fna&_nc_gid=AY2Ewi69bo0y_RBMgJR84ia&oh=00_AYD_KGsC0DutvmJRdOts1hpqEyq0_J1URL0-j4lcDM9qQg&oe=67386546" rel="stylesheet">
+    <title>@ViewData["Title"]</title>
+    <style>
+        * {
+            padding: 0;
+            margin: 0;
+        }
+
+        .oswald {
+            font-family: "Oswald", sans-serif;
+            font-optical-sizing: auto;
+            font-weight: 400;
+            font-style: normal;
+        }
+
+        body {
+            background-color: #f9e79f;
+        }
+
+        .wrapper {
+            width: 100%;
+            height: 100vh;
+            display: grid;
+            place-content: center;
+        }
+
+        .container {
+            position: relative;
+            width: 600px;
+            height: 300px;
+            display: grid;
+            grid-template-columns: 1fr 1fr 1fr 1fr 1fr;
+            gap: 10px;
+            transition: all .3s ease-in-out;
+        }
+
+                 position: relative;
+                display: flex;
+            align-items: center;
+            justify-content: center;
+            border-radius: 15px;
+            cursor: pointer;
+            transition: transform 0.3s ease, filter 0.3s ease;
+        }
+
+        .card-1 {
+            background: url(https://z-p3-scontent.flim4-2.fna.fbcdn.net/v/t39.30808-6/264439390_119489787221083_793614291377048273_n.jpg?_nc_cat=101&ccb=1-7&_nc_sid=127cfc&_nc_eui2=AeEgqg69j-DH5QQsZbH2CUrfIj8ayJoO_i0iPxrImg7-LaF4-c2IeLJkAPmKbfFjtKIz0lyuQyYQBVsvKkiCyjP0&_nc_ohc=6QC4oa7329gQ7kNvgHrWie5&_nc_zt=23&_nc_ht=z-p3-scontent.flim4-2.fna&_nc_gid=AjF37tAo-y-Fg0952vQP3su&oh=00_AYDNLIuFigSrGWfJ29aPEnOBrb585oII1SoYGESH5v2hag&oe=6738588C) center center no-repeat;
+            background-size: cover;
+            filter: grayscale(1);
+            transition: all .3s ease-in-out;
+        }
+
+        .card-2 {
+            background: url(https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRllJ_yT5yyvXCC_5G1XXAo4WFY0OSPqL6-EQ&s) center center no-repeat;
+            background-size: cover;
+            filter: grayscale(1);
+            transition: all .3s ease-in-out;
+        }
+
+        .card-3 {
+            background: url(https://z-p3-scontent.flim4-3.fna.fbcdn.net/v/t39.30808-6/357008573_274737951738302_3384724398961171597_n.jpg?_nc_cat=108&ccb=1-7&_nc_sid=833d8c&_nc_eui2=AeHPjsKenhEL-LYV4WZZkLPqDIq52Prj1ocMirnY-uPWh5S844qP7gopasnNa2-7uGkswQNWnXR8h9GrjAqQRmal&_nc_ohc=KKopNxEaL2QQ7kNvgFK4Adv&_nc_zt=23&_nc_ht=z-p3-scontent.flim4-3.fna&_nc_gid=AY2Ewi69bo0y_RBMgJR84ia&oh=00_AYD_KGsC0DutvmJRdOts1hpqEyq0_J1URL0-j4lcDM9qQg&oe=67386546) center center no-repeat;
+            background-size: cover;
+            filter: grayscale(1);
+            transition: all .3s ease-in-out;
+        }
+
+        .card-4 {
+            background: url(https://z-p3-scontent.flim4-3.fna.fbcdn.net/v/t39.30808-6/340995628_726106185970972_8606348689428200191_n.jpg?_nc_cat=103&ccb=1-7&_nc_sid=833d8c&_nc_eui2=AeEqFRxDqJFNJmixJ8szKfn89HQZtyiNYfP0dBm3KI1h8-rAzdrNUibwM4nsN4h-lNTaNAOP9QpYQi_xaZSIAU3m&_nc_ohc=xIQsaBsCXGcQ7kNvgEZEbUX&_nc_zt=23&_nc_ht=z-p3-scontent.flim4-3.fna&_nc_gid=ARWGO4jMzPO1KXfElv8vh-k&oh=00_AYB8dYnt7rFfiVPRY55Narfur2eCycXjWM3xs0PJS72ZFg&oe=67388986) center center no-repeat;
+            background-size: cover;
+            filter: grayscale(1);
+            transition: all .3s ease-in-out;
+        }
+
+        .card-5 {
+             background-size: cover;
+            filter: grayscale(1);
+            transition: all .3s ease-in-out;
+        }
+
+        .card:nth-child(odd) {
+            transform: translateY(10px);
+        }
+
+        .card:nth-child(even) {
+            transform: translateY(-10px);
+        }
+
+        .card::after {
+            content: "";
+            background-color: rgba(0, 0, 0, 0.6);
+            width: 100%;
+            height: 100%;
+            position: absolute;
+            top: 0;
+            left: 0;
+            transition: all .3s ease-in-out;
+        }
+
+        .card_content {
+            position: absolute;
+            top: 100%;
+            left: 0;
+            color: #fff;
+            transition: all .3s ease-in-out;
+        }
+
+        .name, .group {
+            font-family: "Oswald", sans-serif;
+            text-shadow: 2px 2px 6px rgba(0, 0, 0, 0.8);
+        }
+
+        /* Expansión de la tarjeta cuando se pasa el cursor */
+        .card-expanded {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            z-index: 9999;
+            transform: scale(1);
+            background-size: contain;
+        }
+
+            .card-expanded img {
+                width: 100%;
+                height: 100%;
+                object-fit: cover;
+            }
+
+        /* Animaciones para las tarjetas */
+        .card:hover {
+            transform: scale(1.05);
+            box-shadow: rgba(0, 0, 0, 0.7) 0px -50px 80px inset;
+            filter: grayscale(0);
+        }
+
+            .card:hover .card_content {
+                font-family: Arial;
+                position: absolute;
+                top: 150px;
+                left: 20px;
+                color: #ffffff;
+            }
+
+            .card:hover::after {
+                opacity: 0;
+            }
+
+        .container:has(.card-1:hover) {
+            grid-template-columns: 3fr 1fr 1fr 1fr 1fr;
+        }
+
+        .container:has(.card-2:hover) {
+            grid-template-columns: 1fr 3fr 1fr 1fr 1fr;
+        }
+
+        .container:has(.card-3:hover) {
+            grid-template-columns: 1fr 1fr 3fr 1fr 1fr;
+        }
+
+        .container:has(.card-4:hover) {
+            grid-template-columns: 1fr 1fr 1fr 3fr 1fr;
+        }
+
+        .container:has(.card-5:hover) {
+            grid-template-columns: 1fr 1fr 1fr 1fr 3fr;
+        }
+
+    </style>
+</head>
