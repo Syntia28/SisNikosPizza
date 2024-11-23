@@ -17,5 +17,21 @@ namespace SisNikosPizza.Utilidades
         public const string Role_Usuario = "Usuario";
         public const string Role_Manager = "Manager";
 
+        public static class EstadoPedido
+        {
+            public const string Pendiente = "Pendiente";
+            public const string Entregado = "Entregado";
+            public const string Anulado = "Anulado";
+            public const string Pagado = "Pagado";
+        }
+
+        public static class TipoPedido
+        {
+            public const string Delivery = "Delivery";
+            public const string Recoger = "Recoger Local";
+            public const string Mesa = "Mesa";
+        }
     }
+
+ 
 }

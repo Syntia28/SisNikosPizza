@@ -1,0 +1,189 @@
+﻿@using SisNikosPizza.Utilidades
+@model SisNikosPizza.Models.NuevoPedidoVista
+
+@{
+    ViewData["Title"] = "Nuevo Pedido";
+    Layout = "~/Views/Shared/_Admin.cshtml";
+}
+
+<div class="container-fluid py-4">
+    <div class="card shadow-sm">
+        <!-- Cabecera -->
+        <div class="card-header d-flex justify-content-between align-items-center">
+            <h2 class="mb-0">Nuevo Pedido</h2>
+        </div>
+
+        <!-- Filtros y Opciones -->
+        <div class="card-body">
+            <div class="d-flex justify-content-between mb-3">
+                <div>
+                    <label for="entries" class="form-label me-2">Mostrar</label>
+                    <select id="entries" class="form-select d-inline-block" style="width: auto;">
+                        <option>10</option>
+                        <option>25</option>
+                        <option>50</option>
+                        <option>100</option>
+                    </select>
+                    <span>registros por página</span>
+                </div>
+                <div>
+                    <input type="search" class="form-control" placeholder="Buscar" style="width: 300px;" />
+                </div>
+            </div>
+
+            <!-- Tabla -->
+            <div class="table-responsive">
+                <table class="table table-bordered table-striped align-middle">
+                    <thead class="table-light text-center">
+                        <tr>
+                            <th>Imagen</th>
+                            <th>Nombre</th>
+                            <th>Cantidad</th>
+                            <th>Precio unitario</th>
+                            <th>Total</th>
+                            <th>Opciones</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        @foreach (var carritoItem in Model.CarritoProductos)
+                        {
+                            <tr>
+                                <td>
+                                    <img src="@carritoItem.Producto.ImagenUrl" alt="@carritoItem.Producto.Nombre" style="width: 50px; height: 50px;" />
+                                </td>
+                                <td>
+                                    <span>
+                                        @carritoItem.Producto.Nombre
+                                    </span>
+                                </td>
+                                <td class="text-center">
+                                    @carritoItem.Cantidad
+                                </td>
+                                <td class="text-end">
+                                    $@carritoItem.Producto.Precio
+                                </td>
+                                <td class="text-end">
+                                    $@(carritoItem.Cantidad * carritoItem.Producto.Precio)
+                                </td>
+                                <td class="text-center">
+                                    <a class="btn btn
+                                    -danger btn-sm" asp-controller="Carrito" asp-action="EliminarProducto" asp-route-productoId="@carritoItem.ProductoId">
+                                        <i class="bi bi-trash"></i>
+                                        </a>
+                                        </td>
+                                        </tr>
+                                        }
+                                        </tbody>
+                                        </table>
+                                        <div>
+                    <form method="post" asp-controller="Pedidos" asp-action="Create">
+                        <div class="mb-3">
+                            <label for="TipoPedido" class="form-label">Tipo Pedido</label>
+                         
+                            <select id="tipoPedidoSelect" name="TipoPedido" asp-for="@Model.Pedido.TipoPedido" class="form-select">
+                                <option value="">Seleccion el tipo de pedido</option>
+                                <option value="@VCG.TipoPedido.Delivery" selected="@((ViewBag.TipoPedido == VCG.TipoPedido.Delivery) ? "selected" : null)">@VCG.TipoPedido.Delivery</option>
+                                <option value="@VCG.TipoPedido.Recoger" selected="@((ViewBag.TipoPedido == VCG.TipoPedido.Recoger) ? "selected" : null)">@VCG.TipoPedido.Recoger</option>
+                                <option value="@VCG.TipoPedido.Mesa" selected="@((ViewBag.TipoPedido == VCG.TipoPedido.Mesa) ? "selected" : null)">@VCG.TipoPedido.Mesa</option>
+                            </select>
+
+                            <script>
+                                document.getElementById('tipoPedidoSelect').addEventListener('change', function () {
+                                    var selectedValue = this.value;
+                                    window.location.href = '@Url.Action("Nuevo", "Pedidos")?TipoPedido=' + selectedValue;
+                                });
+                            </script>
+
+                            <span asp-validation-for="@Model.Pedido.TipoPedido" class="text-danger"></span>
+                        </div>
+
+                        @if (ViewBag.TipoPedido == VCG.TipoPedido.Delivery)
+                        {
+                            <div class="mb-3">
+                                <label for="Telefono" class="form-label">Telefono</label>
+                                <input type="text" id="Telefono" name="Telefono" asp-for="@Model.Pedido.Telefono" class="form-control" />
+                                <span asp-validation-for="@Model.Pedido.Telefono" class="text-danger"></span>
+                            </div>
+                            <div class="mb-3">
+                                <label for="Direccion" class="form-label">Dirección</label>
+                                <input type="text" id="Direccion" name="Direccion" asp-for="@Model.Pedido.Direccion" class="form-control" />
+                                <span asp-validation-for="@Model.Pedido.Direccion" class="text-danger"></span>
+                            </div>
+                            <div class="mb-3">
+                                <label for="Referencia" class="form-label">Referencia</label>
+                                <input type="text" id="Referencia" name="Referencia" asp-for="@Model.Pedido.Referencia" class="form-control" />
+                                <span asp-validation-for="@Model.Pedido.Referencia" class="text-danger"></span>
+                            </div>
+                        }
+                        @if (ViewBag.TipoPedido == VCG.TipoPedido.Recoger)
+                        {
+                            <div class="mb-3">
+                                <span>Nuestra Direccion</span>
+                                <p>Recoger en: Av. xd de la Pizzeria</p>
+                            </div>
+                            <div class="mb-3">
+                                <label for="FechaRecogo" class="form-label">Fecha Recogo</label>
+                                <input type="text" id="Telefono" name="Telefono" asp-for="@Model.Pedido.FechaRecogo" class="form-control" />
+                                <span asp-validation-for="@Model.Pedido.FechaRecogo" class="text-danger"></span>
+                            </div>
+                            
+                        }
+
+                        @if (ViewBag.TipoPedido == VCG.TipoPedido.Mesa)
+                        {
+                            
+                            <div class="mb-3">
+                                <label for="FechaRecogo" class="form-label">Escribe el numero o nombre de la mesa</label>
+                                <input type="text" id="Mesa" name="Mesa" asp-for="@Model.Pedido.Mesa" class="form-control" />
+                                <span asp-validation-for="@Model.Pedido.Mesa" class="text-danger"></span>
+                            </div>
+
+                        }
+
+                        <div class="d-flex justify-content-between align-items-center mt-3">
+                            <h3 class="mb-0">Total: $@Model.CarritoProductos.Sum(x => x.Cantidad * x.Producto.Precio)</h3>
+                            <button id="btnConfirmarPedido" class="btn btn-primary">Confirmar Pedido</button>
+                        </div>
+                                            </form>
+
+                                        </div>
+                                        </div>
+                                        </div>
+                                        </div>
+                                        </div>
+                                        <!-- Modal -->
+                                        <div class="modal fade
+                                        " id="modalConfirmarPedido" tabindex="-1" aria-labelledby="modalConfirmarPedidoLabel" aria-hidden="true">
+                                            <div class="modal-dialog">
+                                                <div class="modal-content">
+                                                    <div class="modal-header">
+                                                        <h5 class="modal-title" id="modalConfirmarPedidoLabel">Confirmar Pedido</h5>
+                                                        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                                                    </div>
+                                                    <div class="modal-body
+                                                    ">
+                                                        <p>¿Está seguro de confirmar el pedido?</p>
+                                                        </div>
+                                                        <div class="modal-footer">
+                                                            <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancelar</button>
+                                                            <button type="button" class="btn btn-primary">Confirmar</button>
+                                                        </div>
+                                                        </div>
+                                                        </div>
+                                                        </div>
+                                                        <!-- Scripts -->
+                                                        <script>
+                                                            var myModal = new bootstrap.Modal(document.getElementById('modalConfirmarPedido'));
+                                                            </script>
+                                                            <script>
+                                                                document.getElementById('btnConfirmarPedido').addEventListener('click', function () {
+                                                                    myModal.show();
+                                                                    });
+                                                                    </script>
+                                                                    <!-- Compare this snippet from SisNikosPizza/Views/Carrito/Index.cshtml: -->
+                                                                    <!--         <div class="card-body">
+                                                                        -->
+                                                                        <!--             <div class="d-flex justify-content-between mb-3">
+                                                                            -->
+
+

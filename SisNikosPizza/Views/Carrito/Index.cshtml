@@ -1,0 +1,102 @@
+﻿@model SisNikosPizza.Domain.Models.Carrito;
+
+
+@{
+    ViewData["Title"] = "Carrito de Compras";
+    Layout = "~/Views/Shared/_Admin.cshtml";
+}
+
+<div class="container-fluid py-4">
+    <div class="card shadow-sm">
+        <!-- Cabecera -->
+        <div class="card-header d-flex justify-content-between align-items-center">
+            <h2 class="mb-0">Carrito de Compras</h2>
+            
+                </div>
+                <!-- Filtros y Opciones -->
+                <div class="card-body">
+                    <div class="d-flex justify-content-between mb-3">
+                        <div>
+                            <label for="entries" class="form-label me-2">Mostrar</label>
+                            <select id="entries" class="form-select d-inline-block" style="width: auto;">
+                                <option>10</option>
+                                <option>25</option>
+                                <option>50</option>
+                                <option>100</option>
+                            </select>
+                            <span>registros por página</span>
+                        </div>
+                        <div>
+                            <input type="search" class="form-control" placeholder="Buscar" style="width: 300px;" />
+                        </div>
+                    </div>
+                    <!-- Tabla -->
+                    <div class="table-responsive">
+                        <table class="table table-bordered table-striped align-middle">
+                            <thead class="table-light text-center">
+                                <tr>
+                                    <th>Imagen</th>
+                                    <th>Nombre</th>
+                            <th>Cantidad</th>
+                            <th>Precio unitario</th>
+                            <th>total</th>
+                                    <th>Opciones</th>
+                                </tr>
+                            </thead>
+                             <tbody>
+                                 @foreach (var carritoItem in Model.CarritoProductos)
+                                 {
+                                     <tr>
+                                         
+                                            
+                                    <td>
+                                        <img src="@carritoItem.Producto.ImagenUrl" alt="@carritoItem.Producto.Nombre" style="width: 50px; height: 50px;" />
+                                    </td>
+                                     <td>
+                                       
+                                         <span>
+                                             @carritoItem.Producto.Nombre
+                                         </span>
+                                     </td>
+                                <td>
+                                 
+                                    <span>
+                                        @carritoItem.Cantidad
+                                    </span>
+                                </td>
+                                <td>
+
+                                    <span>
+                                       S/. @carritoItem.Producto.Precio
+                                    </span>
+                                </td>
+                                <td>
+
+                                    <span>
+                                   
+                                          S/. @(carritoItem.Cantidad * carritoItem.Producto.Precio)
+                                      
+                                    </span>
+                                </td>
+                                         <!-- Opciones -->
+                                         <td class="text-center">
+                                             <a class="btn btn-info btn-sm me-1" asp-controller="Carrito" asp-action="Details" asp-route-id="@carritoItem.CarritoId" title="Ver">
+                                               +
+                                             </a>
+                                             <a class="btn btn-warning btn-sm me-1" asp-controller="Carrito" asp-action="Edit" asp-route-id="@carritoItem.CarritoId" title="Editar">
+                                               -
+                                             </a>
+                                    <a class="btn btn-warning btn-sm me-1" asp-controller="Carrito" asp-action="Edit" asp-route-id="@carritoItem.CarritoId" title="Editar">
+                                        eliminar
+                                    </a>
+                                          
+                                         </td>
+                                      
+                                      
+                                     </tr>
+                                 }
+                             </tbody>
+                        
+                        
+                        </table>
+                    </div>
