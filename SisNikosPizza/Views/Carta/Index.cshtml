@@ -23,9 +23,17 @@
                     <p class="card-text fw-bold">Precio: $@pizza.Precio</p>
 
                     @if (SignInManager.IsSignedIn(User))  {
-                        <a class="btn btn-primary w-100" href="/Pedidos/new?addProduct=@pizza.ProductoId", addProduct = pizza.ProductoId })">
+                        <a>
+                            <form action="/Carrito/AgregarProducto" method="post">
+                                <input type="hidden" name="ProductoId" value="@pizza.ProductoId" />
+                                <button type="submit" class="btn btn-primary w-100">
+                                    Agregar al carrito
+                                </button>
+                            </form>
                             Agregar al carrito
                         </a>
+                       
+
                     }else
                     {
                         <a class="btn btn-primary w-100" href="/Identity/Account/Login">
