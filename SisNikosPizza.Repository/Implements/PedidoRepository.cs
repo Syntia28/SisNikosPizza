@@ -35,6 +35,27 @@ namespace SisNikosPizza.Repository.Implements
                 .ThenInclude(pp => pp.Producto)
                 .ToListAsync();
         }
+        public async Task<Pedido> ObtenerPedidoDetallado(int pedidoId, string baseUrl)
+        {
+            var pedido = await _db.pedido
+                .Include(p => p.DetallePedidos)
+                .ThenInclude(pp => pp.Producto)
+                .Where(p => p.PedidoId == pedidoId)
+                .FirstOrDefaultAsync();
+
+            if (pedido != null)
+            {
+                foreach (var detalle in pedido.DetallePedidos)
+                {
+                    if (detalle.Producto != null && !string.IsNullOrEmpty(detalle.Producto.ImagenUrl))
+                    {
+                        detalle.Producto.ImagenUrl = $"{baseUrl}/{detalle.Producto.ImagenUrl}";
+                    }
+                }
+            }
+
+            return pedido;
+        }
     }
 
 }

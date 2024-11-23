@@ -12,5 +12,7 @@ namespace SisNikosPizza.Repository.Interfaces
    
         public Task<List<Pedido>> ObtenerPedidosDetallados(string ownerId);
         public Task<List<Pedido>> ObtenerPedidosDetalladosTodos();
+
+        public Task<Pedido> ObtenerPedidoDetallado(int pedidoId,string baseUrl);
     }
 }
