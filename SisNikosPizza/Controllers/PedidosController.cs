@@ -8,6 +8,7 @@ using SisNikosPizza.Domain.Models;
 using SisNikosPizza.Models;
 using SisNikosPizza.Repository.Interfaces;
 using SisNikosPizza.Utilidades;
+using static SisNikosPizza.Utilidades.VCG;
 
 namespace SisNikosPizza.Controllers
 {
@@ -87,7 +88,7 @@ namespace SisNikosPizza.Controllers
             // verificar que el carrito tenga productos
             if (!productos.Any())
             {
-                ModelState.AddModelError("", "El carrito está vacío.");
+                ModelState.AddModelError("CarroVacio", "El carrito está vacío.");
                 return View(carritoProductos);
             }
 
@@ -177,7 +178,29 @@ namespace SisNikosPizza.Controllers
             return RedirectToAction(nameof(Index));
         }
 
-      
+
+
+        [Authorize(Roles = VCG.Role_Admin)]
+        [HttpGet]
+        public async Task<ActionResult> Cobrar(int id)
+        {
+
+            string baseUrl = $"{Request.Scheme}://{Request.Host}/images";
+
+            //obtener el pedido de un usuario
+            Pedido pedido = await _unitWork.PedidoRepo.ObtenerPedidoDetallado(id, baseUrl);
+
+            if (pedido == null)
+            {
+                return NotFound();
+            }
+
+            CobrarPedidoModel cobrarPedidoModel = new CobrarPedidoModel()
+            {
+                Pedido = pedido
+            };
+            return View(cobrarPedidoModel);
+        }
 
       
         // GET: PedidodsController/Delete/5

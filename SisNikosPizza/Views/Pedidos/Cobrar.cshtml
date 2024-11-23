@@ -1,0 +1,108 @@
+﻿@using SisNikosPizza.Utilidades
+@model SisNikosPizza.Models.CobrarPedidoModel;
+
+@{
+    ViewData["Title"] = "Cobrar Pedido ";
+    Layout = "~/Views/Shared/_Admin.cshtml";
+}
+
+<div class="container-fluid py-4">
+    <div class="card shadow-sm">
+        <!-- Cabecera -->
+        <div class="card-header d-flex justify-content-between align-items-center">
+            <h2 class="mb-0">Cobrar Pedido</h2>
+        </div>
+
+        <!-- Filtros y Opciones -->
+        <div class="card-body">
+            <div class="d-flex justify-content-between mb-3">
+                <div>
+                    <label for="entries" class="form-label me-2">Mostrar</label>
+                    <select id="entries" class="form-select d-inline-block" style="width: auto;">
+                        <option>10</option>
+                        <option>25</option>
+                        <option>50</option>
+                        <option>100</option>
+                    </select>
+                    <span>registros por página</span>
+                </div>
+                <div>
+                    <input type="search" class="form-control" placeholder="Buscar" style="width: 300px;" />
+                </div>
+            </div>
+
+            <!-- Tabla -->
+            <div class="table-responsive">
+                <table class="table table-bordered table-striped align-middle">
+                    <thead class="table-light text-center">
+                        <tr>
+                            <th>Imagen</th>
+                            <th>Nombre</th>
+                            <th>Cantidad</th>
+                            <th>Precio unitario</th>
+                            <th>Total</th>
+                            <th>Opciones</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        @foreach (var pedidoDetalle in Model.Pedido.DetallePedidos)
+                        {
+                            <tr>
+                                <td>
+                                    <img src="@pedidoDetalle.Producto.ImagenUrl" alt="@pedidoDetalle.Producto.Nombre" style="width: 50px; height: 50px;" />
+                                </td>
+                                <td>
+                                    <span>
+                                        @pedidoDetalle.Producto.Nombre
+                                    </span>
+                                </td>
+                                <td class="text-center">
+                                    @pedidoDetalle.Cantidad
+                                </td>
+                                <td class="text-end">
+                                    $@pedidoDetalle.Producto.Precio
+                                </td>
+                                <td class="text-end">
+                                    $@(pedidoDetalle.Cantidad * pedidoDetalle.Producto.Precio)
+                                </td>
+                                <td class="text-center">
+                                    <a class="btn btn
+                                    -danger btn-sm" asp-controller="Carrito" asp-action="EliminarProducto" asp-route-productoId="@pedidoDetalle.ProductoId">
+                                        <i class="bi bi-trash"></i>
+                                    </a>
+                                </td>
+                            </tr>
+                        }
+                    </tbody>
+                </table>
+                <div>
+                    <form method="post" asp-controller="Ventas" asp-action="CrearVenta">
+                       
+                        <div>
+    <span><b>Tipo de Pedido: </b></span>
+    <span>@Model.Pedido.TipoPedido</span>
+</div>
+                        @if (Model.Pedido.TipoPedido == VCG.TipoPedido.Delivery)
+                        {
+                            <div class="mb-3">
+                                <label for="ComisionDelivery" class="form-label">Comision Delivery</label>
+                                <input type="text" id="ComisionDelivery" name="ComisionDelivery" asp-for="@Model.ComisionDelivery" class="form-control" />
+                                <span asp-validation-for="@Model.ComisionDelivery" class="text-danger"></span>
+                            </div>
+                          
+                        }
+                     
+                      
+                        <div class="d-flex justify-content-between align-items-center mt-3">
+                            <h3 class="mb-0">Total: $@Model.Pedido.DetallePedidos.Sum(x => x.Cantidad * x.Producto.Precio)</h3>
+
+                            <button type="submit" class="btn btn-success">Cobrar Pedido</button>
+                        </div>
+                    </form>
+
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+

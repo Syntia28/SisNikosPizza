@@ -76,7 +76,7 @@
                                         </tbody>
                                         </table>
                                         <div>
-                    <form method="post" asp-controller="Pedidos" asp-action="Create">
+                    <form method="post" asp-controller="Pedidos" asp-action="CrearPedido">
                         <div class="mb-3">
                             <label for="TipoPedido" class="form-label">Tipo Pedido</label>
                          
@@ -142,7 +142,8 @@
 
                         <div class="d-flex justify-content-between align-items-center mt-3">
                             <h3 class="mb-0">Total: $@Model.CarritoProductos.Sum(x => x.Cantidad * x.Producto.Precio)</h3>
-                            <button id="btnConfirmarPedido" class="btn btn-primary">Confirmar Pedido</button>
+                           
+                            <button type="submit" class="btn btn-primary">Realizar Pedido</button>
                         </div>
                                             </form>
 
@@ -151,39 +152,4 @@
                                         </div>
                                         </div>
                                         </div>
-                                        <!-- Modal -->
-                                        <div class="modal fade
-                                        " id="modalConfirmarPedido" tabindex="-1" aria-labelledby="modalConfirmarPedidoLabel" aria-hidden="true">
-                                            <div class="modal-dialog">
-                                                <div class="modal-content">
-                                                    <div class="modal-header">
-                                                        <h5 class="modal-title" id="modalConfirmarPedidoLabel">Confirmar Pedido</h5>
-                                                        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-                                                    </div>
-                                                    <div class="modal-body
-                                                    ">
-                                                        <p>¿Está seguro de confirmar el pedido?</p>
-                                                        </div>
-                                                        <div class="modal-footer">
-                                                            <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancelar</button>
-                                                            <button type="button" class="btn btn-primary">Confirmar</button>
-                                                        </div>
-                                                        </div>
-                                                        </div>
-                                                        </div>
-                                                        <!-- Scripts -->
-                                                        <script>
-                                                            var myModal = new bootstrap.Modal(document.getElementById('modalConfirmarPedido'));
-                                                            </script>
-                                                            <script>
-                                                                document.getElementById('btnConfirmarPedido').addEventListener('click', function () {
-                                                                    myModal.show();
-                                                                    });
-                                                                    </script>
-                                                                    <!-- Compare this snippet from SisNikosPizza/Views/Carrito/Index.cshtml: -->
-                                                                    <!--         <div class="card-body">
-                                                                        -->
-                                                                        <!--             <div class="d-flex justify-content-between mb-3">
-                                                                            -->
-
-
+                                       
