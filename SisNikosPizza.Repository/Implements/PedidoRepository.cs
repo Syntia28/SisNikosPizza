@@ -20,6 +20,21 @@ namespace SisNikosPizza.Repository.Implements
         {
             _db = db;
         }
-  }
+        public async Task<List<Pedido>> ObtenerPedidosDetallados(string ownerId)
+        {
+            return await _db.pedido
+                .Include(p => p.DetallePedidos)
+                .ThenInclude(pp => pp.Producto)
+                .Where(p => p.OwnerId == ownerId)
+                .ToListAsync();
+        }
+        public async Task<List<Pedido>> ObtenerPedidosDetalladosTodos()
+        {
+            return await _db.pedido
+                .Include(p => p.DetallePedidos)
+                .ThenInclude(pp => pp.Producto)
+                .ToListAsync();
+        }
+    }
 
 }

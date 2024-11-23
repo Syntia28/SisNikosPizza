@@ -19,6 +19,8 @@ public class SisNikosPizzaBbContext : IdentityDbContext
     public DbSet<Producto> producto { get; set; }
     public DbSet<Proveedor> proveedor { get; set; }
     public DbSet<Pedido> pedido { get; set; }
+    public DbSet<Carrito> carrito { get; set; }
+    public DbSet<CarritoProducto> carritoProductos { get; set; }
 
     protected override void OnModelCreating(ModelBuilder modelBuilder)
     {
@@ -35,6 +37,16 @@ public class SisNikosPizzaBbContext : IdentityDbContext
         //    .HasMaxLength(60)
         //    .IsRequired()
         //    .IsUnicode();
+
+        //relaciones carrito
+
+        
+
+        // Relación Carrito -> CarritoProducto
+        modelBuilder.Entity<Carrito>().HasMany(s => s.CarritoProductos);
+
+
+
 
         modelBuilder.ApplyConfigurationsFromAssembly(Assembly.GetExecutingAssembly());
     }
