@@ -1,4 +1,5 @@
-﻿using SisNikosPizza.Infrastructure.Context;
+﻿using Microsoft.Extensions.Logging;
+using SisNikosPizza.Infrastructure.Context;
 using SisNikosPizza.Repository.Interfaces;
 using System;
 using System.Collections.Generic;
@@ -16,13 +17,17 @@ namespace SisNikosPizza.Repository.Implements
         public IProductoRepository ProductoRepo { get; private set; }
         public IProveedorRepository ProveedorRepo { get; private set; }
         public IPedidoRepository PedidoRepo { get; private set; }
-        public UnitWork(SisNikosPizzaBbContext db)
+        public ICarritoRepository CarritoRepo { get; private set; }
+        public UnitWork(SisNikosPizzaBbContext db, 
+            ILogger<CarritoRepository> logger
+            )
         {
             _db = db;
             CategoriaRepo = new CategoriaRepository(_db);
             ProductoRepo = new ProductoRepository(_db);
             ProveedorRepo = new ProveedorRepository(_db);
             PedidoRepo = new PedidoRepository(_db);
+            CarritoRepo = new CarritoRepository(_db, logger);
 
         }
         public void Dispose()
@@ -48,6 +53,10 @@ namespace SisNikosPizza.Repository.Implements
             await _db.SaveChangesAsync();
         }
         public async Task GuardarPedido()
+        {
+            await _db.SaveChangesAsync();
+        }
+        public async Task GuardarCarrito()
         {
             await _db.SaveChangesAsync();
         }
