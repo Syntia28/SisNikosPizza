@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace SisNikosPizza.Domain.Models
 {
-    internal class Venta
+    public class Venta
     {
         public int VentaId { get; set; }
         public DateTime Fecha { get; set; }
