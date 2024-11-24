@@ -34,6 +34,10 @@ builder.Services.AddRazorPages();
 //        .Build();
 //});
 
+// validaciond de modelos nulos
+builder.Services.AddControllers(
+    options => options.SuppressImplicitRequiredAttributeForNonNullableReferenceTypes = true);
+
 
 var app = builder.Build();
 
