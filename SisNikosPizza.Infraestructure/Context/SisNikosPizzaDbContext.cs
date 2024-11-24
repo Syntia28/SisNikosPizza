@@ -20,6 +20,7 @@ public class SisNikosPizzaBbContext : IdentityDbContext
     public DbSet<Proveedor> proveedor { get; set; }
     public DbSet<Pedido> pedido { get; set; }
     public DbSet<Carrito> carrito { get; set; }
+    public DbSet<Venta> venta { get; set; }
     public DbSet<CarritoProducto> carritoProductos { get; set; }
 
     protected override void OnModelCreating(ModelBuilder modelBuilder)
