@@ -12,36 +12,46 @@
     <div class="container">
         <div class="card card-1">
             <div class="card_content">
-                <h1 class="name">DULCE TENTACIÓN</h1>
-                <h4 class="group">Las más vendidas</h4>
+                <h1 class="name" style="font-family: sans-serif;">DULCE-TENTACIÓN</h1>
+
+                <h4 class="group"><em>Las más vendidas</em></h4>
+
             </div>
         </div>
 
         <div class="card card-2">
             <div class="card_content">
-                <h1 class="name">PEPPERONI</h1>
-                <h4 class="group">Las más vendidas</h4>
+                <h1 class="name" style="font-family: sans-serif;">PEPERONI</h1>
+
+                <h4 class="group"><em>Las más vendidas</em></h4>
+
             </div>
         </div>
 
         <div class="card card-3">
             <div class="card_content">
-                <h1 class="name">BISABOR</h1>
-                <h4 class="group">Las más vendidas</h4>
+                <h1 class="name" style="font-family: sans-serif;">BI-SABOR</h1>
+
+                <h4 class="group"><em>Las más vendidas</em></h4>
+
             </div>
         </div>
 
         <div class="card card-4">
             <div class="card_content">
-                <h1 class="name">FRUTAS</h1>
-                <h4 class="group">Las más vendidas</h4>
+                <h1 class="name" style="font-family: sans-serif;">FRUTAS</h1>
+
+                <h4 class="group"><em>Las más vendidas</em></h4>
+
             </div>
         </div>
 
         <div class="card card-5">
             <div class="card_content">
-                <h1 class="name">HAWAIANA</h1>
-                <h4 class="group">Las más vendidas</h4>
+                <h1 class="name" style="font-family: sans-serif;">HAWAINA</h1>
+
+                <h4 class="group"><em>Las más vendidas</em></h4>
+
             </div>
         </div>
     </div>
@@ -101,16 +111,18 @@
 
         .container {
             position: relative;
-            width: 600px;
-            height: 300px;
+            width: 700px;
+            height: 400px;
             display: grid;
             grid-template-columns: 1fr 1fr 1fr 1fr 1fr;
             gap: 10px;
             transition: all .3s ease-in-out;
         }
 
-                 position: relative;
-                display: flex;
+        .card {
+            position: relative;
+            overflow: hidden;
+            display: flex;
             align-items: center;
             justify-content: center;
             border-radius: 15px;
@@ -147,7 +159,8 @@
         }
 
         .card-5 {
-             background-size: cover;
+            background: url(https://z-p3-scontent.flim4-2.fna.fbcdn.net/v/t39.30808-6/356417923_273130798565684_8584876856964621577_n.jpg?_nc_cat=111&ccb=1-7&_nc_sid=833d8c&_nc_eui2=AeGJ22ng52aJgaHv1iHU-6CMNASVK9UA6JE0BJUr1QDokSSeV-Ml3iIfoRmZ8DUq8cJnkUy_uE04II0Gyw9DN3ae&_nc_ohc=29zSyo2kK7oQ7kNvgH3fzlN&_nc_zt=23&_nc_ht=z-p3-scontent.flim4-2.fna&_nc_gid=A-ERAcLIlRJfxi05a-6uGBo&oh=00_AYDRsbl10ZTzFMlvz0vuETRAygL9UcZ7jJf6MokJ_hdUxA&oe=673877AD) center center no-repeat;
+            background-size: cover;
             filter: grayscale(1);
             transition: all .3s ease-in-out;
         }
@@ -173,16 +186,17 @@
 
         .card_content {
             position: absolute;
-            top: 100%;
+            top: 200%;
             left: 0;
             color: #fff;
             transition: all .3s ease-in-out;
         }
 
         .name, .group {
-            font-family: "Oswald", sans-serif;
+            font-family: "Roboto", sans-serif;
             text-shadow: 2px 2px 6px rgba(0, 0, 0, 0.8);
         }
+
 
         /* Expansión de la tarjeta cuando se pasa el cursor */
         .card-expanded {
@@ -210,7 +224,7 @@
         }
 
             .card:hover .card_content {
-                font-family: Arial;
+                font-family: sans-serif;
                 position: absolute;
                 top: 150px;
                 left: 20px;
@@ -220,6 +234,9 @@
             .card:hover::after {
                 opacity: 0;
             }
+            
+    
+
 
         .container:has(.card-1:hover) {
             grid-template-columns: 3fr 1fr 1fr 1fr 1fr;
@@ -240,6 +257,5 @@
         .container:has(.card-5:hover) {
             grid-template-columns: 1fr 1fr 1fr 1fr 3fr;
         }
-
     </style>
 </head>
