@@ -11,5 +11,6 @@ namespace SisNikosPizza.Repository.Interfaces
     public  interface IProductoRepository : IRepositoryBase<Producto>
     {
         void Actualizar(Producto producto);
+       
     }
 }

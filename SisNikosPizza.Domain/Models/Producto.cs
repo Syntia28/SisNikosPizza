@@ -13,6 +13,8 @@ namespace SisNikosPizza.Domain.Models
         public Categoria? categoria { get; set; }
         public string Nombre { get; set; }
         public string Descripcion {  get; set; }
+
+        //not required field
         public string? ImagenUrl { get; set; }
         public  float Precio { get; set; }
         public string Stock { get; set; }

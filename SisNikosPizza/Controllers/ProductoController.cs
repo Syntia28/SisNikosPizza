@@ -159,42 +159,96 @@ namespace SisNikosPizza.Controllers
         {
             //if (id <= 0)
             //    return NotFound();
-            //var category = await _context.Category.FindAsync(id);
+   
             var producto = await _unitWork.ProductoRepo.ObtenerAsync(id);
             if (producto is null)
                 return NotFound();
 
+
+            var categories = await _unitWork.CategoriaRepo.ObtenerTodosAsync();
+            IEnumerable<SelectListItem> categoriesList = categories.Select(c => new SelectListItem
+            {
+                Text = c.nombre,
+                Value = c.CategoriaId.ToString()
+            }).ToList();
+
+
+            // Si hay errores de validación, regresar a la vista
+            ViewBag.CategoriesList = categoriesList;
+
+
             return View(producto);
         }
 
-        // Categories/Edit
+        // producto/Edit
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Edit(Producto producto)
+        public async Task<IActionResult> Edit(Producto productoForm, IFormFile imageFile)
         {
-            if (producto is null) return NotFound();
 
-            if (ModelState.IsValid) // Si todos los datos enviados son correctos
+
+            if (ModelState.IsValid)
             {
-                //var categoryOnDb = await _context.Category.AsNoTracking()
-                //                .FirstOrDefaultAsync(c => c.CategoryId == category.CategoryId);
-                //category.CreatedAt = categoryOnDb.CreatedAt;
+                // cargar el producto existente de la base de datos
+                var productoDB = await _unitWork.ProductoRepo.ObtenerAsync(productoForm.ProductoId);
 
-                //category.UpdatedAt = DateTime.Now;
-                //_context.Category.Update(category);
-                //await _context.SaveChangesAsync();
-                _unitWork.ProductoRepo.Actualizar(producto);
+                if (productoDB == null) return NotFound();
+
+              
+                productoForm.UpdatedAt = DateTime.Now;
+
+                //actualizar propiedades del producto
+                productoDB.Nombre= productoForm.Nombre;
+                productoDB.Descripcion = productoForm.Descripcion;
+                productoDB.Descripcion = productoForm.Descripcion;
+                productoDB.CategoriaId = productoForm.CategoriaId;
+                productoDB.Precio = productoForm.Precio;
+                productoDB.Stock = productoForm.Stock;
+                productoDB.Estado = productoForm.Estado;
+
+                // Manejar la subida de imagen
+                if (imageFile != null && imageFile.Length > 0)
+                {
+                    string uploadsFolder = Path.Combine(_webHostEnvironment.WebRootPath, "images");
+                    string uniqueFileName = Guid.NewGuid().ToString() + "_" + Path.GetFileName(imageFile.FileName);
+                    string filePath = Path.Combine(uploadsFolder, uniqueFileName);
+
+                    // Crear el directorio si no existe
+                    Directory.CreateDirectory(uploadsFolder);
+
+                    using (var fileStream = new FileStream(filePath, FileMode.Create))
+                    {
+                        await imageFile.CopyToAsync(fileStream);
+                    }
+
+                    // Guardar solo el nombre del archivo en la base de datos
+                  
+                    productoDB.ImagenUrl = uniqueFileName;
+                }
+
+
+                // Actualizar los datos del producto en la base de datos
                 await _unitWork.GuardarProducto();
-                TempData[VCG.Satisfactorio] = "Producto actualizada correctamente.";
                 return RedirectToAction("Index");
             }
 
-            // En caso de errores se retorna a la vista
-            TempData[VCG.Errado] = "No se pudo actualizar el producto, intente de nuevo.";
-            return View(producto);
+
+            var categories = await _unitWork.CategoriaRepo.ObtenerTodosAsync();
+            IEnumerable<SelectListItem> categoriesList = categories.Select(c => new SelectListItem
+            {
+                Text = c.nombre,
+                Value = c.CategoriaId.ToString()
+            }).ToList();
+
+
+            // Si hay errores de validación, regresar a la vista
+            ViewBag.CategoriesList = categoriesList;
+
+
+            return View(productoForm);
         }
 
-        // Categories/Details/5
+        // producto/Details/5
         [HttpGet]
         public async Task<IActionResult> Details(int? id)
         {
