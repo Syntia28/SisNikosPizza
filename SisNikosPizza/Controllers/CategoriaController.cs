@@ -79,14 +79,11 @@ namespace SisNikosPizza.Controllers
         // Categories/Edit
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Edit(Categoria categorias)
+        public async Task<IActionResult> Edit(Categoria categoria)
         {
-            if (categorias is null) return NotFound();// Si todos los datos enviados son correctos
+            if (categoria is null) return NotFound();// Si todos los datos enviados son correctos
             {
-               
-               
-
-                _unitWork.CategoriaRepo.ActualizarCategoria(categorias);
+                _unitWork.CategoriaRepo.ActualizarCategoria(categoria);
                 await _unitWork.GuardarCategoria();
                 TempData[VCG.Satisfactorio] = "Categoría actualizada correctamente.";
                 return RedirectToAction("Index");

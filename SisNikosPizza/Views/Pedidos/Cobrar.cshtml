@@ -76,21 +76,13 @@
                     </tbody>
                 </table>
                 <div>
-                    <form method="post" asp-controller="Ventas" asp-action="CrearVenta">
+                    <form method="post" asp-controller="Venta" asp-action="CrearVenta" asp-route-id="@Model.Pedido.PedidoId">
                        
                         <div>
     <span><b>Tipo de Pedido: </b></span>
     <span>@Model.Pedido.TipoPedido</span>
 </div>
-                        @if (Model.Pedido.TipoPedido == VCG.TipoPedido.Delivery)
-                        {
-                            <div class="mb-3">
-                                <label for="ComisionDelivery" class="form-label">Comision Delivery</label>
-                                <input type="text" id="ComisionDelivery" name="ComisionDelivery" asp-for="@Model.ComisionDelivery" class="form-control" />
-                                <span asp-validation-for="@Model.ComisionDelivery" class="text-danger"></span>
-                            </div>
-                          
-                        }
+                       
                      
                       
                         <div class="d-flex justify-content-between align-items-center mt-3">

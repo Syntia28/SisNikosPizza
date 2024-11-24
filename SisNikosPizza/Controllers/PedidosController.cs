@@ -74,19 +74,12 @@ namespace SisNikosPizza.Controllers
         public async Task<ActionResult> CrearPedido(Pedido formPedido)
         {
             string baseUrl = $"{Request.Scheme}://{Request.Host}/images";
-            var carrito = await _unitWork.CarritoRepo.ObtenerCarritoDeUsuario(_userManager.GetUserId(User), baseUrl);
+            var carrito = await _unitWork.CarritoRepo.ObtenerCarritoDeUsuario(_userManager.GetUserId(User), "");
 
             var carritoProductos = carrito.CarritoProductos;
 
-            var productos = new List<Producto>();
-
-            foreach (var carritoProducto in carritoProductos)
-            {
-                productos.Add(carritoProducto.Producto);
-            }
-
             // verificar que el carrito tenga productos
-            if (!productos.Any())
+            if (!carritoProductos.Any())
             {
                 ModelState.AddModelError("CarroVacio", "El carrito está vacío.");
                 return View(carritoProductos);

@@ -1,26 +1,105 @@
-﻿using Microsoft.AspNetCore.Http;
+﻿using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Http;
+using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
+using SisNikosPizza.Domain.Models;
+using SisNikosPizza.Repository.Interfaces;
+using SisNikosPizza.Utilidades;
+using System.Data;
 
 namespace SisNikosPizza.Controllers
 {
     public class VentaController : Controller
     {
         // GET: VentaController
-        public ActionResult Index()
+        private readonly IUniwork _unitWork;
+        private readonly UserManager<IdentityUser> _userManager;
+
+        public VentaController(
+            IUniwork uniwork,
+            UserManager<IdentityUser> userManager
+            )
         {
-            return View();
+            _unitWork = uniwork;
+            _userManager = userManager;
+        }
+
+        [Authorize(Roles = VCG.Role_Admin)]
+        public async Task<ActionResult> Index()
+        {
+            
+            var ventas =await _unitWork.VentaRepo.ObtenerVentasDetallados();
+    
+            return View(ventas);
         }
 
         // GET: VentaController/Details/5
         public ActionResult Details(int id)
         {
-            return View();
+            string baseUrl = $"{Request.Scheme}://{Request.Host}/images";
+            var venta = _unitWork.VentaRepo.ObtenerVentaDetallado(id, baseUrl);
+
+            if (venta == null)
+            {
+                return NotFound();
+            }
+
+            return View(venta);
         }
 
-        // GET: VentaController/Create
-        public ActionResult Create()
+
+        [HttpPost]
+        [Authorize(Roles = VCG.Role_Admin)]
+        public async Task<ActionResult> CrearVenta(int id)
         {
-            return View();
+            //obtener el pedido.
+            var pedido = await _unitWork.PedidoRepo.ObtenerPedidoDetallado(id, "");
+
+            //verificar que exista el pedido
+            if (pedido==null)
+            {
+                return NotFound();
+            }
+
+
+
+
+            //verificar que existan productos en el pedido.
+
+            if (pedido.DetallePedidos.Count <=0)
+            {
+                return NotFound();//mas a futuro dejar que si el pedido esta vacio, entonces puedes agregar producto al cobrar le venta
+            }
+            //obtener propiedadesss de la venta
+            var venta = new Venta();
+            var detallesVentas = new List<DetalleVenta>();
+
+            foreach (var pedidoProducto in pedido.DetallePedidos)
+            {
+                var detalleVenta = new DetalleVenta()
+                {
+                    ProductoId = pedidoProducto.ProductoId,
+                    PrecioTotal = pedidoProducto.Cantidad * pedidoProducto.Producto.Precio,
+                    PrecioUnitario = pedidoProducto.Producto.Precio,
+                    Cantidad = pedidoProducto.Cantidad,
+                    VentaId = venta.VentaId,
+                    
+
+                };
+                detallesVentas.Add(detalleVenta);
+            }
+            
+            venta.Detalles = detallesVentas;
+
+
+            // guardar venta
+            await _unitWork.VentaRepo.AgregarAsync(venta);
+            await _unitWork.GuardarVenta();
+
+         
+            // redireccionar a index
+            return RedirectToAction(nameof(Index));
+
         }
 
         // POST: VentaController/Create
