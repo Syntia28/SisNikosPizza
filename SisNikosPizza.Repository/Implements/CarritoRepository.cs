@@ -85,6 +85,18 @@ namespace SisNikosPizza.Repository.Implements
             return carrito;
         }
 
+        public async Task<int> ObtenerTotalCarrito(string ownerId)
+        {
+            var carrito = await _db.carrito
+                .Include(c => c.CarritoProductos)
+                .FirstOrDefaultAsync(c => c.OwnerId == ownerId);
+
+            if (carrito == null)
+                return 0;
+
+            return carrito.CarritoProductos.Sum(cp => cp.Cantidad);
+        }
+
         public async Task VaciarCarrito(string ownerId)
         {
             var carrito = await _db.carrito
@@ -96,6 +108,67 @@ namespace SisNikosPizza.Repository.Implements
                 _db.carritoProductos.RemoveRange(carrito.CarritoProductos);
                 _db.carrito.Remove(carrito);
                 await _db.SaveChangesAsync();
+            }
+        }
+        public async Task EliminarProductoDeCarrito(string ownerId, int productoId)
+        {
+            var carrito = await _db.carrito
+                .Include(c => c.CarritoProductos)
+                .FirstOrDefaultAsync(c => c.OwnerId == ownerId);
+
+            if (carrito != null)
+            {
+                var carritoProducto = carrito.CarritoProductos.FirstOrDefault(cp => cp.ProductoId == productoId);
+
+                if (carritoProducto != null)
+                {
+                    _db.carritoProductos.Remove(carritoProducto);
+                    await _db.SaveChangesAsync();
+                }
+            }
+        }
+
+        public async Task IncrementarCantidadProducto(string ownerId, int productoId)
+        {
+            var carrito = await _db.carrito
+                .Include(c => c.CarritoProductos)
+                .FirstOrDefaultAsync(c => c.OwnerId == ownerId);
+
+            if (carrito != null)
+            {
+                var carritoProducto = carrito.CarritoProductos.FirstOrDefault(cp => cp.ProductoId == productoId);
+
+                if (carritoProducto != null)
+                {
+                    carritoProducto.Cantidad++;
+                    await _db.SaveChangesAsync();
+                }
+            }
+        }
+
+        public async Task DecrementarCantidadProducto(string ownerId, int productoId)
+        {
+            var carrito = await _db.carrito
+                .Include(c => c.CarritoProductos)
+                .FirstOrDefaultAsync(c => c.OwnerId == ownerId);
+
+            if (carrito != null)
+            {
+                var carritoProducto = carrito.CarritoProductos.FirstOrDefault(cp => cp.ProductoId == productoId);
+
+                if (carritoProducto != null)
+                {
+                    if (carritoProducto.Cantidad > 1)
+                    {
+                        carritoProducto.Cantidad--;
+                        await _db.SaveChangesAsync();
+                    }
+                    else
+                    {
+                        _db.carritoProductos.Remove(carritoProducto);
+                        await _db.SaveChangesAsync();
+                    }
+                }
             }
         }
     }

@@ -7,29 +7,14 @@
 }
 
 <div class="container-fluid py-4">
-    <div class="card shadow-sm">
+    <div class="shadow-sm">
         <!-- Cabecera -->
         <div class="card-header d-flex justify-content-between align-items-center">
             <h2 class="mb-0">Nuevo Pedido</h2>
         </div>
 
         <!-- Filtros y Opciones -->
-        <div class="card-body">
-            <div class="d-flex justify-content-between mb-3">
-                <div>
-                    <label for="entries" class="form-label me-2">Mostrar</label>
-                    <select id="entries" class="form-select d-inline-block" style="width: auto;">
-                        <option>10</option>
-                        <option>25</option>
-                        <option>50</option>
-                        <option>100</option>
-                    </select>
-                    <span>registros por página</span>
-                </div>
-                <div>
-                    <input type="search" class="form-control" placeholder="Buscar" style="width: 300px;" />
-                </div>
-            </div>
+        <div  style=" background-color: rgba(255, 255, 255, 0.8);">
 
             <!-- Tabla -->
             <div class="table-responsive">
@@ -41,7 +26,6 @@
                             <th>Cantidad</th>
                             <th>Precio unitario</th>
                             <th>Total</th>
-                            <th>Opciones</th>
                         </tr>
                     </thead>
                     <tbody>
@@ -65,12 +49,7 @@
                                 <td class="text-end">
                                     $@(carritoItem.Cantidad * carritoItem.Producto.Precio)
                                 </td>
-                                <td class="text-center">
-                                    <a class="btn btn
-                                    -danger btn-sm" asp-controller="Carrito" asp-action="EliminarProducto" asp-route-productoId="@carritoItem.ProductoId">
-                                        <i class="bi bi-trash"></i>
-                                        </a>
-                                        </td>
+                              
                                         </tr>
                                         }
                                         </tbody>
@@ -94,7 +73,7 @@
                                 });
                             </script>
 
-                            <span asp-validation-for="@Model.Pedido.TipoPedido" class="text-danger"></span>
+                            <span id="errorTipoPedido" class="text-danger">@ViewBag.ErrorTipoPedido</span>
                         </div>
 
                         @if (ViewBag.TipoPedido == VCG.TipoPedido.Delivery)
@@ -102,17 +81,17 @@
                             <div class="mb-3">
                                 <label for="Telefono" class="form-label">Telefono</label>
                                 <input type="text" id="Telefono" name="Telefono" asp-for="@Model.Pedido.Telefono" class="form-control" />
-                                <span asp-validation-for="@Model.Pedido.Telefono" class="text-danger"></span>
+                                <span class="text-danger">@ViewBag.ErrorTelefono</span>
                             </div>
                             <div class="mb-3">
                                 <label for="Direccion" class="form-label">Dirección</label>
                                 <input type="text" id="Direccion" name="Direccion" asp-for="@Model.Pedido.Direccion" class="form-control" />
-                                <span asp-validation-for="@Model.Pedido.Direccion" class="text-danger"></span>
+                                <span class="text-danger">@ViewBag.ErrorDireccion</span>
                             </div>
                             <div class="mb-3">
                                 <label for="Referencia" class="form-label">Referencia</label>
                                 <input type="text" id="Referencia" name="Referencia" asp-for="@Model.Pedido.Referencia" class="form-control" />
-                                <span asp-validation-for="@Model.Pedido.Referencia" class="text-danger"></span>
+                                <span class="text-danger">@ViewBag.ErrorReferencia</span>
                             </div>
                         }
                         @if (ViewBag.TipoPedido == VCG.TipoPedido.Recoger)
@@ -123,8 +102,8 @@
                             </div>
                             <div class="mb-3">
                                 <label for="FechaRecogo" class="form-label">Fecha Recogo</label>
-                                <input type="text" id="Telefono" name="Telefono" asp-for="@Model.Pedido.FechaRecogo" class="form-control" />
-                                <span asp-validation-for="@Model.Pedido.FechaRecogo" class="text-danger"></span>
+                                <input type="datetime-local" id="FechaRecogo" name="FechaRecogo" asp-for="@Model.Pedido.FechaRecogo" class="form-control" />
+                                <span class="text-danger">@ViewBag.ErrorFechaRecogo</span>
                             </div>
                             
                         }
@@ -135,11 +114,32 @@
                             <div class="mb-3">
                                 <label for="FechaRecogo" class="form-label">Escribe el numero o nombre de la mesa</label>
                                 <input type="text" id="Mesa" name="Mesa" asp-for="@Model.Pedido.Mesa" class="form-control" />
-                                <span asp-validation-for="@Model.Pedido.Mesa" class="text-danger"></span>
+                                <span class="text-danger">@ViewBag.ErrorMesa</span>
                             </div>
 
                         }
 
+                        <div>
+                            <span class="text-danger">@ViewBag.ErrorCarroVacio</span>
+                        </div>
+                        <div class="d-flex justify-content-end mt-4">
+                        <div class="text-end">
+                            <p class="mb-1">
+                                <strong>Subtotal:</strong>
+                                S/. @Math.Round(Model.CarritoProductos.Sum(item => item.Cantidad * item.Producto.Precio) * 0.82, 2)
+                            </p>
+                            <p class="mb-1">
+                                <strong>Impuestos (18%):</strong>
+                                S/. @Math.Round(Model.CarritoProductos.Sum(item => item.Cantidad * item.Producto.Precio) * 0.18, 2)
+                            </p>
+                            <p class="mb-1">
+                                <strong>Total:</strong>
+                                S/. @Model.CarritoProductos.Sum(item => item.Cantidad * item.Producto.Precio)
+                            </p>
+
+
+                        </div>
+                        </div>
                         <div class="d-flex justify-content-between align-items-center mt-3">
                             <h3 class="mb-0">Total: $@Model.CarritoProductos.Sum(x => x.Cantidad * x.Producto.Precio)</h3>
                            
@@ -152,4 +152,28 @@
                                         </div>
                                         </div>
                                         </div>
+
+                                        <script>
+    document.addEventListener("DOMContentLoaded", function () {
+        const form = document.querySelector("form");
+        const tipoPedido = document.querySelector("#tipoPedidoSelect");
+        const errorTipoPedido = document.querySelector("#errorTipoPedido");
+
+        form.addEventListener("submit", function (e) {
+            e.preventDefault();
+            alert("hola")
+            return;
+            // Limpiar mensajes de error previos
+            errorTipoPedido.textContent = "";
+
+            // Validar el campo tipoPedido
+            if (!tipoPedido.value) {
+                errorTipoPedido.textContent = "Por favor, selecciona un tipo de pedido.";
+                e.preventDefault(); // Detener el envío del formulario
+                return;
+            }
+        });
+    });
+
+                                        </script>
                                        

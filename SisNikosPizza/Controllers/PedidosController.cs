@@ -78,16 +78,18 @@ namespace SisNikosPizza.Controllers
 
             var carritoProductos = carrito.CarritoProductos;
 
-            // verificar que el carrito tenga productos
+            // Validar si el carrito está vacío
             if (!carritoProductos.Any())
             {
-                ModelState.AddModelError("CarroVacio", "El carrito está vacío.");
-                return View(carritoProductos);
+                TempData["ErrorCarroVacio"] = "El carrito está vacío.";
+                return RedirectToAction("Nuevo", new { TipoPedido = formPedido.TipoPedido });
             }
 
-            if (formPedido.TipoPedido.IsNullOrEmpty())
+            // Validar si el tipo de pedido es nulo o vacío
+            if (string.IsNullOrEmpty(formPedido.TipoPedido))
             {
-                ModelState.AddModelError("", "Tipo de pedido es requerido.");
+                TempData["ErrorTipoPedido"] = "Tipo de pedido es requerido.";
+                return RedirectToAction("Nuevo", new { TipoPedido = formPedido.TipoPedido });
             }
 
             // crear pedido verificando los campos y su tipo
@@ -101,21 +103,24 @@ namespace SisNikosPizza.Controllers
             };
             if  (formPedido.TipoPedido == VCG.TipoPedido.Delivery)
             {
-               
-                if(string.IsNullOrEmpty(formPedido.Telefono))
-                        {
-                    ModelState.AddModelError("", "Teléfono es requerido.");
-                    return View(carritoProductos);
+
+                if (string.IsNullOrEmpty(formPedido.Telefono))
+                {
+                    TempData["ErrorTelefono"] = "Teléfono es requerido.";
                 }
                 if (string.IsNullOrEmpty(formPedido.Direccion))
                 {
-                    ModelState.AddModelError("", "Dirección es requerida.");
-                    return View(carritoProductos);
+                    TempData["ErrorDireeccion"] = "Dirección es requerida.";
                 }
                 if (string.IsNullOrEmpty(formPedido.Referencia))
                 {
-                    ModelState.AddModelError("", "Referencia es requerida.");
-                    return View(carritoProductos);
+                    TempData["ErrorReferencia"] = "Referencia es requerida.";
+                }
+
+                // Si hay errores, redirigir a la vista "Nuevo"
+                if (TempData.Any(kvp => kvp.Key.StartsWith("Error")))
+                {
+                    return RedirectToAction("Nuevo", new { TipoPedido = formPedido.TipoPedido });
                 }
                 pedido.Telefono = formPedido.Telefono;
                 pedido.Direccion = formPedido.Direccion;
@@ -125,8 +130,8 @@ namespace SisNikosPizza.Controllers
             {
                 if (!formPedido.FechaRecogo.HasValue)
                 {
-                    ModelState.AddModelError("", "Fecha de recogo es requerida.");
-                    return View(carritoProductos);
+                    TempData["ErrorFechaRecogo"] = "Fecha de recogo es requerida.";
+                    return RedirectToAction("Nuevo", new { TipoPedido = formPedido.TipoPedido });
                 }
               
                 pedido.FechaRecogo = formPedido.FechaRecogo;
@@ -135,8 +140,8 @@ namespace SisNikosPizza.Controllers
             {
                 if (string.IsNullOrEmpty(formPedido.Mesa))
                 {
-                    ModelState.AddModelError("", "Mesa es requerida.");
-                    return View(carritoProductos);
+                    TempData["ErrorMesa"] = "Mesa es requerida.";
+                    return RedirectToAction("Nuevo", new { TipoPedido = formPedido.TipoPedido });
                 }
                 //requirido
                 pedido.Mesa = formPedido.Mesa;

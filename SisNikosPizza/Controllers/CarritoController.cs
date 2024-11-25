@@ -40,5 +40,38 @@ public async Task<IActionResult> AgregarProducto (Producto producto)
             //redirect to index
             return RedirectToAction("Index");
         }
+
+        [Authorize]
+        [HttpGet]
+        public async Task<IActionResult> ObtenerTotal()
+        {
+
+            int total = await _unitWork.CarritoRepo.ObtenerTotalCarrito(_userManager.GetUserId(User));   
+            return Json(total);
+        }
+       
+        [Authorize]
+        [HttpPost]
+        public async Task<IActionResult> EliminarProducto(Producto p)
+        {
+            await _unitWork.CarritoRepo.EliminarProductoDeCarrito(_userManager.GetUserId(User), p.ProductoId);
+            return RedirectToAction("Index");
+        }
+
+        [Authorize]
+        [HttpPost]
+        public async Task<IActionResult> IncrementarCantidad(Producto p)
+        {
+            await _unitWork.CarritoRepo.IncrementarCantidadProducto(_userManager.GetUserId(User), p.ProductoId);
+            return RedirectToAction("Index");
+        }
+
+        [Authorize]
+        [HttpPost]
+        public async Task<IActionResult> DecrementarCantidad(Producto p)
+        {
+            await _unitWork.CarritoRepo.DecrementarCantidadProducto(_userManager.GetUserId(User), p.ProductoId);
+            return RedirectToAction("Index");
+        }
     }
 }
