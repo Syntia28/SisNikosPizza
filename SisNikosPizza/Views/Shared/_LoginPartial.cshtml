@@ -6,6 +6,12 @@
 <ul class="navbar-nav">
     @if (SignInManager.IsSignedIn(User))
     {
+        <li class="nav-item">
+            <a class="nav-link btn border-1 border-warning text-white me-2" asp-controller="Carrito" asp-action="Index">
+                <span class="text-dark"> <i class="fas fa-shopping-cart"></i></span>
+                <span id="cart-total" class="badge bg-danger">0</span>
+            </a>
+        </li>
         <ul class="navbar-nav ms-auto ms-md-0 me-3 me-lg-4">
             <li class="nav-item dropdown">
                 <a class="nav-link dropdown-toggle" id="navbarDropdown" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false"><i class="fas fa-user fa-fw"></i></a>
@@ -101,3 +107,15 @@
         margin-right: 10px;
     }
 </style>
+
+<script>
+    // Lógica para cargar la cantidad total desde el servidor
+    document.addEventListener('DOMContentLoaded', function () {
+        fetch('/Carrito/ObtenerTotal')
+            .then(response => response.json())
+            .then(data => {
+                document.getElementById('cart-total').textContent = data;
+            })
+            .catch(error => console.error('Error al cargar la cantidad total:', error));
+    });
+</script>

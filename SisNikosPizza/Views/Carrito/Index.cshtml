@@ -1,108 +1,88 @@
 ﻿@model SisNikosPizza.Domain.Models.Carrito;
 
-
 @{
     ViewData["Title"] = "Carrito de Compras";
     Layout = "~/Views/Shared/_Admin.cshtml";
 }
 
 <div class="container-fluid py-4">
-    <div class="card shadow-sm">
-        <!-- Cabecera -->
-        <div class="card-header d-flex justify-content-between align-items-center">
-            <h2 class="mb-0">Carrito de Compras</h2>
-            
+    <!-- Título -->
+    <div class="mb-4">
+        <h2 class="text-left">Carrito de Compras</h2>
+    </div>
+
+    @if (Model.CarritoProductos == null || !Model.CarritoProductos.Any())
+    {
+        <!-- Mostrar mensaje si no hay productos -->
+        <div class="text-center">
+            <h4 class="mb-3">No hay productos en el carrito</h4>
+            <a href="/Carta" class="btn btn-primary">Ver Carta</a>
+        </div>
+    }
+    else
+    {
+        <!-- Lista de productos -->
+        <div class="row">
+            @foreach (var carritoItem in Model.CarritoProductos)
+            {
+                <div class="col-12 mb-3 p-3 border rounded d-flex align-items-center" style="background-color: rgba(255, 255, 255, 0.8);">
+                    <!-- Imagen -->
+                    <div class="me-3">
+                        <img src="@carritoItem.Producto.ImagenUrl" alt="@carritoItem.Producto.Nombre" style="width: 50px; height: 50px; object-fit: cover;" />
+                    </div>
+                    <!-- Detalles del producto -->
+                    <div class="flex-grow-1">
+                        <h5 class="mb-1">@carritoItem.Producto.Nombre</h5>
+                        <p class="mb-1">Cantidad: @carritoItem.Cantidad</p>
+                        <p class="mb-1">Precio Unitario: S/. @carritoItem.Producto.Precio</p>
+                        <p class="mb-1">Total: S/. @(carritoItem.Cantidad * carritoItem.Producto.Precio)</p>
+                    </div>
+                    <!-- Opciones -->
+                    <div class="d-flex align-items-center">
+                        <form asp-controller="Carrito" asp-action="IncrementarCantidad" class="me-2">
+                            <input type="hidden" name="ProductoId" value="@carritoItem.Producto.ProductoId" />
+                            <button type="submit" class="btn btn-info btn-sm">+</button>
+                        </form>
+                        <form asp-controller="Carrito" asp-action="DecrementarCantidad" method="post" class="me-2">
+                            <input type="hidden" name="ProductoId" value="@carritoItem.Producto.ProductoId" />
+                            <button type="submit" class="btn btn-warning btn-sm">-</button>
+                        </form>
+                        <form asp-controller="Carrito" asp-action="EliminarProducto" method="post">
+                            <input type="hidden" name="ProductoId" value="@carritoItem.Producto.ProductoId" />
+                            <button type="submit" class="btn btn-danger btn-sm">
+                                <i class="fas fa-trash"></i>
+                            </button>
+                        </form>
+                    </div>
                 </div>
-                <!-- Filtros y Opciones -->
-                <div class="card-body">
-                    <div class="d-flex justify-content-between mb-3">
-                        <div>
-                            <label for="entries" class="form-label me-2">Mostrar</label>
-                            <select id="entries" class="form-select d-inline-block" style="width: auto;">
-                                <option>10</option>
-                                <option>25</option>
-                                <option>50</option>
-                                <option>100</option>
-                            </select>
-                            <span>registros por página</span>
-                        </div>
-                        <div>
-                            <input type="search" class="form-control" placeholder="Buscar" style="width: 300px;" />
-                        </div>
-                    </div>
-                    <!-- Tabla -->
-                    <div class="table-responsive">
-                        <table class="table table-bordered table-striped align-middle">
-                            <thead class="table-light text-center">
-                                <tr>
-                                    <th>Imagen</th>
-                                    <th>Nombre</th>
-                            <th>Cantidad</th>
-                            <th>Precio unitario</th>
-                            <th>total</th>
-                                    <th>Opciones</th>
-                                </tr>
-                            </thead>
-                             <tbody>
-                                 @foreach (var carritoItem in Model.CarritoProductos)
-                                 {
-                                     <tr>
-                                         
-                                            
-                                    <td>
-                                        <img src="@carritoItem.Producto.ImagenUrl" alt="@carritoItem.Producto.Nombre" style="width: 50px; height: 50px;" />
-                                    </td>
-                                     <td>
-                                       
-                                         <span>
-                                             @carritoItem.Producto.Nombre
-                                         </span>
-                                     </td>
-                                <td>
-                                 
-                                    <span>
-                                        @carritoItem.Cantidad
-                                    </span>
-                                </td>
-                                <td>
+            }
+        </div>
 
-                                    <span>
-                                       S/. @carritoItem.Producto.Precio
-                                    </span>
-                                </td>
-                                <td>
+        <div class="d-flex justify-content-end mt-4">
 
-                                    <span>
-                                   
-                                          S/. @(carritoItem.Cantidad * carritoItem.Producto.Precio)
-                                      
-                                    </span>
-                                </td>
-                                         <!-- Opciones -->
-                                         <td class="text-center">
-                                             <a class="btn btn-info btn-sm me-1" asp-controller="Carrito" asp-action="Details" asp-route-id="@carritoItem.CarritoId" title="Ver">
-                                               +
-                                             </a>
-                                             <a class="btn btn-warning btn-sm me-1" asp-controller="Carrito" asp-action="Edit" asp-route-id="@carritoItem.CarritoId" title="Editar">
-                                               -
-                                             </a>
-                                    <a class="btn btn-warning btn-sm me-1" asp-controller="Carrito" asp-action="Edit" asp-route-id="@carritoItem.CarritoId" title="Editar">
-                                        eliminar
-                                    </a>
-                                          
-                                         </td>
-                                      
-                                      
-                                     </tr>
-                                 }
-                             </tbody>
+            <div class="text-end">
+                <p class="mb-1">
+                    <strong>Subtotal:</strong>
+                    S/. @Math.Round(Model.CarritoProductos.Sum(item => item.Cantidad * item.Producto.Precio) * 0.82, 2)
+                </p>
+                <p class="mb-1">
+                    <strong>Impuestos (18%):</strong>
+                    S/. @Math.Round(Model.CarritoProductos.Sum(item => item.Cantidad * item.Producto.Precio) * 0.18, 2)
+                </p>
+                <p class="mb-1">
+                    <strong>Total:</strong>
+                    S/. @Model.CarritoProductos.Sum(item => item.Cantidad * item.Producto.Precio)
+                </p>
+               
+               
+            </div>
+        </div>
 
-                        </table>
 
-                   
-                        <div>
-                         <a accesskey="$0" class="btn btn-primary" asp-controller="Pedidos" asp-action="Nuevo" title="Realizar Pedido">
-                            Realizar Pedido
-                            </a>
-                        </div>
-                    </div>
+
+        <!-- Botón de realizar pedido -->
+        <div class="text-end">
+            <a class="btn btn-primary" asp-controller="Pedidos" asp-action="Nuevo">Realizar Pedido</a>
+        </div>
+    }
+</div>
