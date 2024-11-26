@@ -34,7 +34,7 @@ namespace SisNikosPizza.Domain.Models
 
         public virtual ICollection<DetallePedido> DetallePedidos { get; set; }
         //no database properties
-        [NotMapped]
+     
         public IdentityUser Owner { get; set; }
         [NotMapped]
         public float PrecioTotal { get; set; }

@@ -10,35 +10,69 @@
             <form method="post" asp-controller="Producto" asp-action="Delete">
                 <div class="card card-default">
                     <div class="card-header">
-                        <span class="card-title"><h2>Eliminar Categoría</h2></span>
+                        <span class="card-title"><h2>Eliminar Producto</h2></span>
                     </div>
                     <div class="card-body">
                         <div asp-validation-summary="ModelOnly" class="text-danger"></div>
                         <input asp-for="ProductoId" hidden />
-                        <div class="form-group row mb-2">
-                            <div class="col-12 col-md-2 col-form-label text-md-end">
-                                <label>Nombre</label>
+
+                        @if (!string.IsNullOrEmpty(Model.ImagenUrl))
+                        {
+                            <div class="text-center mb-4">
+                                <img src="@Model.ImagenUrl" alt="Imagen del producto" class="img-fluid rounded shadow-sm" style="max-height: 300px; object-fit: cover;" />
                             </div>
-                            <div class="col-12 col-md-9">
-                                <input type="text" asp-for="Nombre" class="form-control" placeholder="Nombre del producto" disabled />
-                                <span asp-validation-for="Nombre" class="text-danger"></span>
+                        }
+
+                        <div class="row p-2 border-bottom">
+                            <div class="col-4 text-end"><strong>Producto ID:</strong></div>
+                            <div class="col">@Model.ProductoId</div>
+                        </div>
+                        <div class="row p-2 border-bottom">
+                            <div class="col-4 text-end"><strong>Nombre:</strong></div>
+                            <div class="col">@Model.Nombre</div>
+                        </div>
+                        <div class="row p-2 border-bottom">
+                            <div class="col-4 text-end"><strong>Categoría ID:</strong></div>
+                            <div class="col">@Model.CategoriaId</div>
+                        </div>
+                        <div class="row p-2 border-bottom">
+                            <div class="col-4 text-end"><strong>Estado:</strong></div>
+                            <div class="col">
+                                @if (Model.Estado)
+                                {
+                                    <span class="badge bg-success">ACTIVO</span>
+                                }
+                                else
+                                {
+                                    <span class="badge bg-danger">INACTIVO</span>
+                                }
                             </div>
                         </div>
-                        <div class="form-group row mb-2">
-                            <div class="col-12 col-md-2 col-form-label text-md-end">
-                                <label>Estado</label>
-                            </div>
-                            <div class="col-12 col-md-9">
-                                <select asp-for="Estado" class="form-select" disabled>
-                                    <option value="true">ACTIVO</option>
-                                    <option value="false">INACTIVO</option>
-                                </select>
-                                <span asp-validation-for="Estado" class="text-danger"></span>
-                            </div>
+                        <div class="row p-2 border-bottom">
+                            <div class="col-4 text-end"><strong>Precio:</strong></div>
+                            <div class="col">S/. @Model.Precio.ToString("F2")</div>
                         </div>
-                        <div>
+                        <div class="row p-2 border-bottom">
+                            <div class="col-4 text-end"><strong>Stock:</strong></div>
+                            <div class="col">@Model.Stock</div>
+                        </div>
+                        <div class="row p-2 border-bottom">
+                            <div class="col-4 text-end"><strong>Descripción:</strong></div>
+                            <div class="col">@Model.Descripcion</div>
+                        </div>
+                        <div class="row p-2 border-bottom">
+                            <div class="col-4 text-end"><strong>Creado el:</strong></div>
+                            <div class="col">@Model.CreatedAt.ToString("dd/MM/yyyy HH:mm")</div>
+                        </div>
+                        <div class="row p-2 border-bottom">
+                            <div class="col-4 text-end"><strong>Actualizado el:</strong></div>
+                            <div class="col">@Model.UpdatedAt.ToString("dd/MM/yyyy HH:mm")</div>
+                        </div>
+
+                        <div class="d-flex justify-content-center mt-4">
                             <button type="submit" class="btn btn-danger">Eliminar</button>
-                            <a asp-controller="Categories" asp-action="Index" class="btn btn-primary">Cancelar</a>
+                            <div style="width: 20px;"></div>
+                            <a asp-controller="Producto" asp-action="Index" class="btn btn-primary">Cancelar</a>
                         </div>
                     </div>
                 </div>
