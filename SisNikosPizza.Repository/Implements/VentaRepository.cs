@@ -24,17 +24,17 @@ namespace SisNikosPizza.Repository.Implements
         {
             return await _db.venta
                 .Include(v => v.Detalles)
-                .ThenInclude(vp => vp.Producto)
-                
+                .ThenInclude(vp => vp.Producto).Include(v => v.Owner)
+
                 .ToListAsync();
         }
        
         public async Task<Venta> ObtenerVentaDetallado(int ventaId, string baseUrl)
         {
             var venta = await _db.venta
-                .Include(p => p.Detalles)
-                .ThenInclude(pp => pp.Producto)
-                .Where(p => p.VentaId == ventaId)
+                .Include(v => v.Detalles)
+                .ThenInclude(vp => vp.Producto).Include(v => v.Owner)
+                .Where(v => v.VentaId == ventaId)
                 .FirstOrDefaultAsync();
 
             if (venta != null)

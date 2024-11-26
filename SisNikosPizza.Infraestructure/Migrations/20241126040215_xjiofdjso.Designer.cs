@@ -3,6 +3,7 @@ using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using SisNikosPizza.Infrastructure.Context;
 
@@ -11,9 +12,11 @@ using SisNikosPizza.Infrastructure.Context;
 namespace SisNikosPizza.Infraestructure.Migrations
 {
     [DbContext(typeof(SisNikosPizzaBbContext))]
-    partial class SisNikosPizzaBbContextModelSnapshot : ModelSnapshot
+    [Migration("20241126040215_xjiofdjso")]
+    partial class xjiofdjso
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -503,13 +506,7 @@ namespace SisNikosPizza.Infraestructure.Migrations
                     b.Property<DateTime>("Fecha")
                         .HasColumnType("datetime2");
 
-                    b.Property<string>("OwnerId")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(450)");
-
                     b.HasKey("VentaId");
-
-                    b.HasIndex("OwnerId");
 
                     b.ToTable("venta");
                 });
@@ -618,8 +615,7 @@ namespace SisNikosPizza.Infraestructure.Migrations
                 {
                     b.HasOne("SisNikosPizza.Domain.Models.Producto", "Producto")
                         .WithMany()
-                        .HasForeignKey("ProductoId")
-                        .OnDelete(DeleteBehavior.SetNull);
+                        .HasForeignKey("ProductoId");
 
                     b.HasOne("SisNikosPizza.Domain.Models.Venta", "Venta")
                         .WithMany("Detalles")
@@ -652,17 +648,6 @@ namespace SisNikosPizza.Infraestructure.Migrations
                         .IsRequired();
 
                     b.Navigation("categoria");
-                });
-
-            modelBuilder.Entity("SisNikosPizza.Domain.Models.Venta", b =>
-                {
-                    b.HasOne("Microsoft.AspNetCore.Identity.IdentityUser", "Owner")
-                        .WithMany()
-                        .HasForeignKey("OwnerId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.Navigation("Owner");
                 });
 
             modelBuilder.Entity("SisNikosPizza.Domain.Models.Carrito", b =>

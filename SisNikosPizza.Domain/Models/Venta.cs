@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Microsoft.AspNetCore.Identity;
+using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations.Schema;
 using System.Linq;
@@ -10,12 +11,15 @@ namespace SisNikosPizza.Domain.Models
     public class Venta
     {
         public int VentaId { get; set; }
+        public string OwnerId { get; set; }
         public DateTime Fecha { get; set; }
 
         public List<DetalleVenta> Detalles { get; set; }
 
         //[NotMapped] 
         //public float? ComimsionDelivery { get; set; }
+
+        public IdentityUser Owner { get; set; }
 
         [NotMapped]
         public float Total

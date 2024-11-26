@@ -34,10 +34,10 @@ namespace SisNikosPizza.Controllers
         }
 
         // GET: VentaController/Details/5
-        public ActionResult Details(int id)
+        public async Task<ActionResult> Detalles(int id)
         {
             string baseUrl = $"{Request.Scheme}://{Request.Host}/images";
-            var venta = _unitWork.VentaRepo.ObtenerVentaDetallado(id, baseUrl);
+            var venta = await _unitWork.VentaRepo.ObtenerVentaDetallado(id, baseUrl);
 
             if (venta == null)
             {
@@ -57,6 +57,12 @@ namespace SisNikosPizza.Controllers
 
             //verificar que exista el pedido
             if (pedido==null)
+            {
+                return NotFound();
+            }
+
+            //veririficar que el pedido no este pagado
+            if (pedido.EstadoPedido == VCG.EstadoPedido.Pagado)
             {
                 return NotFound();
             }
@@ -90,6 +96,13 @@ namespace SisNikosPizza.Controllers
             }
             
             venta.Detalles = detallesVentas;
+            venta.Fecha = DateTime.Now;
+            venta.OwnerId = pedido.OwnerId;
+
+            //actualizar el pedido
+            pedido.EstadoPedido = VCG.EstadoPedido.Pagado;
+          
+
 
 
             // guardar venta

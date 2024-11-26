@@ -36,12 +36,12 @@
                 <table class="table table-bordered table-striped align-middle">
                     <thead class="table-light text-center">
                         <tr>
-                            <th>ID</th>
+                           
                             <th>Fecha</th>
                             <th>Cliente</th>
-                            <th>Total</th>
-                            <th>Estado</th>
+                            <th>Total</th>   
                             <th>Opciones</th>
+                          
                         </tr>
                     </thead>
                     <tbody>
@@ -50,21 +50,11 @@
                             <tr>
                          
                                 <td>@venta.Fecha</td>
-                                <td>xd</td>
-                                <td>S/. xd</td>
-                                <td>
-                                  
-                                </td>
+                                <td>@venta.Owner.NormalizedEmail</td>
+                                <td>S/. @venta.Total</td>
                                 <td class="text-center">
-                                    <a class="btn btn-info btn-sm me-1" asp-controller="Pedidos" asp-action="Detalles" asp-route-id="@venta.VentaId">
-                                        <i class="bi bi-eye"></i>
-                                    </a>
-                                    <a class="btn btn-danger btn-sm" asp-controller="Pedidos" asp-action="Eliminar" asp-route-id="@venta.VentaId">
-                                        <i class="bi bi-trash"></i>
-                                    </a>
-
-                                    <a class="btn btn-success btn-sm" asp-controller="Pedidos" asp-action="Cobrar" asp-route-id="@venta.VentaId">
-                                        <i class="bi bi-cash "></i>
+                                    <a class="btn btn-info btn-sm me-1" asp-controller="Venta" asp-action="Detalles" asp-route-id="@venta.VentaId">
+                                        <i class="fas fa-eye"></i>
                                     </a>
                                 </td>
                             </tr>

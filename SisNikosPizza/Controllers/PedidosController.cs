@@ -40,9 +40,31 @@ namespace SisNikosPizza.Controllers
 
 
         // GET: PedidodsController/Details/5
-        public ActionResult Detalles(int id)
+        public async Task< ActionResult> Detalles(int id)
         {
-            return View();
+            var userSign = await _userManager.GetUserAsync(User);
+            var baseUrl = $"{Request.Scheme}://{Request.Host}/images";
+            var pedido = await _unitWork.PedidoRepo.ObtenerPedidoDetallado(id, baseUrl);
+            if (pedido == null)
+            {
+                return NotFound();
+            }
+            //get role 
+            if (User.IsInRole(VCG.Role_Admin) )
+            {
+               
+             
+                return View(pedido);
+
+            }
+
+            
+            if (pedido.OwnerId != userSign.Id)
+            {
+                return NotFound();
+            }
+            return View(pedido);
+
         }
 
 
@@ -68,14 +90,13 @@ namespace SisNikosPizza.Controllers
 
 
 
-        // POST: PedidodsController/Create
         [Authorize]
         [HttpPost]
         public async Task<ActionResult> CrearPedido(Pedido formPedido)
         {
-            string baseUrl = $"{Request.Scheme}://{Request.Host}/images";
-            var carrito = await _unitWork.CarritoRepo.ObtenerCarritoDeUsuario(_userManager.GetUserId(User), "");
-
+            // Obtener el carrito del usuario
+            var userId = _userManager.GetUserId(User);
+            var carrito = await _unitWork.CarritoRepo.ObtenerCarritoDeUsuario(userId, "");
             var carritoProductos = carrito.CarritoProductos;
 
             // Validar si el carrito está vacío
@@ -92,87 +113,69 @@ namespace SisNikosPizza.Controllers
                 return RedirectToAction("Nuevo", new { TipoPedido = formPedido.TipoPedido });
             }
 
-            // crear pedido verificando los campos y su tipo
+            // Crear el pedido
             var pedido = new Pedido
             {
-                OwnerId = _userManager.GetUserId(User),
+                OwnerId = userId,
                 DetallePedidos = new List<DetallePedido>(),
                 FechaPedido = DateTime.Now,
                 TipoPedido = formPedido.TipoPedido,
-                EstadoPedido = VCG.EstadoPedido.Pendiente,
+                EstadoPedido = VCG.EstadoPedido.Pendiente
             };
-            if  (formPedido.TipoPedido == VCG.TipoPedido.Delivery)
+
+            // Validar campos específicos del tipo de pedido
+            if (formPedido.TipoPedido == VCG.TipoPedido.Delivery)
             {
-
                 if (string.IsNullOrEmpty(formPedido.Telefono))
-                {
-                    TempData["ErrorTelefono"] = "Teléfono es requerido.";
-                }
-                if (string.IsNullOrEmpty(formPedido.Direccion))
-                {
-                    TempData["ErrorDireeccion"] = "Dirección es requerida.";
-                }
-                if (string.IsNullOrEmpty(formPedido.Referencia))
-                {
-                    TempData["ErrorReferencia"] = "Referencia es requerida.";
-                }
-
-                // Si hay errores, redirigir a la vista "Nuevo"
-                if (TempData.Any(kvp => kvp.Key.StartsWith("Error")))
-                {
                     return RedirectToAction("Nuevo", new { TipoPedido = formPedido.TipoPedido });
-                }
+                if (string.IsNullOrEmpty(formPedido.Direccion))
+                    return RedirectToAction("Nuevo", new { TipoPedido = formPedido.TipoPedido });
+                if (string.IsNullOrEmpty(formPedido.Referencia))
+                    return RedirectToAction("Nuevo", new { TipoPedido = formPedido.TipoPedido });
+
+
+
                 pedido.Telefono = formPedido.Telefono;
                 pedido.Direccion = formPedido.Direccion;
                 pedido.Referencia = formPedido.Referencia;
             }
-            if (formPedido.TipoPedido == VCG.TipoPedido.Recoger)
+            else if (formPedido.TipoPedido == VCG.TipoPedido.Recoger)
             {
                 if (!formPedido.FechaRecogo.HasValue)
                 {
                     TempData["ErrorFechaRecogo"] = "Fecha de recogo es requerida.";
                     return RedirectToAction("Nuevo", new { TipoPedido = formPedido.TipoPedido });
                 }
-              
                 pedido.FechaRecogo = formPedido.FechaRecogo;
             }
-            if (formPedido.TipoPedido == VCG.TipoPedido.Mesa)
+            else if (formPedido.TipoPedido == VCG.TipoPedido.Mesa)
             {
                 if (string.IsNullOrEmpty(formPedido.Mesa))
                 {
                     TempData["ErrorMesa"] = "Mesa es requerida.";
                     return RedirectToAction("Nuevo", new { TipoPedido = formPedido.TipoPedido });
                 }
-                //requirido
                 pedido.Mesa = formPedido.Mesa;
             }
-          
 
-
-
-            // crear detalles de pedido
+            // Crear los detalles del pedido
             foreach (var carritoProducto in carritoProductos)
             {
-                var detallePedido = new DetallePedido
+                pedido.DetallePedidos.Add(new DetallePedido
                 {
-                    PedidoId = pedido.PedidoId,
                     ProductoId = carritoProducto.ProductoId,
-                    Cantidad = carritoProducto.Cantidad,
-           
-                };
-
-                // agregar detalles de pedido al pedido
-                pedido.DetallePedidos.Add(detallePedido);
+                    Cantidad = carritoProducto.Cantidad
+                });
             }
 
-            // guardar pedido
+            // Guardar el pedido
             await _unitWork.PedidoRepo.AgregarAsync(pedido);
             await _unitWork.GuardarPedido();
 
-            //eliminar los productos del carrito
-            await _unitWork.CarritoRepo.VaciarCarrito(_userManager.GetUserId(User));
+            // Vaciar el carrito del usuario
+            await _unitWork.CarritoRepo.VaciarCarrito(userId);
 
-            // redireccionar a index
+            // Redirigir al índice de pedidos
             return RedirectToAction(nameof(Index));
         }
 

@@ -1,0 +1,64 @@
+﻿@model SisNikosPizza.Domain.Models.Venta
+
+@{
+    ViewData["Title"] = "Detalle de la Venta";
+    Layout = "~/Views/Shared/_Admin.cshtml";
+}
+
+<div class="container py-5">
+    <h2 class="mb-4">Detalle de la Venta</h2>
+
+    <!-- Información General de la Venta -->
+    <div class="card mb-4">
+        <div class="card-body">
+            <h5 class="card-title">Información de la Venta</h5>
+            <p><strong>Número de Venta:</strong> @Model.VentaId</p>
+            <p><strong>Fecha:</strong> @Model.Fecha.ToString("dd/MM/yyyy HH:mm")</p>
+            <p><strong>Cliente:</strong> @Model.Owner?.UserName</p>
+        </div>
+    </div>
+
+    <!-- Detalle de la Venta -->
+    <div class="table-responsive">
+        <table class="table table-bordered table-hover">
+            <thead class="table-light">
+                <tr>
+                    <th>Producto</th>
+                    <th>Descripción</th>
+                    <th>Cantidad</th>
+                    <th>Precio Unitario</th>
+                    <th>Subtotal</th>
+                </tr>
+            </thead>
+            <tbody>
+                @foreach (var detalle in Model.Detalles)
+                {
+                    <tr>
+                        <td>
+                            @if (detalle.Producto != null)
+                            {
+                                <img src="@detalle.Producto.ImagenUrl" alt="@detalle.Producto.Nombre" style="width: 50px; height: 50px;" />
+                                <span>@detalle.Producto.Nombre</span>
+                            }
+                            else
+                            {
+                                <span>Producto no disponible</span>
+                            }
+                        </td>
+                        <td>@detalle.Descripcion</td>
+                        <td class="text-center">@detalle.Cantidad</td>
+                        <td class="text-end">S/. @detalle.PrecioUnitario</td>
+                        <td class="text-end">S/. @detalle.PrecioTotal</td>
+                    </tr>
+                }
+            </tbody>
+        </table>
+    </div>
+
+    <!-- Total de la Venta -->
+    <div class="d-flex justify-content-end">
+        <div class="text-end">
+            <p class="mb-1"><strong>Total:</strong> S/. @Model.Total</p>
+        </div>
+    </div>
+</div>

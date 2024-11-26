@@ -268,13 +268,20 @@ namespace SisNikosPizza.Controllers
         }
         // Categories/Delete/5
         [HttpGet]
-        public async Task<IActionResult> Delete(int id)
+        public async Task<IActionResult> Delete(int? id)
         {
             //var category = await _context.Category.FindAsync(id);
-            var producto= await _unitWork.ProductoRepo.ObtenerAsync(id);
+            if (id is null) return NotFound();
 
-            if (producto is null)
-                return NotFound();
+            var producto = await _unitWork.ProductoRepo.ObtenerPrimeroAsync(filtro: c => c.ProductoId == id);
+            if (producto == null) return NotFound();
+
+            // Construir la URL completa de la imagen
+            if (!string.IsNullOrEmpty(producto.ImagenUrl))
+            {
+                string baseUrl = $"{Request.Scheme}://{Request.Host}/images";
+                producto.ImagenUrl = $"{baseUrl}/{producto.ImagenUrl}";
+            }
 
             return View(producto);
         }
