@@ -32,14 +32,14 @@ namespace SisNikosPizza.Repository.Implements
         {
             return await _db.pedido
                 .Include(p => p.DetallePedidos)
-                .ThenInclude(pp => pp.Producto)
+                .ThenInclude(pp => pp.Producto).Include(p => p.Owner)
                 .ToListAsync();
         }
         public async Task<Pedido> ObtenerPedidoDetallado(int pedidoId, string baseUrl)
         {
             var pedido = await _db.pedido
                 .Include(p => p.DetallePedidos)
-                .ThenInclude(pp => pp.Producto)
+                .ThenInclude(pp => pp.Producto).Include(p=>p.Owner)
                 .Where(p => p.PedidoId == pedidoId)
                 .FirstOrDefaultAsync();
 

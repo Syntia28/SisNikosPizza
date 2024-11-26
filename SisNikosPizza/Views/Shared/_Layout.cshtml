@@ -1,50 +1,117 @@
-﻿<link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
-
-<link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
-<link href="https://cdn.jsdelivr.net/npm/bootstrap-icons/font/bootstrap-icons.css" rel="stylesheet">
-
+﻿@*
+    Layout principal para las vistas de administración.
+*@
 <!DOCTYPE html>
 <html lang="en">
 <head>
     <meta charset="utf-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>@ViewData["Title"] - SisNikosPizza</title>
-    <link rel="stylesheet" href="~/lib/bootstrap/dist/css/bootstrap.min.css" />
-    <link rel="stylesheet" href="~/css/site.css" asp-append-version="true" />
-    <link rel="stylesheet" href="~/SisNikosPizza.styles.css" asp-append-version="true" />
-</head>
-<body>
-    <header>
-        <nav class="navbar navbar-expand-sm navbar-toggleable-sm navbar-light bg-white border-bottom box-shadow mb-3">
-            <div class="container-fluid">
-                <a class="navbar-brand" asp-area="" asp-controller="Home" asp-action="Index">SisNikosPizza</a>
-                <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target=".navbar-collapse" aria-controls="navbarSupportedContent"
-                        aria-expanded="false" aria-label="Toggle navigation">
-                    <span class="navbar-toggler-icon"></span>
-                </button>
-                <div class="navbar-collapse collapse d-sm-inline-flex justify-content-between">
-                    <ul class="navbar-nav flex-grow-1">
-                      
-                    </ul>
-                </div>
-                <partial name="_LoginPartial" />
-            </div>
-        </nav>
-    </header>
-    <div class="container">
-        <main role="main" class="pb-3">
-            @RenderBody()
-        </main>
-    </div>
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no" />
+    <title>@ViewData["Title"] - Nikos Pizza</title>
 
-    <footer class="border-top footer text-muted">
-        <div class="container">
-            &copy; 2024 - SisNikosPizza - <a asp-area="" asp-controller="Home" asp-action="Privacy">Privacy</a>
+    <!-- Estilos -->
+    <link href="https://cdn.jsdelivr.net/npm/simple-datatables@7.1.2/dist/style.min.css" rel="stylesheet" />
+    <link href="/css/styles.css" rel="stylesheet" />
+    <script src="https://use.fontawesome.com/releases/v6.3.0/js/all.js" crossorigin="anonymous"></script>
+    @RenderSection("Styles", required: false)
+    <style>
+        /* Estilo personalizado */
+        body {
+            background-color: #f9e79f; /* Color de fondo principal */
+        }
+
+        .navbar {
+            background-color: #f9e79f !important;
+            color: #333 !important;
+        }
+
+            .navbar a.navbar-brand {
+                color: #333 !important;
+                font-weight: bold;
+            }
+
+                .navbar a.navbar-brand:hover {
+                    color: #555 !important;
+                }
+
+        .sb-sidenav {
+            background-color: #f9e79f !important;
+            color: #333 !important;
+        }
+
+            .sb-sidenav a {
+                color: #333 !important;
+            }
+
+                .sb-sidenav a:hover {
+                    background-color: #f8c471;
+                    color: white !important;
+                }
+
+        .sb-sidenav-footer {
+            background-color: #f9e79f !important;
+            color: #333 !important;
+        }
+
+        footer {
+            background-color: #f9e79f !important;
+            color: #333 !important;
+        }
+
+            footer a {
+                color: #333 !important;
+                text-decoration: none;
+            }
+
+                footer a:hover {
+                    text-decoration: underline;
+                }
+
+        .btn-primary {
+            background-color: #f8c471 !important;
+            border: none;
+        }
+
+            .btn-primary:hover {
+                background-color: #f7b248 !important;
+            }
+    </style>
+</head>
+<body class="sb-nav-fixed">
+    <!-- Top Navbar -->
+    <nav class="sb-topnav navbar navbar-expand navbar-light">
+        <a class="navbar-brand ps-3 d-flex align-items-center" href="@Url.Action("Index", "Home")">
+            <img src="/Imagenes/Logo.jpeg" alt="Logo" style="width: 40px; height: 40px; margin-right: 10px;" />
+            NIKOS PIZZA
+        </a>
+        <div class="d-none d-md-inline-block ms-auto me-0 me-md-3 my-2 my-md-0">
         </div>
-    </footer>
-    <script src="~/lib/jquery/dist/jquery.min.js"></script>
-    <script src="~/lib/bootstrap/dist/js/bootstrap.bundle.min.js"></script>
-    <script src="~/js/site.js" asp-append-version="true"></script>
-    @await RenderSectionAsync("Scripts", required: false)
+        <partial name="_LoginPartial" />
+    </nav>
+
+  
+            <main>
+                <div class="container-fluid px-4">
+                    @RenderBody()
+                </div>
+            </main>
+            <footer class="py-4 mt-auto">
+                <div class="container-fluid px-4">
+                    <div class="d-flex align-items-center justify-content-between small">
+                        <div class="text-muted">&copy; Nikos Pizza 2023</div>
+                        <div>
+                            <a href="#">Política de Privacidad</a>
+                            &middot;
+                            <a href="#">Términos &amp; Condiciones</a>
+                        </div>
+                    </div>
+                </div>
+            </footer>
+      
+
+    <!-- Scripts -->
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.3/dist/js/bootstrap.bundle.min.js" crossorigin="anonymous"></script>
+    <script src="/js/scripts.js"></script>
+    @RenderSection("Scripts", required: false)
 </body>
 </html>
