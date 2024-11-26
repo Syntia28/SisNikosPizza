@@ -41,10 +41,15 @@ public class SisNikosPizzaBbContext : IdentityDbContext
 
         //relaciones carrito
 
-        
+  
+modelBuilder.Entity<DetalleVenta>()
+            .HasOne(dv => dv.Producto)
+            .WithMany()
+            .HasForeignKey(dv => dv.ProductoId) // Clave foránea
+            .OnDelete(DeleteBehavior.SetNull); // Comportamiento ON DELETE SET NULL
 
-        // Relación Carrito -> CarritoProducto
-        modelBuilder.Entity<Carrito>().HasMany(s => s.CarritoProductos);
+    // Relación Carrito -> CarritoProducto
+    modelBuilder.Entity<Carrito>().HasMany(s => s.CarritoProductos);
 
 
 

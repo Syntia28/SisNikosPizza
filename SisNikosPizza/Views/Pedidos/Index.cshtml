@@ -1,4 +1,9 @@
 ﻿@model IEnumerable<SisNikosPizza.Domain.Models.Pedido>
+@using SisNikosPizza.Utilidades
+@using Microsoft.AspNetCore.Identity
+
+@inject SignInManager<IdentityUser> SignInManager
+@inject UserManager<IdentityUser> UserManager
 
     @{
     ViewData["Title"] = "Pedidos";
@@ -37,9 +42,10 @@
                         <table class="table table-bordered table-striped align-middle">
                             <thead class="table-light text-center">
                                 <tr>
-                                    <th>ID</th>
+                       
                                     <th>Fecha</th>
-                                    <th>Cliente</th>
+                            <th>Cliente</th>
+                          
                                     <th>Total</th>
                                     <th>Estado</th>
                                     <th>Opciones</th>
@@ -49,31 +55,57 @@
                                 @foreach (var pedido in Model)
                                 {
                                     <tr>
-                                        <td>@pedido.PedidoId</td>
+                                      
                                         <td>@pedido.FechaPedido</td>
-                                        <td>nombres</td>
-                                        <td>S/. xd</td>
+                                <td>@pedido.Owner.NormalizedEmail</td>
+                               
+                                        <td>S/. @pedido.DetallePedidos.Sum(dp => dp.Cantidad*dp.Producto.Precio)</td>
                                         <td>
-                                            @if (pedido.Estado)
+                                            @if (pedido.EstadoPedido==VCG.EstadoPedido.Pagado)
                                             {
-                                                <span class="badge bg-success">Entregado</span>
+                                        <span class="badge bg-success">Pagado</span>
+                                    }else if (pedido.EstadoPedido==VCG.EstadoPedido.Entregado)
+                                    {
+                                        <span>
+                                            class="badge bg-primary">Entregado
+
+                                        </span>
+                                    }else if (pedido.EstadoPedido==VCG.EstadoPedido.Anulado)
+                                    {
+                                        <span class="badge bg-danger">Anulado</span>
+                                    }
+                                    else
+                                    {
+                                        <span class="badge bg-warning">Pendiente</span>
+                                    }
+
+                                        </td>
+                                        <td class="text-center">
+                                   
+                                        <a class="btn btn-info btn-sm me-1" asp-controller="Pedidos" asp-action="Detalles" asp-route-id="@pedido.PedidoId">
+                                            <i class="fas fa-eye"></i>
+                                        </a>
+                                     @*     <a class="btn btn-danger btn-sm" asp-controller="Pedidos" asp-action="Eliminar" asp-route-id="@pedido.PedidoId">
+                                             <i class="fas fa-trash"></i>
+                                         </a> *@
+
+                                    @if (User.IsInRole(VCG.Role_Admin)) 
+                                    {
+                                          @if (pedido.EstadoPedido != VCG.EstadoPedido.Pagado)
+                                            {
+                                                <a class="btn btn-success btn-sm" asp-controller="Pedidos" asp-action="Cobrar" asp-route-id="@pedido.PedidoId">
+                                                    <i class="fas fa-cash-register"></i>
+                                                </a>
                                             }
                                             else
                                             {
-                                                <span class="badge bg-warning">Pendiente</span>
+                                                <button class="btn btn-success btn-sm" disabled>
+                                                    <i class="fas fa-cash-register"></i>
+                                                </button>
                                             }
-                                        </td>
-                                        <td class="text-center">
-                                            <a class="btn btn-info btn-sm me-1" asp-controller="Pedidos" asp-action="Detalles" asp-route-id="@pedido.PedidoId">
-                                                <i class="bi bi-eye"></i>
-                                            </a>
-                                            <a class="btn btn-danger btn-sm" asp-controller="Pedidos" asp-action="Eliminar" asp-route-id="@pedido.PedidoId">
-                                                <i class="bi bi-trash"></i>
-                                            </a>
                                           
-                                            <a class="btn btn-success btn-sm" asp-controller="Pedidos" asp-action="Cobrar" asp-route-id="@pedido.PedidoId">
-                                                <i class="bi bi-cash "></i>
-                                                </a>
+                                              
+                                    }
                                         </td>
                                     </tr>
                                 }

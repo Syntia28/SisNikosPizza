@@ -1,0 +1,77 @@
+﻿@model SisNikosPizza.Domain.Models.Pedido
+
+@using SisNikosPizza.Utilidades
+
+@{
+    ViewData["Title"] = "Detalle del Pedido";
+    Layout = "~/Views/Shared/_Admin.cshtml";
+}
+
+<div class="container py-5">
+    <h2 class="mb-4">Detalle del Pedido</h2>
+
+    <!-- Información General del Pedido -->
+    <div class="card mb-4">
+        <div class="card-body">
+            <h5 class="card-title">Información del Pedido</h5>
+            <p><strong>Número de Pedido:</strong> @Model.PedidoId</p>
+            <p><strong>Fecha del Pedido:</strong> @Model.FechaPedido.ToString("dd/MM/yyyy HH:mm")</p>
+            <p><strong>Estado:</strong> @Model.EstadoPedido</p>
+            <p><strong>Tipo de Pedido:</strong> @Model.TipoPedido</p>
+
+            @if (Model.TipoPedido == VCG.TipoPedido.Delivery)
+            {
+                <p><strong>Teléfono:</strong> @Model.Telefono</p>
+                <p><strong>Dirección:</strong> @Model.Direccion</p>
+                <p><strong>Referencia:</strong> @Model.Referencia</p>
+            }
+            else if (Model.TipoPedido == VCG.TipoPedido.Recoger)
+            {
+                <p><strong>Fecha de Recogo:</strong> @Model.FechaRecogo?.ToString("dd/MM/yyyy HH:mm")</p>
+            }
+            else if (Model.TipoPedido == VCG.TipoPedido.Mesa)
+            {
+                <p><strong>Mesa:</strong> @Model.Mesa</p>
+            }
+        </div>
+    </div>
+
+    <!-- Detalle del Pedido -->
+    <div class="table-responsive">
+        <table class="table table-bordered table-hover">
+            <thead class="table-light">
+                <tr>
+                    <th>Producto</th>
+                    <th>Descripción</th>
+                    <th>Cantidad</th>
+                    <th>Precio Unitario</th>
+                    <th>Subtotal</th>
+                </tr>
+            </thead>
+            <tbody>
+                @foreach (var detalle in Model.DetallePedidos)
+                {
+                    <tr>
+                        <td>
+                            <img src="@detalle.Producto.ImagenUrl" alt="@detalle.Producto.Nombre" style="width: 50px; height: 50px;" />
+                            <span>@detalle.Producto.Nombre</span>
+                        </td>
+                        <td>@detalle.Producto.Descripcion</td>
+                        <td class="text-center">@detalle.Cantidad</td>
+                        <td class="text-end">S/. @detalle.Producto.Precio</td>
+                        <td class="text-end">S/. @(detalle.Cantidad * detalle.Producto.Precio)</td>
+                    </tr>
+                }
+            </tbody>
+        </table>
+    </div>
+
+    <!-- Totales -->
+    <div class="d-flex justify-content-end">
+        <div class="text-end">
+            <p class="mb-1"><strong>Subtotal:</strong> S/. @Math.Round(Model.DetallePedidos.Sum(dp => dp.Cantidad * dp.Producto.Precio) * 0.82, 2)</p>
+            <p class="mb-1"><strong>Impuestos (18%):</strong> S/. @Math.Round(Model.DetallePedidos.Sum(dp => dp.Cantidad * dp.Producto.Precio) * 0.18, 2)</p>
+            <p class="mb-1"><strong>Total:</strong> S/. @Model.DetallePedidos.Sum(dp => dp.Cantidad * dp.Producto.Precio)</p>
+        </div>
+    </div>
+</div>

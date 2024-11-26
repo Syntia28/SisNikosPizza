@@ -1,33 +1,40 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
-using SisNikosPizza.Models;
-using SisNikosPizza.Repository.Interfaces;
-using System.Diagnostics;
-
+using SisNikosPizza.Utilidades;
+using System.Collections.Generic;
+using System.Linq;
+using System.Threading.Tasks;
 
 namespace SisNikosPizza.Controllers
 {
+    [Authorize(Roles= VCG.Role_Admin)]
     public class ClienteController : Controller
     {
-        //private readonly HotelElCieloDbContext _context;
-        private readonly IUniwork _unitWork;
+        private readonly UserManager<IdentityUser> _userManager;
+        private readonly RoleManager<IdentityRole> _roleManager;
 
-        public ClienteController(
-
-            IUniwork unitWork
-            )
+        public ClienteController(UserManager<IdentityUser> userManager, RoleManager<IdentityRole> roleManager)
         {
-            //_context = context;
-            _unitWork = unitWork;
+            _userManager = userManager;
+            _roleManager = roleManager;
         }
-
 
         public async Task<IActionResult> Index()
         {
+            var usersInRole = new List<IdentityUser>();
 
-            var Categorias = await _unitWork.CategoriaRepo.ObtenerTodosAsync(ordenarPor: c => c.OrderByDescending(c => c.CategoriaId));
-            return View(Categorias);
+            // Filtrar usuarios que tienen el rol "UserClient"
+            foreach (var user in _userManager.Users.ToList())
+            {
+                if (await _userManager.IsInRoleAsync(user, VCG.Role_Employee))
+                {
+                    usersInRole.Add(user);
+                }
+            }
+
+            // Pasar los usuarios filtrados a la vista
+            return View(usersInRole);
         }
-
     }
 }
