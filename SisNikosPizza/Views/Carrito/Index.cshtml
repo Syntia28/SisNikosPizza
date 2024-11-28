@@ -9,7 +9,7 @@
     <!-- Título principal -->
     <div class="text-center mb-4">
         <h2 class="text-title">TU CARRITO DE COMPRAS</h2>
-        <p class="text-muted">Revisa tu carrito antes de realizar tu pedido</p>
+        <p class="text-muted">¡No olvides de revisar tu pedido antes de realizarlo!</p>
     </div>
 
     @if (Model.CarritoProductos == null || !Model.CarritoProductos.Any())
@@ -39,9 +39,8 @@
                             <div class="d-flex justify-content-between align-items-center mb-3">
                                 <!-- Imagen -->
 
-                                <div class="card-img-container me-3">
-                                    <img src="https://images.pexels.com/photos/1566837/pexels-photo-1566837.jpeg?auto=compress&cs=tinysrgb&dpr=1&w=500" alt="@carritoItem.Producto.Nombre"
-                                        class="img-fluid rounded" style="width: 100%; height: 120px; object-fit: cover;" />
+                                <div class="mb-3">
+                                    <img src="@carritoItem.Producto.ImagenUrl" alt="@carritoItem.Producto.Nombre" class="img-fluid rounded" style="width: 100%; height: 120px; object-fit: cover;" />
                                 </div>
 
                                 <!-- Información de la cantidad, precio unitario y total -->
