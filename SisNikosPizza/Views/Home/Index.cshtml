@@ -6,68 +6,70 @@
 
 <div class="wrapper">
     <div class="welcome">
+        <!-- Título con efecto 3D -->
         <h1 class="welcome-title">¡Bienvenido a Nikos Pizza!</h1>
+        <p class="welcome-subtitle" style="font-family: 'Roboto', sans-serif; color: black; font-style: italic; font-weight: bold; font-size: 14px;">
+            Su gran sabor se siente en cada mordida 😊😋
+        </p>
         <p class="welcome-subtitle">Descubre las mejores pizzas y disfruta de una experiencia única.</p>
     </div>
+
     <div class="container">
         <div class="card card-1">
             <div class="card_content">
                 <h1 class="name" style="font-family: sans-serif;">NIKO´S</h1>
-
                 <h4 class="group"><em>Las más vendidas</em></h4>
-
             </div>
         </div>
 
         <div class="card card-2">
             <div class="card_content">
                 <h1 class="name" style="font-family: sans-serif;">PEPERONI</h1>
-
                 <h4 class="group"><em>Las más vendidas</em></h4>
-
             </div>
         </div>
 
         <div class="card card-3">
             <div class="card_content">
                 <h1 class="name" style="font-family: sans-serif;">FRUTAS</h1>
-
                 <h4 class="group"><em>Las más vendidas</em></h4>
-
             </div>
         </div>
 
         <div class="card card-4">
             <div class="card_content">
                 <h1 class="name" style="font-family: sans-serif;">ESPAÑOLA</h1>
-
                 <h4 class="group"><em>Las más vendidas</em></h4>
-
             </div>
         </div>
 
         <div class="card card-5">
             <div class="card_content">
                 <h1 class="name" style="font-family: sans-serif;">HAWAINA</h1>
-
                 <h4 class="group"><em>Las más vendidas</em></h4>
-
             </div>
         </div>
     </div>
 </div>
 
 <style>
+    /* Estilos generales */
     .welcome {
         text-align: center;
         margin-bottom: 40px;
     }
 
+    /* Efecto 3D para el título */
     .welcome-title {
-        font-size: 3rem;
+        font-size: 4rem; /* Tamaño más grande */
         font-weight: bold;
         color: #d35400; /* Color llamativo */
-        text-shadow: 2px 2px 5px rgba(0, 0, 0, 0.3);
+        font-style: italic; /* Cursiva */
+        text-shadow: 3px 3px 5px rgba(0, 0, 0, 0.2), /* Sombra sutil */
+        6px 6px 15px rgba(0, 0, 0, 0.3), /* Sombra intermedia */
+        9px 9px 20px rgba(0, 0, 0, 0.4); /* Sombra más fuerte */
+        transform: translateZ(0); /* Efecto de profundidad */
+        letter-spacing: 2px; /* Espaciado de letras */
     }
 
     .welcome-subtitle {
@@ -75,9 +77,126 @@
         color: #6c757d;
         margin-top: 10px;
     }
+
+    /* Estilos de las tarjetas */
+    .container {
+        position: relative;
+        width: 700px;
+        height: 400px;
+        display: grid;
+        grid-template-columns: 1fr 1fr 1fr 1fr 1fr;
+        gap: 10px;
+        transition: all .3s ease-in-out;
+    }
+
+    .card {
+        position: relative;
+        overflow: hidden;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        border-radius: 15px;
+        cursor: pointer;
+        transition: transform 0.3s ease, filter 0.3s ease;
+    }
+
+    /* Fondo de las tarjetas */
+    .card-1 {
+        background: url('/Imagenes/nikos.jpg') center center no-repeat;
+        background-size: cover;
+        filter: grayscale(1);
+    }
+
+    .card-2 {
+        background: url('/Imagenes/pepenori.jpg') center center no-repeat;
+        background-size: cover;
+        filter: grayscale(1);
+    }
+
+    .card-3 {
+        background: url('/Imagenes/frutas.jpg') center center no-repeat;
+        background-size: cover;
+        filter: grayscale(1);
+    }
+
+    .card-4 {
+        background: url('/Imagenes/española.jpg') center center no-repeat;
+        background-size: cover;
+        filter: grayscale(1);
+    }
+
+    .card-5 {
+        background: url('/Imagenes/hawaina.jpg') center center no-repeat;
+        background-size: cover;
+        filter: grayscale(1);
+    }
+
+    /* Efecto hover para las tarjetas */
+    .card:hover {
+        transform: scale(1.05);
+        box-shadow: rgba(0, 0, 0, 0.7) 0px -50px 80px inset;
+        filter: grayscale(0);
+    }
+
+        .card:hover .card_content {
+            font-family: sans-serif;
+            position: absolute;
+            top: 150px;
+            left: 20px;
+            color: #ffffff;
+        }
+
+    /* Sombra de las tarjetas */
+    .card::after {
+        content: "";
+        background-color: rgba(0, 0, 0, 0.6);
+        width: 100%;
+        height: 100%;
+        position: absolute;
+        top: 0;
+        left: 0;
+        transition: all .3s ease-in-out;
+    }
+
+    /* Efecto expandido en la tarjeta al hacer hover */
+    .card-expanded {
+        position: fixed;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        z-index: 9999;
+        transform: scale(1);
+        background-size: contain;
+    }
+
+        .card-expanded img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+        }
+
+    .container:has(.card-1:hover) {
+        grid-template-columns: 3fr 1fr 1fr 1fr 1fr;
+    }
+
+    .container:has(.card-2:hover) {
+        grid-template-columns: 1fr 3fr 1fr 1fr 1fr;
+    }
+
+    .container:has(.card-3:hover) {
+        grid-template-columns: 1fr 1fr 3fr 1fr 1fr;
+    }
+
+    .container:has(.card-4:hover) {
+        grid-template-columns: 1fr 1fr 1fr 3fr 1fr;
+    }
+
+    .container:has(.card-5:hover) {
+        grid-template-columns: 1fr 1fr 1fr 1fr 3fr;
+    }
 </style>
 
-<
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -197,26 +316,6 @@
             text-shadow: 2px 2px 6px rgba(0, 0, 0, 0.8);
         }
 
-
-        /* Expansión de la tarjeta cuando se pasa el cursor */
-        .card-expanded {
-            position: fixed;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            z-index: 9999;
-            transform: scale(1);
-            background-size: contain;
-        }
-
-            .card-expanded img {
-                width: 100%;
-                height: 100%;
-                object-fit: cover;
-            }
-
-        /* Animaciones para las tarjetas */
         .card:hover {
             transform: scale(1.05);
             box-shadow: rgba(0, 0, 0, 0.7) 0px -50px 80px inset;
@@ -234,9 +333,6 @@
             .card:hover::after {
                 opacity: 0;
             }
-            
-    
-
 
         .container:has(.card-1:hover) {
             grid-template-columns: 3fr 1fr 1fr 1fr 1fr;
