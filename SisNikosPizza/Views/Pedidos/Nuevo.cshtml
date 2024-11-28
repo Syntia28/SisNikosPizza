@@ -6,15 +6,118 @@
     Layout = "~/Views/Shared/_Admin.cshtml";
 }
 
-<div class="container py-5">
+<!-- Estilos personalizados -->
+<style>
+    /* Centrado de la tarjeta */
+    .card-wrapper {
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        height: 100vh;
+    }
+
+    .card {
+        width: 100%;
+        max-width: 800px;
+        border-radius: 15px;
+        box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+    }
+
+    /* Estilos del encabezado con fondo degradado amarillo y centrado */
+    .card-header {
+        background: linear-gradient(135deg, #f39c12, #f1c40f); /* Degradado amarillo */
+        color: #fff;
+        border-top-left-radius: 15px;
+        border-top-right-radius: 15px;
+        text-align: center;
+        padding: 30px;
+        box-shadow: 0 4px 10px rgba(0, 0, 0, 0.15);
+    }
+
+        .card-header h2 {
+            font-family: 'Poppins', sans-serif; /* Tipografía moderna */
+            font-weight: 700;
+            font-size: 2.5rem;
+            text-transform: uppercase; /* Título en mayúsculas */
+            letter-spacing: 2px; /* Espaciado entre letras */
+        }
+
+    /* Estilos de la imagen */
+    .img-fluid {
+        width: 100px; /* Tamaño de la imagen ajustado */
+        height: 100px;
+        object-fit: cover; /* Para que la imagen cubra todo el espacio disponible sin distorsionarse */
+        border-radius: 10px;
+        box-shadow: 0 4px 8px rgba(0, 0, 0, 0.15);
+    }
+
+    /* Formato de la tabla */
+    .table th, .table td {
+        text-align: center;
+        padding: 15px;
+    }
+
+    .table th {
+        background-color: #f8f9fa;
+    }
+
+    .table-hover tbody tr:hover {
+        background-color: #f1f1f1;
+    }
+
+    /* Botones personalizados */
+    .btn-primary, .btn-success {
+        border-radius: 25px;
+        font-weight: 500;
+    }
+
+    .btn-primary {
+        background-color: #007bff;
+        border-color: #007bff;
+    }
+
+    .btn-success {
+        background-color: #28a745;
+        border-color: #28a745;
+    }
+
+    .highlight-text {
+        color: #e74c3c;
+        font-weight: bold;
+    }
+
+    .section-title {
+        font-size: 1.5rem;
+        color: #2c3e50;
+        margin-bottom: 20px;
+    }
+
+    .subtotal, .impuestos, .total {
+        font-size: 1.25rem;
+        margin-top: 10px;
+    }
+
+        .subtotal span, .impuestos span, .total span {
+            font-weight: bold;
+        }
+
+    .card-body {
+        background-color: #f9fafb;
+        border-radius: 10px;
+        padding: 30px;
+    }
+</style>
+
+<!-- Contenedor principal centrado -->
+<div class="container py-5 card-wrapper">
     <div class="card shadow-sm">
         <!-- Cabecera -->
-        <div class="card-header bg-primary text-white d-flex justify-content-between align-items-center">
+        <div class="card-header">
             <h2 class="mb-0">Nuevo Pedido</h2>
         </div>
 
         <!-- Contenido -->
-        <div class="card-body" style="background-color: rgba(255, 255, 255, 0.9);">
+        <div class="card-body">
             @if (!Model.CarritoProductos.Any())
             {
                 <div class="text-center">
@@ -27,7 +130,7 @@
                 <!-- Tabla de Productos -->
                 <div class="table-responsive mb-4">
                     <table class="table table-bordered table-hover align-middle">
-                        <thead class="table-light text-center">
+                        <thead>
                             <tr>
                                 <th>Imagen</th>
                                 <th>Nombre</th>
@@ -45,8 +148,8 @@
                                     </td>
                                     <td>@carritoItem.Producto.Nombre</td>
                                     <td class="text-center">@carritoItem.Cantidad</td>
-                                    <td class="text-end">$@carritoItem.Producto.Precio.ToString("0.00")</td>
-                                    <td class="text-end">$@(carritoItem.Cantidad * carritoItem.Producto.Precio).ToString("0.00")</td>
+                                    <td class="text-end">S/. @carritoItem.Producto.Precio:0.00</td>
+                                    <td class="text-end">S/. @(carritoItem.Cantidad * carritoItem.Producto.Precio):0.00</td>
                                 </tr>
                             }
                         </tbody>
@@ -55,6 +158,7 @@
 
                 <!-- Formulario -->
                 <form method="post" asp-controller="Pedidos" asp-action="CrearPedido">
+                    <div class="section-title" style="font-weight: bold; font-style: italic;">INFORMACIÓN DEL PEDIDO</div>
                     <div class="mb-3">
                         <label for="TipoPedido" class="form-label">Tipo de Pedido</label>
                         <select id="tipoPedidoSelect" name="TipoPedido" asp-for="@Model.Pedido.TipoPedido" class="form-select">
@@ -69,29 +173,26 @@
                     <!-- Campos Condicionales -->
                     @if (ViewBag.TipoPedido == VCG.TipoPedido.Delivery)
                     {
-                        <div class="mb-3">
-                            <label for="Telefono" class="form-label">Teléfono</label>
-                            <input type="text" id="Telefono" name="Telefono" asp-for="@Model.Pedido.Telefono" class="form-control">
-                            <span class="text-danger">@ViewBag.ErrorTelefono</span>
+                        <div class="input-group mb-3">
+                            <span class="input-group-text">📱</span>
+                            <input type="text" id="Telefono" name="Telefono" asp-for="@Model.Pedido.Telefono" class="form-control" placeholder="Teléfono">
                         </div>
-                        <div class="mb-3">
-                            <label for="Direccion" class="form-label">Dirección</label>
-                            <input type="text" id="Direccion" name="Direccion" asp-for="@Model.Pedido.Direccion" class="form-control">
-                            <span class="text-danger">@ViewBag.ErrorDireccion</span>
+                        <div class="input-group mb-3">
+                            <span class="input-group-text">🏠</span>
+                            <input type="text" id="Direccion" name="Direccion" asp-for="@Model.Pedido.Direccion" class="form-control" placeholder="Dirección">
                         </div>
-                        <div class="mb-3">
-                            <label for="Referencia" class="form-label">Referencia</label>
-                            <input type="text" id="Referencia" name="Referencia" asp-for="@Model.Pedido.Referencia" class="form-control">
-                            <span class="text-danger">@ViewBag.ErrorReferencia</span>
+                        <div class="input-group mb-3">
+                            <span class="input-group-text">📍</span>
+                            <input type="text" id="Referencia" name="Referencia" asp-for="@Model.Pedido.Referencia" class="form-control" placeholder="Referencia">
                         </div>
                     }
                     @if (ViewBag.TipoPedido == VCG.TipoPedido.Recoger)
                     {
                         <div class="mb-3">
-                            <p><strong>Recoger en:</strong> Av. XD de la Pizzería</p>
+                            <p><strong>Recoger en:</strong> Jr. Reina Farje N° 175</p>
+                            <p><strong>Referencia:</strong> Media cuadra del BCP de Sucre</p>
                             <label for="FechaRecogo" class="form-label">Fecha de Recogida</label>
                             <input type="datetime-local" id="FechaRecogo" name="FechaRecogo" asp-for="@Model.Pedido.FechaRecogo" class="form-control">
-                            <span class="text-danger">@ViewBag.ErrorFechaRecogo</span>
                         </div>
                     }
                     @if (ViewBag.TipoPedido == VCG.TipoPedido.Mesa)
@@ -99,15 +200,18 @@
                         <div class="mb-3">
                             <label for="Mesa" class="form-label">Número o Nombre de la Mesa</label>
                             <input type="text" id="Mesa" name="Mesa" asp-for="@Model.Pedido.Mesa" class="form-control">
-                            <span class="text-danger">@ViewBag.ErrorMesa</span>
                         </div>
                     }
 
                     <!-- Resumen y Total -->
-                    <div class="text-end mt-4">
-                        <p><strong>Subtotal:</strong> S/. @Math.Round(Model.CarritoProductos.Sum(item => item.Cantidad * item.Producto.Precio) * 0.82, 2)</p>
-                        <p><strong>Impuestos (18%):</strong> S/. @Math.Round(Model.CarritoProductos.Sum(item => item.Cantidad * item.Producto.Precio) * 0.18, 2)</p>
-                        <p><strong>Total:</strong> S/. @Model.CarritoProductos.Sum(item => item.Cantidad * item.Producto.Precio)</p>
+                    <div class="subtotal">
+                        <span>Subtotal:</span> S/. @Math.Round(Model.CarritoProductos.Sum(item => item.Cantidad * item.Producto.Precio) * 0.82, 2)
+                    </div>
+                    <div class="impuestos">
+                        <span>Impuestos (18%):</span> S/. @Math.Round(Model.CarritoProductos.Sum(item => item.Cantidad * item.Producto.Precio) * 0.18, 2)
+                    </div>
+                    <div class="total">
+                        <span>Total:</span> S/. @Math.Round(Model.CarritoProductos.Sum(item => item.Cantidad * item.Producto.Precio), 2)
                     </div>
 
                     <!-- Botón -->
@@ -124,20 +228,5 @@
     document.getElementById('tipoPedidoSelect').addEventListener('change', function () {
         var selectedValue = this.value;
         window.location.href = '@Url.Action("Nuevo", "Pedidos")?TipoPedido=' + selectedValue;
-    });
-    document.addEventListener("load", function () {
-        const form = document.querySelector("form");
-        const tipoPedido = document.querySelector("#tipoPedidoSelect");
-        const errorTipoPedido = document.querySelector("#errorTipoPedido");
-
-        form.addEventListener("submit", function (e) {
-            // Limpiar errores previos
-            errorTipoPedido.textContent = "";
-
-            if (!tipoPedido.value) {
-                errorTipoPedido.textContent = "Por favor, selecciona un tipo de pedido.";
-                e.preventDefault(); // Detener envío
-            }
-        });
     });
 </script>
