@@ -1,0 +1,83 @@
+﻿@model SisNikosPizza.Domain.Models.Insumo
+
+@{
+    ViewData["Title"] = "Eliminar Insumo";
+    Layout = "~/Views/Shared/_Admin.cshtml";
+}
+
+<section class="content container-fluid">
+    <div class="row justify-content-center">
+        <div class="col-md-8">
+            <form method="post" asp-controller="Insumo" asp-action="Delete">
+                <div class="card card-default">
+                    <div class="card-header">
+                        <span class="card-title"><h2>Eliminar Insumo</h2></span>
+                    </div>
+                    <div class="card-body">
+                        <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+                        <input asp-for="InsumoId" hidden />
+
+                        @if (!string.IsNullOrEmpty(Model.ImagenUrl))
+                        {
+                            <div class="text-center mb-4">
+                                <img src="@Model.ImagenUrl" alt="Imagen del insumo" class="img-fluid rounded shadow-sm" style="max-height: 300px; object-fit: cover;" />
+                            </div>
+                        }
+
+                        <div class="row p-2 border-bottom">
+                            <div class="col-4 text-end"><strong>Insumo ID:</strong></div>
+                            <div class="col">@Model.InsumoId</div>
+                        </div>
+                        <div class="row p-2 border-bottom">
+                            <div class="col-4 text-end"><strong>Nombre:</strong></div>
+                            <div class="col">@Model.Nombre</div>
+                        </div>
+                        <div class="row p-2 border-bottom">
+                            <div class="col-4 text-end"><strong>Precio:</strong></div>
+                            <div class="col">S/. @Model.Precio.ToString("F2")</div>
+                        </div>
+                        <div class="row p-2 border-bottom">
+                            <div class="col-4 text-end"><strong>Cantidad:</strong></div>
+                            <div class="col">@Model.Cantidad.ToString("F2")</div>
+                        </div>
+                        <div class="row p-2 border-bottom">
+                            <div class="col-4 text-end"><strong>Unidad de Medida:</strong></div>
+                            <div class="col">@Model.UnidadeDeMedida</div>
+                        </div>
+                        <div class="row p-2 border-bottom">
+                            <div class="col-4 text-end"><strong>Descripción:</strong></div>
+                            <div class="col">@Model.Descripcion</div>
+                        </div>
+                        <div class="row p-2 border-bottom">
+                            <div class="col-4 text-end"><strong>Estado:</strong></div>
+                            <div class="col">
+                                @if (Model.Estado)
+                                {
+                                    <span class="badge bg-success">ACTIVO</span>
+                                }
+                                else
+                                {
+                                    <span class="badge bg-danger">INACTIVO</span>
+                                }
+                            </div>
+                        </div>
+                        <div class="row p-2 border-bottom">
+                            <div class="col-4 text-end"><strong>Creado el:</strong></div>
+                            <div class="col">@Model.CreatedAt.ToString("dd/MM/yyyy HH:mm")</div>
+                        </div>
+                        <div class="row p-2 border-bottom">
+                            <div class="col-4 text-end"><strong>Actualizado el:</strong></div>
+                            <div class="col">@Model.UpdatedAt.ToString("dd/MM/yyyy HH:mm")</div>
+                        </div>
+
+                        <div class="d-flex justify-content-center mt-4">
+                            <button type="submit" class="btn btn-danger">Eliminar</button>
+                            <div style="width: 20px;"></div>
+                            <a asp-controller="Insumo" asp-action="Index" class="btn btn-primary">Cancelar</a>
+                        </div>
+                    </div>
+                </div>
+            </form>
+        </div>
+    </div>
+</section>

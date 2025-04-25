@@ -44,89 +44,73 @@ namespace SisNikosPizza.Controllers
 
         // Categories/Create
         // Rooms/Create
+
         [HttpGet]
         public async Task<IActionResult> Create()
         {
-            // Enviar la lista de categorias
-            var categories = await _unitWork.CategoriaRepo.ObtenerTodosAsync();
-            IEnumerable<SelectListItem> categoriesList = categories.Select(c => new SelectListItem
-            {
-                Text = c.nombre,
-                Value = c.CategoriaId.ToString()
-            }).ToList();
-            // select CategoryId, Name from Categories
-            // _context.Category.ToList();
-            // ViewData, ViewBag
-            //ViewData["CategoriesList"] = categoriesList;
-            ViewBag.CategoriesList = categoriesList;
+            ViewBag.CategoriesList = (await _unitWork.CategoriaRepo.ObtenerTodosAsync())
+                .Select(c => new SelectListItem { Text = c.nombre, Value = c.CategoriaId.ToString() });
+            ViewBag.InsumosList = await _unitWork.InsumoRepo.ObtenerTodosAsync(i => i.Estado == true);
             return View();
         }
 
-
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Create(Producto producto, IFormFile imageFile)
+        public async Task<IActionResult> Create(Producto producto, IFormFile imageFile, int[] insumoIds, float[] insumoCantidades)
         {
-            // Depuración: Verificar los valores recibidos
-            Console.WriteLine($"CategoriaId: {producto.CategoriaId}");
-            Console.WriteLine($"Nombre: {producto.Nombre}");
-            Console.WriteLine($"Precio: {producto.Precio}");
-            Console.WriteLine($"Imagen recibida: {(imageFile != null ? "Sí" : "No")}");
-
-            // Validar si se subió una imagen
             if (imageFile == null || imageFile.Length == 0)
             {
                 ModelState.AddModelError("ImagenUrl", "La imagen es obligatoria.");
             }
 
-            // Validar el estado del modelo
+            if (insumoIds == null || insumoIds.Length == 0 || insumoCantidades == null || insumoCantidades.Length == 0)
+            {
+                ModelState.AddModelError("", "Debes añadir al menos un insumo.");
+            }
+
             if (!ModelState.IsValid)
             {
-                Console.WriteLine("Modelo no válido");
-                foreach (var key in ModelState.Keys)
-                {
-                    Console.WriteLine($"{key}: {string.Join(", ", ModelState[key].Errors.Select(e => e.ErrorMessage))}");
-                }
-
-                // Obtener las categorías nuevamente para la vista
-                var categories = await _unitWork.CategoriaRepo.ObtenerTodosAsync();
-                ViewBag.CategoriesList = categories.Select(c => new SelectListItem
-                {
-                    Text = c.nombre,
-                    Value = c.CategoriaId.ToString()
-                }).ToList();
-
+                ViewBag.CategoriesList = (await _unitWork.CategoriaRepo.ObtenerTodosAsync())
+                    .Select(c => new SelectListItem { Text = c.nombre, Value = c.CategoriaId.ToString() });
+                ViewBag.InsumosList = await _unitWork.InsumoRepo.ObtenerTodosAsync(i => i.Estado == true);
                 TempData["Error"] = "No se pudo guardar el producto. Verifica los datos ingresados.";
                 return View(producto);
             }
 
             try
             {
-                // Guardar la imagen si se subió
                 if (imageFile != null && imageFile.Length > 0)
                 {
                     string uploadsFolder = Path.Combine(_webHostEnvironment.WebRootPath, "images");
                     string uniqueFileName = Guid.NewGuid().ToString() + "_" + Path.GetFileName(imageFile.FileName);
                     string filePath = Path.Combine(uploadsFolder, uniqueFileName);
-
-                    // Crear el directorio si no existe
                     Directory.CreateDirectory(uploadsFolder);
-
                     using (var fileStream = new FileStream(filePath, FileMode.Create))
                     {
                         await imageFile.CopyToAsync(fileStream);
                     }
-
-                    // Guardar solo el nombre del archivo en la base de datos
                     producto.ImagenUrl = uniqueFileName;
                 }
 
-                // Asignar valores predeterminados
-                producto.Stock = "1 Unidad"; // O cambia esto según tu lógica
+                producto.Stock = "1 Unidad";
                 producto.CreatedAt = DateTime.Now;
                 producto.UpdatedAt = DateTime.Now;
 
-                // Guardar el producto en la base de datos
+                if (insumoIds != null && insumoCantidades != null && insumoIds.Length == insumoCantidades.Length)
+                {
+                    for (int i = 0; i < insumoIds.Length; i++)
+                    {
+                        if (insumoIds[i] > 0 && insumoCantidades[i] > 0)
+                        {
+                            producto.ProductoInsumos.Add(new ProductoInsumo
+                            {
+                                InsumoId = insumoIds[i],
+                                Cantidad = insumoCantidades[i]
+                            });
+                        }
+                    }
+                }
+
                 await _unitWork.ProductoRepo.AgregarAsync(producto);
                 await _unitWork.GuardarProducto();
 
@@ -135,21 +119,13 @@ namespace SisNikosPizza.Controllers
             }
             catch (Exception ex)
             {
-                Console.WriteLine($"Error al guardar el producto: {ex.Message}");
-                TempData["Error"] = "Ocurrió un error al guardar el producto. Intenta nuevamente.";
+                TempData["Error"] = $"Ocurrió un error al guardar el producto: {ex.Message}";
+                ViewBag.CategoriesList = (await _unitWork.CategoriaRepo.ObtenerTodosAsync())
+                    .Select(c => new SelectListItem { Text = c.nombre, Value = c.CategoriaId.ToString() });
+                ViewBag.InsumosList = await _unitWork.InsumoRepo.ObtenerTodosAsync(i => i.Estado == true);
+                return View(producto);
             }
-
-            // Si hay errores, volver a cargar las categorías y mostrar el formulario
-            var categoriesFallback = await _unitWork.CategoriaRepo.ObtenerTodosAsync();
-            ViewBag.CategoriesList = categoriesFallback.Select(c => new SelectListItem
-            {
-                Text = c.nombre,
-                Value = c.CategoriaId.ToString()
-            }).ToList();
-
-            return View(producto);
         }
-
 
 
 

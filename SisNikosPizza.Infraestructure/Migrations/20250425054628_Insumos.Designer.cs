@@ -3,6 +3,7 @@ using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using SisNikosPizza.Infrastructure.Context;
 
@@ -11,9 +12,11 @@ using SisNikosPizza.Infrastructure.Context;
 namespace SisNikosPizza.Infraestructure.Migrations
 {
     [DbContext(typeof(SisNikosPizzaBbContext))]
-    partial class SisNikosPizzaBbContextModelSnapshot : ModelSnapshot
+    [Migration("20250425054628_Insumos")]
+    partial class Insumos
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -494,32 +497,6 @@ namespace SisNikosPizza.Infraestructure.Migrations
                     b.ToTable("producto");
                 });
 
-            modelBuilder.Entity("SisNikosPizza.Domain.Models.ProductoInsumo", b =>
-                {
-                    b.Property<int>("ProductoInsumoId")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("int");
-
-                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("ProductoInsumoId"));
-
-                    b.Property<float>("Cantidad")
-                        .HasColumnType("real");
-
-                    b.Property<int>("InsumoId")
-                        .HasColumnType("int");
-
-                    b.Property<int>("ProductoId")
-                        .HasColumnType("int");
-
-                    b.HasKey("ProductoInsumoId");
-
-                    b.HasIndex("InsumoId");
-
-                    b.HasIndex("ProductoId");
-
-                    b.ToTable("ProductoInsumo");
-                });
-
             modelBuilder.Entity("SisNikosPizza.Domain.Models.Proveedor", b =>
                 {
                     b.Property<int>("ProveedorId")
@@ -723,25 +700,6 @@ namespace SisNikosPizza.Infraestructure.Migrations
                     b.Navigation("categoria");
                 });
 
-            modelBuilder.Entity("SisNikosPizza.Domain.Models.ProductoInsumo", b =>
-                {
-                    b.HasOne("SisNikosPizza.Domain.Models.Insumo", "Insumo")
-                        .WithMany()
-                        .HasForeignKey("InsumoId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.HasOne("SisNikosPizza.Domain.Models.Producto", "Producto")
-                        .WithMany("ProductoInsumos")
-                        .HasForeignKey("ProductoId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.Navigation("Insumo");
-
-                    b.Navigation("Producto");
-                });
-
             modelBuilder.Entity("SisNikosPizza.Domain.Models.Venta", b =>
                 {
                     b.HasOne("Microsoft.AspNetCore.Identity.IdentityUser", "Owner")
@@ -761,11 +719,6 @@ namespace SisNikosPizza.Infraestructure.Migrations
             modelBuilder.Entity("SisNikosPizza.Domain.Models.Pedido", b =>
                 {
                     b.Navigation("DetallePedidos");
-                });
-
-            modelBuilder.Entity("SisNikosPizza.Domain.Models.Producto", b =>
-                {
-                    b.Navigation("ProductoInsumos");
                 });
 
             modelBuilder.Entity("SisNikosPizza.Domain.Models.Venta", b =>

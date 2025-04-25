@@ -12,6 +12,6 @@ namespace SisNikosPizza.Domain.Models
         public IdentityUser Owner { get; set; }
 
         // Relación con los productos a través de CarritoProducto
-        public virtual ICollection<CarritoProducto> CarritoProductos { get; set; }
+        public List<CarritoProducto> CarritoProductos { get; set; } = new List<CarritoProducto>();
     }
 }

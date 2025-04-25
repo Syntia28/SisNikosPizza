@@ -1,0 +1,93 @@
+﻿@model SisNikosPizza.Domain.Models.Insumo
+
+@{
+    ViewData["Title"] = "Crear Insumo";
+    Layout = "~/Views/Shared/_Admin.cshtml";
+}
+
+<section class="content container-fluid">
+    <div class="row justify-content-center">
+        <div class="col-md-10 col-lg-8">
+            <form method="post" asp-controller="Insumo" asp-action="Create" enctype="multipart/form-data">
+                <div class="card shadow-sm border-0">
+                    <!-- Encabezado -->
+                    <div class="card-header bg-primary text-white text-center py-3">
+                        <h3 class="card-title mb-0"><i class="bi bi-box-seam"></i> Nuevo Insumo</h3>
+                    </div>
+                    <div class="card-body bg-light">
+                        <!-- Validation Summary -->
+                        <div asp-validation-summary="ModelOnly" class="text-danger mb-3"></div>
+
+                        <!-- Nombre -->
+                        <div class="mb-4">
+                            <label class="form-label fw-bold">Nombre <span class="text-danger">*</span></label>
+                            <input type="text" asp-for="Nombre" class="form-control form-control-lg" placeholder="Nombre del insumo" />
+                            <span asp-validation-for="Nombre" class="text-danger"></span>
+                        </div>
+
+                        <!-- Descripción -->
+                        <div class="mb-4">
+                            <label class="form-label fw-bold">Descripción</label>
+                            <textarea asp-for="Descripcion" class="form-control" rows="4" placeholder="Descripción del insumo"></textarea>
+                            <span asp-validation-for="Descripcion" class="text-danger"></span>
+                        </div>
+
+                        <!-- Precio -->
+                        <div class="row">
+                            <div class="col-md-6 mb-4">
+                                <label class="form-label fw-bold">Precio Unitario<span class="text-danger">*</span></label>
+                                <input type="number" asp-for="Precio" class="form-control" placeholder="Precio del insumo" step="0.01" />
+                                <span asp-validation-for="Precio" class="text-danger"></span>
+                            </div>
+
+                            <!-- Cantidad -->
+                            <div class="col-md-6 mb-4">
+                                <label class="form-label fw-bold">Cantidad <span class="text-danger">*</span></label>
+                                <input type="number" asp-for="Cantidad" class="form-control" placeholder="Cantidad del insumo" step="0.01" />
+                                <span asp-validation-for="Cantidad" class="text-danger"></span>
+                            </div>
+                        </div>
+
+                        <!-- Unidad de Medida -->
+                        <div class="mb-4">
+                            <label class="form-label fw-bold">Unidad de Medida <span class="text-danger">*</span></label>
+                            <input type="text" asp-for="UnidadeDeMedida" class="form-control" placeholder="Ejemplo: kg, litro, unidad" />
+                            <span asp-validation-for="UnidadeDeMedida" class="text-danger"></span>
+                        </div>
+
+                        <!-- Imagen -->
+                        <div class="mb-4">
+                            <label class="form-label fw-bold">Imagen</label>
+                            <input type="file" name="imageFile" class="form-control" accept="image/*" />
+                            <span asp-validation-for="ImagenUrl" class="text-danger"></span>
+                        </div>
+
+                        <!-- Estado -->
+                        <div class="mb-4">
+                            <label class="form-label fw-bold">Estado <span class="text-danger">*</span></label>
+                            <select asp-for="Estado" class="form-select">
+                                <option value="true">Activo</option>
+                                <option value="false">Inactivo</option>
+                            </select>
+                            <span asp-validation-for="Estado" class="text-danger"></span>
+                        </div>
+
+                        <!-- Botones -->
+                        <div class="d-flex justify-content-end mt-4">
+                            <button type="submit" class="btn btn-success btn-lg me-2">
+                                <i class="bi bi-floppy"></i> Guardar
+                            </button>
+                            <a asp-controller="Insumo" asp-action="Index" class="btn btn-secondary btn-lg">
+                                <i class="bi bi-x-circle"></i> Cancelar
+                            </a>
+                        </div>
+                    </div>
+                </div>
+            </form>
+        </div>
+    </div>
+</section>
+
+@section Scripts {
+    <partial name="_ValidationScriptsPartial" />
+}

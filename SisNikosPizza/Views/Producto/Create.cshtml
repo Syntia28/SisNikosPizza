@@ -1,9 +1,9 @@
 ﻿@model SisNikosPizza.Domain.Models.Producto
-
 @{
     ViewData["Title"] = "Crear Producto";
     Layout = "~/Views/Shared/_Admin.cshtml";
 }
+
 <section class="content container-fluid">
     <div class="row justify-content-center">
         <div class="col-md-10 col-lg-8">
@@ -14,6 +14,22 @@
                         <h3 class="card-title mb-0"><i class="bi bi-box-seam"></i> Nuevo Producto</h3>
                     </div>
                     <div class="card-body bg-light">
+                        <!-- Mensajes de éxito/error -->
+                        @if (TempData["Satisfactorio"] != null)
+                        {
+                            <div class="alert alert-success alert-dismissible fade show" role="alert">
+                                @TempData["Satisfactorio"]
+                                <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+                            </div>
+                        }
+                        @if (TempData["Error"] != null)
+                        {
+                            <div class="alert alert-danger alert-dismissible fade show" role="alert">
+                                @TempData["Error"]
+                                <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+                            </div>
+                        }
+
                         <!-- Validation Summary -->
                         <div asp-validation-summary="ModelOnly" class="text-danger mb-3"></div>
 
@@ -35,7 +51,7 @@
                         <div class="mb-4">
                             <label class="form-label fw-bold">Categoría <span class="text-danger">*</span></label>
                             <select asp-for="CategoriaId" asp-items="@ViewBag.CategoriesList" class="form-select">
-                                <option selected disabled>--Seleccionar categoría--</option>
+                                <option value="" selected disabled>--Seleccionar categoría--</option>
                             </select>
                             <span asp-validation-for="CategoriaId" class="text-danger"></span>
                         </div>
@@ -44,22 +60,39 @@
                         <div class="row">
                             <div class="col-md-6 mb-4">
                                 <label class="form-label fw-bold">Precio <span class="text-danger">*</span></label>
-                                <input type="number" asp-for="Precio" class="form-control" placeholder="Precio del producto" step="0.01" />
+                                <input type="number" asp-for="Precio" class="form-control" placeholder="Precio del producto" step="0.01" min="0" />
                                 <span asp-validation-for="Precio" class="text-danger"></span>
                             </div>
 
                             <!-- Stock -->
                             <div class="col-md-6 mb-4">
                                 <label class="form-label fw-bold">Stock <span class="text-danger">*</span></label>
-                                <input type="text" asp-for="Stock" class="form-control" placeholder="Stock del producto" />
+                                <input type="text" asp-for="Stock" class="form-control" value="1 Unidad" readonly />
                                 <span asp-validation-for="Stock" class="text-danger"></span>
                             </div>
                         </div>
 
+                        <!-- Insumos -->
+                        <div class="mb-4">
+                            <label class="form-label fw-bold">Insumos <span class="text-danger">*</span></label>
+                            <table class="table table-bordered" id="insumosTable">
+                                <thead>
+                                    <tr>
+                                        <th>Insumo</th>
+                                        <th>Cantidad</th>
+                                        <th>Unidad de Medida</th>
+                                        <th>Acción</th>
+                                    </tr>
+                                </thead>
+                                <tbody></tbody>
+                            </table>
+                            <button type="button" class="btn btn-primary" onclick="addInsumoRow()">Añadir Insumo</button>
+                        </div>
+
                         <!-- Imagen -->
                         <div class="mb-4">
-                            <label class="form-label fw-bold">Imagen</label>
-                            <input type="file" name="imageFile" class="form-control" accept="image/*" />
+                            <label class="form-label fw-bold">Imagen <span class="text-danger">*</span></label>
+                            <input type="file" name="imageFile" class="form-control" accept="image/*" required />
                             <span asp-validation-for="ImagenUrl" class="text-danger"></span>
                         </div>
 
@@ -88,3 +121,127 @@
         </div>
     </div>
 </section>
+
+@section Scripts {
+    <partial name="_ValidationScriptsPartial" />
+    <script>
+        // Lista de insumos desde ViewBag
+        const insumos = @Html.Raw(Json.Serialize(ViewBag.InsumosList ?? new List<SisNikosPizza.Domain.Models.Insumo>()));
+        console.log('Insumos:', insumos);
+
+        function addInsumoRow() {
+            // Verificar que haya insumos disponibles
+            if (!insumos || insumos.length === 0) {
+                alert('No hay insumos disponibles para añadir. Por favor, crea algunos insumos primero.');
+                return;
+            }
+
+            // Crear una nueva fila
+            const tbody = document.querySelector('#insumosTable tbody');
+            const tr = document.createElement('tr');
+
+            // Columna: Insumo (select)
+            const tdInsumo = document.createElement('td');
+            const select = document.createElement('select');
+            select.name = 'insumoIds';
+            select.className = 'form-select insumo-select';
+            select.required = true;
+            select.addEventListener('change', () => updateUnidadMedida(select));
+
+            const defaultOption = document.createElement('option');
+            defaultOption.value = '';
+            defaultOption.textContent = '--Seleccionar insumo--';
+            select.appendChild(defaultOption);
+
+            insumos.forEach(insumo => {
+                const option = document.createElement('option');
+                option.value = insumo.InsumoId;
+                option.textContent = insumo.Nombre;
+                option.dataset.unidad = insumo.UnidadeDeMedida;
+                select.appendChild(option);
+            });
+            tdInsumo.appendChild(select);
+
+            // Columna: Cantidad (input)
+            const tdCantidad = document.createElement('td');
+            const inputCantidad = document.createElement('input');
+            inputCantidad.type = 'number';
+            inputCantidad.name = 'insumoCantidades';
+            inputCantidad.className = 'form-control';
+            inputCantidad.step = '0.01';
+            inputCantidad.placeholder = 'Cantidad';
+            inputCantidad.min = '0.01';
+            inputCantidad.required = true;
+            tdCantidad.appendChild(inputCantidad);
+
+            // Columna: Unidad de Medida (input readonly)
+            const tdUnidad = document.createElement('td');
+            const inputUnidad = document.createElement('input');
+            inputUnidad.type = 'text';
+            inputUnidad.className = 'form-control unidad-medida';
+            inputUnidad.readOnly = true;
+            tdUnidad.appendChild(inputUnidad);
+
+            // Columna: Acción (botón eliminar)
+            const tdAccion = document.createElement('td');
+            const btnEliminar = document.createElement('button');
+            btnEliminar.type = 'button';
+            btnEliminar.className = 'btn btn-danger';
+            btnEliminar.textContent = 'Eliminar';
+            btnEliminar.addEventListener('click', () => removeInsumoRow(btnEliminar));
+            tdAccion.appendChild(btnEliminar);
+            const tdAccion = document.createElement('td');
+            const btnEliminar = document.createElement('button');
+            btnDetalle.type = 'button';
+            btnDetalle.className = 'btn btn-danger';
+            btnDetalle.textContent = 'Detalle';
+            btnEliminar.addEventListener('click', () => removeInsumoRow(btnDetalle));
+            tdAccion.appendChild(btnDetalle);
+            // Agregar celdas a la fila
+            tr.append(tdInsumo, tdCantidad, tdUnidad, tdAccion);
+            tbody.appendChild(tr);
+        }
+
+        function removeInsumoRow(button) {
+            button.closest('tr').remove();
+        }
+
+        function updateUnidadMedida(select) {
+            const unidadMedidaInput = select.closest('tr').querySelector('.unidad-medida');
+            const selectedOption = select.options[select.selectedIndex];
+            unidadMedidaInput.value = selectedOption.dataset.unidad || '';
+        }
+
+        // Validar antes de enviar el formulario
+        document.querySelector('form').addEventListener('submit', (e) => {
+            const rows = document.querySelectorAll('#insumosTable tbody tr');
+            if (rows.length === 0) {
+                e.preventDefault();
+                alert('Debes añadir al menos un insumo.');
+                return;
+            }
+
+            let isValid = true;
+            const selectedInsumos = [];
+            rows.forEach(row => {
+                const select = row.querySelector('.insumo-select');
+                const cantidad = row.querySelector('input[name="insumoCantidades"]');
+                if (!select.value || !cantidad.value || parseFloat(cantidad.value) <= 0) {
+                    isValid = false;
+                    alert('Por favor, selecciona un insumo y especifica una cantidad válida para todas las filas.');
+                    return;
+                }
+                if (selectedInsumos.includes(select.value)) {
+                    isValid = false;
+                    alert('No puedes seleccionar el mismo insumo más de una vez.');
+                    return;
+                }
+                selectedInsumos.push(select.value);
+            });
+
+            if (!isValid) {
+                e.preventDefault();
+            }
+        });
+    </script>
+}
