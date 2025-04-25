@@ -19,6 +19,7 @@ public class SisNikosPizzaBbContext : IdentityDbContext
     public DbSet<Producto> producto { get; set; }
     public DbSet<Insumo> insumo { get; set; }
     public DbSet<Proveedor> proveedor { get; set; }
+    public DbSet<ProductoInsumo> productoInsumos { get; set; }
     public DbSet<Pedido> pedido { get; set; }
     public DbSet<Carrito> carrito { get; set; }
     public DbSet<Venta> venta { get; set; }
@@ -57,6 +58,11 @@ modelBuilder.Entity<DetalleVenta>()
         // Relación prodcucto -> ProductoInsumos
         modelBuilder.Entity<Producto>().HasMany(s => s.ProductoInsumos);
 
+
+        modelBuilder.Entity<Insumo>().HasMany(pi => pi.Productos);
+
+     
+    
 
 
 

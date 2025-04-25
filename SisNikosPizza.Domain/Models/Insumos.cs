@@ -18,5 +18,7 @@ namespace SisNikosPizza.Domain.Models
         public string UnidadeDeMedida { get; set; }
         public float Cantidad { get; set; }
 
+        public List<ProductoInsumo> Productos { get; set; }
+
     }
 }
