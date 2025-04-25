@@ -19,7 +19,13 @@ namespace SisNikosPizza.Domain.Models
         public  float Precio { get; set; }
         public string Stock { get; set; }
 
+
         //por implementar 
         //proveedor
+        // Relación con los productos a través de CarritoProducto
+      
+
+        // Relación con los productos a través de CarritoProducto
+        public List<ProductoInsumo> ProductoInsumos { get; set; } = new List<ProductoInsumo>();
     }
 }

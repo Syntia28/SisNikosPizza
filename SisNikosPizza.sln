@@ -3,15 +3,15 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio Version 17
 VisualStudioVersion = 17.10.35122.118
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SisNikosPizza", "SisNikosPizza\SisNikosPizza.csproj", "{5D06EE34-1CAD-49AC-95F5-14AB0A7E84A6}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "SisNikosPizza", "SisNikosPizza\SisNikosPizza.csproj", "{5D06EE34-1CAD-49AC-95F5-14AB0A7E84A6}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SisNikosPizza.Domain", "SisNikosPizza.Domain\SisNikosPizza.Domain.csproj", "{08ADC5C9-9284-44C8-AC20-41000263B896}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "SisNikosPizza.Domain", "SisNikosPizza.Domain\SisNikosPizza.Domain.csproj", "{08ADC5C9-9284-44C8-AC20-41000263B896}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SisNikosPizza.Infraestructure", "SisNikosPizza.Infraestructure\SisNikosPizza.Infraestructure.csproj", "{6A39FDE1-1BA0-493C-876F-D63E57BF273C}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "SisNikosPizza.Infraestructure", "SisNikosPizza.Infraestructure\SisNikosPizza.Infraestructure.csproj", "{6A39FDE1-1BA0-493C-876F-D63E57BF273C}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SisNikosPizza.Repository", "SisNikosPizza.Repository\SisNikosPizza.Repository.csproj", "{F65F9BFB-DBA6-465B-9AD9-E2E71AD55007}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "SisNikosPizza.Repository", "SisNikosPizza.Repository\SisNikosPizza.Repository.csproj", "{F65F9BFB-DBA6-465B-9AD9-E2E71AD55007}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SisNikosPizza.Utilidades", "SisNikosPizza.Utilidades\SisNikosPizza.Utilidades.csproj", "{165ECCB2-FA02-4576-A9F2-AFAEA6CDFCC7}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "SisNikosPizza.Utilidades", "SisNikosPizza.Utilidades\SisNikosPizza.Utilidades.csproj", "{165ECCB2-FA02-4576-A9F2-AFAEA6CDFCC7}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
