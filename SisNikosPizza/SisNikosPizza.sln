@@ -1,0 +1,30 @@
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio Version 17
+VisualStudioVersion = 17.5.2.0
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SisNikosPizza", "SisNikosPizza.csproj", "{5C91AADD-41DB-C056-6D9A-486548FCDA41}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SisNikosPizza - Backup", "SisNikosPizza - Backup.csproj", "{80F183D9-CAA0-93CD-85F0-C4906166D974}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{5C91AADD-41DB-C056-6D9A-486548FCDA41}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{5C91AADD-41DB-C056-6D9A-486548FCDA41}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{5C91AADD-41DB-C056-6D9A-486548FCDA41}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{5C91AADD-41DB-C056-6D9A-486548FCDA41}.Release|Any CPU.Build.0 = Release|Any CPU
+		{80F183D9-CAA0-93CD-85F0-C4906166D974}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{80F183D9-CAA0-93CD-85F0-C4906166D974}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{80F183D9-CAA0-93CD-85F0-C4906166D974}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{80F183D9-CAA0-93CD-85F0-C4906166D974}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+		SolutionGuid = {8421C901-2213-48C8-9220-B79C82E6EA0A}
+	EndGlobalSection
+EndGlobal
