@@ -19,6 +19,9 @@ namespace SisNikosPizza.Repository.Interfaces
         IPedidoRepository PedidoRepo { get; }
         Task GuardarPedido();
 
+        IProductoInsumoRepo ProductoInsumoRepo { get; }
+        Task GuardarProductoInsumo();
+
         ICarritoRepository CarritoRepo { get; }
 
         Task GuardarCarrito();

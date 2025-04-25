@@ -20,6 +20,9 @@ namespace SisNikosPizza.Repository.Implements
         public IPedidoRepository PedidoRepo { get; private set; }
         public IVentaRepository VentaRepo { get; private set; }
         public ICarritoRepository CarritoRepo { get; private set; }
+
+        public IProductoInsumoRepo ProductoInsumoRepo { get; private set; }
+
         public UnitWork(SisNikosPizzaBbContext db, 
             ILogger<CarritoRepository> logger
             )
@@ -32,6 +35,7 @@ namespace SisNikosPizza.Repository.Implements
             CarritoRepo = new CarritoRepository(_db, logger);
             VentaRepo = new VentaRepository(_db);
             InsumoRepo = new InsumoRepository(_db);
+            ProductoInsumoRepo = new ProductoInsumoImpl(_db);
 
         }
         public void Dispose()
@@ -70,6 +74,11 @@ namespace SisNikosPizza.Repository.Implements
             await _db.SaveChangesAsync();
         }
         public async Task GuardarCarrito()
+        {
+            await _db.SaveChangesAsync();
+        }
+
+        public async Task GuardarProductoInsumo()
         {
             await _db.SaveChangesAsync();
         }

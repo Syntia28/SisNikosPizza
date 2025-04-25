@@ -29,6 +29,13 @@ namespace SisNikosPizza.Controllers
         {
             var productos = await _unitWork.ProductoRepo.ObtenerTodosAsync(ordenarPor: c => c.OrderByDescending(c => c.ProductoId));
 
+            foreach (var item in productos)
+            {
+                var insumos = await _unitWork.ProductoInsumoRepo.ObtenerTodosAsync(filtro: p => p.ProductoId == item.ProductoId, incluirPropiedades: "Insumo");
+
+                item.ProductoInsumos = insumos.ToList();
+            }
+
             // Construir la URL completa para cada producto
             string baseUrl = $"{Request.Scheme}://{Request.Host}/images";
             foreach (var producto in productos)
@@ -54,83 +61,127 @@ namespace SisNikosPizza.Controllers
             return View();
         }
 
-        [HttpPost]
-        [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Create(Producto producto, IFormFile imageFile, int[] insumoIds, float[] insumoCantidades)
-        {
+   
+
+
+            [HttpPost]
+            [ValidateAntiForgeryToken]
+            public async Task<IActionResult> Create(Producto producto, IFormFile imageFile, int[] insumoIds, float[] insumoCantidades)
+            {
+           Producto newProduct = new Producto();
+
+            // Validar imagen
             if (imageFile == null || imageFile.Length == 0)
-            {
-                ModelState.AddModelError("ImagenUrl", "La imagen es obligatoria.");
-            }
-
-            if (insumoIds == null || insumoIds.Length == 0 || insumoCantidades == null || insumoCantidades.Length == 0)
-            {
-                ModelState.AddModelError("", "Debes añadir al menos un insumo.");
-            }
-
-            if (!ModelState.IsValid)
-            {
-                ViewBag.CategoriesList = (await _unitWork.CategoriaRepo.ObtenerTodosAsync())
-                    .Select(c => new SelectListItem { Text = c.nombre, Value = c.CategoriaId.ToString() });
-                ViewBag.InsumosList = await _unitWork.InsumoRepo.ObtenerTodosAsync(i => i.Estado == true);
-                TempData["Error"] = "No se pudo guardar el producto. Verifica los datos ingresados.";
-                return View(producto);
-            }
-
-            try
-            {
-                if (imageFile != null && imageFile.Length > 0)
                 {
-                    string uploadsFolder = Path.Combine(_webHostEnvironment.WebRootPath, "images");
-                    string uniqueFileName = Guid.NewGuid().ToString() + "_" + Path.GetFileName(imageFile.FileName);
-                    string filePath = Path.Combine(uploadsFolder, uniqueFileName);
-                    Directory.CreateDirectory(uploadsFolder);
-                    using (var fileStream = new FileStream(filePath, FileMode.Create))
-                    {
-                        await imageFile.CopyToAsync(fileStream);
-                    }
-                    producto.ImagenUrl = uniqueFileName;
+                    ModelState.AddModelError("ImagenUrl", "La imagen es obligatoria.");
                 }
 
-                producto.Stock = "1 Unidad";
-                producto.CreatedAt = DateTime.Now;
-                producto.UpdatedAt = DateTime.Now;
+                // Validar insumos
+                if (insumoIds == null || insumoIds.Length == 0 || insumoCantidades == null || insumoCantidades.Length == 0 || insumoIds.Length != insumoCantidades.Length)
+                {
+                    ModelState.AddModelError("", "Debes añadir al menos un insumo con una cantidad válida.");
+                }
 
+                // Validar que los insumoIds existan en la base de datos
+                if (insumoIds != null && insumoIds.Length > 0)
+                {
+                    var validInsumoIds = (await _unitWork.InsumoRepo.ObtenerTodosAsync(i => i.Estado == true))
+                        .Select(i => i.InsumoId)
+                        .ToList();
+                    if (insumoIds.Any(id => !validInsumoIds.Contains(id)))
+                    {
+                        ModelState.AddModelError("", "Uno o más insumos seleccionados no son válidos.");
+                    }
+                }
+
+                if (!ModelState.IsValid)
+                {
+                    ViewBag.CategoriesList = (await _unitWork.CategoriaRepo.ObtenerTodosAsync())
+                        .Select(c => new SelectListItem { Text = c.nombre, Value = c.CategoriaId.ToString() });
+                    ViewBag.InsumosList = await _unitWork.InsumoRepo.ObtenerTodosAsync(i => i.Estado == true);
+                    TempData["Error"] = "No se pudo guardar el producto. Verifica los datos ingresados.";
+                    return View(producto);
+                }
+
+                try
+                {
+                    // Guardar la imagen
+                    if (imageFile != null && imageFile.Length > 0)
+                    {
+                        string uploadsFolder = Path.Combine(_webHostEnvironment.WebRootPath, "images");
+                        string uniqueFileName = Guid.NewGuid().ToString() + "_" + Path.GetFileName(imageFile.FileName);
+                        string filePath = Path.Combine(uploadsFolder, uniqueFileName);
+                        Directory.CreateDirectory(uploadsFolder);
+                        using (var fileStream = new FileStream(filePath, FileMode.Create))
+                        {
+                            await imageFile.CopyToAsync(fileStream);
+                        }
+                        producto.ImagenUrl = uniqueFileName;
+                    }
+
+                    // Configurar propiedades del producto
+                    producto.Stock = "1 Unidad";
+                    producto.CreatedAt = DateTime.Now;
+                    producto.UpdatedAt = DateTime.Now;
+
+                //newProduct.ProductoInsumos = productoInsumos;
+                newProduct.CategoriaId = producto.CategoriaId;
+                newProduct.Nombre = producto.Nombre;
+                newProduct.Descripcion = producto.Descripcion;
+                newProduct.Precio = producto.Precio;
+                newProduct.Estado = true;
+                newProduct.ImagenUrl = producto.ImagenUrl;
+                newProduct.Stock = "1 unidad";
+
+              
+
+                // Guardar el producto y sus insumos en una sola transacción
+                await _unitWork.ProductoRepo.AgregarAsync(newProduct);
+                await _unitWork.GuardarProducto();
+
+                // Agregar insumos al producto
                 if (insumoIds != null && insumoCantidades != null && insumoIds.Length == insumoCantidades.Length)
                 {
                     for (int i = 0; i < insumoIds.Length; i++)
                     {
                         if (insumoIds[i] > 0 && insumoCantidades[i] > 0)
                         {
-                            producto.ProductoInsumos.Add(new ProductoInsumo
+                            var pi = new ProductoInsumo
                             {
                                 InsumoId = insumoIds[i],
+                                ProductoId = newProduct.ProductoId,
                                 Cantidad = insumoCantidades[i]
-                            });
+
+                            };
+
+                            await _unitWork.ProductoInsumoRepo.AgregarAsync(pi);
+                            await _unitWork.GuardarProductoInsumo();
                         }
                     }
                 }
 
-                await _unitWork.ProductoRepo.AgregarAsync(producto);
-                await _unitWork.GuardarProducto();
-
-                TempData["Satisfactorio"] = "Producto creado correctamente.";
-                return RedirectToAction("Details", new { id = producto.ProductoId });
+                    TempData["Satisfactorio"] = "Producto creado correctamente.";
+                    return RedirectToAction("Details", new { id = newProduct.ProductoId });
+                }
+                catch (Exception ex)
+                {
+                    // Incluir detalles de la inner exception para diagnóstico
+                    var errorMessage = ex.Message;
+                    if (ex.InnerException != null)
+                    {
+                        errorMessage += $" | Inner Exception: {ex.InnerException.Message}";
+                    }
+                    TempData["Error"] = $"Ocurrió un error al guardar el producto: {errorMessage}";
+                    ViewBag.CategoriesList = (await _unitWork.CategoriaRepo.ObtenerTodosAsync())
+                        .Select(c => new SelectListItem { Text = c.nombre, Value = c.CategoriaId.ToString() });
+                    ViewBag.InsumosList = await _unitWork.InsumoRepo.ObtenerTodosAsync(i => i.Estado == true);
+                    return View(producto);
+                }
             }
-            catch (Exception ex)
-            {
-                TempData["Error"] = $"Ocurrió un error al guardar el producto: {ex.Message}";
-                ViewBag.CategoriesList = (await _unitWork.CategoriaRepo.ObtenerTodosAsync())
-                    .Select(c => new SelectListItem { Text = c.nombre, Value = c.CategoriaId.ToString() });
-                ViewBag.InsumosList = await _unitWork.InsumoRepo.ObtenerTodosAsync(i => i.Estado == true);
-                return View(producto);
-            }
-        }
+       
 
-
-
-        // Categories/Edit/5
-        [HttpGet]
+    // Categories/Edit/5
+    [HttpGet]
         public async Task<IActionResult> Edit(int id)
         {
             //if (id <= 0)

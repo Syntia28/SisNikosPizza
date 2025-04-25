@@ -74,7 +74,7 @@
 
                         <!-- Insumos -->
                         <div class="mb-4">
-                            <label class="form-label fw-bold">Insumos <span class="text-danger">*</span></label>
+                            <label class="form-label fw-bold">Insumos <span class="text-daer">*</span></label>
                             <table class="table table-bordered" id="insumosTable">
                                 <thead>
                                     <tr>
@@ -154,10 +154,11 @@
             select.appendChild(defaultOption);
 
             insumos.forEach(insumo => {
+
                 const option = document.createElement('option');
-                option.value = insumo.InsumoId;
-                option.textContent = insumo.Nombre;
-                option.dataset.unidad = insumo.UnidadeDeMedida;
+                option.value = insumo.insumoId;
+                option.textContent = insumo.nombre;
+                option.dataset.unidad = insumo.unidadeDeMedida;
                 select.appendChild(option);
             });
             tdInsumo.appendChild(select);
@@ -190,13 +191,7 @@
             btnEliminar.textContent = 'Eliminar';
             btnEliminar.addEventListener('click', () => removeInsumoRow(btnEliminar));
             tdAccion.appendChild(btnEliminar);
-            const tdAccion = document.createElement('td');
-            const btnEliminar = document.createElement('button');
-            btnDetalle.type = 'button';
-            btnDetalle.className = 'btn btn-danger';
-            btnDetalle.textContent = 'Detalle';
-            btnEliminar.addEventListener('click', () => removeInsumoRow(btnDetalle));
-            tdAccion.appendChild(btnDetalle);
+
             // Agregar celdas a la fila
             tr.append(tdInsumo, tdCantidad, tdUnidad, tdAccion);
             tbody.appendChild(tr);

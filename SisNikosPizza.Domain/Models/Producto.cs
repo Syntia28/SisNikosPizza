@@ -26,6 +26,6 @@ namespace SisNikosPizza.Domain.Models
       
 
         // Relación con los productos a través de CarritoProducto
-        public List<ProductoInsumo> ProductoInsumos { get; set; } = new List<ProductoInsumo>();
+        public List<ProductoInsumo> ProductoInsumos { get; set; }
     }
 }
