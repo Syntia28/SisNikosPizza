@@ -75,9 +75,16 @@ namespace SisNikosPizza.Controllers
                 {
                     ModelState.AddModelError("ImagenUrl", "La imagen es obligatoria.");
                 }
+            // Validar que no se repita el nombre del producto 
+            var productoExistente = await _unitWork.ProductoRepo
+                .ObtenerPrimeroAsync(p => p.Nombre.ToLower() == producto.Nombre.ToLower());
 
-                // Validar insumos
-                if (insumoIds == null || insumoIds.Length == 0 || insumoCantidades == null || insumoCantidades.Length == 0 || insumoIds.Length != insumoCantidades.Length)
+            if (productoExistente != null)
+            {
+                ModelState.AddModelError("Nombre", "Ya existe un producto con ese nombre.");
+            }
+            // Validar insumos
+            if (insumoIds == null || insumoIds.Length == 0 || insumoCantidades == null || insumoCantidades.Length == 0 || insumoIds.Length != insumoCantidades.Length)
                 {
                     ModelState.AddModelError("", "Debes añadir al menos un insumo con una cantidad válida.");
                 }
