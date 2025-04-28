@@ -67,9 +67,10 @@
                             <!-- Stock -->
                             <div class="col-md-6 mb-4">
                                 <label class="form-label fw-bold">Stock <span class="text-danger">*</span></label>
-                                <input type="text" asp-for="Stock" class="form-control" value="1 Unidad" readonly />
+                                <input type="number" asp-for="Stock" class="form-control" min="1"placeholder="unidad" step="1" />
                                 <span asp-validation-for="Stock" class="text-danger"></span>
                             </div>
+
                         </div>
 
                         <!-- Insumos -->

@@ -12,8 +12,8 @@ using SisNikosPizza.Infrastructure.Context;
 namespace SisNikosPizza.Infraestructure.Migrations
 {
     [DbContext(typeof(SisNikosPizzaBbContext))]
-    [Migration("20250425174545_test1")]
-    partial class test1
+    [Migration("20250428085622_insumo")]
+    partial class insumo
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)

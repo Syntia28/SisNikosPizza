@@ -6,22 +6,37 @@
 }
 
 <div class="container py-5">
-    <h2 class="mb-4">Detalle de la Venta</h2>
+    <h2 class="mb-5 text-center text-primary">Detalle de la Venta</h2>
+
+    <!-- Botón de Regresar -->
+    <div class="mb-4">
+        <a href="javascript:history.back()" class="btn btn-secondary">
+            <i class="bi bi-arrow-left-circle"></i> Regresar
+        </a>
+    </div>
 
     <!-- Información General de la Venta -->
-    <div class="card mb-4">
+    <div class="card mb-5 shadow-lg rounded">
         <div class="card-body">
-            <h5 class="card-title">Información de la Venta</h5>
-            <p><strong>Número de Venta:</strong> @Model.VentaId</p>
-            <p><strong>Fecha:</strong> @Model.Fecha.ToString("dd/MM/yyyy HH:mm")</p>
-            <p><strong>Cliente:</strong> @Model.Owner?.UserName</p>
+            <h5 class="card-title text-uppercase text-primary mb-3">Información de la Venta</h5>
+            <div class="row">
+                <div class="col-md-4 mb-3">
+                    <p><strong>Número de Venta:</strong> <span class="text-muted">@Model.VentaId</span></p>
+                </div>
+                <div class="col-md-4 mb-3">
+                    <p><strong>Fecha:</strong> <span class="text-muted">@Model.Fecha.ToString("dd/MM/yyyy HH:mm")</span></p>
+                </div>
+                <div class="col-md-4 mb-3">
+                    <p><strong>Cliente:</strong> <span class="text-muted">@Model.Owner?.UserName</span></p>
+                </div>
+            </div>
         </div>
     </div>
 
     <!-- Detalle de la Venta -->
-    <div class="table-responsive">
-        <table class="table table-bordered table-hover">
-            <thead class="table-light">
+    <div class="table-responsive shadow-lg rounded">
+        <table class="table table-striped table-hover">
+            <thead class="table-primary">
                 <tr>
                     <th>Producto</th>
                     <th>Descripción</th>
@@ -37,12 +52,12 @@
                         <td>
                             @if (detalle.Producto != null)
                             {
-                                <img src="@detalle.Producto.ImagenUrl" alt="@detalle.Producto.Nombre" style="width: 50px; height: 50px;" />
+                                <img src="@detalle.Producto.ImagenUrl" alt="@detalle.Producto.Nombre" class="img-fluid rounded-circle" style="width: 50px; height: 50px;" />
                                 <span>@detalle.Producto.Nombre</span>
                             }
                             else
                             {
-                                <span>Producto no disponible</span>
+                                <span class="text-danger">Producto no disponible</span>
                             }
                         </td>
                         <td>@detalle.Descripcion</td>
@@ -56,9 +71,9 @@
     </div>
 
     <!-- Total de la Venta -->
-    <div class="d-flex justify-content-end">
+    <div class="d-flex justify-content-end mt-4">
         <div class="text-end">
-            <p class="mb-1"><strong>Total:</strong> S/. @Model.Total</p>
+            <h4 class="text-success">Total: S/. @Model.Total</h4>
         </div>
     </div>
 </div>

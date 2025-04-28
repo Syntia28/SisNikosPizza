@@ -1,5 +1,4 @@
 ﻿@model SisNikosPizza.Domain.Models.Pedido
-
 @using SisNikosPizza.Utilidades
 
 @{
@@ -8,70 +7,139 @@
 }
 
 <div class="container py-5">
-    <h2 class="mb-4">Detalle del Pedido</h2>
+    <div class="text-center mb-5">
+        <h1 class="fw-bold text-gradient">Detalle del Pedido</h1>
+        <p class="text-muted">Revisa toda la información antes de continuar</p>
+    </div>
 
     <!-- Información General del Pedido -->
-    <div class="card mb-4">
-        <div class="card-body">
-            <h5 class="card-title">Información del Pedido</h5>
-            <p><strong>Número de Pedido:</strong> @Model.PedidoId</p>
-            <p><strong>Fecha del Pedido:</strong> @Model.FechaPedido.ToString("dd/MM/yyyy HH:mm")</p>
-            <p><strong>Estado:</strong> @Model.EstadoPedido</p>
-            <p><strong>Tipo de Pedido:</strong> @Model.TipoPedido</p>
+    <div class="card shadow-sm mb-5 border-0 rounded-4">
+        <div class="card-body p-4">
+            <h4 class="text-primary fw-bold mb-3">Información General</h4>
+            <div class="row g-3">
+                <div class="col-md-6">
+                    <p><i class="bi bi-receipt"></i> <strong>N° Pedido:</strong> @Model.PedidoId</p>
+                </div>
+                <div class="col-md-6">
+                    <p><i class="bi bi-calendar-event"></i> <strong>Fecha:</strong> @Model.FechaPedido.ToString("dd/MM/yyyy HH:mm")</p>
+                </div>
+                <div class="col-md-6">
+                    <p><i class="bi bi-flag"></i> <strong>Estado:</strong> @Model.EstadoPedido</p>
+                </div>
+                <div class="col-md-6">
+                    <p><i class="bi bi-truck"></i> <strong>Tipo de Pedido:</strong> @Model.TipoPedido</p>
+                </div>
 
-            @if (Model.TipoPedido == VCG.TipoPedido.Delivery)
-            {
-                <p><strong>Teléfono:</strong> @Model.Telefono</p>
-                <p><strong>Dirección:</strong> @Model.Direccion</p>
-                <p><strong>Referencia:</strong> @Model.Referencia</p>
-            }
-            else if (Model.TipoPedido == VCG.TipoPedido.Recoger)
-            {
-                <p><strong>Fecha de Recogo:</strong> @Model.FechaRecogo?.ToString("dd/MM/yyyy HH:mm")</p>
-            }
-            else if (Model.TipoPedido == VCG.TipoPedido.Mesa)
-            {
-                <p><strong>Mesa:</strong> @Model.Mesa</p>
-            }
+                @if (Model.TipoPedido == VCG.TipoPedido.Delivery)
+                {
+                    <div class="col-md-6">
+                        <p><i class="bi bi-telephone"></i> <strong>Teléfono:</strong> @Model.Telefono</p>
+                    </div>
+                    <div class="col-md-6">
+                        <p><i class="bi bi-geo-alt"></i> <strong>Dirección:</strong> @Model.Direccion</p>
+                    </div>
+                    <div class="col-12">
+                        <p><i class="bi bi-info-circle"></i> <strong>Referencia:</strong> @Model.Referencia</p>
+                    </div>
+                }
+                else if (Model.TipoPedido == VCG.TipoPedido.Recoger)
+                {
+                    <div class="col-md-6">
+                        <p><i class="bi bi-clock-history"></i> <strong>Fecha de Recogo:</strong> @Model.FechaRecogo?.ToString("dd/MM/yyyy HH:mm")</p>
+                    </div>
+                }
+                else if (Model.TipoPedido == VCG.TipoPedido.Mesa)
+                {
+                    <div class="col-md-6">
+                        <p><i class="bi bi-table"></i> <strong>Mesa:</strong> @Model.Mesa</p>
+                    </div>
+                }
+            </div>
         </div>
     </div>
 
     <!-- Detalle del Pedido -->
-    <div class="table-responsive">
-        <table class="table table-bordered table-hover">
-            <thead class="table-light">
-                <tr>
-                    <th>Producto</th>
-                    <th>Descripción</th>
-                    <th>Cantidad</th>
-                    <th>Precio Unitario</th>
-                    <th>Subtotal</th>
-                </tr>
-            </thead>
-            <tbody>
-                @foreach (var detalle in Model.DetallePedidos)
-                {
-                    <tr>
-                        <td>
-                            <img src="@detalle.Producto.ImagenUrl" alt="@detalle.Producto.Nombre" style="width: 50px; height: 50px;" />
-                            <span>@detalle.Producto.Nombre</span>
-                        </td>
-                        <td>@detalle.Producto.Descripcion</td>
-                        <td class="text-center">@detalle.Cantidad</td>
-                        <td class="text-end">S/. @detalle.Producto.Precio</td>
-                        <td class="text-end">S/. @(detalle.Cantidad * detalle.Producto.Precio)</td>
-                    </tr>
-                }
-            </tbody>
-        </table>
-    </div>
+    <div class="card shadow-sm border-0 rounded-4">
+        <div class="card-body p-4">
+            <h4 class="text-primary fw-bold mb-4">Productos del Pedido</h4>
 
-    <!-- Totales -->
-    <div class="d-flex justify-content-end">
-        <div class="text-end">
-            <p class="mb-1"><strong>Subtotal:</strong> S/. @Math.Round(Model.DetallePedidos.Sum(dp => dp.Cantidad * dp.Producto.Precio) * 0.82, 2)</p>
-            <p class="mb-1"><strong>Impuestos (18%):</strong> S/. @Math.Round(Model.DetallePedidos.Sum(dp => dp.Cantidad * dp.Producto.Precio) * 0.18, 2)</p>
-            <p class="mb-1"><strong>Total:</strong> S/. @Model.DetallePedidos.Sum(dp => dp.Cantidad * dp.Producto.Precio)</p>
+            <div class="table-responsive">
+                <table class="table table-hover align-middle text-center">
+                    <thead class="table-light">
+                        <tr>
+                            <th>Producto</th>
+                            <th>Descripción</th>
+                            <th>Cantidad</th>
+                            <th>Precio Unitario</th>
+                            <th>Subtotal</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        @foreach (var detalle in Model.DetallePedidos)
+                        {
+                            <tr>
+                                <td>
+                                    <div class="d-flex align-items-center gap-3">
+                                        <img src="@detalle.Producto.ImagenUrl" class="rounded-3 shadow" style="width: 60px; height: 60px; object-fit: cover;" />
+                                        <span class="fw-semibold">@detalle.Producto.Nombre</span>
+                                    </div>
+                                </td>
+                                <td>@detalle.Producto.Descripcion</td>
+                                <td>@detalle.Cantidad</td>
+                                <td>S/. @detalle.Producto.Precio</td>
+                                <td>S/. @(detalle.Cantidad * detalle.Producto.Precio)</td>
+                            </tr>
+                        }
+                    </tbody>
+                </table>
+            </div>
+
+            <!-- Totales -->
+            <div class="d-flex justify-content-end mt-4">
+                <div class="text-end">
+                    @{
+                        var subtotal = Model.DetallePedidos.Sum(dp => dp.Cantidad * dp.Producto.Precio) * 0.82;
+                        var impuestos = Model.DetallePedidos.Sum(dp => dp.Cantidad * dp.Producto.Precio) * 0.18;
+                        var total = Model.DetallePedidos.Sum(dp => dp.Cantidad * dp.Producto.Precio);
+                    }
+
+                    <p class="mb-1"><strong>Subtotal:</strong> S/. @subtotal</p>
+                    <p class="mb-1"><strong>IGV (18%):</strong> S/. @impuestos.ToString("F2")</p>
+                    <h4 class="text-success fw-bold">Total: S/. @total.ToString("F2")</h4>
+                </div>
+            </div>
+
+            <!-- Botón de Continuar -->
+            <div class="text-end mt-5">
+                <a asp-action="Cobrar" asp-controller="Pedidos" asp-route-id="@Model.PedidoId">
+                    <span class="btn btn-lg btn-gradient-primary shadow rounded-pill px-5">
+                        Continuar <i class="bi bi-arrow-right-circle ms-2"></i>
+                    </span>
+                </a>
+            </div>
+
         </div>
     </div>
 </div>
+
+<style>
+    .text-gradient {
+        background: linear-gradient(90deg, #FF6B6B, #FFD93D, #6BCB77, #4D96FF);
+        -webkit-background-clip: text;
+        -webkit-text-fill-color: transparent;
+        font-weight: bold;
+        font-size: 2.5rem;
+    }
+
+    .btn-gradient-primary {
+        background: linear-gradient(90deg, #4D96FF, #6BCB77);
+        color: white;
+        border: none;
+        transition: all 0.3s ease;
+    }
+
+        .btn-gradient-primary:hover {
+            background: linear-gradient(90deg, #6BCB77, #4D96FF);
+            transform: scale(1.05);
+        }
+</style>

@@ -48,22 +48,28 @@ namespace SisNikosPizza.Controllers
         }
 
 
-        [HttpPost]
         [Authorize(Roles = VCG.Role_Admin)]
+        [HttpPost]
         public async Task<ActionResult> CrearVenta(int id)
         {
+
+            Console.WriteLine("id recivido es: " + id);
             //obtener el pedido.
             var pedido = await _unitWork.PedidoRepo.ObtenerPedidoDetallado(id, "");
+
+            Console.WriteLine("pedido recivido es: " + pedido);
 
             //verificar que exista el pedido
             if (pedido==null)
             {
+                Console.WriteLine("pedido es null");
                 return NotFound();
             }
 
             //veririficar que el pedido no este pagado
             if (pedido.EstadoPedido == VCG.EstadoPedido.Pagado)
             {
+                Console.WriteLine("pedido es pagado");
                 return NotFound();
             }
 
@@ -72,8 +78,11 @@ namespace SisNikosPizza.Controllers
 
             //verificar que existan productos en el pedido.
 
+            Console.WriteLine("pedido tiene detalles: " + pedido.DetallePedidos.Count);
+
             if (pedido.DetallePedidos.Count <=0)
             {
+                Console.WriteLine("pedido esta vacio");
                 return NotFound();//mas a futuro dejar que si el pedido esta vacio, entonces puedes agregar producto al cobrar le venta
             }
             //obtener propiedadesss de la venta

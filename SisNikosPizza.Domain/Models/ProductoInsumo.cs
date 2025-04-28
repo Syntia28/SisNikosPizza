@@ -11,9 +11,9 @@ namespace SisNikosPizza.Domain.Models
     {
         public int ProductoInsumoId { get; set; }
         public int ProductoId { get; set; }
-        public Producto Producto { get; set; }
+        public Producto? Producto { get; set; }
         public int InsumoId { get; set; }
-        public Insumo Insumo { get; set; }
+        public Insumo? Insumo { get; set; }
         public float Cantidad { get; set; }
     }
 }
