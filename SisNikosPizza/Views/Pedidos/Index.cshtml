@@ -5,72 +5,181 @@
 @inject SignInManager<IdentityUser> SignInManager
 @inject UserManager<IdentityUser> UserManager
 
-    @{
+@{
     ViewData["Title"] = "Pedidos";
     Layout = "~/Views/Shared/_Admin.cshtml";
 }
 
-<div class="container-fluid py-4">
+<link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+<link href="https://cdn.jsdelivr.net/npm/bootstrap-icons/font/bootstrap-icons.css" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600&display=swap" rel="stylesheet">
+
+<style>
+    body {
+        font-family: 'Poppins', sans-serif;
+        background-color: #f9f9f9;
+    }
+
+    .card {
+        border-radius: 12px;
+        box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+        background-color: #ffffff;
+    }
+
+    .card-header {
+        background-color: #a04000; /* Tono suave de amarillo */
+        color: #fff;
+        padding: 20px;
+        border-top-left-radius: 12px;
+        border-top-right-radius: 12px;
+        font-size: 1.5rem;
+        font-weight: 600;
+    }
+
+    .card-body {
+        padding: 20px;
+    }
+
+    .table th, .table td {
+        text-align: center;
+        padding: 12px;
+        font-size: 1rem;
+        color: #333;
+    }
+
+    .table th {
+        background-color: #f5f5f5;
+        color: #a04000;
+    }
+
+    .table tbody tr:hover {
+        background-color: #fff9e6;
+        cursor: pointer;
+    }
+
+    .form-select, .form-control {
+        border-radius: 20px;
+        height: 40px;
+        padding-left: 10px;
+    }
+
+    .btn-info, .btn-success, .btn-danger {
+        border-radius: 20px;
+        padding: 8px 16px;
+        transition: all 0.3s ease;
+    }
+
+        .btn-info:hover, .btn-success:hover, .btn-danger:hover {
+            opacity: 0.8;
+        }
+
+    .badge {
+        padding: 6px 12px;
+        font-size: 0.875rem;
+        border-radius: 20px;
+    }
+
+        .badge.bg-success {
+            background-color: #28a745;
+        }
+
+        .badge.bg-danger {
+            background-color: #dc3545;
+        }
+
+        .badge.bg-primary {
+            background-color: #007bff;
+        }
+
+        .badge.bg-warning {
+            background-color: #ffc107;
+        }
+
+    .pagination .page-item a {
+        background-color: #a04000;
+        color: #fff;
+        border-radius: 20px;
+        padding: 8px 16px;
+        margin: 0 5px;
+    }
+
+    .pagination .page-item.active a {
+        background-color: #ff9900;
+    }
+
+    .input-group-text {
+        background-color: #f5f5f5;
+        border-radius: 20px;
+        padding: 10px;
+    }
+
+    .input-group input.form-control {
+        border-radius: 20px;
+        height: 40px;
+        padding-left: 10px;
+    }
+</style>
+
+<div class="container-fluid py-5">
     <div class="card shadow-sm">
         <!-- Cabecera -->
         <div class="card-header d-flex justify-content-between align-items-center">
             <h2 class="mb-0">Pedidos</h2>
             <a class="btn btn-success btn-sm" asp-controller="Pedidos" asp-action="Nuevo">
-                <i class="bi bi-file
-                -earmark-plus"></i>&nbsp;Nuevo Pedido
-                </a>
-                </div>
-                <!-- Filtros y Opciones -->
-                <div class="card-body">
-                    <div class="d-flex justify-content-between mb-3">
-                        <div>
-                            <label for="entries" class="form-label me-2">Mostrar</label>
-                            <select id="entries" class="form-select d-inline-block" style="width: auto;">
-                                <option>10</option>
-                                <option>25</option>
-                                <option>50</option>
-                                <option>100</option>
-                            </select>
-                            <span>registros por página</span>
-                        </div>
-                        <div>
-                            <input type="search" class="form-control" placeholder="Buscar" style="width: 300px;" />
-                        </div>
-                    </div>
-                    <!-- Tabla -->
-                    <div class="table-responsive">
-                        <table class="table table-bordered table-striped align-middle">
-                            <thead class="table-light text-center">
-                                <tr>
-                       
-                                    <th>Fecha</th>
-                            <th>Cliente</th>
-                          
-                                    <th>Total</th>
-                                    <th>Estado</th>
-                                    <th>Opciones</th>
-                                </tr>
-                            </thead>
-                            <tbody>
-                                @foreach (var pedido in Model)
-                                {
-                                    <tr>
-                                      
-                                        <td>@pedido.FechaPedido</td>
-                                <td>@pedido.Owner.NormalizedEmail</td>
-                               
-                                        <td>S/. @pedido.DetallePedidos.Sum(dp => dp.Cantidad*dp.Producto.Precio)</td>
-                                        <td>
-                                            @if (pedido.EstadoPedido==VCG.EstadoPedido.Pagado)
-                                            {
-                                        <span class="badge bg-success">Pagado</span>
-                                    }else if (pedido.EstadoPedido==VCG.EstadoPedido.Entregado)
-                                    {
-                                        <span>
-                                            class="badge bg-primary">Entregado
+                <i class="bi bi-file-earmark-plus"></i>&nbsp;Nuevo Pedido
+            </a>
+        </div>
 
-                                        </span>
-                                    }else if (pedido.EstadoPedido==VCG.EstadoPedido.Anulado)
+        <!-- Filtros y Opciones -->
+        <div class="card-body">
+            <div class="d-flex justify-content-between mb-4">
+                <div>
+                    <label for="entries" class="form-label me-2">Mostrar</label>
+                    <select id="entries" class="form-select d-inline-block" style="width: auto;">
+                        <option>10</option>
+                        <option>25</option>
+                        <option>50</option>
+                        <option>100</option>
+                    </select>
+                    <span>registros por página</span>
+                </div>
+                <div>
+                    <div class="input-group">
+                        <span class="input-group-text"><i class="bi bi-search"></i></span>
+                        <input type="search" class="form-control" placeholder="Buscar" style="width: 300px;" />
+                    </div>
+                </div>
+            </div>
+
+            <!-- Tabla -->
+            <div class="table-responsive">
+                <table class="table table-bordered table-striped align-middle">
+                    <thead>
+                        <tr>
+                            <th>Fecha</th>
+                            <th>Cliente</th>
+                            <th>Total</th>
+                            <th>Estado</th>
+                            <th>Opciones</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        @foreach (var pedido in Model)
+                        {
+                            <tr>
+                                <td>@pedido.FechaPedido</td>
+                                <td>@pedido.Owner.NormalizedEmail</td>
+                                <td>S/. @pedido.DetallePedidos.Sum(dp => dp.Cantidad * dp.Producto.Precio)</td>
+                                <td>
+                                    @if (pedido.EstadoPedido == VCG.EstadoPedido.Pagado)
+                                    {
+                                        <span class="badge bg-success">Pagado</span>
+                                    }
+                                    else if (pedido.EstadoPedido == VCG.EstadoPedido.Entregado)
+                                    {
+                                        <span class="badge bg-primary">Entregado</span>
+                                    }
+                                    else if (pedido.EstadoPedido == VCG.EstadoPedido.Anulado)
                                     {
                                         <span class="badge bg-danger">Anulado</span>
                                     }
@@ -78,43 +187,57 @@
                                     {
                                         <span class="badge bg-warning">Pendiente</span>
                                     }
-
-                                        </td>
-                                        <td class="text-center">
-                                   
-                                        <a class="btn btn-info btn-sm me-1" asp-controller="Pedidos" asp-action="Detalles" asp-route-id="@pedido.PedidoId">
-                                            <i class="fas fa-eye"></i>
-                                        </a>
-                                     @*     <a class="btn btn-danger btn-sm" asp-controller="Pedidos" asp-action="Eliminar" asp-route-id="@pedido.PedidoId">
-                                             <i class="fas fa-trash"></i>
-                                         </a> *@
-
-                                    @if (User.IsInRole(VCG.Role_Admin)) 
+                                </td>
+                                <td class="text-center">
+                                    <a class="btn btn-info btn-sm me-1" asp-controller="Pedidos" asp-action="Detalles" asp-route-id="@pedido.PedidoId">
+                                        <i class="bi bi-eye"></i>
+                                    </a>
+                                    @if (User.IsInRole(VCG.Role_Admin))
                                     {
-                                          @if (pedido.EstadoPedido != VCG.EstadoPedido.Pagado)
-                                            {
-                                                <a class="btn btn-success btn-sm" asp-controller="Pedidos" asp-action="Cobrar" asp-route-id="@pedido.PedidoId">
-                                                    <i class="fas fa-cash-register"></i>
-                                                </a>
-                                            }
-                                            else
-                                            {
-                                                <button class="btn btn-success btn-sm" disabled>
-                                                    <i class="fas fa-cash-register"></i>
-                                                </button>
-                                            }
-                                          
-                                              
+                                        @if (pedido.EstadoPedido != VCG.EstadoPedido.Pagado)
+                                        {
+                                            <a class="btn btn-success btn-sm" asp-controller="Pedidos" asp-action="Cobrar" asp-route-id="@pedido.PedidoId">
+                                                <i class="bi bi-cash-coin"></i>
+                                            </a>
+                                        }
+                                        else
+                                        {
+                                            <button class="btn btn-success btn-sm" disabled>
+                                                <i class="bi bi-cash-coin"></i>
+                                            </button>
+                                        }
                                     }
-                                        </td>
-                                    </tr>
-                                }
-                            </tbody>
-                            </table>
-                            </div>
-                            </div>
-                            </div>
-                            </div>
-                            <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
-                            <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.min.js"></script>
-                           
+                                </td>
+                            </tr>
+                        }
+                    </tbody>
+                </table>
+            </div>
+
+            <!-- Paginación -->
+            <div class="d-flex justify-content-center mt-4">
+                <nav aria-label="Page navigation example">
+                    <ul class="pagination">
+                        <li class="page-item">
+                            <a class="page-link" href="#">Anterior</a>
+                        </li>
+                        <li class="page-item active">
+                            <a class="page-link" href="#">1</a>
+                        </li>
+                        <li class="page-item">
+                            <a class="page-link" href="#">2</a>
+                        </li>
+                        <li class="page-item">
+                            <a class="page-link" href="#">3</a>
+                        </li>
+                        <li class="page-item">
+                            <a class="page-link" href="#">Siguiente</a>
+                        </li>
+                    </ul>
+                </nav>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
