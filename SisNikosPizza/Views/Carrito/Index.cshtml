@@ -77,12 +77,13 @@
 
                             <!-- Botones de acción (Aumentar, Disminuir, Eliminar) -->
                             <div class="action-buttons d-flex justify-content-end w-100">
-                                <form asp-controller="Carrito" asp-action="IncrementarCantidad" class="d-inline-block">
-                                    <input type="hidden" name="ProductoId" value="@carritoItem.Producto.ProductoId" />
+                                <form asp-controller="Carrito" asp-action="IncrementarCantidad" method="post" class="d-inline-block">
+                                    <input type="hidden" name="productoId" value="@carritoItem.Producto.ProductoId" />
                                     <button type="submit" class="btn btn-info btn-sm rounded-circle shadow-sm">
                                         <i class="fas fa-plus"></i>
                                     </button>
                                 </form>
+
 
                                 <form asp-controller="Carrito" asp-action="DecrementarCantidad" class="d-inline-block mx-2">
                                     <input type="hidden" name="ProductoId" value="@carritoItem.Producto.ProductoId" />

@@ -92,10 +92,10 @@ namespace SisNikosPizza.Controllers
                 // Validar que los insumoIds existan en la base de datos
                 if (insumoIds != null && insumoIds.Length > 0)
                 {
-                    var validInsumoIds = (await _unitWork.InsumoRepo.ObtenerTodosAsync(i => i.Estado == true))
+                    var valInsumoIdIds = (await _unitWork.InsumoRepo.ObtenerTodosAsync(i => i.Estado == true))
                         .Select(i => i.InsumoId)
                         .ToList();
-                    if (insumoIds.Any(id => !validInsumoIds.Contains(id)))
+                    if (insumoIds.Any(id => !valInsumoIdIds.Contains(id)))
                     {
                         ModelState.AddModelError("", "Uno o más insumos seleccionados no son válidos.");
                     }
