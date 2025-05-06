@@ -160,13 +160,25 @@
                 <form method="post" asp-controller="Pedidos" asp-action="CrearPedido">
                     <div class="section-title" style="font-weight: bold; font-style: italic;">INFORMACIÓN DEL PEDIDO</div>
                     <div class="mb-3">
-                        <label for="TipoPedido" class="form-label">Tipo de Pedido</label>
-                        <select id="tipoPedidoSelect" name="TipoPedido" asp-for="@Model.Pedido.TipoPedido" class="form-select">
-                            <option value="">Selecciona el tipo de pedido</option>
-                            <option value="@VCG.TipoPedido.Delivery" selected="@((ViewBag.TipoPedido == VCG.TipoPedido.Delivery) ? "selected" : null)">Delivery</option>
-                            <option value="@VCG.TipoPedido.Recoger" selected="@((ViewBag.TipoPedido == VCG.TipoPedido.Recoger) ? "selected" : null)">Recoger</option>
-                            <option value="@VCG.TipoPedido.Mesa" selected="@((ViewBag.TipoPedido == VCG.TipoPedido.Mesa) ? "selected" : null)">En Mesa</option>
-                        </select>
+                        <p>Tipo de pedido</p>
+
+                        <div>
+                            <input type="radio" name="TipoPedido" id="delivery" value="@VCG.TipoPedido.Delivery"
+                                checked="@(ViewBag.TipoPedido == VCG.TipoPedido.Delivery)">
+                            <label for="delivery">Delivery</label>
+                        </div>
+
+                        <div>
+                            <input type="radio" name="TipoPedido" id="recoger" value="@VCG.TipoPedido.Recoger"
+                                checked="@(ViewBag.TipoPedido == VCG.TipoPedido.Recoger)">
+                            <label for="recoger">Recoger</label>
+                        </div>
+
+                        <div>
+                            <input type="radio" name="TipoPedido" id="mesa" value="@VCG.TipoPedido.Mesa"
+                                checked="@(ViewBag.TipoPedido == VCG.TipoPedido.Mesa)">
+                            <label for="mesa">Mesa</label>
+                        </div>
                         <span id="errorTipoPedido" class="text-danger">@ViewBag.ErrorTipoPedido</span>
                     </div>
 
@@ -225,8 +237,10 @@
 </div>
 
 <script>
-    document.getElementById('tipoPedidoSelect').addEventListener('change', function () {
-        var selectedValue = this.value;
-        window.location.href = '@Url.Action("Nuevo", "Pedidos")?TipoPedido=' + selectedValue;
+    document.querySelectorAll('input[name="TipoPedido"]').forEach(function (radio) {
+        radio.addEventListener('change', function () {
+            var selectedValue = this.value;
+            window.location.href = '@Url.Action("Nuevo", "Pedidos")?TipoPedido=' + selectedValue;
+        });
     });
 </script>
