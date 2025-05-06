@@ -20,6 +20,8 @@ namespace SisNikosPizza
                 await roleManager.CreateAsync(new IdentityRole(VCG.Role_Manager));
             if (!await roleManager.RoleExistsAsync(VCG.Role_Usuario))
                 await roleManager.CreateAsync(new IdentityRole(VCG.Role_Usuario));
+            if(!await roleManager.RoleExistsAsync(VCG.Role_Delivery))
+                await roleManager.CreateAsync(new IdentityRole(VCG.Role_Delivery));            
         }
 
         private static async Task CreateAdminUserIfNotExists(UserManager<IdentityUser> userManager, IConfiguration configuration)
