@@ -1,60 +1,184 @@
-﻿@model  SisNikosPizza.Domain.Models.Categoria
+﻿@model SisNikosPizza.Domain.Models.Categoria
+
 @{
     ViewData["Title"] = "Detalle Categoría";
     Layout = "~/Views/Shared/_Admin.cshtml";
-    // Layout = "~/Views/Shared/_Layout.cshtml";
-    // Layout = null;
 }
 
-<div class="container-fluid">
-    <div class="row justify-content-center">
-        <div class="col-10 col-md-8">
-            <div class="card border border-secondary">
-                <div class="card-header bg-secondary bg-opacity-75 text-center">
-                    <h2>Detalle de Categoría</h2>
-                </div>
-                <div class="card-body">
-                    <div class="row p-2 border-bottom">
-                        <div class="col-4 text-end"><strong>Categoría ID:</strong></div>
-                        <div class="col">@Model.CategoriaId</div>
-                    </div>
-                    <div class="row p-2 border-bottom">
-                        <div class="col-4 text-end"><strong>Nombre:</strong></div>
-                        <div class="col">@Model.nombre</div>
-                    </div>
+<style>
+    body {
+        background: linear-gradient(135deg, #f8f9fa 0%, #e9ecef 100%);
+        font-family: 'Inter', sans-serif;
+        color: #2d2d2d;
+        margin: 0;
+        padding: 0;
+    }
 
-                    <div class="row p-2 border-bottom">
-                        <div class="col-4 text-end"><strong>Estado:</strong></div>
-                        <div class="col">
-                            @if (Model.Estado)
-                            {
-                                <span class="text-success">ACTIVO</span>
-                            }
-                            else
-                            {
-                                <span class="text-info">INACTIVO</span>
-                            }
-                        </div>
-                    </div>
-                    <div class="row p-2 border-bottom">
-                        <div class="col-4 text-end"><strong>Creado el:</strong></div>
-                        <div class="col">@Model.CreatedAt</div>
-                    </div>
-                    <div class="row p-2 border-bottom">
-                        <div class="col-4 text-end"><strong>Actualizado el:</strong></div>
-                        <div class="col">@Model.UpdatedAt</div>
-                    </div>
-                    <div class="d-grid column-gap-2 d-md-block offset-0 offset-md-3 offset-lg-4 mt-2">
-                        <a asp-action="Edit" asp-route-id="@Model.CategoriaId" class="btn btn-warning mb-1 mb-md-0">
-                            <i class="bi bi-pencil-square"></i>&nbspEditar
-                        </a>
-                        <a asp-action="Index" class="btn btn-primary">
-                            <i class="bi bi-arrow-return-left"></i>&nbsp; Regresar
-                        </a>
-                    </div>
+    .container {
+        padding: 60px 20px;
+        max-width: 1200px;
+        margin: 0 auto;
+    }
+
+    .detail-card {
+        background: #fff;
+        border-radius: 20px;
+        box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
+        overflow: hidden;
+        position: relative;
+        transition: transform 0.3s ease;
+        max-width: 600px;
+        margin: 0 auto;
+    }
+
+    .detail-card:hover {
+        transform: translateY(-5px);
+    }
+
+    .card-header {
+        background: linear-gradient(45deg, #f1c40f, #f39c12);
+        padding: 20px;
+        text-align: center;
+        color: #fff;
+        border-radius: 20px 20px 0 0;
+    }
+
+    .card-header h3 {
+        font-size: 2rem;
+        font-weight: 700;
+        margin: 0;
+        text-transform: uppercase;
+        letter-spacing: 1px;
+        text-shadow: 1px 1px 5px rgba(0, 0, 0, 0.2);
+    }
+
+    .card-body {
+        padding: 30px;
+    }
+
+    .detail-row {
+        display: flex;
+        align-items: center;
+        padding: 15px 0;
+        border-bottom: 1px solid #e0e0e0;
+        font-size: 1.1rem;
+    }
+
+    .detail-label {
+        flex: 0 0 40%;
+        font-weight: 600;
+        color: #333;
+        text-align: right;
+        padding-right: 20px;
+    }
+
+    .detail-value {
+        flex: 1;
+        color: #555;
+    }
+
+    .status-active {
+        color: #2ecc71;
+        font-weight: 600;
+    }
+
+    .status-inactive {
+        color: #3498db;
+        font-weight: 600;
+    }
+
+    .btn {
+        padding: 12px 24px;
+        border-radius: 50px;
+        font-weight: 600;
+        font-size: 1rem;
+        transition: transform 0.2s ease, background 0.3s ease;
+        display: inline-flex;
+        align-items: center;
+        gap: 8px;
+    }
+
+    .btn-warning {
+        background: linear-gradient(45deg, #f1c40f, #f39c12);
+        border: none;
+        color: #fff;
+    }
+
+    .btn-warning:hover {
+        background: linear-gradient(45deg, #f39c12, #f1c40f);
+        transform: scale(1.05);
+    }
+
+    .btn-primary {
+        background: linear-gradient(45deg, #3498db, #2980b9);
+        border: none;
+        color: #fff;
+    }
+
+    .btn-primary:hover {
+        background: linear-gradient(45deg, #2980b9, #3498db);
+        transform: scale(1.05);
+    }
+
+    .btn:focus {
+        outline: none;
+        box-shadow: 0 0 0 3px rgba(241, 196, 15, 0.3);
+    }
+
+    .button-group {
+        display: flex;
+        justify-content: center;
+        gap: 15px;
+        margin-top: 20px;
+    }
+
+    
+
+</style>
+
+<div class="container" role="main">
+    <div class="detail-card" aria-labelledby="card-header">
+        <div class="card-header">
+            <h3 id="card-header">Detalle de la Categoría</h3>
+        </div>
+        <div class="card-body">
+            <div class="detail-row">
+                <div class="detail-label">Categoría ID:</div>
+                <div class="detail-value">@Model.CategoriaId</div>
+            </div>+++++++++++++++++++++++
+            <div class="detail-row">
+                <div class="detail-label">Nombre:</div>
+                <div class="detail-value">@Model.nombre</div>
+            </div>
+            <div class="detail-row">
+                <div class="detail-label">Estado:</div>
+                <div class="detail-value">
+                    @if (Model.Estado)
+                    {
+                        <span class="status-active">ACTIVO</span>
+                    }
+                    else
+                    {
+                        <span class="status-inactive">INACTIVO</span>
+                    }
                 </div>
+            </div>
+            <div class="detail-row">
+                <div class="detail-label">Creado el:</div>
+                <div class="detail-value">@Model.CreatedAt</div>
+            </div>
+            <div class="detail-row">
+                <div class="detail-label">Actualizado el:</div>
+                <div class="detail-value">@Model.UpdatedAt</div>
+            </div>
+            <div class="button-group">
+                <a asp-action="Edit" asp-route-id="@Model.CategoriaId" class="btn btn-warning" aria-label="Editar categoría">
+                    <i class="bi bi-pencil-square"></i> Editar
+                </a>
+                <a asp-action="Index" class="btn btn-primary" aria-label="Regresar a la lista">
+                    <i class="bi bi-arrow-return-left"></i> Regresar
+                </a>
             </div>
         </div>
     </div>
 </div>
-

@@ -1,71 +1,353 @@
-﻿@model SisNikosPizza.Domain.Models.Pedido
-@using SisNikosPizza.Utilidades
+﻿@using SisNikosPizza.Utilidades
+@model SisNikosPizza.Domain.Models.Pedido
 
 @{
     ViewData["Title"] = "Detalle del Pedido";
     Layout = "~/Views/Shared/_Admin.cshtml";
 }
 
-<div class="container py-5">
-    <div class="text-center mb-5">
-        <h1 class="fw-bold text-gradient">Detalle del Pedido</h1>
-        <p class="text-muted">Revisa toda la información antes de continuar</p>
-    </div>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=Poppins:wght@600;700&display=swap" rel="stylesheet">
+<link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.5/font/bootstrap-icons.css" rel="stylesheet">
 
-    <!-- Información General del Pedido -->
-    <div class="card shadow-sm mb-5 border-0 rounded-4">
-        <div class="card-body p-4">
-            <h4 class="text-primary fw-bold mb-3">Información General</h4>
-            <div class="row g-3">
-                <div class="col-md-6">
-                    <p><i class="bi bi-receipt"></i> <strong>N° Pedido:</strong> @Model.PedidoId</p>
-                </div>
-                <div class="col-md-6">
-                    <p><i class="bi bi-calendar-event"></i> <strong>Fecha:</strong> @Model.FechaPedido.ToString("dd/MM/yyyy HH:mm")</p>
-                </div>
-                <div class="col-md-6">
-                    <p><i class="bi bi-flag"></i> <strong>Estado:</strong> @Model.EstadoPedido</p>
-                </div>
-                <div class="col-md-6">
-                    <p><i class="bi bi-truck"></i> <strong>Tipo de Pedido:</strong> @Model.TipoPedido</p>
-                </div>
+<style>
+    body {
+        background: linear-gradient(135deg, #f5f7fa 0%, #d1e3ff 100%);
+        font-family: 'Inter', sans-serif;
+        margin: 0;
+        padding: 0;
+    }
 
+    .container {
+        max-width: 1100px;
+        margin: 0 auto;
+        padding: 2rem;
+    }
+
+    .card {
+        border-radius: 20px;
+        box-shadow: 0 12px 32px rgba(0, 0, 0, 0.15);
+        background: #ffffff;
+        overflow: hidden;
+        animation: fadeInUp 0.6s ease-out;
+        margin-bottom: 2rem;
+    }
+
+    @@keyframes fadeInUp {
+        from {
+            opacity: 0;
+            transform: translateY(30px);
+        }
+
+        to {
+            opacity: 1;
+            transform: translateY(0);
+        }
+    }
+
+    .card-header {
+        background: linear-gradient(135deg, #ff6b6b, #ffd93d);
+        color: #fff;
+        padding: 2rem;
+        text-align: center;
+        border-top-left-radius: 20px;
+        border-top-right-radius: 20px;
+        position: relative;
+    }
+
+        .card-header h1 {
+            font-family: 'Poppins', sans-serif;
+            font-size: 2.5rem;
+            font-weight: 700;
+            margin: 0;
+            text-transform: uppercase;
+            letter-spacing: 1.5px;
+        }
+
+        .card-header p {
+            font-size: 1.1rem;
+            opacity: 0.9;
+            margin-top: 0.5rem;
+        }
+
+    .card-body {
+        padding: 2.5rem;
+    }
+
+    .section-title {
+        font-size: 1.8rem;
+        color: #2c3e50;
+        font-weight: 700;
+        margin-bottom: 1.5rem;
+        position: relative;
+    }
+
+        .section-title::after {
+            content: '';
+            width: 60px;
+            height: 4px;
+            background: #ff6b6b;
+            position: absolute;
+            bottom: -8px;
+            left: 0;
+            border-radius: 2px;
+        }
+
+    .info-grid {
+        display: grid;
+        grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+        gap: 1.5rem;
+        margin-bottom: 1.5rem;
+    }
+
+    .info-item {
+        background: #f8f9fa;
+        padding: 1rem;
+        border-radius: 12px;
+        display: flex;
+        align-items: center;
+        gap: 1rem;
+        transition: transform 0.3s ease, box-shadow 0.3s ease;
+    }
+
+        .info-item:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 6px 12px rgba(0, 0, 0, 0.1);
+        }
+
+        .info-item i {
+            font-size: 1.5rem;
+            color: #ff6b6b;
+        }
+
+        .info-item p {
+            margin: 0;
+            font-size: 1rem;
+            color: #34495e;
+        }
+
+        .info-item strong {
+            color: #2c3e50;
+            font-weight: 600;
+        }
+
+    .table {
+        border-collapse: separate;
+        border-spacing: 0;
+        border-radius: 12px;
+        overflow: hidden;
+        background: #f9fafb;
+        box-shadow: 0 4px 12px rgba(0, 0, 0, 0.05);
+    }
+
+        .table th, .table td {
+            padding: 1.2rem;
+            text-align: center;
+            vertical-align: middle;
+            font-size: 0.95rem;
+        }
+
+        .table th {
+            background: #e9ecef;
+            color: #2c3e50;
+            font-weight: 600;
+            text-transform: uppercase;
+            font-size: 0.9rem;
+        }
+
+        .table tbody tr {
+            transition: background 0.3s ease;
+        }
+
+            .table tbody tr:hover {
+                background: #f1f3f5;
+            }
+
+    .product-img {
+        width: 70px;
+        height: 70px;
+        object-fit: cover;
+        border-radius: 10px;
+        box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+        transition: transform 0.3s ease;
+    }
+
+        .product-img:hover {
+            transform: scale(1.1);
+        }
+
+    .totals {
+        background: #f8f9fa;
+        padding: 1.5rem;
+        border-radius: 12px;
+        margin-top: 2rem;
+        text-align: right;
+        box-shadow: 0 4px 12px rgba(0, 0, 0, 0.05);
+    }
+
+        .totals p {
+            font-size: 1.2rem;
+            margin: 0.5rem 0;
+            color: #34495e;
+        }
+
+        .totals h4 {
+            font-size: 1.6rem;
+            font-weight: 700;
+            color: #28a745;
+            margin-top: 1rem;
+        }
+
+    .btn-custom {
+        border-radius: 50px;
+        padding: 0.8rem 2.5rem;
+        font-weight: 600;
+        text-transform: uppercase;
+        letter-spacing: 1px;
+        transition: all 0.3s ease;
+        box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+        display: inline-flex;
+        align-items: center;
+        gap: 0.5rem;
+    }
+
+    .btn-back {
+        background: linear-gradient(90deg, #6c757d, #adb5bd);
+        color: #fff;
+        border: none;
+    }
+
+        .btn-back:hover {
+            background: linear-gradient(90deg, #5c636a, #9ea5ac);
+            transform: translateY(-3px);
+            box-shadow: 0 6px 16px rgba(108, 117, 125, 0.3);
+        }
+
+    .btn-continue {
+        background: linear-gradient(90deg, #28a745, #6bcb77);
+        color: #fff;
+        border: none;
+    }
+
+        .btn-continue:hover {
+            background: linear-gradient(90deg, #218838, #5cb765);
+            transform: translateY(-3px);
+            box-shadow: 0 6px 16px rgba(40, 167, 69, 0.3);
+        }
+
+    @@media (max-width: 768px) {
+        .card-header h1 {
+            font-size: 2rem;
+        }
+
+        .card-body {
+            padding: 1.5rem;
+        }
+
+        .section-title {
+            font-size: 1.5rem;
+        }
+
+        .info-grid {
+            grid-template-columns: 1fr;
+        }
+
+        .table th, .table td {
+            font-size: 0.85rem;
+            padding: 0.8rem;
+        }
+
+        .product-img {
+            width: 50px;
+            height: 50px;
+        }
+
+        .btn-custom {
+            padding: 0.7rem 2rem;
+            font-size: 0.9rem;
+        }
+    }
+
+    @@media (max-width: 576px) {
+        .card-header {
+            padding: 1.5rem;
+        }
+
+            .card-header p {
+                font-size: 1rem;
+            }
+
+        .totals h4 {
+            font-size: 1.4rem;
+        }
+    }
+</style>
+
+<div class="container">
+    <div class="card">
+        <div class="card-header">
+            <h1>Detalle del Pedido</h1>
+            <p>Revisa los detalles de tu pedido con atención</p>
+        </div>
+        <div class="card-body">
+            <div class="mb-4">
+                <a asp-action="Index" asp-controller="Pedidos" class="btn-custom btn-back">
+                    <i class="bi bi-arrow-left-circle"></i> Regresar
+                </a>
+            </div>
+
+            <div class="section-title">Información General</div>
+            <div class="info-grid">
+                <div class="info-item">
+                    <i class="bi bi-receipt"></i>
+                    <p><strong>N° Pedido:</strong> @Model.PedidoId</p>
+                </div>
+                <div class="info-item">
+                    <i class="bi bi-calendar-event"></i>
+                    <p><strong>Fecha:</strong> @Model.FechaPedido.ToString("dd/MM/yyyy HH:mm")</p>
+                </div>
+                <div class="info-item">
+                    <i class="bi bi-flag"></i>
+                    <p><strong>Estado:</strong> @Model.EstadoPedido</p>
+                </div>
+                <div class="info-item">
+                    <i class="bi bi-truck"></i>
+                    <p><strong>Tipo de Pedido:</strong> @Model.TipoPedido</p>
+                </div>
                 @if (Model.TipoPedido == VCG.TipoPedido.Delivery)
                 {
-                    <div class="col-md-6">
-                        <p><i class="bi bi-telephone"></i> <strong>Teléfono:</strong> @Model.Telefono</p>
+                    <div class="info-item">
+                        <i class="bi bi-telephone"></i>
+                        <p><strong>Teléfono:</strong> @Model.Telefono</p>
                     </div>
-                    <div class="col-md-6">
-                        <p><i class="bi bi-geo-alt"></i> <strong>Dirección:</strong> @Model.Direccion</p>
+                    <div class="info-item">
+                        <i class="bi bi-geo-alt"></i>
+                        <p><strong>Dirección:</strong> @Model.Direccion</p>
                     </div>
-                    <div class="col-12">
-                        <p><i class="bi bi-info-circle"></i> <strong>Referencia:</strong> @Model.Referencia</p>
+                    <div class="info-item">
+                        <i class="bi bi-info-circle"></i>
+                        <p><strong>Referencia:</strong> @Model.Referencia</p>
                     </div>
                 }
                 else if (Model.TipoPedido == VCG.TipoPedido.Recoger)
                 {
-                    <div class="col-md-6">
-                        <p><i class="bi bi-clock-history"></i> <strong>Fecha de Recogo:</strong> @Model.FechaRecogo?.ToString("dd/MM/yyyy HH:mm")</p>
+                    <div class="info-item">
+                        <i class="bi bi-clock-history"></i>
+                        <p><strong>Fecha de Recogo:</strong> @Model.FechaRecogo?.ToString("dd/MM/yyyy HH:mm")</p>
                     </div>
                 }
                 else if (Model.TipoPedido == VCG.TipoPedido.Mesa)
                 {
-                    <div class="col-md-6">
-                        <p><i class="bi bi-table"></i> <strong>Mesa:</strong> @Model.Mesa</p>
+                    <div class="info-item">
+                        <i class="bi bi-table"></i>
+                        <p><strong>Mesa:</strong> @Model.Mesa</p>
                     </div>
                 }
             </div>
-        </div>
-    </div>
 
-    <!-- Detalle del Pedido -->
-    <div class="card shadow-sm border-0 rounded-4">
-        <div class="card-body p-4">
-            <h4 class="text-primary fw-bold mb-4">Productos del Pedido</h4>
-
+            <div class="section-title">Productos del Pedido</div>
             <div class="table-responsive">
-                <table class="table table-hover align-middle text-center">
-                    <thead class="table-light">
+                <table class="table table-hover align-middle">
+                    <thead>
                         <tr>
                             <th>Producto</th>
                             <th>Descripción</th>
@@ -80,7 +362,7 @@
                             <tr>
                                 <td>
                                     <div class="d-flex align-items-center gap-3">
-                                        <img src="@detalle.Producto.ImagenUrl" class="rounded-3 shadow" style="width: 60px; height: 60px; object-fit: cover;" />
+                                        <img src="@detalle.Producto.ImagenUrl" class="product-img" alt="@detalle.Producto.Nombre" />
                                         <span class="fw-semibold">@detalle.Producto.Nombre</span>
                                     </div>
                                 </td>
@@ -94,52 +376,22 @@
                 </table>
             </div>
 
-            <!-- Totales -->
-            <div class="d-flex justify-content-end mt-4">
-                <div class="text-end">
-                    @{
-                        var subtotal = Model.DetallePedidos.Sum(dp => dp.Cantidad * dp.Producto.Precio) * 0.82;
-                        var impuestos = Model.DetallePedidos.Sum(dp => dp.Cantidad * dp.Producto.Precio) * 0.18;
-                        var total = Model.DetallePedidos.Sum(dp => dp.Cantidad * dp.Producto.Precio);
-                    }
-
-                    <p class="mb-1"><strong>Subtotal:</strong> S/. @subtotal</p>
-                    <p class="mb-1"><strong>IGV (18%):</strong> S/. @impuestos.ToString("F2")</p>
-                    <h4 class="text-success fw-bold">Total: S/. @total.ToString("F2")</h4>
-                </div>
+            <div class="totals">
+                @{
+                    var subtotal = Model.DetallePedidos.Sum(dp => dp.Cantidad * dp.Producto.Precio) * 0.82;
+                    var impuestos = Model.DetallePedidos.Sum(dp => dp.Cantidad * dp.Producto.Precio) * 0.18;
+                    var total = Model.DetallePedidos.Sum(dp => dp.Cantidad * dp.Producto.Precio);
+                }
+                <p><strong>Subtotal:</strong> S/. @subtotal</p>
+                <p><strong>IGV (18%):</strong> S/. @impuestos</p>
+                <h4>Total: S/. @total</h4>
             </div>
 
-            <!-- Botón de Continuar -->
             <div class="text-end mt-5">
-                <a asp-action="Cobrar" asp-controller="Pedidos" asp-route-id="@Model.PedidoId">
-                    <span class="btn btn-lg btn-gradient-primary shadow rounded-pill px-5">
-                        Continuar <i class="bi bi-arrow-right-circle ms-2"></i>
-                    </span>
+                <a asp-action="Cobrar" asp-controller="Pedidos" asp-route-id="@Model.PedidoId" class="btn-custom btn-continue">
+                    Continuar <i class="bi bi-arrow-right-circle"></i>
                 </a>
             </div>
-
         </div>
     </div>
 </div>
-
-<style>
-    .text-gradient {
-        background: linear-gradient(90deg, #FF6B6B, #FFD93D, #6BCB77, #4D96FF);
-        -webkit-background-clip: text;
-        -webkit-text-fill-color: transparent;
-        font-weight: bold;
-        font-size: 2.5rem;
-    }
-
-    .btn-gradient-primary {
-        background: linear-gradient(90deg, #4D96FF, #6BCB77);
-        color: white;
-        border: none;
-        transition: all 0.3s ease;
-    }
-
-        .btn-gradient-primary:hover {
-            background: linear-gradient(90deg, #6BCB77, #4D96FF);
-            transform: scale(1.05);
-        }
-</style>

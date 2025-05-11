@@ -8,7 +8,7 @@ using Microsoft.AspNetCore.Authorization;
 using SisNikosPizza;
 
 var builder = WebApplication.CreateBuilder(args);
-var conexion = builder.Configuration.GetConnectionString("rdev");
+var conexion = builder.Configuration.GetConnectionString("ConnectionSQLServer");
 builder.Services.AddDbContext<SisNikosPizzaBbContext>(options => options.UseSqlServer(conexion));
 
 // Configuraci�n de Identity con roles

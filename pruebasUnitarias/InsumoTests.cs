@@ -143,7 +143,7 @@ namespace ProyectoPruebas
             var carrito = new Carrito
             {
                 CarritoId = 3,
-                OwnerId = null // No dueño
+                OwnerId = null 
             };
 
             // Act
@@ -164,10 +164,10 @@ namespace ProyectoPruebas
             cp.Producto = new Producto();
             cp.Producto.Nombre = "Pizza Hawaina";
             cp.Producto.Descripcion = "Pizza con jamón, piña y queso mozzarella";
-            cp.ProductoId = 1; // ID específico para la hawaina
+            cp.ProductoId = 1; 
             cp.CarritoId = 5002;
             cp.Carrito = new Carrito();
-            cp.Cantidad = 5; // Quiere 5 pizzas hawainas
+            cp.Cantidad = 5; 
 
             cp.CarritoProductoId = 9002;
         }
