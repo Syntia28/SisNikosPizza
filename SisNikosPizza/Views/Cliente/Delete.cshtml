@@ -1,4 +1,4 @@
-﻿@model IEnumerable<SisNikosPizza.Domain.Models.ApplicationUser> 
+﻿@model SisNikosPizza.Domain.Models.ApplicationUser
 
 
 @{
@@ -19,7 +19,7 @@
 
             <div class="delete-item">
                 <span class="delete-label">Nombre</span>
-                <div class="delete-value">@Model.Nombre</div>
+                <div class="delete-value">@Model.UserName</div>
             </div>
 
             <div class="delete-item">
@@ -34,7 +34,7 @@
 
             <div class="delete-item">
                 <span class="delete-label">Teléfono</span>
-                <div class="delete-value">@Model.Telefono</div>
+                <div class="delete-value">@Model.PhoneNumber</div>
             </div>
 
             <div class="delete-item">

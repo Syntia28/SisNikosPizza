@@ -1,5 +1,4 @@
-﻿@model IEnumerable<SisNikosPizza.Domain.Models.ApplicationUser>
-
+﻿@model SisNikosPizza.Domain.Models.ApplicationUser
 
 @{
     ViewData["Title"] = "Editar Usuario";
@@ -166,8 +165,9 @@
 
                 <div class="mb-3">
                     <label for="PhoneNumber" class="form-label">Teléfono</label>
-                    <input type="text" asp-for="Telefono" class="form-control" id="PhoneNumber" placeholder="Ej. 999 999 999" />
-                    <span asp-validation-for="Telefono" class="text-danger"></span>
+                    <input type="text" asp-for="PhoneNumber" class="form-control" id="PhoneNumber"
+                        placeholder="Ej. 999 999 999" />
+                    <span asp-validation-for="PhoneNumber" class="text-danger"></span>
                 </div>
 
                 <div class="mb-3">
