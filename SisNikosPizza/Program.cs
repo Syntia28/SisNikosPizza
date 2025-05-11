@@ -9,6 +9,7 @@ using SisNikosPizza;
 
 var builder = WebApplication.CreateBuilder(args);
 var conexion = builder.Configuration.GetConnectionString("ConnectionSQLServer");
+// var conexion = builder.Configuration.GetConnectionString("rdev");
 builder.Services.AddDbContext<SisNikosPizzaBbContext>(options => options.UseSqlServer(conexion));
 
 // Configuraci�n de Identity con roles
