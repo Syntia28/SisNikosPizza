@@ -13,7 +13,9 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "SisNikosPizza.Repository", 
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "SisNikosPizza.Utilidades", "SisNikosPizza.Utilidades\SisNikosPizza.Utilidades.csproj", "{165ECCB2-FA02-4576-A9F2-AFAEA6CDFCC7}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "pruebasUnitarias", "pruebasUnitarias\pruebasUnitarias.csproj", "{7E181EAB-A07B-4729-ABB2-796560B7151E}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "pruebasUnitarias", "pruebasUnitarias\pruebasUnitarias.csproj", "{7E181EAB-A07B-4729-ABB2-796560B7151E}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "TestProject1", "TestProject1\TestProject1.csproj", "{BD3A99AD-2358-4D9F-9DA4-CA6983CF10E6}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -45,6 +47,10 @@ Global
 		{7E181EAB-A07B-4729-ABB2-796560B7151E}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{7E181EAB-A07B-4729-ABB2-796560B7151E}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{7E181EAB-A07B-4729-ABB2-796560B7151E}.Release|Any CPU.Build.0 = Release|Any CPU
+		{BD3A99AD-2358-4D9F-9DA4-CA6983CF10E6}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{BD3A99AD-2358-4D9F-9DA4-CA6983CF10E6}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{BD3A99AD-2358-4D9F-9DA4-CA6983CF10E6}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{BD3A99AD-2358-4D9F-9DA4-CA6983CF10E6}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

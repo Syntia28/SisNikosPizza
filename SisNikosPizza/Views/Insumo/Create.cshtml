@@ -1,93 +1,132 @@
-﻿@model SisNikosPizza.Domain.Models.Insumo
+﻿@model IEnumerable<SisNikosPizza.Domain.Models.Insumo>
 
 @{
-    ViewData["Title"] = "Crear Insumo";
+    ViewData["Title"] = "Lista de Insumos";
     Layout = "~/Views/Shared/_Admin.cshtml";
 }
 
-<section class="content container-fluid">
-    <div class="row justify-content-center">
-        <div class="col-md-10 col-lg-8">
-            <form method="post" asp-controller="Insumo" asp-action="Create" enctype="multipart/form-data">
-                <div class="card shadow-sm border-0">
-                    <!-- Encabezado -->
-                    <div class="card-header bg-primary text-white text-center py-3">
-                        <h3 class="card-title mb-0"><i class="bi bi-box-seam"></i> Nuevo Insumo</h3>
-                    </div>
-                    <div class="card-body bg-light">
-                        <!-- Validation Summary -->
-                        <div asp-validation-summary="ModelOnly" class="text-danger mb-3"></div>
+<link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css" rel="stylesheet">
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.5/font/bootstrap-icons.css">
 
-                        <!-- Nombre -->
-                        <div class="mb-4">
-                            <label class="form-label fw-bold">Nombre <span class="text-danger">*</span></label>
-                            <input type="text" asp-for="Nombre" class="form-control form-control-lg" placeholder="Nombre del insumo" />
-                            <span asp-validation-for="Nombre" class="text-danger"></span>
-                        </div>
+<div class="container mx-auto py-8 px-4 sm:px-6 lg:px-8">
+    <!-- Header -->
+    <div class="mb-6">
+        <h1 class="text-3xl sm:text-4xl font-extrabold text-transparent bg-clip-text bg-gradient-to-r from-yellow-500 to-yellow-700 animate-pulse">
+            Lista de Insumos
+        </h1>
+    </div>
 
-                        <!-- Descripción -->
-                        <div class="mb-4">
-                            <label class="form-label fw-bold">Descripción</label>
-                            <textarea asp-for="Descripcion" class="form-control" rows="4" placeholder="Descripción del insumo"></textarea>
-                            <span asp-validation-for="Descripcion" class="text-danger"></span>
-                        </div>
+    <!-- Back Button -->
+    <div class="mb-6">
+        <a href="javascript:history.back()" class="inline-flex items-center px-4 py-2 bg-gradient-to-r from-yellow-500 to-yellow-600 text-white rounded-full hover:bg-gradient-to-r hover:from-yellow-600 hover:to-yellow-700 transition duration-300 ease-in-out transform hover:scale-105 shadow-md">
+            <i class="bi bi-arrow-left-circle mr-2"></i> Regresar
+        </a>
+    </div>
 
-                        <!-- Precio -->
-                        <div class="row">
-                            <div class="col-md-6 mb-4">
-                                <label class="form-label fw-bold">Precio Unitario<span class="text-danger">*</span></label>
-                                <input type="number" asp-for="Precio" class="form-control" placeholder="Precio del insumo" step="0.01" />
-                                <span asp-validation-for="Precio" class="text-danger"></span>
-                            </div>
-
-                            <!-- Cantidad -->
-                            <div class="col-md-6 mb-4">
-                                <label class="form-label fw-bold">Cantidad <span class="text-danger">*</span></label>
-                                <input type="number" asp-for="Cantidad" class="form-control" placeholder="Cantidad del insumo" step="0.01" />
-                                <span asp-validation-for="Cantidad" class="text-danger"></span>
-                            </div>
-                        </div>
-
-                        <!-- Unidad de Medida -->
-                        <div class="mb-4">
-                            <label class="form-label fw-bold">Unidad de Medida <span class="text-danger">*</span></label>
-                            <input type="text" asp-for="UnidadeDeMedida" class="form-control" placeholder="Ejemplo: kg, litro, unidad" />
-                            <span asp-validation-for="UnidadeDeMedida" class="text-danger"></span>
-                        </div>
-
-                        <!-- Imagen -->
-                        <div class="mb-4">
-                            <label class="form-label fw-bold">Imagen</label>
-                            <input type="file" name="imageFile" class="form-control" accept="image/*" />
-                            <span asp-validation-for="ImagenUrl" class="text-danger"></span>
-                        </div>
-
-                        <!-- Estado -->
-                        <div class="mb-4">
-                            <label class="form-label fw-bold">Estado <span class="text-danger">*</span></label>
-                            <select asp-for="Estado" class="form-select">
-                                <option value="true">Activo</option>
-                                <option value="false">Inactivo</option>
-                            </select>
-                            <span asp-validation-for="Estado" class="text-danger"></span>
-                        </div>
-
-                        <!-- Botones -->
-                        <div class="d-flex justify-content-end mt-4">
-                            <button type="submit" class="btn btn-success btn-lg me-2">
-                                <i class="bi bi-floppy"></i> Guardar
-                            </button>
-                            <a asp-controller="Insumo" asp-action="Index" class="btn btn-secondary btn-lg">
-                                <i class="bi bi-x-circle"></i> Cancelar
-                            </a>
-                        </div>
-                    </div>
+    <!-- Card -->
+    <div class="bg-white shadow-2xl rounded-2xl overflow-hidden">
+        <!-- Card Header -->
+        <div class="bg-gradient-to-r from-yellow-500 to-yellow-700 text-white px-6 py-4 flex justify-between items-center">
+            <h2 class="text-2xl font-semibold">Insumos</h2>
+            <a asp-controller="Insumo" asp-action="Create" class="inline-flex items-center px-6 py-3 bg-gradient-to-r from-yellow-600 to-yellow-800 text-white rounded-full hover:bg-gradient-to-r hover:from-yellow-700 hover:to-yellow-900 transition duration-300 ease-in-out transform hover:scale-110 animate-pulse shadow-lg">
+                <i class="bi bi-plus-circle mr-2"></i> Nuevo Insumo
+            </a>
+        </div>
+        <!-- Card Body -->
+        <div class="p-6 bg-gray-50">
+            <!-- Search Bar -->
+            <div class="mb-6">
+                <div class="flex items-center max-w-lg mx-auto">
+                    <input type="text" id="searchInput" class="w-full px-4 py-2 border border-gray-300 rounded-l-lg focus:ring-2 focus:ring-yellow-500 focus:border-yellow-500" placeholder="Buscar por ID o Nombre..." />
+                    <button onclick="searchInsumos()" class="px-4 py-2 bg-yellow-500 text-white rounded-r-lg hover:bg-yellow-600 transition duration-300">
+                        <i class="bi bi-search"></i>
+                    </button>
                 </div>
-            </form>
+            </div>
+            <!-- Table -->
+            <div class="overflow-x-auto">
+                <table class="w-full table-auto" id="insumosTable">
+                    <thead class="bg-gray-200 text-gray-700">
+                        <tr>
+                            <th class="px-6 py-4 text-left text-sm font-semibold">ID</th>
+                            <th class="px-6 py-4 text-left text-sm font-semibold">Nombre</th>
+                            <th class="px-6 py-4 text-right text-sm font-semibold">Precio</th>
+                            <th class="px-6 py-4 text-left text-sm font-semibold">Descripción</th>
+                            <th class="px-6 py-4 text-center text-sm font-semibold">Estado</th>
+                            <th class="px-6 py-4 text-center text-sm font-semibold">Cantidad</th>
+                            <th class="px-6 py-4 text-left text-sm font-semibold">Unidad de Medida</th>
+                            <th class="px-6 py-4 text-center text-sm font-semibold">Acciones</th>
+                        </tr>
+                    </thead>
+                    <tbody class="divide-y divide-gray-200">
+                        @if (Model != null)
+                        {
+                            @foreach (var insumo in Model)
+                            {
+                                <tr class="bg-yellow-100 hover:bg-yellow-200 transition duration-300" data-id="@insumo.InsumoId" data-nombre="@insumo.Nombre.ToLower()">
+                                    <td class="px-6 py-4 text-gray-800 font-medium">@insumo.InsumoId</td>
+                                    <td class="px-6 py-4 text-gray-800 font-medium">@insumo.Nombre</td>
+                                    <td class="px-6 py-4 text-right text-gray-800">S/. @insumo.Precio</td>
+                                    <td class="px-6 py-4 text-gray-600">@insumo.Descripcion</td>
+                                    <td class="px-6 py-4 text-center">
+                                        @if (insumo.Estado)
+                                        {
+                                            <span class="inline-block px-3 py-1 bg-green-500 text-white text-sm font-medium rounded-full">Activo</span>
+                                        }
+                                        else
+                                        {
+                                            <span class="inline-block px-3 py-1 bg-red-500 text-white text-sm font-medium rounded-full">Inactivo</span>
+                                        }
+                                    </td>
+                                    <td class="px-6 py-4 text-center text-gray-800">@insumo.Cantidad</td>
+                                    <td class="px-6 py-4 text-gray-800">@insumo.UnidadeDeMedida</td>
+                                    <td class="px-6 py-4 text-center flex justify-center space-x-2">
+                                        <a asp-action="Details" asp-route-id="@insumo.InsumoId" class="inline-flex items-center px-3 py-1 bg-blue-500 text-white rounded-full hover:bg-blue-600 transition duration-300 transform hover:scale-105">
+                                            <i class="bi bi-eye"></i>
+                                        </a>
+                                        <a asp-action="Edit" asp-route-id="@insumo.InsumoId" class="inline-flex items-center px-3 py-1 bg-yellow-500 text-white rounded-full hover:bg-yellow-600 transition duration-300 transform hover:scale-105">
+                                            <i class="bi bi-pencil"></i>
+                                        </a>
+                                        <a asp-action="Delete" asp-route-id="@insumo.InsumoId" class="inline-flex items-center px-3 py-1 bg-red-500 text-white rounded-full hover:bg-red-600 transition duration-300 transform hover:scale-105">
+                                            <i class="bi bi-trash"></i>
+                                        </a>
+                                    </td>
+                                </tr>
+                            }
+                        }
+                        else
+                        {
+                            <tr>
+                                <td colspan="8" class="px-6 py-4 text-center text-gray-600">No hay insumos disponibles.</td>
+                            </tr>
+                        }
+                    </tbody>
+                </table>
+            </div>
         </div>
     </div>
-</section>
+</div>
 
-@section Scripts {
-    <partial name="_ValidationScriptsPartial" />
-}
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+<script>
+    function searchInsumos() {
+        const input = document.getElementById('searchInput').value.toLowerCase();
+        const table = document.getElementById('insumosTable');
+        const rows = table.getElementsByTagName('tr');
+
+        for (let i = 1; i < rows.length; i++) { // Start from 1 to skip header
+            const row = rows[i];
+            const id = row.getAttribute('data-id');
+            const nombre = row.getAttribute('data-nombre');
+            const isMatch = id === input || (nombre && nombre.includes(input));
+            row.style.display = isMatch || input === '' ? '' : 'none';
+        }
+    }
+
+    // Trigger search on Enter key
+    document.getElementById('searchInput').addEventListener('keypress', function (e) {
+        if (e.key === 'Enter') {
+            searchInsumos();
+        }
+    });
+</script>

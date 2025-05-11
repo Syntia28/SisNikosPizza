@@ -2,7 +2,7 @@
 using System.ComponentModel.DataAnnotations.Schema;
 using System.ComponentModel.DataAnnotations;
 
-namespace HotelElCielo.Domain.Models;
+namespace SisNikosPizza.Domain.Models;
 
 public class ApplicationUser : IdentityUser
 {
