@@ -6,31 +6,20 @@
     Layout = "~/Views/Shared/_Admin.cshtml";
 }
 
-<link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-QWTKZyjpPEjISv5WaRU9OFeRpok6YctnYmDr5pNlyT2bRjXh0JMhjY6hW+ALEwIH" crossorigin="anonymous">
-<link href="https://cdn.jsdelivr.net/npm/bootstrap-icons/font/bootstrap-icons.css" rel="stylesheet">
+<link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css" rel="stylesheet">
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.5/font/bootstrap-icons.css">
 <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Poppins:wght@600;700&display=swap" rel="stylesheet">
 
 <style>
     body {
         font-family: 'Inter', sans-serif;
         background: linear-gradient(135deg, #fff3e0 0%, #ffe082 100%);
-        color: #212121; /* Black letters */
+        color: #212121;
         margin: 0;
         padding: 0;
     }
 
-    .container-fluid {
-        max-width: 1300px;
-        padding: 3rem 1.5rem;
-        margin: 0 auto;
-    }
-
     .card {
-        border-radius: 25px;
-        box-shadow: 0 15px 45px rgba(0, 0, 0, 0.2);
-        background: #ffffff;
-        border: 2px solid #ffca28;
-        overflow: hidden;
         animation: slideIn 0.7s ease-out;
     }
 
@@ -46,420 +35,218 @@
         }
     }
 
-    .card-header {
-        background: linear-gradient(135deg, #ff8f00, #ffca28);
-        color: #fff;
-        padding: 2.5rem;
-        border-top-left-radius: 25px;
-        border-top-right-radius: 25px;
-        display: flex;
-        justify-content: space-between;
-        align-items: center;
-        position: relative;
-    }
-
-        .card-header::before {
-            content: '';
-            position: absolute;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            background: radial-gradient(circle, rgba(255,255,255,0.3) 0%, transparent 70%);
-            opacity: 0.4;
-        }
-
-        .card-header h2 {
-            font-family: 'Poppins', sans-serif;
-            font-size: 2.3rem;
-            font-weight: 700;
-            margin: 0;
-            position: relative;
-            z-index: 1;
-        }
-
-    .card-body {
-        padding: 3rem;
-        background: #fff8e1;
-    }
-
-    .filters {
-        display: flex;
-        justify-content: space-between;
-        align-items: center;
-        gap: 1.5rem;
-        margin-bottom: 2.5rem;
-        background: #fff;
-        padding: 1.5rem;
-        border-radius: 15px;
-        box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
-        flex-wrap: wrap;
-    }
-
-    .filter-group {
-        display: flex;
-        align-items: center;
-        gap: 1rem;
-    }
-
-        .filter-group label {
-            font-weight: 500;
-            color: #212121;
-        }
-
-    .form-select, .form-control {
-        border-radius: 15px;
-        border: 1px solid #ffca28;
-        padding: 0.8rem;
-        font-size: 1rem;
-        background: #fff;
-        transition: all 0.3s ease;
-    }
-
-        .form-control:focus {
-            border-color: #ff8f00;
-            box-shadow: 0 0 10px rgba(255, 143, 0, 0.3);
-            outline: none;
-        }
-
-    .input-group {
-        max-width: 400px;
-        position: relative;
-    }
-
-    .input-group-text {
-        background: #fff3e0;
-        border: 1px solid #ffca28;
-        border-right: none;
-        border-radius: 15px 0 0 15px;
-        padding: 0.8rem;
-        color: #ff8f00;
-        font-size: 1.2rem;
-    }
-
-    .input-group .form-control {
-        border-left: none;
-        border-radius: 0 15px 15px 0;
-        padding-left: 0.5rem;
-    }
-
-    .table {
-        border-collapse: separate;
-        border-spacing: 0;
-        border-radius: 15px;
-        overflow: hidden;
-        background: #fff;
-        box-shadow: 0 6px 15px rgba(0, 0, 0, 0.1);
-        border: 1px solid #ffe082;
-    }
-
-        .table th, .table td {
-            padding: 1.4rem;
-            text-align: center;
-            vertical-align: middle;
-            font-size: 1rem;
-            color: #212121;
-        }
-
-        .table th {
-            background: #fff3e0;
-            color: #ff8f00;
-            font-weight: 700;
-            text-transform: uppercase;
-            font-size: 0.95rem;
-        }
-
-        .table tbody tr {
-            transition: background 0.3s ease, transform 0.3s ease;
-        }
-
-            .table tbody tr:hover {
-                background: #fff9e6;
-                transform: translateY(-3px);
-            }
-
-    .btn-custom {
-        border-radius: 50px;
-        padding: 0.7rem 1.8rem;
-        font-weight: 600;
-        font-size: 0.95rem;
-        text-transform: uppercase;
-        transition: all 0.3s ease;
-        display: inline-flex;
-        align-items: center;
-        gap: 0.6rem;
-        box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
-    }
-
-    .btn-success {
-        background: linear-gradient(90deg, #ff8f00, #ffca28);
-        border: none;
-        color: #fff;
-    }
-
-        .btn-success:hover {
-            background: linear-gradient(90deg, #e67e22, #ffb300);
-            transform: translateY(-3px);
-            box-shadow: 0 6px 15px rgba(255, 143, 0, 0.3);
-        }
-
-    .btn-info {
-        background: #0288d1;
-        border: none;
-        color: #fff;
-    }
-
-        .btn-info:hover {
-            background: #0277bd;
-            transform: translateY(-3px);
-            box-shadow: 0 6px 15px rgba(2, 136, 209, 0.3);
-        }
-
-    .btn-warning {
-        background: #ffb300;
-        border: none;
-        color: #fff;
-    }
-
-        .btn-warning:hover {
-            background: #e67e22;
-            transform: translateY(-3px);
-            box-shadow: 0 6px 15px rgba(255, 179, 0, 0.3);
-        }
-
-    .btn-danger {
-        background: #d32f2f;
-        border: none;
-        color: #fff;
-    }
-
-        .btn-danger:hover {
-            background: #c62828;
-            transform: translateY(-3px);
-            box-shadow: 0 6px 15px rgba(211, 47, 47, 0.3);
-        }
-
-    .badge {
-        padding: 0.6rem 1.2rem;
-        font-size: 0.95rem;
-        border-radius: 15px;
-        font-weight: 500;
-    }
-
-        .badge.bg-success {
-            background: #28a745;
-            color: #fff;
-        }
-
-        .badge.bg-warning {
-            background: #ffb300;
-            color: #fff;
-        }
-
-        .badge.bg-danger {
-            background: #d32f2f;
-            color: #fff;
-        }
-
-    .pagination {
+    .loading-overlay {
+        position: absolute;
+        top: 0;
+        left: 0;
+        right: 0;
+        bottom: 0;
+        background: rgba(255, 255, 255, 0.8);
+        display: none;
         justify-content: center;
-        margin-top: 2.5rem;
+        align-items: center;
+        z-index: 10;
     }
 
-        .pagination .page-link {
-            border-radius: 12px;
-            margin: 0 0.4rem;
-            color: #ff8f00;
-            background: #fff;
-            border: 1px solid #ffca28;
-            padding: 0.7rem 1.3rem;
-            font-weight: 500;
-            transition: all 0.3s ease;
+    .loading-spinner {
+        border: 4px solid #f1c40f;
+        border-top: 4px solid transparent;
+        border-radius: 50%;
+        width: 30px;
+        height: 30px;
+        animation: spin 1s linear infinite;
+    }
+
+    @@keyframes spin {
+        0% {
+            transform: rotate(0deg);
         }
 
-        .pagination .page-item.active .page-link {
-            background: #ff8f00;
-            color: #fff;
-            border-color: #ff8f00;
+        100% {
+            transform: rotate(360deg);
         }
-
-        .pagination .page-item.disabled .page-link {
-            color: #ccc;
-            background: #f5f5f5;
-            border-color: #ccc;
-        }
-
-        .pagination .page-link:hover {
-            background: #ffca28;
-            color: #212121;
-            border-color: #ffca28;
-        }
+    }
 
     .no-results {
         text-align: center;
-        padding: 2rem;
+        padding: 1.5rem;
         background: #fef0e7;
         color: #d32f2f;
-        border-radius: 15px;
-        font-size: 1.2rem;
+        border-radius: 0.75rem;
+        font-size: 1.1rem;
         font-weight: 500;
         margin-top: 1rem;
         display: none;
     }
-
-    @@media (max-width: 768px) {
-        .card-header h2 {
-            font-size: 1.8rem;
-        }
-
-        .filters {
-            flex-direction: column;
-            align-items: stretch;
-            padding: 1rem;
-        }
-
-        .input-group {
-            max-width: 100%;
-        }
-
-        .table th, .table td {
-            font-size: 0.9rem;
-            padding: 1rem;
-        }
-
-        .btn-custom {
-            padding: 0.6rem 1.5rem;
-            font-size: 0.9rem;
-        }
-
-        .btn-group {
-            display: flex;
-            flex-wrap: wrap;
-            gap: 0.5rem;
-            justify-content: center;
-        }
-    }
-
-    @@media (max-width: 576px) {
-        .container-fluid {
-            padding: 2rem 1rem;
-        }
-
-        .card-header {
-            padding: 1.8rem;
-            flex-direction: column;
-            gap: 1rem;
-            text-align: center;
-        }
-
-        .card-body {
-            padding: 2rem;
-        }
-
-        .filter-group {
-            flex-direction: column;
-            align-items: stretch;
-            width: 100%;
-        }
-
-        .btn-group {
-            flex-direction: column;
-            align-items: center;
-        }
-    }
 </style>
 
-<div class="container-fluid">
-    <div class="card">
-        <div class="card-header">
-            <h2>Gestión de Proveedores</h2>
-            <a class="btn btn-success btn-custom" asp-controller="Proveedor" asp-action="Create" aria-label="Crear nuevo proveedor">
-                <i class="bi bi-plus-circle"></i> Nuevo Proveedor
-            </a>
-        </div>
+<div class="container mx-auto py-8 px-4 sm:px-6 lg:px-8" role="main">
+    <!-- Header -->
+    <div class="mb-6">
+        <h1 class="text-3xl sm:text-4xl font-extrabold text-transparent bg-clip-text bg-gradient-to-r from-yellow-500 to-yellow-700 animate-pulse">
+            Lista de Proveedores
+        </h1>
+    </div>
 
-        <div class="card-body">
-            <div class="filters">
-                <div class="filter-group">
-                    <label for="entries" class="form-label">Mostrar</label>
-                    <select id="entries" class="form-select" onchange="updateEntries()" style="width: auto;">
+    <!-- TempData Messages -->
+    @if (TempData["Satisfactorio"] != null)
+    {
+        <div class="mb-6 p-4 bg-green-100 border-l-4 border-green-500 text-green-700 rounded-lg">
+            <p>@TempData["Satisfactorio"]</p>
+        </div>
+    }
+    @if (TempData["Error"] != null)
+    {
+        <div class="mb-6 p-4 bg-red-100 border-l-4 border-red-500 text-red-700 rounded-lg">
+            <p>@TempData["Error"]</p>
+        </div>
+    }
+
+    <!-- Back Button -->
+    <div class="mb-6">
+        <a asp-controller="Home" asp-action="Index" class="inline-flex items-center px-4 py-2 bg-gradient-to-r from-yellow-500 to-yellow-600 text-white rounded-full hover:bg-gradient-to-r hover:from-yellow-600 hover:to-yellow-700 transition duration-300 ease-in-out transform hover:scale-105 shadow-md" aria-label="Regresar al inicio">
+            <i class="bi bi-arrow-left-circle mr-2"></i> Regresar
+        </a>
+    </div>
+
+    <!-- Card -->
+    <div class="bg-white shadow-2xl rounded-2xl overflow-hidden border-2 border-yellow-400 card" aria-labelledby="card-header">
+        <div class="bg-gradient-to-r from-yellow-500 to-yellow-700 text-white px-6 py-4 flex justify-between items-center relative shadow-lg">
+    <h2 class="text-2xl font-semibold font-['Poppins']" id="card-header">Gestión de Proveedores</h2>
+            <a asp-controller="Proveedor" asp-action="Create"
+               class="inline-flex items-center px-6 py-3 bg-gradient-to-r from-yellow-600 to-yellow-800 text-white rounded-full hover:bg-gradient-to-r hover:from-yellow-700 hover:to-yellow-900 transition duration-300 ease-in-out transform hover:scale-105 hover:-translate-y-1 hover:shadow-3d animate-pulse"
+               aria-label="Crear nuevo proveedor">
+                <i class="bi bi-plus-circle mr-2"></i> Nuevo Proveedor
+            </a>
+    <div class="absolute inset-0 bg-radial-gradient from-white/30 to-transparent opacity-40"></div>
+</div>
+
+<style>
+/* Efecto 3D para el botón */
+.shadow-3d {
+    box-shadow: 0 6px 12px rgba(0, 0, 0, 0.3), 
+                0 8px 16px rgba(0, 0, 0, 0.2), 
+                inset 0 -2px 4px rgba(0, 0, 0, 0.2), 
+                inset 0 2px 4px rgba(255, 255, 255, 0.3);
+}
+
+/* Asegurar que el gradiente radial sea compatible */
+.bg-radial-gradient {
+    background: radial-gradient(circle, rgba(255, 255, 255, 0.3), transparent);
+}
+
+
+.animate-pulse {
+    animation: pulse 2s infinite;
+}
+
+/* Responsividad */
+
+</style>
+        <!-- Card Body -->
+        <div class="p-6 bg-yellow-50 relative">
+            <div class="loading-overlay" id="loadingOverlay">
+                <div class="loading-spinner"></div>
+            </div>
+            <!-- Filters -->
+            <div class="mb-6 bg-white p-4 rounded-xl shadow-md flex flex-col sm:flex-row justify-between items-center gap-4">
+                <div class="flex items-center gap-2">
+                    <label for="entries" class="text-gray-700 font-medium">Mostrar</label>
+                    <select id="entries" class="border border-gray-300 rounded-xl px-3 py-2 focus:ring-2 focus:ring-yellow-500 focus:border-yellow-500" onchange="updateEntries()" aria-label="Seleccionar número de registros por página">
                         <option value="10" selected>10</option>
                         <option value="25">25</option>
                         <option value="50">50</option>
                         <option value="100">100</option>
                     </select>
-                    <span>registros</span>
+                    <span class="text-gray-700">registros</span>
                 </div>
-                <div class="input-group">
-                    <span class="input-group-text"><i class="bi bi-search"></i></span>
-                    <input type="search" id="searchInput" class="form-control" placeholder="Buscar por ID, nombre, empresa, insumo o stock" aria-label="Buscar proveedores" />
+                <div class="relative max-w-md w-full">
+                    <div class="flex items-center">
+                        <span class="bg-yellow-100 border border-yellow-400 border-r-0 rounded-l-xl px-3 py-2 text-yellow-600"><i class="bi bi-search"></i></span>
+                        <input type="search" id="searchInput" class="w-full border border-yellow-400 border-l-0 rounded-r-xl px-3 py-2 focus:ring-2 focus:ring-yellow-500 focus:border-yellow-500" placeholder="Buscar por ID, Nombre, Empresa, Insumo o Stock..." aria-label="Buscar proveedores" />
+                        <button id="clearSearch" class="absolute right-3 top-1/2 transform -translate-y-1/2 text-gray-500 hover:text-yellow-500 hidden" aria-label="Limpiar búsqueda">
+                            <i class="bi bi-x"></i>
+                        </button>
+                    </div>
                 </div>
             </div>
-
-            <div class="table-responsive">
-                <table class="table table-striped align-middle" id="proveedorTable">
-                    <thead>
+            <!-- Table -->
+            <div class="overflow-x-auto">
+                <table class="w-full table-auto border border-yellow-200 rounded-xl shadow-md" id="proveedorTable">
+                    <thead class="bg-yellow-100 text-yellow-700">
                         <tr>
-                            <th scope="col">ID</th>
-                            <th scope="col">Nombre</th>
-                            <th scope="col">Empresa</th>
-                            <th scope="col">Insumo</th>
-                            <th scope="col">Stock</th>
-                            <th scope="col">Acciones</th>
+                            <th class="px-6 py-4 text-center text-sm font-semibold uppercase">ID</th>
+                            <th class="px-6 py-4 text-center text-sm font-semibold uppercase">Nombre</th>
+                            <th class="px-6 py-4 text-center text-sm font-semibold uppercase">Empresa</th>
+                            <th class="px-6 py-4 text-center text-sm font-semibold uppercase">Insumo</th>
+                            <th class="px-6 py-4 text-center text-sm font-semibold uppercase">Stock</th>
+                            <th class="px-6 py-4 text-center text-sm font-semibold uppercase">Acciones</th>
                         </tr>
                     </thead>
-                    <tbody id="proveedorTableBody">
-                        @foreach (var proveedor in Model)
+                    <tbody class="divide-y divide-yellow-200" id="proveedorTableBody">
+                        @if (Model != null && Model.Any())
                         {
-                            <tr>
-                                <td scope="row">@proveedor.ProveedorId</td>
-                                <td>@proveedor.Nombre</td>
-                                <td>@proveedor.Empresa</td>
-                                <td>@proveedor.Producto</td>
-                                <td>
-                                    @{
-                                        int cantidad;
-                                        bool parsed = int.TryParse(proveedor.Ccantidad, out cantidad);
-                                        if (!parsed)
-                                        {
-                                            cantidad = 0;
+                            @foreach (var proveedor in Model)
+                            {
+                                <tr class="bg-yellow-50 hover:bg-yellow-100 transition duration-300">
+                                    <td class="px-6 py-4 text-gray-800 font-medium text-center">@proveedor.ProveedorId</td>
+                                    <td class="px-6 py-4 text-gray-800 font-medium text-center">@proveedor.Nombre</td>
+                                    <td class="px-6 py-4 text-gray-800 font-medium text-center">@proveedor.Empresa</td>
+                                    <td class="px-6 py-4 text-gray-800 font-medium text-center">@proveedor.Producto</td>
+                                    <td class="px-6 py-4 text-center">
+                                        @{
+                                            int cantidad;
+                                            bool parsed = int.TryParse(proveedor.Ccantidad, out cantidad);
+                                            if (!parsed)
+                                            {
+                                                cantidad = 0;
+                                            }
                                         }
-                                    }
-                                    <span class="badge @(cantidad > 10 ? "bg-success" : cantidad > 0 ? "bg-warning" : "bg-danger")">
-                                        @cantidad
-                                    </span>
-                                </td>
-                                <td>
-                                    <div class="btn-group" role="group" aria-label="Acciones para proveedor @proveedor.ProveedorId">
-                                        <a class="btn btn-info btn-custom me-1" asp-controller="Proveedor" asp-action="Details" asp-route-id="@proveedor.ProveedorId" title="Ver detalles">
+                                        <span class="inline-block px-3 py-1 text-white text-sm font-medium rounded-full @(cantidad > 10 ? "bg-green-500" : cantidad > 0 ? "bg-yellow-500" : "bg-red-500")">
+                                            @cantidad
+                                        </span>
+                                    </td>
+                                    <td class="px-6 py-4 text-center flex justify-center space-x-2">
+                                        <a asp-action="Details" asp-route-id="@proveedor.ProveedorId" class="inline-flex items-center px-3 py-1 bg-blue-500 text-white rounded-full hover:bg-blue-600 transition duration-300 transform hover:scale-105" aria-label="Ver detalles de @proveedor.Nombre">
                                             <i class="bi bi-eye"></i>
                                         </a>
-                                        <a class="btn btn-warning btn-custom me-1" asp-controller="Proveedor" asp-action="Edit" asp-route-id="@proveedor.ProveedorId" title="Editar proveedor">
+                                        <a asp-action="Edit" asp-route-id="@proveedor.ProveedorId" class="inline-flex items-center px-3 py-1 bg-yellow-500 text-white rounded-full hover:bg-yellow-600 transition duration-300 transform hover:scale-105" aria-label="Editar @proveedor.Nombre">
                                             <i class="bi bi-pencil-square"></i>
                                         </a>
-                                        <a class="btn btn-danger btn-custom" asp-controller="Proveedor" asp-action="Delete" asp-route-id="@proveedor.ProveedorId" title="Eliminar proveedor">
+                                        <a asp-action="Delete" asp-route-id="@proveedor.ProveedorId" class="inline-flex items-center px-3 py-1 bg-red-500 text-white rounded-full hover:bg-red-600 transition duration-300 transform hover:scale-105" aria-label="Eliminar @proveedor.Nombre">
                                             <i class="bi bi-trash"></i>
                                         </a>
-                                    </div>
-                                </td>
+                                    </td>
+                                </tr>
+                            }
+                        }
+                        else
+                        {
+                            <tr>
+                                <td colspan="6" class="px-6 py-4 text-center text-gray-600">No hay proveedores disponibles.</td>
                             </tr>
                         }
                     </tbody>
                 </table>
                 <div class="no-results" id="noResults">No se encontraron proveedores que coincidan con la búsqueda.</div>
             </div>
-
-            <div class="d-flex justify-content-between align-items-center mt-4">
-                <span id="tableInfo" class="text-muted"></span>
+            <!-- Pagination -->
+            <div class="mt-6 flex justify-between items-center">
+                <span id="tableInfo" class="text-gray-600"></span>
                 <nav aria-label="Paginación de proveedores">
-                    <ul class="pagination mb-0" id="pagination"></ul>
+                    <ul class="flex space-x-2" id="pagination"></ul>
                 </nav>
             </div>
         </div>
     </div>
 </div>
 
-<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js" integrity="sha384-YvpcrYf0tY3lHB60NNkmXc5s9fDVZLESaAA55NDzOxhy9GkcIdslK1eN7N6jIeHz" crossorigin="anonymous"></script>
+<!-- No Results Toast -->
+<div class="fixed bottom-4 right-4 hidden bg-red-500 text-white px-6 py-3 rounded-lg shadow-lg transition-opacity duration-300" id="noResultsToast" role="alert" aria-live="polite">
+    <i class="bi bi-exclamation-circle mr-2"></i> No se encontraron proveedores que coincidan con la búsqueda.
+</div>
+
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
 <script>
     let currentPage = 1;
     let rowsPerPage = 10;
@@ -467,14 +254,27 @@
     let searchTimeout = null;
 
     document.addEventListener('DOMContentLoaded', () => {
-        // Store all rows initially
         allRows = Array.from(document.querySelectorAll('#proveedorTableBody tr'));
         updateTable();
 
         const searchInput = document.getElementById('searchInput');
+        const clearSearch = document.getElementById('clearSearch');
         searchInput.addEventListener('input', () => {
             clearTimeout(searchTimeout);
-            searchTimeout = setTimeout(filterTable, 300); // Debounce input by 300ms
+            searchTimeout = setTimeout(filterTable, 300);
+        });
+        searchInput.addEventListener('keypress', (e) => {
+            if (e.key === 'Enter') {
+                filterTable();
+            }
+        });
+
+        clearSearch.addEventListener('click', () => {
+            searchInput.value = '';
+            clearSearch.classList.add('hidden');
+            currentPage = 1;
+            filterTable();
+            searchInput.focus();
         });
     });
 
@@ -487,16 +287,19 @@
     function filterTable() {
         const searchTerm = document.getElementById('searchInput').value.toLowerCase().trim();
         const noResults = document.getElementById('noResults');
+        const noResultsToast = document.getElementById('noResultsToast');
+        const loadingOverlay = document.getElementById('loadingOverlay');
+        const clearSearch = document.getElementById('clearSearch');
 
-        // Filter rows based on search term
+        loadingOverlay.style.display = 'flex';
+
         const filteredRows = allRows.filter(row => {
             const cells = row.querySelectorAll('td');
             const id = cells[0].textContent.toLowerCase();
             const nombre = cells[1].textContent.toLowerCase();
             const empresa = cells[2].textContent.toLowerCase();
             const insumo = cells[3].textContent.toLowerCase();
-            const stock = cells[4].querySelector('.badge').textContent.toLowerCase();
-
+            const stock = cells[4].querySelector('span') ? cells[4].querySelector('span').textContent.toLowerCase() : cells[4].textContent.toLowerCase();
             return id.includes(searchTerm) ||
                 nombre.includes(searchTerm) ||
                 empresa.includes(searchTerm) ||
@@ -507,7 +310,14 @@
         currentPage = 1;
         updateTable(filteredRows);
 
+        clearSearch.classList.toggle('hidden', !searchTerm);
         noResults.style.display = filteredRows.length === 0 && searchTerm ? 'block' : 'none';
+        if (filteredRows.length === 0 && searchTerm) {
+            noResultsToast.classList.remove('hidden');
+            setTimeout(() => noResultsToast.classList.add('hidden'), 3000);
+        }
+
+        setTimeout(() => loadingOverlay.style.display = 'none', 300);
     }
 
     function updateTable(filteredRows = allRows) {
@@ -517,7 +327,11 @@
 
         const tbody = document.getElementById('proveedorTableBody');
         tbody.innerHTML = '';
-        paginatedRows.forEach(row => tbody.appendChild(row));
+        if (paginatedRows.length === 0 && !document.getElementById('searchInput').value) {
+            tbody.innerHTML = '<tr><td colspan="6" class="px-6 py-4 text-center text-gray-600">No hay proveedores disponibles.</td></tr>';
+        } else {
+            paginatedRows.forEach(row => tbody.appendChild(row));
+        }
 
         const totalRows = filteredRows.length;
         document.getElementById('tableInfo').textContent = `Mostrando ${start + 1} al ${Math.min(end, totalRows)} de ${totalRows} registros`;
@@ -531,28 +345,28 @@
         pagination.innerHTML = '';
 
         pagination.innerHTML += `
-                <li class="page-item ${currentPage === 1 ? 'disabled' : ''}">
-                    <a class="page-link" href="#" onclick="goToPage(1)" aria-label="Primera página">Primero</a>
+                <li class="${currentPage === 1 ? 'opacity-50 cursor-not-allowed' : ''}">
+                    <a href="#" onclick="goToPage(1)" class="px-4 py-2 bg-yellow-500 text-white rounded-full hover:bg-yellow-600 transition duration-300 ${currentPage === 1 ? 'pointer-events-none' : ''}" aria-label="Primera página">Primero</a>
                 </li>
-                <li class="page-item ${currentPage === 1 ? 'disabled' : ''}">
-                    <a class="page-link" href="#" onclick="goToPage(${currentPage - 1})" aria-label="Página anterior">Anterior</a>
+                <li class="${currentPage === 1 ? 'opacity-50 cursor-not-allowed' : ''}">
+                    <a href="#" onclick="goToPage(${currentPage - 1})" class="px-4 py-2 bg-yellow-500 text-white rounded-full hover:bg-yellow-600 transition duration-300 ${currentPage === 1 ? 'pointer-events-none' : ''}" aria-label="Página anterior">Anterior</a>
                 </li>
             `;
 
         for (let i = 1; i <= totalPages; i++) {
             pagination.innerHTML += `
-                    <li class="page-item ${i === currentPage ? 'active' : ''}">
-                        <a class="page-link" href="#" onclick="goToPage(${i})" aria-label="Página ${i}">${i}</a>
+                    <li class="${i === currentPage ? 'bg-yellow-600' : ''}">
+                        <a href="#" onclick="goToPage(${i})" class="px-4 py-2 ${i === currentPage ? 'bg-yellow-600 text-white' : 'bg-yellow-500 text-white'} rounded-full hover:bg-yellow-600 transition duration-300" aria-label="Página ${i}">${i}</a>
                     </li>
                 `;
         }
 
         pagination.innerHTML += `
-                <li class="page-item ${currentPage === totalPages ? 'disabled' : ''}">
-                    <a class="page-link" href="#" onclick="goToPage(${currentPage + 1})" aria-label="Página siguiente">Siguiente</a>
+                <li class="${currentPage === totalPages || totalPages === 0 ? 'opacity-50 cursor-not-allowed' : ''}">
+                    <a href="#" onclick="goToPage(${currentPage + 1})" class="px-4 py-2 bg-yellow-500 text-white rounded-full hover:bg-yellow-600 transition duration-300 ${currentPage === totalPages || totalPages === 0 ? 'pointer-events-none' : ''}" aria-label="Página siguiente">Siguiente</a>
                 </li>
-                <li class="page-item ${currentPage === totalPages ? 'disabled' : ''}">
-                    <a class="page-link" href="#" onclick="goToPage(${totalPages})" aria-label="Última página">Último</a>
+                <li class="${currentPage === totalPages || totalPages === 0 ? 'opacity-50 cursor-not-allowed' : ''}">
+                    <a href="#" onclick="goToPage(${totalPages})" class="px-4 py-2 bg-yellow-500 text-white rounded-full hover:bg-yellow-600 transition duration-300 ${currentPage === totalPages || totalPages === 0 ? 'pointer-events-none' : ''}" aria-label="Última página">Último</a>
                 </li>
             `;
     }
