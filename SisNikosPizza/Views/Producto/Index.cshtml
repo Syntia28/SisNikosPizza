@@ -165,15 +165,8 @@
                                 <tr class="bg-yellow-50 hover:bg-yellow-100 transition duration-300">
                                     <td class="px-6 py-4 text-gray-800 font-medium">@producto.ProductoId</td>
                                     <td class="px-6 py-4 text-center">
-                                        @if (!string.IsNullOrEmpty(producto.ImagenUrl))
-                                        {
-                                            var imagePath = Url.Content($"~/images/{producto.ImagenUrl}");
-                                            <img src="@imagePath" alt="@producto.Nombre" class="max-w-[100px] h-auto rounded-lg border border-gray-300 shadow-md" asp-append-version="true" onerror="this.onerror=null; this.parentElement.innerHTML='<span class=\'image-error\'>Error al cargar imagen</span>';" />
-                                        }
-                                        else
-                                        {
-                                            <span class="text-gray-600">Sin imagen</span>
-                                        }
+                                        <img src="@producto.ImagenUrl" class="card-img-top" alt="@producto.Nombre" style="height: 150px; object-fit: cover;">
+                                        <div class="card-body" style="background-color: #ffffff;">
                                     </td>
                                     <td class="px-6 py-4 text-gray-800 font-medium">@producto.Nombre</td>
                                     <td class="px-6 py-4 text-right text-gray-800">S/. @producto.Precio.ToString("F2")</td>
