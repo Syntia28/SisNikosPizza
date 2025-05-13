@@ -5,214 +5,33 @@
     Layout = "~/Views/Shared/_Admin.cshtml";
 }
 
-<link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
-<link href="https://cdn.jsdelivr.net/npm/bootstrap-icons/font/bootstrap-icons.css" rel="stylesheet">
-<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600&display=swap" rel="stylesheet">
+<link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css" rel="stylesheet">
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.5/font/bootstrap-icons.css">
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Poppins:wght@600;700&display=swap" rel="stylesheet">
 
 <style>
     body {
-        background: linear-gradient(135deg, #f8f9fa 0%, #e9ecef 100%);
         font-family: 'Inter', sans-serif;
-        color: #2d2d2d;
+        background: linear-gradient(135deg, #fff3e0 0%, #ffe082 100%);
+        color: #212121;
         margin: 0;
         padding: 0;
     }
 
-    .container {
-        padding: 60px 20px;
-        max-width: 1200px;
-        margin: 0 auto;
-    }
-
     .card {
-        background: #fff;
-        border-radius: 20px;
-        box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
-        overflow: hidden;
-        transition: transform 0.3s ease;
+        animation: slideIn 0.7s ease-out;
     }
 
-    .card:hover {
-        transform: translateY(-5px);
-    }
+    @@keyframes slideIn {
+        from {
+            opacity: 0;
+            transform: translateY(30px);
+        }
 
-    .card-header {
-        background: linear-gradient(45deg, #f1c40f, #f39c12);
-        padding: 20px;
-        color: #fff;
-        border-radius: 20px 20px 0 0;
-        display: flex;
-        justify-content: space-between;
-        align-items: center;
-    }
-
-    .card-header h2 {
-        font-size: 2rem;
-        font-weight: 700;
-        margin: 0;
-        text-transform: uppercase;
-        letter-spacing: 1px;
-        text-shadow: 1px 1px 5px rgba(0, 0, 0, 0.2);
-    }
-
-    .card-body {
-        padding: 30px;
-    }
-
-    .table th, .table td {
-        text-align: center;
-        padding: 15px;
-        font-size: 1rem;
-        vertical-align: middle;
-    }
-
-    .table th {
-        background: #f9f9f9;
-        color: #333;
-        font-weight: 600;
-    }
-
-    .table tbody tr {
-        transition: background 0.3s ease;
-    }
-
-    .table tbody tr:hover {
-        background: #fff9e6;
-    }
-
-    .form-select, .form-control {
-        border: 2px solid #e0e0e0;
-        border-radius: 10px;
-        padding: 10px;
-        font-size: 1rem;
-        transition: border-color 0.3s ease, box-shadow 0.3s ease;
-        background: #f9f9f9;
-    }
-
-    .form-select:focus, .form-control:focus {
-        border-color: #f1c40f;
-        box-shadow: 0 0 8px rgba(241, 196, 15, 0.3);
-        outline: none;
-        background: #fff;
-    }
-
-    .input-group {
-        position: relative;
-    }
-
-    .input-group-text {
-        background: #f9f9f9;
-        border: 2px solid #e0e0e0;
-        border-right: none;
-        border-radius: 10px 0 0 10px;
-        padding: 10px;
-    }
-
-    .input-group .form-control {
-        border-left: none;
-        border-radius: 0 10px 10px 0;
-        padding-right: 40px;
-    }
-
-    .clear-search {
-        position: absolute;
-        right: 10px;
-        top: 50%;
-        transform: translateY(-50%);
-        background: none;
-        border: none;
-        color: #6c757d;
-        font-size: 1.2rem;
-        cursor: pointer;
-        display: none;
-    }
-
-    .clear-search:hover {
-        color: #f1c40f;
-    }
-
-    .btn {
-        padding: 8px 16px;
-        border-radius: 50px;
-        font-weight: 600;
-        font-size: 0.9rem;
-        transition: transform 0.2s ease, background 0.3s ease;
-        display: inline-flex;
-        align-items: center;
-        gap: 8px;
-    }
-
-    .btn-primary {
-        background: linear-gradient(45deg, #3498db, #2980b9);
-        border: none;
-        color: #fff;
-    }
-
-    .btn-primary:hover {
-        background: linear-gradient(45deg, #2980b9, #3498db);
-        transform: scale(1.05);
-    }
-
-    .btn-info {
-        background: linear-gradient(45deg, #17a2b8, #138496);
-        border: none;
-        color: #fff;
-    }
-
-    .btn-info:hover {
-        background: linear-gradient(45deg, #138496, #17a2b8);
-        transform: scale(1.05);
-    }
-
-    .btn-danger {
-        background: linear-gradient(45deg, #e63946, #d00000);
-        border: none;
-        color: #fff;
-    }
-
-    .btn-danger:hover {
-        background: linear-gradient(45deg, #d00000, #e63946);
-        transform: scale(1.05);
-    }
-
-    .pagination .page-item .page-link {
-        background: linear-gradient(45deg, #f1c40f, #f39c12);
-        color: #fff;
-        border: none;
-        border-radius: 50px;
-        padding: 8px 16px;
-        margin: 0 5px;
-        transition: background 0.3s ease;
-    }
-
-    .pagination .page-item.active .page-link {
-        background: linear-gradient(45deg, #f39c12, #f1c40f);
-    }
-
-    .pagination .page-item.disabled . Giacobbe {
-        background: #e0e0e0;
-        color: #6c757d;
-        cursor: not-allowed;
-    }
-
-    .toast {
-        position: fixed;
-        bottom: 20px;
-        right: 20px;
-        background: #e63946;
-        color: #fff;
-        padding: 15px 20px;
-        border-radius: 10px;
-        box-shadow: 0 5px 15px rgba(0, 0, 0, 0.2);
-        opacity: 0;
-        transform: translateY(20px);
-        transition: opacity 0.3s ease, transform 0.3s ease;
-        z-index: 1000;
-    }
-
-    .toast.show {
-        opacity: 1;
-        transform: translateY(0);
+        to {
+            opacity: 1;
+            transform: translateY(0);
+        }
     }
 
     .loading-overlay {
@@ -237,76 +56,140 @@
         animation: spin 1s linear infinite;
     }
 
-    
+    @@keyframes spin {
+        0% {
+            transform: rotate(0deg);
+        }
+
+        100% {
+            transform: rotate(360deg);
+        }
+    }
+
+    .no-results {
+        text-align: center;
+        padding: 1.5rem;
+        background: #fef0e7;
+        color: #d32f2f;
+        border-radius: 0.75rem;
+        font-size: 1.1rem;
+        font-weight: 500;
+        margin-top: 1rem;
+        display: none;
+    }
 </style>
 
-<div class="container" role="main">
-    <div class="card" aria-labelledby="card-header">
-        <div class="card-header">
-            <h2 id="card-header">Lista de Usuarios</h2>
+<div class="container mx-auto py-8 px-4 sm:px-6 lg:px-8" role="main">
+    <!-- Header -->
+    <div class="mb-6">
+        <h1 class="text-3xl sm:text-4xl font-extrabold text-transparent bg-clip-text bg-gradient-to-r from-yellow-500 to-yellow-700 animate-pulse">
+            Lista de Usuarios
+        </h1>
+    </div>
+
+    <!-- TempData Messages -->
+    @if (TempData["Satisfactorio"] != null)
+    {
+        <div class="mb-6 p-4 bg-green-100 border-l-4 border-green-500 text-green-700 rounded-lg">
+            <p>@TempData["Satisfactorio"]</p>
         </div>
-        <div class="card-body position-relative">
+    }
+    @if (TempData["Error"] != null)
+    {
+        <div class="mb-6 p-4 bg-red-100 border-l-4 border-red-500 text-red-700 rounded-lg">
+            <p>@TempData["Error"]</p>
+        </div>
+    }
+
+    <!-- Back Button -->
+    <div class="mb-6">
+        <a asp-controller="Home" asp-action="Index" class="inline-flex items-center px-4 py-2 bg-gradient-to-r from-yellow-500 to-yellow-600 text-white rounded-full hover:bg-gradient-to-r hover:from-yellow-600 hover:to-yellow-700 transition duration-300 ease-in-out transform hover:scale-105 shadow-md" aria-label="Regresar al inicio">
+            <i class="bi bi-arrow-left-circle mr-2"></i> Regresar
+        </a>
+    </div>
+
+    <!-- Card -->
+    <div class="bg-white shadow-2xl rounded-2xl overflow-hidden border-2 border-yellow-400 card" aria-labelledby="card-header">
+        <!-- Card Header -->
+        <div class="bg-gradient-to-r from-yellow-500 to-yellow-700 text-white px-6 py-4 flex justify-between items-center relative">
+            <h2 class="text-2xl font-semibold font-['Poppins']" id="card-header">Gestión de Usuarios</h2>
+            <div class="absolute inset-0 bg-radial-gradient from-white/30 to-transparent opacity-40"></div>
+        </div>
+        <!-- Card Body -->
+        <div class="p-6 bg-yellow-50 relative">
             <div class="loading-overlay" id="loadingOverlay">
                 <div class="loading-spinner"></div>
             </div>
             @if (!Model.Any())
             {
-                <p class="text-muted text-center">No hay usuarios registrados.</p>
+                <p class="text-gray-600 text-center">No hay usuarios registrados.</p>
             }
             else
             {
-                <div class="d-flex justify-content-between align-items-center mb-4">
-                    <div class="d-flex align-items-center gap-2">
-                        <label for="entries" class="form-label mb-0">Mostrar</label>
-                        <select id="entries" class="form-select" style="width: auto;" aria-label="Seleccionar número de registros por página">
-                            <option value="10">10</option>
+                <!-- Filters -->
+                <div class="mb-6 bg-white p-4 rounded-xl shadow-md flex flex-col sm:flex-row justify-between items-center gap-4">
+                    <div class="flex items-center gap-2">
+                        <label for="entries" class="text-gray-700 font-medium">Mostrar</label>
+                        <select id="entries" class="border border-gray-300 rounded-xl px-3 py-2 focus:ring-2 focus:ring-yellow-500 focus:border-yellow-500" onchange="updateEntries()" aria-label="Seleccionar número de registros por página">
+                            <option value="10" selected>10</option>
                             <option value="25">25</option>
                             <option value="50">50</option>
                             <option value="100">100</option>
                         </select>
-                        <span>registros por página</span>
+                        <span class="text-gray-700">registros</span>
                     </div>
-                    <div class="input-group" style="max-width: 300px;">
-                        <span class="input-group-text"><i class="bi bi-search"></i></span>
-                        <input type="search" id="searchInput" class="form-control" placeholder="Buscar por ID, usuario o email" aria-label="Buscar usuarios" />
-                        <button class="clear-search" id="clearSearch" aria-label="Limpiar búsqueda"><i class="bi bi-x"></i></button>
+                    <div class="relative max-w-md w-full">
+                        <div class="flex items-center">
+                            <span class="bg-yellow-100 border border-yellow-400 border-r-0 rounded-l-xl px-3 py-2 text-yellow-600"><i class="bi bi-search"></i></span>
+                            <input type="search" id="searchInput" class="w-full border border-yellow-400 border-l-0 rounded-r-xl px-3 py-2 focus:ring-2 focus:ring-yellow-500 focus:border-yellow-500" placeholder="Buscar por ID, Usuario o Email..." aria-label="Buscar usuarios" />
+                            <button id="clearSearch" class="absolute right-3 top-1/2 transform -translate-y-1/2 text-gray-500 hover:text-yellow-500 hidden" aria-label="Limpiar búsqueda">
+                                <i class="bi bi-x"></i>
+                            </button>
+                        </div>
                     </div>
                 </div>
-                <div class="table-responsive">
-                    <table class="table table-bordered table-striped align-middle" id="userTable">
-                        <thead>
+                <!-- Table -->
+                <div class="overflow-x-auto">
+                    <table class="w-full table-auto border border-yellow-200 rounded-xl shadow-md" id="userTable">
+                        <thead class="bg-yellow-100 text-yellow-700">
                             <tr>
-                                <th>ID</th>
-                                <th>Usuario</th>
-                                <th>Email</th>
-                                <th>Teléfono</th>
-                                <th>Opciones</th>
+                                <th class="px-6 py-4 text-center text-sm font-semibold uppercase">ID</th>
+                                <th class="px-6 py-4 text-center text-sm font-semibold uppercase">Usuario</th>
+                                <th class="px-6 py-4 text-center text-sm font-semibold uppercase">Email</th>
+                                <th class="px-6 py-4 text-center text-sm font-semibold uppercase">Teléfono</th>
+                                <th class="px-6 py-4 text-center text-sm font-semibold uppercase">Opciones</th>
                             </tr>
                         </thead>
-                        <tbody>
+                        <tbody class="divide-y divide-yellow-200" id="userTableBody">
                             @foreach (var user in Model)
                             {
-                                <tr>
-                                    <td>@user.Id</td>
-                                    <td>@user.UserName</td>
-                                    <td>@user.Email</td>
-                                    <td>@(user.PhoneNumber ?? "No disponible")</td>
-                                    
+                                <tr class="bg-yellow-50 hover:bg-yellow-100 transition duration-300">
+                                    <td class="px-6 py-4 text-gray-800 font-medium text-center">@user.Id</td>
+                                    <td class="px-6 py-4 text-gray-800 font-medium text-center">@user.UserName</td>
+                                    <td class="px-6 py-4 text-gray-800 font-medium text-center">@user.Email</td>
+                                    <td class="px-6 py-4 text-gray-800 font-medium text-center">@(user.PhoneNumber ?? "No disponible")</td>
+                                    <td class="px-6 py-4 text-center flex justify-center space-x-2">
+                                        <a asp-action="Details" asp-route-id="@user.Id" class="inline-flex items-center px-3 py-1 bg-blue-500 text-white rounded-full hover:bg-blue-600 transition duration-300 transform hover:scale-105" aria-label="Ver detalles de @user.UserName">
+                                            <i class="bi bi-eye"></i>
+                                        </a>
+                                        <a asp-action="Edit" asp-route-id="@user.Id" class="inline-flex items-center px-3 py-1 bg-yellow-500 text-white rounded-full hover:bg-yellow-600 transition duration-300 transform hover:scale-105" aria-label="Editar @user.UserName">
+                                            <i class="bi bi-pencil-square"></i>
+                                        </a>
+                                        <a asp-action="Delete" asp-route-id="@user.Id" class="inline-flex items-center px-3 py-1 bg-red-500 text-white rounded-full hover:bg-red-600 transition duration-300 transform hover:scale-105" aria-label="Eliminar @user.UserName">
+                                            <i class="bi bi-trash"></i>
+                                        </a>
+                                    </td>
                                 </tr>
                             }
                         </tbody>
                     </table>
+                    <div class="no-results" id="noResults">No se encontraron usuarios que coincidan con la búsqueda.</div>
                 </div>
-                <div class="d-flex justify-content-between align-items-center mt-4 luz">
-                    <span id="tableInfo" class="text-muted"></span>
+                <!-- Pagination -->
+                <div class="mt-6 flex justify-between items-center">
+                    <span id="tableInfo" class="text-gray-600"></span>
                     <nav aria-label="Paginación de usuarios">
-                        <ul class="pagination mb-0">
-                            <li class="page-item" id="firstPage"><a class="page-link" href="#">Primero</a></li>
-                            <li class="page-item" id="prevPage"><a class="page-link" href="#">Anterior</a></li>
-                            <li class="page-item active"><a class="page-link" href="#">1</a></li>
-                            <li class="page-item" id="nextPage"><a class="page-link" href="#">Siguiente</a></li>
-                            <li class="page-item" id="lastPage"><a class="page-link" href="#">Último</a></li>
-                        </ul>
+                        <ul class="flex space-x-2" id="pagination"></ul>
                     </nav>
                 </div>
             }
@@ -314,124 +197,136 @@
     </div>
 </div>
 
-<div class="toast" id="noResultsToast" role="alert" aria-live="polite">
-    No se encontraron usuarios que coincidan con la búsqueda.
+<!-- No Results Toast -->
+<div class="fixed bottom-4 right-4 hidden bg-red-500 text-white px-6 py-3 rounded-lg shadow-lg transition-opacity duration-300" id="noResultsToast" role="alert" aria-live="polite">
+    <i class="bi bi-exclamation-circle mr-2"></i> No se encontraron usuarios que coincidan con la búsqueda.
 </div>
 
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
 <script>
+    let currentPage = 1;
+    let rowsPerPage = 10;
+    let allRows = [];
+    let searchTimeout = null;
+
     document.addEventListener('DOMContentLoaded', () => {
+        allRows = Array.from(document.querySelectorAll('#userTableBody tr'));
+        updateTable();
+
         const searchInput = document.getElementById('searchInput');
         const clearSearch = document.getElementById('clearSearch');
-        const table = document.getElementById('userTable');
-        const rows = table.querySelectorAll('tbody tr');
-        const entriesSelect = document.getElementById('entries');
-        const tableInfo = document.getElementById('tableInfo');
-        const firstPage = document.getElementById('firstPage');
-        const prevPage = document.getElementById('prevPage');
-        const nextPage = document.getElementById('nextPage');
-        const lastPage = document.getElementById('lastPage');
-        const toast = document.getElementById('noResultsToast');
-        const loadingOverlay = document.getElementById('loadingOverlay');
-        let currentPage = 1;
-        let rowsPerPage = parseInt(entriesSelect.value);
-        let debounceTimeout;
-
-        function updateTable() {
-            loadingOverlay.style.display = 'flex';
-            const searchTerm = searchInput.value.toLowerCase().trim();
-            let visibleRows = 0;
-            let filteredRows = [];
-
-            rows.forEach(row => {
-                const id = row.cells[0].textContent.toLowerCase();
-                const username = row.cells[1].textContent.toLowerCase();
-                const email = row.cells[2].textContent.toLowerCase();
-                if (id.includes(searchTerm) || username.includes(searchTerm) || email.includes(searchTerm)) {
-                    filteredRows.push(row);
-                    visibleRows++;
-                }
-            });
-
-            const totalPages = Math.ceil(filteredRows.length / rowsPerPage);
-            const startIndex = (currentPage - 1) * rowsPerPage;
-            const endIndex = startIndex + rowsPerPage;
-
-            rows.forEach(row => row.style.display = 'none');
-            filteredRows.slice(startIndex, endIndex).forEach(row => row.style.display = '');
-
-            tableInfo.textContent = `Pág. ${currentPage} de ${totalPages || 1} - Mostrando del ${startIndex + 1} al ${Math.min(endIndex, filteredRows.length)} de ${filteredRows.length} registros`;
-
-            firstPage.classList.toggle('disabled', currentPage === 1);
-            prevPage.classList.toggle('disabled', currentPage === 1);
-            nextPage.classList.toggle('disabled', currentPage === totalPages || totalPages === 0);
-            lastPage.classList.toggle('disabled', currentPage === totalPages || totalPages === 0);
-
-            clearSearch.style.display = searchTerm ? 'block' : 'none';
-
-            if (visibleRows === 0) {
-                toast.classList.add('show');
-                setTimeout(() => toast.classList.remove('show'), 3000);
+        searchInput.addEventListener('input', () => {
+            clearTimeout(searchTimeout);
+            searchTimeout = setTimeout(filterTable, 300);
+        });
+        searchInput.addEventListener('keypress', (e) => {
+            if (e.key === 'Enter') {
+                filterTable();
             }
-
-            setTimeout(() => loadingOverlay.style.display = 'none', 300);
-        }
-
-        function debounceSearch() {
-            clearTimeout(debounceTimeout);
-            debounceTimeout = setTimeout(updateTable, 300);
-        }
-
-        searchInput.addEventListener('input', debounceSearch);
+        });
 
         clearSearch.addEventListener('click', () => {
             searchInput.value = '';
-            clearSearch.style.display = 'none';
+            clearSearch.classList.add('hidden');
             currentPage = 1;
-            updateTable();
+            filterTable();
             searchInput.focus();
         });
-
-        entriesSelect.addEventListener('change', () => {
-            rowsPerPage = parseInt(entriesSelect.value);
-            currentPage = 1;
-            updateTable();
-        });
-
-        firstPage.addEventListener('click', (e) => {
-            e.preventDefault();
-            if (currentPage !== 1) {
-                currentPage = 1;
-                updateTable();
-            }
-        });
-
-        prevPage.addEventListener('click', (e) => {
-            e.preventDefault();
-            if (currentPage > 1) {
-                currentPage--;
-                updateTable();
-            }
-        });
-
-        nextPage.addEventListener('click', (e) => {
-            e.preventDefault();
-            const totalPages = Math.ceil(rows.length / rowsPerPage);
-            if (currentPage < totalPages) {
-                currentPage++;
-                updateTable();
-            }
-        });
-
-        lastPage.addEventListener('click', (e) => {
-            e.preventDefault();
-            const totalPages = Math.ceil(rows.length / rowsPerPage);
-            if (currentPage !== totalPages) {
-                currentPage = totalPages;
-                updateTable();
-            }
-        });
-
-        updateTable();
     });
+
+    function updateEntries() {
+        rowsPerPage = parseInt(document.getElementById('entries').value);
+        currentPage = 1;
+        updateTable();
+    }
+
+    function filterTable() {
+        const searchTerm = document.getElementById('searchInput').value.toLowerCase().trim();
+        const noResults = document.getElementById('noResults');
+        const noResultsToast = document.getElementById('noResultsToast');
+        const loadingOverlay = document.getElementById('loadingOverlay');
+        const clearSearch = document.getElementById('clearSearch');
+
+        loadingOverlay.style.display = 'flex';
+
+        const filteredRows = allRows.filter(row => {
+            const cells = row.querySelectorAll('td');
+            const id = cells[0].textContent.toLowerCase();
+            const username = cells[1].textContent.toLowerCase();
+            const email = cells[2].textContent.toLowerCase();
+            return id.includes(searchTerm) ||
+                username.includes(searchTerm) ||
+                email.includes(searchTerm);
+        });
+
+        currentPage = 1;
+        updateTable(filteredRows);
+
+        clearSearch.classList.toggle('hidden', !searchTerm);
+        noResults.style.display = filteredRows.length === 0 && searchTerm ? 'block' : 'none';
+        if (filteredRows.length === 0 && searchTerm) {
+            noResultsToast.classList.remove('hidden');
+            setTimeout(() => noResultsToast.classList.add('hidden'), 3000);
+        }
+
+        setTimeout(() => loadingOverlay.style.display = 'none', 300);
+    }
+
+    function updateTable(filteredRows = allRows) {
+        const start = (currentPage - 1) * rowsPerPage;
+        const end = start + rowsPerPage;
+        const paginatedRows = filteredRows.slice(start, end);
+
+        const tbody = document.getElementById('userTableBody');
+        tbody.innerHTML = '';
+        if (paginatedRows.length === 0 && !document.getElementById('searchInput').value) {
+            tbody.innerHTML = '<tr><td colspan="5" class="px-6 py-4 text-center text-gray-600">No hay usuarios registrados.</td></tr>';
+        } else {
+            paginatedRows.forEach(row => tbody.appendChild(row));
+        }
+
+        const totalRows = filteredRows.length;
+        document.getElementById('tableInfo').textContent = `Mostrando ${start + 1} al ${Math.min(end, totalRows)} de ${totalRows} registros`;
+
+        updatePagination(totalRows);
+    }
+
+    function updatePagination(totalRows) {
+        const totalPages = Math.ceil(totalRows / rowsPerPage);
+        const pagination = document.getElementById('pagination');
+        pagination.innerHTML = '';
+
+        pagination.innerHTML += `
+                <li class="${currentPage === 1 ? 'opacity-50 cursor-not-allowed' : ''}">
+                    <a href="#" onclick="goToPage(1)" class="px-4 py-2 bg-yellow-500 text-white rounded-full hover:bg-yellow-600 transition duration-300 ${currentPage === 1 ? 'pointer-events-none' : ''}" aria-label="Primera página">Primero</a>
+                </li>
+                <li class="${currentPage === 1 ? 'opacity-50 cursor-not-allowed' : ''}">
+                    <a href="#" onclick="goToPage(${currentPage - 1})" class="px-4 py-2 bg-yellow-500 text-white rounded-full hover:bg-yellow-600 transition duration-300 ${currentPage === 1 ? 'pointer-events-none' : ''}" aria-label="Página anterior">Anterior</a>
+                </li>
+            `;
+
+        for (let i = 1; i <= totalPages; i++) {
+            pagination.innerHTML += `
+                    <li class="${i === currentPage ? 'bg-yellow-600' : ''}">
+                        <a href="#" onclick="goToPage(${i})" class="px-4 py-2 ${i === currentPage ? 'bg-yellow-600 text-white' : 'bg-yellow-500 text-white'} rounded-full hover:bg-yellow-600 transition duration-300" aria-label="Página ${i}">${i}</a>
+                    </li>
+                `;
+        }
+
+        pagination.innerHTML += `
+                <li class="${currentPage === totalPages || totalPages === 0 ? 'opacity-50 cursor-not-allowed' : ''}">
+                    <a href="#" onclick="goToPage(${currentPage + 1})" class="px-4 py-2 bg-yellow-500 text-white rounded-full hover:bg-yellow-600 transition duration-300 ${currentPage === totalPages || totalPages === 0 ? 'pointer-events-none' : ''}" aria-label="Página siguiente">Siguiente</a>
+                </li>
+                <li class="${currentPage === totalPages || totalPages === 0 ? 'opacity-50 cursor-not-allowed' : ''}">
+                    <a href="#" onclick="goToPage(${totalPages})" class="px-4 py-2 bg-yellow-500 text-white rounded-full hover:bg-yellow-600 transition duration-300 ${currentPage === totalPages || totalPages === 0 ? 'pointer-events-none' : ''}" aria-label="Última página">Último</a>
+                </li>
+            `;
+    }
+
+    function goToPage(page) {
+        if (page >= 1 && page <= Math.ceil(allRows.length / rowsPerPage)) {
+            currentPage = page;
+            updateTable();
+        }
+    }
 </script>
