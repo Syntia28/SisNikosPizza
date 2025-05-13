@@ -2,7 +2,7 @@ using SisNikosPizza.Domain.Models;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using System.Collections.Generic;
 using Microsoft.AspNetCore.Identity;
-using HotelElCielo.Domain.Models;
+using SisNikosPizza.Domain.Models;
 
 namespace ProyectoPruebas
 {
