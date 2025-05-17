@@ -14,7 +14,7 @@ namespace SisNikosPizza.Domain.Models
         public string OwnerId { get; set; }
         public DateTime Fecha { get; set; }
 
-        public List<DetalleVenta> Detalles { get; set; }
+        public List<DetalleVenta>? Detalles { get; set; }
 
         //[NotMapped] 
         //public float? ComimsionDelivery { get; set; }

@@ -170,7 +170,7 @@ namespace SisNikosPizza.Controllers
 
             // Guardar el pedido
             await _unitWork.PedidoRepo.AgregarAsync(pedido);
-            await _unitWork.GuardarPedido();
+            await _unitWork.GuradarAsync();
 
             // Vaciar el carrito del usuario
             await _unitWork.CarritoRepo.VaciarCarrito(userId);

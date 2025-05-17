@@ -47,40 +47,9 @@ namespace SisNikosPizza.Repository.Implements
             throw new NotImplementedException();
         }
 
-        public async Task GuardarCategoria()
+        public async Task GuradarAsync()
         {
            await  _db.SaveChangesAsync();
-        }
-
-        public async Task GuardarProducto(){
-            await _db.SaveChangesAsync();
-        }
-
-        public async Task GuardarInsumo()
-        {
-            await _db.SaveChangesAsync();
-        }
-
-        public async Task GuardarProveedor()
-        {
-            await _db.SaveChangesAsync();
-        }
-        public async Task GuardarPedido()
-        {
-            await _db.SaveChangesAsync();
-        }
-        public async Task GuardarVenta()
-        {
-            await _db.SaveChangesAsync();
-        }
-        public async Task GuardarCarrito()
-        {
-            await _db.SaveChangesAsync();
-        }
-
-        public async Task GuardarProductoInsumo()
-        {
-            await _db.SaveChangesAsync();
         }
     }
 }

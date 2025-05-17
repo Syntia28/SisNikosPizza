@@ -144,7 +144,7 @@ namespace SisNikosPizza.Controllers
 
                 // Guardar el producto y sus insumos en una sola transacción
                 await _unitWork.ProductoRepo.AgregarAsync(newProduct);
-                await _unitWork.GuardarProducto();
+                await _unitWork.GuradarAsync();
 
                 // Agregar insumos al producto
                 if (insumoIds != null && insumoCantidades != null && insumoIds.Length == insumoCantidades.Length)
@@ -162,7 +162,7 @@ namespace SisNikosPizza.Controllers
                             };
 
                             await _unitWork.ProductoInsumoRepo.AgregarAsync(pi);
-                            await _unitWork.GuardarProductoInsumo();
+                            await _unitWork.GuradarAsync();
                         }
                     }
                 }
@@ -262,7 +262,7 @@ namespace SisNikosPizza.Controllers
 
 
                 // Actualizar los datos del producto en la base de datos
-                await _unitWork.GuardarProducto();
+                await _unitWork.GuradarAsync();
                 return RedirectToAction("Index");
             }
 
@@ -330,7 +330,7 @@ namespace SisNikosPizza.Controllers
                 //_context.Category.Remove(category);
                 //await _context.SaveChangesAsync();
                 _unitWork.ProductoRepo.Eliminar(producto);
-                await _unitWork.GuardarProducto();
+                await _unitWork.GuradarAsync();
                 return RedirectToAction("Index");
             }
 

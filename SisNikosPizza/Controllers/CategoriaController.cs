@@ -51,7 +51,7 @@ namespace SisNikosPizza.Controllers
                 //await _context.Category.AddAsync(category);
                 //await _context.SaveChangesAsync();
                 await _unitWork.CategoriaRepo.AgregarAsync(categorias);
-                await _unitWork.GuardarCategoria();
+                await _unitWork.GuradarAsync();
                 TempData[VCG.Satisfactorio] = "Categoría actualizada correctamente";
                 //return RedirectToAction("Index");
                 //return RedirectToAction("Details", new(category.CategoryId.ToString()));
@@ -84,7 +84,7 @@ namespace SisNikosPizza.Controllers
             if (categoria is null) return NotFound();// Si todos los datos enviados son correctos
             {
                 _unitWork.CategoriaRepo.ActualizarCategoria(categoria);
-                await _unitWork.GuardarCategoria();
+                await _unitWork.GuradarAsync();
                 TempData[VCG.Satisfactorio] = "Categoría actualizada correctamente.";
                 return RedirectToAction("Index");
             }
@@ -122,7 +122,7 @@ namespace SisNikosPizza.Controllers
                 //_context.Category.Remove(category);
                 //await _context.SaveChangesAsync();
                 _unitWork.CategoriaRepo.Eliminar(categorias);
-                await _unitWork.GuardarCategoria();
+                await _unitWork.GuradarAsync();
                 return RedirectToAction("Index");
             }
 
