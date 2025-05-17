@@ -23,7 +23,8 @@ public class SisNikosPizzaBbContext : IdentityDbContext
     public DbSet<Carrito> carrito { get; set; }
     public DbSet<Venta> venta { get; set; }
     public DbSet<CarritoProducto> carritoProductos { get; set; }
-    public DbSet<ProductoInsumo> ProductoInsumo { get; set; } // Agregar el DbSet para ProductoInsumo
+    public DbSet<ProductoInsumo> ProductoInsumo { get; set; }
+    public DbSet<ApplicationUser> Users { get; set; }
 
     protected override void OnModelCreating(ModelBuilder modelBuilder)
     {

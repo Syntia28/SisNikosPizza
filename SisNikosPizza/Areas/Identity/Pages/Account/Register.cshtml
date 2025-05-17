@@ -6,10 +6,10 @@
 
 }
 
-<div class="container-fluid vh-100 d-flex align-items-center justify-content-center" style="background-color: #f8c471;">
+<div class="vh-100 d-flex align-items-center justify-content-center" style="background-color: #f8c471;">
     <div class="row w-100">
         <!-- Formulario de registro -->
-        <div class="col-lg-6 col-md-8 p-5 rounded shadow-lg" style="background-color: #f9e79f; box-shadow: 0px 4px 15px rgba(0, 0, 0, 0.2);">
+        <div class="col-lg-6 col-md-8 p-5 rounded shadow-lg h-auto overflow-visible" style="background-color: #f9e79f; box-shadow: 0px 4px 15px rgba(0, 0, 0, 0.2);">
             <h1 class="text-center mb-4 text-dark">@ViewData["Title"]</h1>
             <h2 class="text-center mb-3 text-dark">Crea tu cuenta en Nikos Pizza</h2>
             <hr class="border-dark mb-4" />
@@ -21,6 +21,14 @@
                     <input asp-for="Input.Email" class="form-control text-dark bg-light border-secondary" autocomplete="username" aria-required="true" placeholder="name@example.com" />
                     <label asp-for="Input.Email" class="text-dark">Email</label>
                     <span asp-validation-for="Input.Email" class="text-danger"></span>
+                </div>
+
+                <!-- Telefono del cliente -->
+                <div class="form-floating mb-3">
+                    <input asp-for="Input.PhoneNumber" class="form-control text-dark bg-light border-secondary"
+                        autocomplete="" aria-required="true" placeholder="" />
+                    <label asp-for="Input.PhoneNumber" class="text-dark">Telefono</label>
+                    <span asp-validation-for="Input.PhoneNumber" class="text-danger"></span>
                 </div>
 
                 <!-- Contraseña -->
