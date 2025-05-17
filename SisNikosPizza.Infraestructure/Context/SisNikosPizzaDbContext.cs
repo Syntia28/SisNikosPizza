@@ -17,11 +17,14 @@ public class SisNikosPizzaBbContext : IdentityDbContext
     // Agregar los modelos que van a mapear a la base de datos
     public DbSet<Categoria> categoria { get; set; }
     public DbSet<Producto> producto { get; set; }
+    public DbSet<Insumo> insumo { get; set; }
     public DbSet<Proveedor> proveedor { get; set; }
     public DbSet<Pedido> pedido { get; set; }
     public DbSet<Carrito> carrito { get; set; }
     public DbSet<Venta> venta { get; set; }
     public DbSet<CarritoProducto> carritoProductos { get; set; }
+    public DbSet<ProductoInsumo> ProductoInsumo { get; set; }
+    public DbSet<ApplicationUser> Users { get; set; }
 
     protected override void OnModelCreating(ModelBuilder modelBuilder)
     {
@@ -52,7 +55,10 @@ modelBuilder.Entity<DetalleVenta>()
     modelBuilder.Entity<Carrito>().HasMany(s => s.CarritoProductos);
 
 
+        // Relación prodcucto -> ProductoInsumos
+        modelBuilder.Entity<Producto>().HasMany(s => s.ProductoInsumos);
 
+        modelBuilder.Entity<Insumo>().HasMany(pi => pi.Productos);
 
         modelBuilder.ApplyConfigurationsFromAssembly(Assembly.GetExecutingAssembly());
     }

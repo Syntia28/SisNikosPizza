@@ -29,6 +29,13 @@ namespace SisNikosPizza.Controllers
         {
             var productos = await _unitWork.ProductoRepo.ObtenerTodosAsync(ordenarPor: c => c.OrderByDescending(c => c.ProductoId));
 
+            foreach (var item in productos)
+            {
+                var insumos = await _unitWork.ProductoInsumoRepo.ObtenerTodosAsync(filtro: p => p.ProductoId == item.ProductoId, incluirPropiedades: "Insumo");
+
+                item.ProductoInsumos = insumos.ToList();
+            }
+
             // Construir la URL completa para cada producto
             string baseUrl = $"{Request.Scheme}://{Request.Host}/images";
             foreach (var producto in productos)
@@ -44,117 +51,144 @@ namespace SisNikosPizza.Controllers
 
         // Categories/Create
         // Rooms/Create
+
         [HttpGet]
         public async Task<IActionResult> Create()
         {
-            // Enviar la lista de categorias
-            var categories = await _unitWork.CategoriaRepo.ObtenerTodosAsync();
-            IEnumerable<SelectListItem> categoriesList = categories.Select(c => new SelectListItem
-            {
-                Text = c.nombre,
-                Value = c.CategoriaId.ToString()
-            }).ToList();
-            // select CategoryId, Name from Categories
-            // _context.Category.ToList();
-            // ViewData, ViewBag
-            //ViewData["CategoriesList"] = categoriesList;
-            ViewBag.CategoriesList = categoriesList;
+            ViewBag.CategoriesList = (await _unitWork.CategoriaRepo.ObtenerTodosAsync())
+                .Select(c => new SelectListItem { Text = c.nombre, Value = c.CategoriaId.ToString() });
+            ViewBag.InsumosList = await _unitWork.InsumoRepo.ObtenerTodosAsync(i => i.Estado == true);
             return View();
         }
 
+   
 
-        [HttpPost]
-        [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Create(Producto producto, IFormFile imageFile)
-        {
-            // Depuración: Verificar los valores recibidos
-            Console.WriteLine($"CategoriaId: {producto.CategoriaId}");
-            Console.WriteLine($"Nombre: {producto.Nombre}");
-            Console.WriteLine($"Precio: {producto.Precio}");
-            Console.WriteLine($"Imagen recibida: {(imageFile != null ? "Sí" : "No")}");
 
-            // Validar si se subió una imagen
+            [HttpPost]
+            [ValidateAntiForgeryToken]
+            public async Task<IActionResult> Create(Producto producto, IFormFile imageFile, int[] insumoIds, float[] insumoCantidades)
+            {
+           Producto newProduct = new Producto();
+
+            // Validar imagen
             if (imageFile == null || imageFile.Length == 0)
-            {
-                ModelState.AddModelError("ImagenUrl", "La imagen es obligatoria.");
-            }
-
-            // Validar el estado del modelo
-            if (!ModelState.IsValid)
-            {
-                Console.WriteLine("Modelo no válido");
-                foreach (var key in ModelState.Keys)
                 {
-                    Console.WriteLine($"{key}: {string.Join(", ", ModelState[key].Errors.Select(e => e.ErrorMessage))}");
+                    ModelState.AddModelError("ImagenUrl", "La imagen es obligatoria.");
+                }
+            // Validar que no se repita el nombre del producto 
+            var productoExistente = await _unitWork.ProductoRepo
+                .ObtenerPrimeroAsync(p => p.Nombre.ToLower() == producto.Nombre.ToLower());
+
+            if (productoExistente != null)
+            {
+                ModelState.AddModelError("Nombre", "Ya existe un producto con ese nombre.");
+            }
+            // Validar insumos
+            if (insumoIds == null || insumoIds.Length == 0 || insumoCantidades == null || insumoCantidades.Length == 0 || insumoIds.Length != insumoCantidades.Length)
+                {
+                    ModelState.AddModelError("", "Debes añadir al menos un insumo con una cantidad válida.");
                 }
 
-                // Obtener las categorías nuevamente para la vista
-                var categories = await _unitWork.CategoriaRepo.ObtenerTodosAsync();
-                ViewBag.CategoriesList = categories.Select(c => new SelectListItem
+                // Validar que los insumoIds existan en la base de datos
+                if (insumoIds != null && insumoIds.Length > 0)
                 {
-                    Text = c.nombre,
-                    Value = c.CategoriaId.ToString()
-                }).ToList();
-
-                TempData["Error"] = "No se pudo guardar el producto. Verifica los datos ingresados.";
-                return View(producto);
-            }
-
-            try
-            {
-                // Guardar la imagen si se subió
-                if (imageFile != null && imageFile.Length > 0)
-                {
-                    string uploadsFolder = Path.Combine(_webHostEnvironment.WebRootPath, "images");
-                    string uniqueFileName = Guid.NewGuid().ToString() + "_" + Path.GetFileName(imageFile.FileName);
-                    string filePath = Path.Combine(uploadsFolder, uniqueFileName);
-
-                    // Crear el directorio si no existe
-                    Directory.CreateDirectory(uploadsFolder);
-
-                    using (var fileStream = new FileStream(filePath, FileMode.Create))
+                    var valInsumoIdIds = (await _unitWork.InsumoRepo.ObtenerTodosAsync(i => i.Estado == true))
+                        .Select(i => i.InsumoId)
+                        .ToList();
+                    if (insumoIds.Any(id => !valInsumoIdIds.Contains(id)))
                     {
-                        await imageFile.CopyToAsync(fileStream);
+                        ModelState.AddModelError("", "Uno o más insumos seleccionados no son válidos.");
+                    }
+                }
+
+                if (!ModelState.IsValid)
+                {
+                    ViewBag.CategoriesList = (await _unitWork.CategoriaRepo.ObtenerTodosAsync())
+                        .Select(c => new SelectListItem { Text = c.nombre, Value = c.CategoriaId.ToString() });
+                    ViewBag.InsumosList = await _unitWork.InsumoRepo.ObtenerTodosAsync(i => i.Estado == true);
+                    TempData["Error"] = "No se pudo guardar el producto. Verifica los datos ingresados.";
+                    return View(producto);
+                }
+
+                try
+                {
+                    // Guardar la imagen
+                    if (imageFile != null && imageFile.Length > 0)
+                    {
+                        string uploadsFolder = Path.Combine(_webHostEnvironment.WebRootPath, "images");
+                        string uniqueFileName = Guid.NewGuid().ToString() + "_" + Path.GetFileName(imageFile.FileName);
+                        string filePath = Path.Combine(uploadsFolder, uniqueFileName);
+                        Directory.CreateDirectory(uploadsFolder);
+                        using (var fileStream = new FileStream(filePath, FileMode.Create))
+                        {
+                            await imageFile.CopyToAsync(fileStream);
+                        }
+                        producto.ImagenUrl = uniqueFileName;
                     }
 
-                    // Guardar solo el nombre del archivo en la base de datos
-                    producto.ImagenUrl = uniqueFileName;
+                    // Configurar propiedades del producto
+                    producto.Stock = "1 Unidad";
+                    producto.CreatedAt = DateTime.Now;
+                    producto.UpdatedAt = DateTime.Now;
+
+                //newProduct.ProductoInsumos = productoInsumos;
+                newProduct.CategoriaId = producto.CategoriaId;
+                newProduct.Nombre = producto.Nombre;
+                newProduct.Descripcion = producto.Descripcion;
+                newProduct.Precio = producto.Precio;
+                newProduct.Estado = true;
+                newProduct.ImagenUrl = producto.ImagenUrl;
+                newProduct.Stock = "1 unidad";
+
+              
+
+                // Guardar el producto y sus insumos en una sola transacción
+                await _unitWork.ProductoRepo.AgregarAsync(newProduct);
+                await _unitWork.GuradarAsync();
+
+                // Agregar insumos al producto
+                if (insumoIds != null && insumoCantidades != null && insumoIds.Length == insumoCantidades.Length)
+                {
+                    for (int i = 0; i < insumoIds.Length; i++)
+                    {
+                        if (insumoIds[i] > 0 && insumoCantidades[i] > 0)
+                        {
+                            var pi = new ProductoInsumo
+                            {
+                                InsumoId = insumoIds[i],
+                                ProductoId = newProduct.ProductoId,
+                                Cantidad = insumoCantidades[i]
+
+                            };
+
+                            await _unitWork.ProductoInsumoRepo.AgregarAsync(pi);
+                            await _unitWork.GuradarAsync();
+                        }
+                    }
                 }
 
-                // Asignar valores predeterminados
-                producto.Stock = "1 Unidad"; // O cambia esto según tu lógica
-                producto.CreatedAt = DateTime.Now;
-                producto.UpdatedAt = DateTime.Now;
-
-                // Guardar el producto en la base de datos
-                await _unitWork.ProductoRepo.AgregarAsync(producto);
-                await _unitWork.GuardarProducto();
-
-                TempData["Satisfactorio"] = "Producto creado correctamente.";
-                return RedirectToAction("Details", new { id = producto.ProductoId });
+                    TempData["Satisfactorio"] = "Producto creado correctamente.";
+                    return RedirectToAction("Details", new { id = newProduct.ProductoId });
+                }
+                catch (Exception ex)
+                {
+                    // Incluir detalles de la inner exception para diagnóstico
+                    var errorMessage = ex.Message;
+                    if (ex.InnerException != null)
+                    {
+                        errorMessage += $" | Inner Exception: {ex.InnerException.Message}";
+                    }
+                    TempData["Error"] = $"Ocurrió un error al guardar el producto: {errorMessage}";
+                    ViewBag.CategoriesList = (await _unitWork.CategoriaRepo.ObtenerTodosAsync())
+                        .Select(c => new SelectListItem { Text = c.nombre, Value = c.CategoriaId.ToString() });
+                    ViewBag.InsumosList = await _unitWork.InsumoRepo.ObtenerTodosAsync(i => i.Estado == true);
+                    return View(producto);
+                }
             }
-            catch (Exception ex)
-            {
-                Console.WriteLine($"Error al guardar el producto: {ex.Message}");
-                TempData["Error"] = "Ocurrió un error al guardar el producto. Intenta nuevamente.";
-            }
+       
 
-            // Si hay errores, volver a cargar las categorías y mostrar el formulario
-            var categoriesFallback = await _unitWork.CategoriaRepo.ObtenerTodosAsync();
-            ViewBag.CategoriesList = categoriesFallback.Select(c => new SelectListItem
-            {
-                Text = c.nombre,
-                Value = c.CategoriaId.ToString()
-            }).ToList();
-
-            return View(producto);
-        }
-
-
-
-
-        // Categories/Edit/5
-        [HttpGet]
+    // Categories/Edit/5
+    [HttpGet]
         public async Task<IActionResult> Edit(int id)
         {
             //if (id <= 0)
@@ -228,7 +262,7 @@ namespace SisNikosPizza.Controllers
 
 
                 // Actualizar los datos del producto en la base de datos
-                await _unitWork.GuardarProducto();
+                await _unitWork.GuradarAsync();
                 return RedirectToAction("Index");
             }
 
@@ -296,7 +330,7 @@ namespace SisNikosPizza.Controllers
                 //_context.Category.Remove(category);
                 //await _context.SaveChangesAsync();
                 _unitWork.ProductoRepo.Eliminar(producto);
-                await _unitWork.GuardarProducto();
+                await _unitWork.GuradarAsync();
                 return RedirectToAction("Index");
             }
 

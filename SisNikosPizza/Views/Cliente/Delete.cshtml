@@ -1,0 +1,59 @@
+﻿@model SisNikosPizza.Domain.Models.ApplicationUser
+
+
+@{
+    ViewData["Title"] = "Eliminar Usuario";
+    Layout = "~/Views/Shared/_Admin.cshtml";
+}
+
+<div class="container" role="main">
+    <div class="delete-card" aria-labelledby="delete-header">
+        <div class="delete-header">
+            <h3 id="delete-header">Eliminar Usuario</h3>
+        </div>
+        <div class="delete-body">
+            <div class="warning-message">
+                <i class="bi bi-exclamation-triangle me-2"></i>
+                ¿Estás seguro de que deseas eliminar este usuario? Esta acción no se puede deshacer.
+            </div>
+
+            <div class="delete-item">
+                <span class="delete-label">Nombre</span>
+                <div class="delete-value">@Model.UserName</div>
+            </div>
+
+            <div class="delete-item">
+                <span class="delete-label">Nombre de Usuario</span>
+                <div class="delete-value">@Model.Nombre</div>
+            </div>
+
+            <div class="delete-item">
+                <span class="delete-label">Email</span>
+                <div class="delete-value">@Model.Email</div>
+            </div>
+
+            <div class="delete-item">
+                <span class="delete-label">Teléfono</span>
+                <div class="delete-value">@Model.PhoneNumber</div>
+            </div>
+
+            <div class="delete-item">
+                <span class="delete-label">Dirección</span>
+                <div class="delete-value">@Model.Direccion</div>
+            </div>
+
+            <form method="post" asp-action="Delete" asp-controller="User" id="delete-form">
+                @Html.AntiForgeryToken()
+                <input type="hidden" asp-for="Id" />
+                <div class="d-flex justify-content-end gap-3 mt-4">
+                    <button type="submit" class="btn btn-danger" aria-label="Confirmar eliminación del usuario @Model.Nombre">
+                        <i class="bi bi-trash"></i> Eliminar
+                    </button>
+                    <a asp-action="Index" asp-controller="User" class="btn btn-secondary" aria-label="Cancelar y volver a la lista de usuarios">
+                        <i class="bi bi-arrow-left"></i> Cancelar
+                    </a>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>

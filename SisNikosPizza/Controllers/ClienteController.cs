@@ -27,7 +27,7 @@ namespace SisNikosPizza.Controllers
             // Filtrar usuarios que tienen el rol "UserClient"
             foreach (var user in _userManager.Users.ToList())
             {
-                if (await _userManager.IsInRoleAsync(user, VCG.Role_Employee))
+                if (await _userManager.IsInRoleAsync(user, VCG.Role_Usuario))
                 {
                     usersInRole.Add(user);
                 }
