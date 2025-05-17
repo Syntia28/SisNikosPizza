@@ -1,0 +1,158 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.7.1/css/all.min.css" />
+    <script src="https://cdn.jsdelivr.net/npm/@tailwindcss/browser@4"></script>
+    <script defer src="https://unpkg.com/@alpinejs/collapse@3.x.x/dist/cdn.min.js"></script>
+    <script src="https://unpkg.com/alpinejs" defer></script>
+    <style>
+        body{
+            padding: 0%;
+            margin: 0%;
+        }
+    </style>
+</head>
+
+<body>
+    <main class="">
+        
+        
+        <div class="min-h-screen bg-gray-100 flex items-center justify-center p-4">
+            <div class="max-w-sm w-full bg-white rounded-xl shadow-lg overflow-hidden hover:shadow-xl transition-all">
+                <div class="relative">
+                    <img src="https://placehold.co/400x300" alt="Product" class="w-full h-52 object-cover" />
+                    <span class="absolute top-3 right-3 bg-red-500 text-white px-3 py-1 rounded-full text-sm font-medium">
+                        Deivery
+                    </span>
+                </div>
+        
+                <div class="p-5 space-y-2">
+                    <div>
+                        <div class="flex items-center gap-1">
+                            <i class="fa-solid fa-truck-fast"></i>
+                            <h3 class="text-xl font-bold text-gray-900">Producto 1</h3>
+                        </div>
+
+                        <div class="flex items-center gap-1">
+                            <i class="fa-solid fa-user"></i>
+                            <p class="text-gray-500 mt-1">Ronald</p>
+                        </div>
+
+                        <div class="flex items-center gap-1">
+                            <i class="fa-solid fa-location-dot"></i>
+                            <p class="text-gray-500 mt-1">av.ejemplo-340</p>
+                        </div>
+                    </div>
+        
+                    <div class="flex justify-between items-center">
+                        <div class="space-y-1">
+                            <p class="text-2xl font-bold text-gray-900">$49.99</p>
+                        </div>
+        
+                        <div class="flex items-center gap-1">
+                            <span>cantidad</span>
+                        </div>
+                    </div>
+
+
+
+                    <div class='flex flex-col items-center justify-center '
+                        x-data="{ reportsOpen: false }">
+                        <div @click="reportsOpen = !reportsOpen" class='w-full overflow-hidden bg-green-500 p-2 rounded-2xl text-center hover:bg-blue-600 md:mt-0 mx-auto'>
+                            Ver lista de pedido
+                        </div>
+                    
+                        <div class="flex gap-2 md:p-0 w-full transform transition duration-300 ease-in-out" x-cloak
+                            x-show="reportsOpen" x-collapse x-collapse.duration.500ms>
+                            
+                            <ul class="flex flex-col gap-2 w-full font-bold">
+
+
+
+                                <li class="flex w-full items-center justify-between">
+                                    <div class="flex items-center gap-1">
+                                        <i class="fa-solid fa-truck-fast"></i>
+                                        <h3 class="mt-1">Producto 1</h3>
+                                    </div>
+                                    <div class="flex items-center gap-1">
+                                        <i class="fa-solid fa-dollar"></i>
+                                        <p class="mt-1">56</p>
+                                    </div>
+                                    <div class="flex items-center gap-1">
+                                        <i class="fa-solid fa-box-open"></i>
+                                        <p class="mt-1">34</p>
+                                    </div>
+                                </li>
+                                <li class="flex w-full items-center justify-between">
+                                    <div class="flex items-center gap-1">
+                                        <i class="fa-solid fa-truck-fast"></i>
+                                        <h3 class="mt-1">Producto 1</h3>
+                                    </div>
+                                    <div class="flex items-center gap-1">
+                                        <i class="fa-solid fa-dollar"></i>
+                                        <p class="mt-1">56</p>
+                                    </div>
+                                    <div class="flex items-center gap-1">
+                                        <i class="fa-solid fa-box-open"></i>
+                                        <p class="mt-1">34</p>
+                                    </div>
+                                </li>
+                                <li class="flex w-full items-center justify-between">
+                                    <div class="flex items-center gap-1">
+                                        <i class="fa-solid fa-truck-fast"></i>
+                                        <h3 class="mt-1">Producto 1</h3>
+                                    </div>
+                                    <div class="flex items-center gap-1">
+                                        <i class="fa-solid fa-dollar"></i>
+                                        <p class="mt-1">56</p>
+                                    </div>
+                                    <div class="flex items-center gap-1">
+                                        <i class="fa-solid fa-box-open"></i>
+                                        <p class="mt-1">34</p>
+                                    </div>
+                                </li>
+                                <li class="flex w-full items-center justify-between">
+                                    <div class="flex items-center gap-1">
+                                        <i class="fa-solid fa-truck-fast"></i>
+                                        <h3 class="mt-1">Producto 1</h3>
+                                    </div>
+                                    <div class="flex items-center gap-1">
+                                        <i class="fa-solid fa-dollar"></i>
+                                        <p class="mt-1">56</p>
+                                    </div>
+                                    <div class="flex items-center gap-1">
+                                        <i class="fa-solid fa-box-open"></i>
+                                        <p class="mt-1">34</p>
+                                    </div>
+                                </li>
+                                
+
+                                
+                            </ul>
+                        </div>
+                    
+                    </div>
+
+
+
+
+
+
+        
+                    <button
+                        class="w-full bg-indigo-600 hover:bg-indigo-700 text-white font-medium py-3 rounded-lg transition-colors">
+                        Add to Cart
+                    </button>
+                </div>
+            </div>
+        </div>
+
+
+    </main>
+</body>
+
+</html>

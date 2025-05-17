@@ -6,55 +6,42 @@ using SisNikosPizza.Repository.Interfaces;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Authorization;
 using SisNikosPizza;
+using F_M_Maquinarias.Infrastructure.Data;
 
 var builder = WebApplication.CreateBuilder(args);
-// var conexion = builder.Configuration.GetConnectionString("ConnectionSQLServer");
-var conexion = builder.Configuration.GetConnectionString("ConnectionSQLServer");
+//agregar la cadena de conexion a utilizar
+var conexion = builder.Configuration.GetConnectionString("rdev");
 builder.Services.AddDbContext<SisNikosPizzaBbContext>(options => options.UseSqlServer(conexion));
 
-// Configuraci�n de Identity con roles
+//builder.Services.AddDefaultIdentity<IdentityUser>(options => options.SignIn.RequireConfirmedAccount = true).AddEntityFrameworkStores<F_MDbContext>();
 builder.Services.AddIdentity<IdentityUser, IdentityRole>(options => options.SignIn.RequireConfirmedAccount = false)
     .AddDefaultUI()
     .AddEntityFrameworkStores<SisNikosPizzaBbContext>();
 
-
 // Add services to the container.
 builder.Services.AddControllersWithViews();
 
-/// Agregar las refercnias de unitwork
-builder.Services.AddScoped<IUniwork, UnitWork>();
-builder.Services.AddScoped<ICategoriaRepository, CategoriaRepository>();
-builder.Services.AddScoped<IProveedorRepository, ProveedorRepository>();
+// Agregar las referencias a la unidad de trabajo (UnidadDeTrabajo)
+builder.Services.AddScoped<IUniwork, UnitWork>(); 
 
-builder.Services.AddRazorPages();
-
-//builder.Services.AddAuthorization(options =>
-//{
-//    options.FallbackPolicy = new AuthorizationPolicyBuilder()
-//        .RequireAuthenticatedUser()
-//        .Build();
-//});
-
-// validaciond de modelos nulos
-builder.Services.AddControllers(
-    options => options.SuppressImplicitRequiredAttributeForNonNullableReferenceTypes = true);
-
+//datos iniciales
+builder.Services.AddScoped<IDbInitialize, DbInitialize>();
 
 var app = builder.Build();
-
 
 using (var scope = app.Services.CreateScope())
 {
     var services = scope.ServiceProvider;
-    var context = services.GetRequiredService<SisNikosPizzaBbContext>();
-    context.Database.Migrate();
-    // requires using Microsoft.Extensions.Configuration;
-    // Set password with the Secret Manager tool.
-    // dotnet user-secrets set SeedUserPW <pw>
-
-    var testUserPw = builder.Configuration.GetValue<string>("SeedUserPW");
-
-    await SeedData.Initialize(services, testUserPw);
+    SeedData.Initialize(services);
+    try
+    {
+        var inicializador = services.GetRequiredService<IDbInitialize>();
+        inicializador.Initialize();
+    }
+    catch (Exception ex)
+    {
+        throw;
+    }
 }
 
 // Configure the HTTP request pipeline.

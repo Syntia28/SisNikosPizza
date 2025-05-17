@@ -99,6 +99,11 @@ namespace SisNikosPizza.Areas.Identity.Pages.Account
             [Display(Name = "Confirm password")]
             [Compare("Password", ErrorMessage = "The password and confirmation password do not match.")]
             public string ConfirmPassword { get; set; }
+
+            [Required]
+            [Phone]
+            [Display(Name = "PhoneNumber")]
+            public string PhoneNumber { get; set; }
         }
 
 
@@ -119,6 +124,7 @@ namespace SisNikosPizza.Areas.Identity.Pages.Account
                     Email = Input.Email,
                     UserName = Input.Email,
                     Nombre = Input.Email,
+                    PhoneNumber = Input.PhoneNumber,
                 };
 
 

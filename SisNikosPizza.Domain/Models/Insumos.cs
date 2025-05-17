@@ -12,13 +12,11 @@ namespace SisNikosPizza.Domain.Models
         public string Nombre { get; set; }
         public string Descripcion { get; set; }
 
-        //not required field
-        public string? ImagenUrl { get; set; }
         public float Precio { get; set; }
         public string UnidadeDeMedida { get; set; }
         public float Cantidad { get; set; }
 
-        public List<ProductoInsumo> Productos { get; set; }
+        public List<ProductoInsumo>? Productos { get; set; }
 
     }
 }

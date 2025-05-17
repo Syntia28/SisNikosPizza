@@ -24,18 +24,15 @@ namespace SisNikosPizza.Repository.Implements
             var insumoDB = _db.insumo.FirstOrDefault(c => c.InsumoId == insumo.InsumoId);
             if (insumoDB is not null)
             {
+                insumo.UpdatedAt = DateTime.Now;
 
-              
                 insumoDB.Nombre = insumo.Nombre;
                 insumoDB.Descripcion = insumo.Descripcion;
                 insumoDB.Precio = insumo.Precio;
+                insumoDB.UnidadeDeMedida = insumo.UnidadeDeMedida;
                 insumoDB.Cantidad = insumo.Cantidad;
                 insumoDB.Estado = insumo.Estado;
-                insumoDB.UnidadeDeMedida = insumo.UnidadeDeMedida;
-              
-               
 
-                insumoDB.UpdatedAt = DateTime.Now;
                 _db.SaveChanges();
             }
         }

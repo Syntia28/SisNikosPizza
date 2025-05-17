@@ -1,9 +1,6 @@
 ﻿using Microsoft.AspNetCore.Mvc;
-using Microsoft.AspNetCore.Mvc.Rendering;
-using Microsoft.EntityFrameworkCore;
 using SisNikosPizza.Domain.Models;
 using SisNikosPizza.Repository.Interfaces;
-using SisNikosPizza.Utilidades;
 
 namespace SisNikosPizza.Controllers
 {
@@ -26,15 +23,6 @@ namespace SisNikosPizza.Controllers
         {
             var insumos = await _unitWork.InsumoRepo.ObtenerTodosAsync(ordenarPor: c => c.OrderByDescending(c => c.InsumoId));
 
-            string baseUrl = $"{Request.Scheme}://{Request.Host}/images";
-            foreach (var insumo in insumos)
-            {
-                if (!string.IsNullOrEmpty(insumo.ImagenUrl))
-                {
-                    insumo.ImagenUrl = $"{baseUrl}/{insumo.ImagenUrl}";
-                }
-            }
-
             return View(insumos);
         }
 
@@ -46,51 +34,28 @@ namespace SisNikosPizza.Controllers
 
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Create(Insumo insumo, IFormFile imageFile)
+        public async Task<IActionResult> Create(Insumo insumo)
         {
-            Console.WriteLine($"Nombre: {insumo.Nombre}");
-            Console.WriteLine($"Precio: {insumo.Precio}");
-            Console.WriteLine($"Imagen recibida: {(imageFile != null ? "Sí" : "No")}");
+            insumo.CreatedAt = DateTime.Now;
+            insumo.UpdatedAt = DateTime.Now;
+
+            Console.WriteLine($"estado del modelo: {ModelState.IsValid}");
 
             if (ModelState.IsValid)
             {
                 try
                 {
-                    if (imageFile != null && imageFile.Length > 0)
-                    {
-                        string uploadsFolder = Path.Combine(_webHostEnvironment.WebRootPath, "images");
-                        string uniqueFileName = Guid.NewGuid().ToString() + "_" + Path.GetFileName(imageFile.FileName);
-                        string filePath = Path.Combine(uploadsFolder, uniqueFileName);
-
-                        Directory.CreateDirectory(uploadsFolder);
-
-                        using (var fileStream = new FileStream(filePath, FileMode.Create))
-                        {
-                            await imageFile.CopyToAsync(fileStream);
-                        }
-
-                        insumo.ImagenUrl = uniqueFileName;
-                    }
-
-                    insumo.CreatedAt = DateTime.Now;
-                    insumo.UpdatedAt = DateTime.Now;
 
                     await _unitWork.InsumoRepo.AgregarAsync(insumo);
-                    await _unitWork.GuardarInsumo();
+                    await _unitWork.GuradarAsync();
 
                     TempData["Satisfactorio"] = "Insumo creado correctamente.";
                     return RedirectToAction("Details", new { id = insumo.InsumoId });
                 }
                 catch (Exception ex)
                 {
-                    Console.WriteLine($"Error al guardar el insumo: {ex.Message}");
                     TempData["Error"] = "Ocurrió un error al guardar el insumo. Intenta nuevamente.";
                 }
-            }
-
-            foreach (var key in ModelState.Keys)
-            {
-                Console.WriteLine($"{key}: {string.Join(", ", ModelState[key].Errors.Select(e => e.ErrorMessage))}");
             }
 
             TempData["Error"] = "No se pudo guardar el insumo. Verifica los datos ingresados.";
@@ -109,43 +74,12 @@ namespace SisNikosPizza.Controllers
 
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Edit(Insumo insumoForm, IFormFile imageFile)
+        public async Task<IActionResult> Edit(Insumo insumoForm)
         {
-            if (ModelState.IsValid)
-            {
-                var insumoDB = await _unitWork.InsumoRepo.ObtenerAsync(insumoForm.InsumoId);
-                if (insumoDB == null) return NotFound();
-
-                insumoForm.UpdatedAt = DateTime.Now;
-
-                insumoDB.Nombre = insumoForm.Nombre;
-                insumoDB.Descripcion = insumoForm.Descripcion;
-                insumoDB.Precio = insumoForm.Precio;
-                insumoDB.UnidadeDeMedida = insumoForm.UnidadeDeMedida;
-                insumoDB.Cantidad = insumoForm.Cantidad;
-                insumoDB.Estado = insumoForm.Estado;
-
-                if (imageFile != null && imageFile.Length > 0)
-                {
-                    string uploadsFolder = Path.Combine(_webHostEnvironment.WebRootPath, "images");
-                    string uniqueFileName = Guid.NewGuid().ToString() + "_" + Path.GetFileName(imageFile.FileName);
-                    string filePath = Path.Combine(uploadsFolder, uniqueFileName);
-
-                    Directory.CreateDirectory(uploadsFolder);
-
-                    using (var fileStream = new FileStream(filePath, FileMode.Create))
-                    {
-                        await imageFile.CopyToAsync(fileStream);
-                    }
-
-                    insumoDB.ImagenUrl = uniqueFileName;
-                }
-
-                await _unitWork.GuardarInsumo();
-                return RedirectToAction("Index");
-            }
-
-            return View(insumoForm);
+            _unitWork.InsumoRepo.Actualizar(insumoForm);
+            await _unitWork.GuradarAsync();
+            TempData["Satisfactorio"] = "Insumo actualizado correctamente.";
+            return RedirectToAction("Index");
         }
 
         [HttpGet]
@@ -155,12 +89,6 @@ namespace SisNikosPizza.Controllers
 
             var insumo = await _unitWork.InsumoRepo.ObtenerPrimeroAsync(filtro: c => c.InsumoId == id);
             if (insumo == null) return NotFound();
-
-            if (!string.IsNullOrEmpty(insumo.ImagenUrl))
-            {
-                string baseUrl = $"{Request.Scheme}://{Request.Host}/images";
-                insumo.ImagenUrl = $"{baseUrl}/{insumo.ImagenUrl}";
-            }
 
             return View(insumo);
         }
@@ -173,12 +101,6 @@ namespace SisNikosPizza.Controllers
             var insumo = await _unitWork.InsumoRepo.ObtenerPrimeroAsync(filtro: c => c.InsumoId == id);
             if (insumo == null) return NotFound();
 
-            if (!string.IsNullOrEmpty(insumo.ImagenUrl))
-            {
-                string baseUrl = $"{Request.Scheme}://{Request.Host}/images";
-                insumo.ImagenUrl = $"{baseUrl}/{insumo.ImagenUrl}";
-            }
-
             return View(insumo);
         }
 
@@ -189,7 +111,7 @@ namespace SisNikosPizza.Controllers
             if (insumo is not null)
             {
                 _unitWork.InsumoRepo.Eliminar(insumo);
-                await _unitWork.GuardarInsumo();
+                await _unitWork.GuradarAsync();
                 return RedirectToAction("Index");
             }
 
