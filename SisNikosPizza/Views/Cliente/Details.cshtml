@@ -1,0 +1,162 @@
+﻿@model SisNikosPizza.Domain.Models.ApplicationUser
+
+
+@{
+    ViewData["Title"] = "Detalles del Usuario";
+    Layout = "~/Views/Shared/_Admin.cshtml";
+}
+
+<link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+<link href="https://cdn.jsdelivr.net/npm/bootstrap-icons/font/bootstrap-icons.css" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600&display=swap" rel="stylesheet">
+
+<style>
+    body {
+        background: linear-gradient(135deg, #f8f9fa 0%, #e9ecef 100%);
+        font-family: 'Inter', sans-serif;
+        color: #2d2d2d;
+        margin: 0;
+        padding: 0;
+    }
+
+    .container {
+        padding: 60px 20px;
+        max-width: 1200px;
+        margin: 0 auto;
+    }
+
+    .details-card {
+        background: #fff;
+        border-radius: 20px;
+        box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
+        overflow: hidden;
+        transition: transform 0.3s ease;
+        max-width: 600px;
+        margin: 0 auto;
+    }
+
+        .details-card:hover {
+            transform: translateY(-5px);
+        }
+
+    .details-header {
+        background: linear-gradient(45deg, #f1c40f, #f39c12);
+        padding: 20px;
+        text-align: center;
+        color: #fff;
+        border-radius: 20px 20px 0 0;
+    }
+
+        .details-header h3 {
+            font-size: 2rem;
+            font-weight: 700;
+            margin: 0;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            text-shadow: 1px 1px 5px rgba(0, 0, 0, 0.2);
+        }
+
+    .details-body {
+        padding: 30px;
+    }
+
+    .details-item {
+        margin-bottom: 20px;
+    }
+
+    .details-label {
+        font-size: 1.1rem;
+        font-weight: 600;
+        color: #333;
+        margin-bottom: 5px;
+        display: block;
+    }
+
+    .details-value {
+        font-size: 1rem;
+        color: #555;
+        background: #f9f9f9;
+        padding: 12px;
+        border-radius: 10px;
+        border: 2px solid #e0e0e0;
+        word-break: break-word;
+    }
+
+    .btn {
+        padding: 12px 24px;
+        border-radius: 50px;
+        font-weight: 600;
+        font-size: 1rem;
+        transition: transform 0.2s ease, background 0.3s ease;
+        display: inline-flex;
+        align-items: center;
+        gap: 8px;
+    }
+
+    .btn-primary {
+        background: linear-gradient(45deg, #3498db, #2980b9);
+        border: none;
+        color: #fff;
+    }
+
+        .btn-primary:hover {
+            background: linear-gradient(45deg, #2980b9, #3498db);
+            transform: scale(1.05);
+        }
+
+    .btn-secondary {
+        background: linear-gradient(45deg, #6c757d, #5a6268);
+        border: none;
+        color: #fff;
+    }
+
+        .btn-secondary:hover {
+            background: linear-gradient(45deg, #5a6268, #6c757d);
+            transform: scale(1.05);
+        }
+
+    .btn:focus {
+        outline: none;
+        box-shadow: 0 0 0 3px rgba(241, 196, 15, 0.3);
+    }
+</style>
+
+<div class="container" role="main">
+    <div class="details-card" aria-labelledby="details-header">
+        <div class="details-header">
+            <h3 id="details-header">Detalles del Usuario</h3>
+        </div>
+        <div class="details-body">
+            <div class="details-item">
+                <span class="details-label">ID</span>
+                <div class="details-value">@Model.Id</div>
+            </div>
+            <div class="details-item">
+                <span class="details-label">Nombre de Usuario</span>
+                <div class="details-value">@Model.Nombre</div>
+            </div>
+            <div class="details-item">
+                <span class="details-label">Email</span>
+                <div class="details-value">@Model.Email</div>
+            </div>
+            <div class="details-item">
+                <span class="details-label">Teléfono</span>
+                <div class="details-value">@(Model.PhoneNumber ?? "No disponible")</div>
+            </div>
+            <div class="details-item">
+                <span class="details-label">Dirección</span>
+                <div class="details-value">@(Model.Direccion ?? "No disponible")</div>
+            </div>
+            <div class="d-flex justify-content-end gap-3 mt-4">
+                <a asp-controller="User" asp-action="Edit" asp-route-id="@Model.Id" class="btn btn-primary" aria-label="Editar usuario @Model.Nombre">
+                    <i class="bi bi-pencil-square"></i> Editar
+                </a>
+                <a asp-controller="User" asp-action="Index" class="btn btn-secondary" aria-label="Volver a la lista de usuarios">
+                    <i class="bi bi-arrow-left"></i> Volver
+                </a>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script> 

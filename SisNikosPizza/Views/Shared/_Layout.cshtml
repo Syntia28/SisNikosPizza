@@ -77,7 +77,7 @@
             }
     </style>
 </head>
-<body class="sb-nav-fixed">
+<body class="vh-100">
     <!-- Top Navbar -->
     <nav class="sb-topnav navbar navbar-expand navbar-light">
         <a class="navbar-brand ps-3 d-flex align-items-center" href="@Url.Action("Index", "Home")">
@@ -87,25 +87,23 @@
         </div>
         <partial name="_LoginPartial" />
     </nav>
-
-  
-            <main>
-                <div class="container-fluid px-4">
-                    @RenderBody()
+    <main>
+        <div class="container-fluid px-4">
+            @RenderBody()
+        </div>
+    </main>
+    <footer class="py-4 mt-auto">
+        <div class="container-fluid px-4">
+            <div class="d-flex align-items-center justify-content-between small">
+                <div class="text-muted">&copy; Nikos Pizza 2023</div>
+                <div>
+                    <a href="#">Política de Privacidad</a>
+                    &middot;
+                    <a href="#">Términos &amp; Condiciones</a>
                 </div>
-            </main>
-            <footer class="py-4 mt-auto">
-                <div class="container-fluid px-4">
-                    <div class="d-flex align-items-center justify-content-between small">
-                        <div class="text-muted">&copy; Nikos Pizza 2023</div>
-                        <div>
-                            <a href="#">Política de Privacidad</a>
-                            &middot;
-                            <a href="#">Términos &amp; Condiciones</a>
-                        </div>
-                    </div>
-                </div>
-            </footer>
+            </div>
+        </div>
+    </footer>
       
 
     <!-- Scripts -->

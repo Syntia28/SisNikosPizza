@@ -15,10 +15,14 @@ namespace SisNikosPizza.Repository.Implements
 
         public ICategoriaRepository CategoriaRepo { get; private set; }
         public IProductoRepository ProductoRepo { get; private set; }
+        public IInsumoRepository InsumoRepo { get; private set; }
         public IProveedorRepository ProveedorRepo { get; private set; }
         public IPedidoRepository PedidoRepo { get; private set; }
         public IVentaRepository VentaRepo { get; private set; }
         public ICarritoRepository CarritoRepo { get; private set; }
+
+        public IProductoInsumoRepo ProductoInsumoRepo { get; private set; }
+
         public UnitWork(SisNikosPizzaBbContext db, 
             ILogger<CarritoRepository> logger
             )
@@ -30,6 +34,8 @@ namespace SisNikosPizza.Repository.Implements
             PedidoRepo = new PedidoRepository(_db);
             CarritoRepo = new CarritoRepository(_db, logger);
             VentaRepo = new VentaRepository(_db);
+            InsumoRepo = new InsumoRepository(_db);
+            ProductoInsumoRepo = new ProductoInsumoImpl(_db);
 
         }
         public void Dispose()
@@ -41,30 +47,9 @@ namespace SisNikosPizza.Repository.Implements
             throw new NotImplementedException();
         }
 
-        public async Task GuardarCategoria()
+        public async Task GuradarAsync()
         {
            await  _db.SaveChangesAsync();
-        }
-
-        public async Task GuardarProducto(){
-            await _db.SaveChangesAsync();
-        }
-
-        public async Task GuardarProveedor()
-        {
-            await _db.SaveChangesAsync();
-        }
-        public async Task GuardarPedido()
-        {
-            await _db.SaveChangesAsync();
-        }
-        public async Task GuardarVenta()
-        {
-            await _db.SaveChangesAsync();
-        }
-        public async Task GuardarCarrito()
-        {
-            await _db.SaveChangesAsync();
         }
     }
 }

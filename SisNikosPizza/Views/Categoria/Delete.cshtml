@@ -1,48 +1,229 @@
 ﻿@model SisNikosPizza.Domain.Models.Categoria
+
 @{
     ViewData["Title"] = "Eliminar Categoría";
     Layout = "~/Views/Shared/_Admin.cshtml";
 }
 
-<section class="content container-fluid">
-    <div class="row justify-content-center">
-        <div class="col-md-8">
-            <form method="post" asp-controller="Categoria" asp-action="Delete">
-                <div class="card card-default">
-                    <div class="card-header">
-                        <span class="card-title"><h2>Eliminar Categoría</h2></span>
-                    </div>
-                    <div class="card-body">
-                        <div asp-validation-summary="ModelOnly" class="text-danger"></div>
-                        <input asp-for="CategoriaId" hidden />
-                        <div class="form-group row mb-2">
-                            <div class="col-12 col-md-2 col-form-label text-md-end">
-                                <label>Nombre</label>
-                            </div>
-                            <div class="col-12 col-md-9">
-                                <input type="text" asp-for="nombre" class="form-control" placeholder="Nombre de la Categoría" disabled />
-                                <span asp-validation-for="nombre" class="text-danger"></span>
-                            </div>
-                        </div>
-                        <div class="form-group row mb-2">
-                            <div class="col-12 col-md-2 col-form-label text-md-end">
-                                <label>Estado</label>
-                            </div>
-                            <div class="col-12 col-md-9">
-                                <select asp-for="Estado" class="form-select" disabled>
-                                    <option value="true">ACTIVO</option>
-                                    <option value="false">INACTIVO</option>
-                                </select>
-                                <span asp-validation-for="Estado" class="text-danger"></span>
-                            </div>
-                        </div>
-                        <div>
-                            <button type="submit" class="btn btn-danger">Eliminar</button>
-                            <a asp-controller="Categoria" asp-action="Index" class="btn btn-primary">Cancelar</a>
-                        </div>
-                    </div>
+<style>
+    body {
+        background: linear-gradient(135deg, #f8f9fa 0%, #e9ecef 100%);
+        font-family: 'Inter', sans-serif;
+        color: #2d2d2d;
+        margin: 0;
+        padding: 0;
+    }
+
+    .container {
+        padding: 60px 20px;
+        max-width: 1200px;
+        margin: 0 auto;
+    }
+
+    .form-card {
+        background: #fff;
+        border-radius: 20px;
+        box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
+        overflow: hidden;
+        position: relative;
+        transition: transform 0.3s ease;
+        max-width: 600px;
+        margin: 0 auto;
+    }
+
+    .form-card:hover {
+        transform: translateY(-5px);
+    }
+
+    .form-header {
+        background: linear-gradient(45deg, #f1c40f, #f39c12);
+        padding: 20px;
+        text-align: center;
+        color: #fff;
+        border-radius: 20px 20px 0 0;
+    }
+
+    .form-header h3 {
+        font-size: 2rem;
+        font-weight: 700;
+        margin: 0;
+        text-transform: uppercase;
+        letter-spacing: 1px;
+        text-shadow: 1px 1px 5px rgba(0, 0, 0, 0.2);
+    }
+
+    .form-body {
+        padding: 30px;
+    }
+
+    .form-label {
+        font-size: 1.1rem;
+        font-weight: 600;
+        color: #333;
+        margin-bottom: 8px;
+        display: block;
+    }
+
+    .form-control, .form-select {
+        border: 2px solid #e0e0e0;
+        border-radius: 10px;
+        padding: 12px;
+        font-size: 1rem;
+        transition: border-color 0.3s ease, box-shadow 0.3s ease;
+        width: 100%;
+        background: #f9f9f9;
+    }
+
+    .form-control:disabled, .form-select:disabled {
+        background: #e9ecef;
+        cursor: not-allowed;
+    }
+
+    .form-control:focus, .form-select:focus {
+        border-color: #f1c40f;
+        box-shadow: 0 0 8px rgba(241, 196, 15, 0.3);
+        outline: none;
+        background: #fff;
+    }
+
+    .form-control::placeholder {
+        color: #aaa;
+        font-style: italic;
+    }
+
+    .text-danger {
+        font-size: 0.9rem;
+        color: #e63946;
+        margin-top: 5px;
+        display: block;
+    }
+
+    .btn {
+        padding: 12px 24px;
+        border-radius: 50px;
+        font-weight: 600;
+        font-size: 1rem;
+        transition: transform 0.2s ease, background 0.3s ease;
+        display: inline-flex;
+        align-items: center;
+        gap: 8px;
+    }
+
+    .btn-danger {
+        background: linear-gradient(45deg, #e63946, #d00000);
+        border: none;
+        color: #fff;
+    }
+
+    .btn-danger:hover {
+        background: linear-gradient(45deg, #d00000, #e63946);
+        transform: scale(1.05);
+    }
+
+    .btn-primary {
+        background: linear-gradient(45deg, #3498db, #2980b9);
+        border: none;
+        color: #fff;
+    }
+
+    .btn-primary:hover {
+        background: linear-gradient(45deg, #2980b9, #3498db);
+        transform: scale(1.05);
+    }
+
+    .btn:focus {
+        outline: none;
+        box-shadow: 0 0 0 3px rgba(241, 196, 15, 0.3);
+    }
+
+    .toast {
+        position: fixed;
+        bottom: 20px;
+        right: 20px;
+        background: #e63946;
+        color: #fff;
+        padding: 15px 20px;
+        border-radius: 10px;
+        box-shadow: 0 5px 15px rgba(0, 0, 0, 0.2);
+        opacity: 0;
+        transform: translateY(20px);
+        transition: opacity 0.3s ease, transform 0.3s ease;
+        z-index: 1000;
+    }
+
+    .toast.show {
+        opacity: 1;
+        transform: translateY(0);
+    }
+</style>
+
+<div class="container" role="main">
+    <div class="form-card" aria-labelledby="form-header">
+        <div class="form-header">
+            <h3 id="form-header">Eliminar Categoría</h3>
+        </div>
+        <div class="form-body">
+            <form method="post" asp-controller="Categoria" asp-action="Delete" id="delete-form">
+                <div asp-validation-summary="ModelOnly" class="text-danger mb-3"></div>
+                <input asp-for="CategoriaId" hidden />
+                <div class="mb-3">
+                    <label for="Nombre" class="form-label">Nombre</label>
+                    <input type="text" asp-for="nombre" class="form-control" id="Nombre" placeholder="Nombre de la Categoría" disabled aria-describedby="nombre-error" />
+                    <span asp-validation-for="nombre" class="text-danger" id="nombre-error"></span>
+                </div>
+                <div class="mb-3">
+                    <label for="Estado" class="form-label">Estado</label>
+                    <select asp-for="Estado" class="form-select" id="Estado" disabled aria-describedby="estado-error">
+                        <option value="true">ACTIVO</option>
+                        <option value="false">INACTIVO</option>
+                    </select>
+                    <span asp-validation-for="Estado" class="text-danger" id="estado-error"></span>
+                </div>
+                <div class="d-flex justify-content-between mt-4">
+                    <button type="submit" class="btn btn-danger" aria-label="Eliminar categoría">
+                        <i class="bi bi-trash"></i> Eliminar
+                    </button>
+                    <a asp-controller="Categoria" asp-action="Index" class="btn btn-primary" aria-label="Cancelar y volver">
+                        <i class="bi bi-arrow-left"></i> Cancelar
+                    </a>
                 </div>
             </form>
         </div>
     </div>
-</section>
+</div>
+
+<div class="toast" id="success-toast" role="alert" aria-live="polite">
+    ¡Categoría eliminada exitosamente!
+</div>
+
+<script>
+    document.addEventListener('DOMContentLoaded', () => {
+        const form = document.getElementById('delete-form');
+        const toast = document.getElementById('success-toast');
+
+        form.addEventListener('submit', async (e) => {
+            e.preventDefault();
+            const formData = new FormData(form);
+
+            try {
+                const response = await fetch(form.action, {
+                    method: 'POST',
+                    body: formData
+                });
+
+                if (response.ok) {
+                    toast.classList.add('show');
+                    setTimeout(() => {
+                        toast.classList.remove('show');
+                        window.location.href = '@Url.Action("Index", "Categoria")';
+                    }, 2000);
+                } else {
+                    const errors = await response.json();
+                    console.error('Validation errors:', errors);
+                }
+            } catch (error) {
+                console.error('Error:', error);
+            }
+        });
+    });
+</script>

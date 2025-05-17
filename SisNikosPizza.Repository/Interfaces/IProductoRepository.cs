@@ -1,16 +1,14 @@
 ﻿using SisNikosPizza.Domain.Models;
-using SisNikosPizza.Repository.Implements;
-using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Text;
 using System.Threading.Tasks;
 
 namespace SisNikosPizza.Repository.Interfaces
 {
-    public  interface IProductoRepository : IRepositoryBase<Producto>
+    public interface IProductoRepository : IRepositoryBase<Producto>
     {
         void Actualizar(Producto producto);
-       
+        Task AgregarInsumoAsync(int productoId, int insumoId, float cantidad);
+        Task EliminarInsumoAsync(int productoId, int insumoId);
+        Task ActualizarInsumoAsync(int productoId, int insumoId, float nuevaCantidad);
     }
 }

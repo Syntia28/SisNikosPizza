@@ -48,10 +48,11 @@ namespace SisNikosPizza.Controllers
         }
 
 
-        [HttpPost]
         [Authorize(Roles = VCG.Role_Admin)]
+        [HttpPost]
         public async Task<ActionResult> CrearVenta(int id)
         {
+
             //obtener el pedido.
             var pedido = await _unitWork.PedidoRepo.ObtenerPedidoDetallado(id, "");
 
@@ -71,6 +72,7 @@ namespace SisNikosPizza.Controllers
 
 
             //verificar que existan productos en el pedido.
+
 
             if (pedido.DetallePedidos.Count <=0)
             {
@@ -107,7 +109,7 @@ namespace SisNikosPizza.Controllers
 
             // guardar venta
             await _unitWork.VentaRepo.AgregarAsync(venta);
-            await _unitWork.GuardarVenta();
+            await _unitWork.GuradarAsync();
 
          
             // redireccionar a index

@@ -86,6 +86,11 @@ namespace SisNikosPizza.Infraestructure.Migrations
                         .IsConcurrencyToken()
                         .HasColumnType("nvarchar(max)");
 
+                    b.Property<string>("Discriminator")
+                        .IsRequired()
+                        .HasMaxLength(21)
+                        .HasColumnType("nvarchar(21)");
+
                     b.Property<string>("Email")
                         .HasMaxLength(256)
                         .HasColumnType("nvarchar(256)");
@@ -137,6 +142,10 @@ namespace SisNikosPizza.Infraestructure.Migrations
                         .HasFilter("[NormalizedUserName] IS NOT NULL");
 
                     b.ToTable("AspNetUsers", (string)null);
+
+                    b.HasDiscriminator().HasValue("IdentityUser");
+
+                    b.UseTphMappingStrategy();
                 });
 
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityUserClaim<string>", b =>
@@ -352,6 +361,46 @@ namespace SisNikosPizza.Infraestructure.Migrations
                     b.ToTable("DetalleVenta");
                 });
 
+            modelBuilder.Entity("SisNikosPizza.Domain.Models.Insumo", b =>
+                {
+                    b.Property<int>("InsumoId")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("InsumoId"));
+
+                    b.Property<float>("Cantidad")
+                        .HasColumnType("real");
+
+                    b.Property<DateTime>("CreatedAt")
+                        .HasColumnType("datetime2");
+
+                    b.Property<string>("Descripcion")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<bool>("Estado")
+                        .HasColumnType("bit");
+
+                    b.Property<string>("Nombre")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<float>("Precio")
+                        .HasColumnType("real");
+
+                    b.Property<string>("UnidadeDeMedida")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<DateTime>("UpdatedAt")
+                        .HasColumnType("datetime2");
+
+                    b.HasKey("InsumoId");
+
+                    b.ToTable("insumo");
+                });
+
             modelBuilder.Entity("SisNikosPizza.Domain.Models.Pedido", b =>
                 {
                     b.Property<int>("PedidoId")
@@ -451,6 +500,32 @@ namespace SisNikosPizza.Infraestructure.Migrations
                     b.ToTable("producto");
                 });
 
+            modelBuilder.Entity("SisNikosPizza.Domain.Models.ProductoInsumo", b =>
+                {
+                    b.Property<int>("ProductoInsumoId")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("ProductoInsumoId"));
+
+                    b.Property<float>("Cantidad")
+                        .HasColumnType("real");
+
+                    b.Property<int>("InsumoId")
+                        .HasColumnType("int");
+
+                    b.Property<int>("ProductoId")
+                        .HasColumnType("int");
+
+                    b.HasKey("ProductoInsumoId");
+
+                    b.HasIndex("InsumoId");
+
+                    b.HasIndex("ProductoId");
+
+                    b.ToTable("ProductoInsumo");
+                });
+
             modelBuilder.Entity("SisNikosPizza.Domain.Models.Proveedor", b =>
                 {
                     b.Property<int>("ProveedorId")
@@ -512,6 +587,24 @@ namespace SisNikosPizza.Infraestructure.Migrations
                     b.HasIndex("OwnerId");
 
                     b.ToTable("venta");
+                });
+
+            modelBuilder.Entity("SisNikosPizza.Domain.Models.ApplicationUser", b =>
+                {
+                    b.HasBaseType("Microsoft.AspNetCore.Identity.IdentityUser");
+
+                    b.Property<string>("Direccion")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<DateTime?>("FechaNacimiento")
+                        .HasColumnType("datetime2");
+
+                    b.Property<string>("Nombre")
+                        .IsRequired()
+                        .HasMaxLength(100)
+                        .HasColumnType("nvarchar(100)");
+
+                    b.HasDiscriminator().HasValue("ApplicationUser");
                 });
 
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityRoleClaim<string>", b =>
@@ -654,6 +747,25 @@ namespace SisNikosPizza.Infraestructure.Migrations
                     b.Navigation("categoria");
                 });
 
+            modelBuilder.Entity("SisNikosPizza.Domain.Models.ProductoInsumo", b =>
+                {
+                    b.HasOne("SisNikosPizza.Domain.Models.Insumo", "Insumo")
+                        .WithMany("Productos")
+                        .HasForeignKey("InsumoId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.HasOne("SisNikosPizza.Domain.Models.Producto", "Producto")
+                        .WithMany("ProductoInsumos")
+                        .HasForeignKey("ProductoId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("Insumo");
+
+                    b.Navigation("Producto");
+                });
+
             modelBuilder.Entity("SisNikosPizza.Domain.Models.Venta", b =>
                 {
                     b.HasOne("Microsoft.AspNetCore.Identity.IdentityUser", "Owner")
@@ -670,9 +782,19 @@ namespace SisNikosPizza.Infraestructure.Migrations
                     b.Navigation("CarritoProductos");
                 });
 
+            modelBuilder.Entity("SisNikosPizza.Domain.Models.Insumo", b =>
+                {
+                    b.Navigation("Productos");
+                });
+
             modelBuilder.Entity("SisNikosPizza.Domain.Models.Pedido", b =>
                 {
                     b.Navigation("DetallePedidos");
+                });
+
+            modelBuilder.Entity("SisNikosPizza.Domain.Models.Producto", b =>
+                {
+                    b.Navigation("ProductoInsumos");
                 });
 
             modelBuilder.Entity("SisNikosPizza.Domain.Models.Venta", b =>
