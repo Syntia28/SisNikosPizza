@@ -22,10 +22,7 @@
 
   <ItemGroup>
     <ProjectReference Include="..\SisNikosPizza.Domain\SisNikosPizza.Domain.csproj" />
-  </ItemGroup>
-
-  <ItemGroup>
-    <Folder Include="Migrations\" />
+    <ProjectReference Include="..\SisNikosPizza.Utilidades\SisNikosPizza.Utilidades.csproj" />
   </ItemGroup>
 
 </Project>

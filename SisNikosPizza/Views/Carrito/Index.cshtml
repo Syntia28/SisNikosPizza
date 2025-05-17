@@ -1,163 +1,432 @@
-﻿@model SisNikosPizza.Domain.Models.Carrito;
+﻿@using SisNikosPizza.Domain.Models
+@model Carrito
 
 @{
     ViewData["Title"] = "Carrito de Compras";
     Layout = "~/Views/Shared/_Admin.cshtml";
 }
 
-<div class="container-fluid py-5">
-    <!-- Título principal -->
-    <div class="text-center mb-4">
-        <h2 class="text-title">TU CARRITO DE COMPRAS</h2>
-        <p class="text-muted">¡No olvides de revisar tu pedido antes de realizarlo!</p>
-    </div>
-    <div class="text-center d-flex justify-content-center align-items-center">
-        <!-- Asegúrate de que el script esté cargado correctamente -->
-        @Html.Raw("<script src=\"https://unpkg.com/@dotlottie/player-component@2.7.12/dist/dotlottie-player.mjs\" type=\"module\"></script>")
-
-        <!-- Usa el componente dotlottie-player para cargar la animación -->
-        <dotlottie-player src="https://lottie.host/7cc5c610-8081-4951-9ff8-f03dfb0a38d0/vO4r4zS6zv.lottie"
-                          background="transparent" speed="1" style="width: 190px; height: 190px" loop autoplay>
-        </dotlottie-player>
-    </div>
-
-    @if (Model.CarritoProductos == null || !Model.CarritoProductos.Any())
-    {
-        <!-- Mensaje si el carrito está vacío -->
-        <div class="text-center">
-            <h4 class="text-danger mb-3">¡Tu carrito está vacío!</h4>
-            <a href="/Carta" class="btn btn-outline-primary btn-lg">Explorar Carta</a>
-        </div>
-    }
-    else
-    {
-        <!-- Lista de productos -->
-        <div class="row">
-            @foreach (var carritoItem in Model.CarritoProductos)
-            {
-                <div class="col-12 col-md-6 col-lg-4 mb-4">
-                    <div class="card custom-card shadow-lg border-0 rounded-lg overflow-hidden">
-                        <!-- Título con fondo amarillo -->
-                        <div class="btn btn-finalizar btn-lg w-100">
-                            Tu Pedido
-                        </div>
-
-                        <!-- Contenido de la tarjeta -->
-                        <div class="card-body">
-                            <!-- Contenedor de producto: Imagen, nombre, cantidad, precio, etc. -->
-                            <div class="d-flex justify-content-between align-items-center mb-3">
-                                <!-- Imagen -->
-
-                                <div class="mb-3">
-                                    <img src="@carritoItem.Producto.ImagenUrl" alt="@carritoItem.Producto.Nombre" class="img-fluid rounded" style="width: 100%; height: 120px; object-fit: cover;" />
-                                </div>
-
-                                <!-- Información de la cantidad, precio unitario y total -->
-                                <div class="">
-                                    <!-- Detalles del producto (nombre) -->
-                                    <div class="product-details">
-                                        <h5 class="card-title text-dark fw-bold mb-2">@carritoItem.Producto.Nombre</h5>
-                                    </div>
-                                    <div class="w-30 d-flex justify-content-between align-items-center">
-                                        <p class="text-muted mb-1 me-2"><strong>Cantidad:</strong></p>
-                                        <p class="text-muted mb-1 me-2">@carritoItem.Cantidad</p>
-                                    </div>
-
-                                    <div class="w-30 d-flex justify-content-between align-items-center">
-                                        <p class="text-muted mb-1"><strong>Precio Unitario:</strong></p>
-                                        <p class="text-muted mb-1">S/. @carritoItem.Producto.Precio</p>
-                                    </div>
-                                    <div class="w-30 d-flex justify-content-between align-items-center">
-                                        <p class="text-muted mb-1"><strong>Total:</strong></p>
-                                        <p class="text-muted mb-1">S/. @(carritoItem.Cantidad * carritoItem.Producto.Precio)</p>
-                                    </div>
-                                </div>
-
-                            </div>
-
-                            <!-- Botones de acción (Aumentar, Disminuir, Eliminar) -->
-                            <div class="action-buttons d-flex justify-content-end w-100">
-                                <form asp-controller="Carrito" asp-action="IncrementarCantidad" class="d-inline-block">
-                                    <input type="hidden" name="ProductoId" value="@carritoItem.Producto.ProductoId" />
-                                    <button type="submit" class="btn btn-info btn-sm rounded-circle shadow-sm">
-                                        <i class="fas fa-plus"></i>
-                                    </button>
-                                </form>
-
-                                <form asp-controller="Carrito" asp-action="DecrementarCantidad" class="d-inline-block mx-2">
-                                    <input type="hidden" name="ProductoId" value="@carritoItem.Producto.ProductoId" />
-                                    <button type="submit" class="btn btn-warning btn-sm rounded-circle shadow-sm">
-                                        <i class="fas fa-minus"></i>
-                                    </button>
-                                </form>
-
-                                <form asp-controller="Carrito" asp-action="EliminarProducto" method="post"
-                                    class="d-inline-block">
-                                    <input type="hidden" name="ProductoId" value="@carritoItem.Producto.ProductoId" />
-                                    <button type="submit" class="btn btn-danger btn-sm rounded-circle shadow-sm">
-                                        <i class="fas fa-trash"></i>
-                                    </button>
-                                </form>
-                            </div>
-
-
-                        </div>
-                    </div>
-                </div>
-            }
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>@ViewData["Title"]</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-QWTKZyjpPEjISv5WaRU9OFeRpok6YctnYmDr5pNlyT2bRjXh0JMhjY6hW+ALEwIH" crossorigin="anonymous">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons/font/bootstrap-icons.css" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Poppins:wght@600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" integrity="sha512-iecdLmaskl7CVkqkXNQ/ZH/XLlvWZOJyj7Yy7tcenmpD1ypASozpmT/E0iPtmFIB46ZmdtAc9eNBvH0H/ZpiBw==" crossorigin="anonymous" referrerpolicy="no-referrer" />
+   
+</head>
+<body>
+    <div class="container-fluid">
+        <div class="text-center mb-5">
+            <h2 class="text-title">Tu Carrito de Compras</h2>
+            <p class="text-subtitle">¡Revisa tu pedido antes de finalizar!</p>
         </div>
 
-        <!-- Cuadro con el resumen de precios -->
-        <div class="mt-4">
-            <div class="card shadow-sm p-4">
-                <h4 class="text-center text-title mb-4">Resumen de tu Pago</h4>
-
-                <div class="d-flex justify-content-between mb-3">
-                    <span class="fw-bold">Subtotal:</span>
-                    <span>S/. @Math.Round(Model.CarritoProductos.Sum(item => item.Cantidad * item.Producto.Precio) * 0.82,
-                           2)</span>
-                </div>
-                <div class="d-flex justify-content-between mb-3">
-                    <span class="fw-bold">Impuestos (18%):</span>
-                    <span>S/. @Math.Round(Model.CarritoProductos.Sum(item => item.Cantidad * item.Producto.Precio) * 0.18,
-                           2)</span>
-                </div>
-                <div class="d-flex justify-content-between mb-4">
-                    <span class="fw-bold text-success">Total:</span>
-                    <span class="text-success fs-5">S/. @Model.CarritoProductos.Sum(item => item.Cantidad *
-                    item.Producto.Precio)</span>
-                </div>
-
-                <div class="text-center">
-                    <a class="btn btn-finalizar btn-lg w-100" asp-controller="Pedidos" asp-action="Nuevo">Finalizar
-                        Pedido</a>
-                </div>
+        <div class="lottie-container text-center d-flex justify-content-center align-items-center">
+            <dotlottie-player id="lottie-player" src="https://lottie.host/7cc5c610-8081-4951-9ff8-f03dfb0a38d0/vO4r4zS6zv.lottie"
+                              background="transparent" speed="1" style="width: 190px; height: 190px" loop autoplay aria-label="Animación de carrito de compras">
+            </dotlottie-player>
+            <div id="lottie-fallback" class="d-none">
+                <img src="/images/fallback-cart.png" alt="Carrito de Compras" style="width: 190px; height: 190px; object-fit: contain;" />
             </div>
         </div>
-    }
+        <div class="text-center d-flex justify-content-center align-items-center">
+    <!-- Asegúrate de que el script esté cargado correctamente -->
+    @Html.Raw("<script src=\"https://unpkg.com/@dotlottie/player-component@2.7.12/dist/dotlottie-player.mjs\" type=\"module\"></script>")
+
+    <!-- Usa el componente dotlottie-player para cargar la animación -->
+    
 </div>
+        @if (Model.CarritoProductos == null || !Model.CarritoProductos.Any())
+        {
+            <div class="empty-cart">
+                <h4 class="text-danger mb-4">¡Tu carrito está vacío!</h4>
+                <a href="/Carta" class="btn">Explorar Carta</a>
+            </div>
+        }
+        else
+        {
+            <div class="row">
+                @foreach (var carritoItem in Model.CarritoProductos)
+                {
+                    <div class="col-12 col-md-6 col-lg-4 mb-4">
+                        <div class="card">
+                            <div class="card-header">
+                                <i class="fas fa-pizza-slice me-2"></i> Tu Pedido
+                            </div>
+                            <div class="card-body">
+                                <div class="row align-items-center">
+                                    <div class="col-12 col-md-5 mb-3 mb-md-0">
+                                        <div class="product-img-container">
+                                            <img src="@carritoItem.Producto.ImagenUrl" alt="@carritoItem.Producto.Nombre" class="product-img" />
+                                        </div>
+                                    </div>
+                                    <div class="col-12 col-md-7">
+                                        <div class="product-details">
+                                            <h5 class="mb-2">@carritoItem.Producto.Nombre</h5>
+                                            <p class="mb-1"><strong>Cantidad:</strong> <span class="badge bg-warning text-dark">@carritoItem.Cantidad</span></p>
+                                            <p class="mb-1"><strong>Precio Unitario:</strong> S/. @carritoItem.Producto.Precio</p>
+                                            <p class="mb-1"><strong>Total:</strong> <span class="text-success fw-bold">S/. @(carritoItem.Cantidad * carritoItem.Producto.Precio)</span></p>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="action-buttons d-flex justify-content-end mt-3 gap-2">
+                                    <form asp-controller="Carrito" asp-action="IncrementarCantidad" method="post" class="d-inline-block">
+                                        <input type="hidden" name="productoId" value="@carritoItem.Producto.ProductoId" />
+                                        <button type="submit" class="btn btn-info btn-custom" title="Aumentar cantidad">
+                                            <i class="fas fa-plus"></i>
+                                        </button>
+                                    </form>
+                                    <form asp-controller="Carrito" asp-action="DecrementarCantidad" method="post" class="d-inline-block">
+                                        <input type="hidden" name="ProductoId" value="@carritoItem.Producto.ProductoId" />
+                                        <button type="submit" class="btn btn-warning btn-custom" title="Disminuir cantidad">
+                                            <i class="fas fa-minus"></i>
+                                        </button>
+                                    </form>
+                                    <form asp-controller="Carrito" asp-action="EliminarProducto" method="post" class="d-inline-block">
+                                        <input type="hidden" name="ProductoId" value="@carritoItem.Producto.ProductoId" />
+                                        <button type="submit" class="btn btn-danger btn-custom" title="Eliminar producto">
+                                            <i class="fas fa-trash"></i>
+                                        </button>
+                                    </form>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                }
+            </div>
 
-<!-- Estilos personalizados -->
-<style>
-    .text-title {
-        color: #D35400;
-        text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.2);
-        font-weight: bold;
-        font-size: 2rem;
-    }
+            <div class="mt-5">
+                <div class="summary-card p-4">
+                    <h4 class="text-center text-title mb-4">Resumen de tu Pago</h4>
+                    <div class="d-flex justify-content-between mb-3">
+                        <span class="fw-bold">Subtotal:</span>
+                        <span>S/. @Math.Round(Model.CarritoProductos.Sum(item => item.Cantidad * item.Producto.Precio) * 0.82, 2)</span>
+                    </div>
+                    <div class="d-flex justify-content-between mb-3">
+                        <span class="fw-bold">Impuestos (18%):</span>
+                        <span>S/. @Math.Round(Model.CarritoProductos.Sum(item => item.Cantidad * item.Producto.Precio) * 0.18, 2)</span>
+                    </div>
+                    <div class="d-flex justify-content-between mb-4">
+                        <span class="fw-bold text-success">Total:</span>
+                        <span class="text-success fs-5">S/. @Model.CarritoProductos.Sum(item => item.Cantidad * item.Producto.Precio)</span>
+                    </div>
+                    <div class="text-center">
+                        <a class="btn btn-finalizar" asp-controller="Pedidos" asp-action="Nuevo">Finalizar Pedido</a>
+                    </div>
+                </div>
+            </div>
+        }
+    </div>
 
-    .btn-finalizar {
-        background-color: #D35400;
-        color: white;
-        font-size: 1.2rem;
-        border-radius: 8px;
-        box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2);
-        transition: all 0.3s ease;
-    }
+    <style>
+        body {
+            font-family: 'Inter', sans-serif;
+            background: linear-gradient(135deg, #fff3e0 0%, #ffe082 100%);
+            color: #212121; /* Black letters */
+            margin: 0;
+            padding: 0;
+        }
 
-    .btn-finalizar:hover {
-        background-color: #E67E22;
-        transform: scale(1.05);
-        box-shadow: 0 6px 15px rgba(0, 0, 0, 0.3);
-    }
-</style>
+        .container-fluid {
+            max-width: 1300px;
+            padding: 4rem 1.5rem;
+            margin: 0 auto;
+        }
+
+        .text-title {
+            font-family: 'Poppins', sans-serif;
+            font-size: 2.5rem;
+            font-weight: 700;
+            color: #ff8f00;
+            text-shadow: 1px 1px 3px rgba(0, 0, 0, 0.1);
+            margin-bottom: 0.5rem;
+        }
+
+        .text-subtitle {
+            font-size: 1.1rem;
+            color: #212121;
+            opacity: 0.8;
+        }
+
+        .card {
+            border-radius: 20px;
+            box-shadow: 0 12px 35px rgba(0, 0, 0, 0.2);
+            background: #ffffff;
+            border: 2px solid #ffca28;
+            overflow: hidden;
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+            animation: slideIn 0.7s ease-out;
+        }
+
+        @@keyframes slideIn {
+            from {
+                opacity: 0;
+                transform: translateY(20px);
+            }
+
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        .card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 15px 45px rgba(0, 0, 0, 0.25);
+        }
+
+        .card-header {
+            background: linear-gradient(90deg, #ff8f00, #ffca28);
+            color: #fff;
+            padding: 1.2rem;
+            font-family: 'Poppins', sans-serif;
+            font-size: 1.6rem;
+            font-weight: 700;
+            text-align: center;
+            border-top-left-radius: 20px;
+            border-top-right-radius: 20px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            text-shadow: 1px 1px 2px rgba(0, 0, 0, 0.2);
+        }
+
+        .card-body {
+            padding: 2rem;
+            background: #fff8e1;
+        }
+
+        .product-img-container {
+            overflow: hidden;
+            border-radius: 15px;
+            transition: transform 0.3s ease;
+        }
+
+        .product-img {
+            width: 100%;
+            height: 180px;
+            object-fit: cover;
+            border-radius: 15px;
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+            transition: transform 0.3s ease;
+        }
+
+        .product-img-container:hover .product-img {
+            transform: scale(1.05);
+        }
+
+        .btn-custom {
+            width: 45px;
+            height: 45px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            border-radius: 50%;
+            padding: 0;
+            font-size: 1rem;
+            transition: all 0.3s ease;
+            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+        }
+
+            .btn-custom:hover {
+                transform: scale(1.1);
+                box-shadow: 0 6px 15px rgba(0, 0, 0, 0.2);
+            }
+
+        .btn-finalizar {
+            background: linear-gradient(90deg, #ff8f00, #ffca28);
+            color: #fff;
+            font-size: 1.1rem;
+            padding: 0.8rem 2rem;
+            border-radius: 50px;
+            transition: all 0.3s ease;
+        }
+
+            .btn-finalizar:hover {
+                background: linear-gradient(90deg, #e67e22, #ffb300);
+                transform: translateY(-3px);
+                box-shadow: 0 6px 15px rgba(255, 143, 0, 0.3);
+            }
+
+        .btn-info {
+            background: #0288d1;
+            border: none;
+            color: #fff;
+        }
+
+            .btn-info:hover {
+                background: #0277bd;
+            }
+
+        .btn-warning {
+            background: #ffb300;
+            border: none;
+            color: #fff;
+        }
+
+            .btn-warning:hover {
+                background: #e67e22;
+            }
+
+        .btn-danger {
+            background: #d32f2f;
+            border: none;
+            color: #fff;
+        }
+
+            .btn-danger:hover {
+                background: #c62828;
+            }
+
+        .badge {
+            padding: 0.5rem 1rem;
+            font-size: 0.9rem;
+            border-radius: 12px;
+            font-weight: 600;
+        }
+
+        .empty-cart {
+            background: #fff;
+            border-radius: 20px;
+            padding: 3rem;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.15);
+            text-align: center;
+            animation: slideIn 0.7s ease-out;
+        }
+
+            .empty-cart .btn {
+                background: linear-gradient(90deg, #ff8f00, #ffca28);
+                color: #fff;
+                font-size: 1.1rem;
+                padding: 0.8rem 2rem;
+                border-radius: 50px;
+                transition: all 0.3s ease;
+            }
+
+                .empty-cart .btn:hover {
+                    background: linear-gradient(90deg, #e67e22, #ffb300);
+                    transform: translateY(-3px);
+                    box-shadow: 0 6px 15px rgba(255, 143, 0, 0.3);
+                }
+
+        .summary-card {
+            background: #fff;
+            border-radius: 20px;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.15);
+            border: 2px solid #ffca28;
+            animation: slideIn 0.7s ease-out;
+        }
+
+        .lottie-container {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            margin: 2rem 0;
+        }
+
+        .lottie-fallback {
+            display: none;
+        }
+
+        .product-details h5 {
+            font-family: 'Poppins', sans-serif;
+            font-size: 1.4rem;
+            font-weight: 600;
+            color: #212121;
+        }
+
+        .product-details p {
+            font-size: 1rem;
+            color: #212121;
+            margin-bottom: 0.5rem;
+        }
+
+        @@media (max-width: 768px) {
+            .container-fluid {
+                padding: 3rem 1rem;
+            }
+
+            .text-title {
+                font-size: 2rem;
+            }
+
+            .card-header {
+                font-size: 1.4rem;
+                padding: 1rem;
+            }
+
+            .card-body {
+                padding: 1.5rem;
+            }
+
+            .product-img {
+                height: 140px;
+            }
+
+            .btn-finalizar {
+                font-size: 1rem;
+                padding: 0.7rem 1.5rem;
+            }
+
+            .btn-custom {
+                width: 40px;
+                height: 40px;
+            }
+
+            .lottie-container dotlottie-player,
+            .lottie-fallback img {
+                width: 150px !important;
+                height: 150px !important;
+            }
+        }
+
+        @@media (max-width: 576px) {
+            .text-title {
+                font-size: 1.8rem;
+            }
+
+            .product-details h5 {
+                font-size: 1.2rem;
+            }
+
+            .product-details p {
+                font-size: 0.9rem;
+            }
+
+            .action-buttons {
+                gap: 0.5rem;
+            }
+
+            .btn-custom {
+                width: 35px;
+                height: 35px;
+                font-size: 0.9rem;
+            }
+        }
+    </style>
+
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap bundle.min.js" integrity="sha384-YvpcrYf0tY3lHB60NNkmXc5s9fDVZLESaAA55NDzOxhy9GkcIdslK1eN7N6jIeHz" crossorigin="anonymous"></script>
+    <script>
+        document.addEventListener('DOMContentLoaded', () => {
+            const lottiePlayer = document.getElementById('lottie-player');
+            const fallback = document.getElementById('lottie-fallback');
+
+            if (!lottiePlayer || !window.customElements.get('dotlottie-player')) {
+                console.error('DotLottie player failed to load.');
+                fallback.classList.remove('d-none');
+                lottiePlayer.style.display = 'none';
+            }
+
+            lottiePlayer.addEventListener('error', (e) => {
+                console.error('Error loading Lottie animation:', e);
+                fallback.classList.remove('d-none');
+                lottiePlayer.style.display = 'none';
+            });
+        });
+    </script>
+</body>
+</html>

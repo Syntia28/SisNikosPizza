@@ -49,7 +49,7 @@ namespace SisNikosPizza.Controllers
                 //await _context.Category.AddAsync(category);
                 //await _context.SaveChangesAsync();
                 await _unitWork.ProveedorRepo.AgregarAsync(proveedores);
-                await _unitWork.GuardarProveedor();
+                await _unitWork.GuradarAsync();
                 TempData[VCG.Satisfactorio] = "Proveedor actualizadado correctamente";
                 //return RedirectToAction("Index");
                 //return RedirectToAction("Details", new(category.CategoryId.ToString()));
@@ -83,7 +83,7 @@ namespace SisNikosPizza.Controllers
 
 
                 _unitWork.ProveedorRepo.ActualizarProveedor(proveedores);
-                await _unitWork.GuardarProveedor();
+                await _unitWork.GuradarAsync();
                 TempData[VCG.Satisfactorio] = "Proveedor actualizado correctamente.";
                 return RedirectToAction("Index");
             }
@@ -121,7 +121,7 @@ namespace SisNikosPizza.Controllers
                 //_context.Category.Remove(category);
                 //await _context.SaveChangesAsync();
                 _unitWork.ProveedorRepo.Eliminar(proveedores);
-                await _unitWork.GuardarProveedor();
+                await _unitWork.GuradarAsync();
                 return RedirectToAction("Index");
             }
 

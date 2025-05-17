@@ -32,7 +32,7 @@ namespace SisNikosPizza.Domain.Models
 
         public DateTime FechaPedido { get; set; }
 
-        public virtual ICollection<DetallePedido> DetallePedidos { get; set; }
+        public virtual ICollection<DetallePedido>? DetallePedidos { get; set; }
         //no database properties
      
         public IdentityUser Owner { get; set; }

@@ -16,6 +16,7 @@ namespace SisNikosPizza.Utilidades
         public const string Role_Employee = "Employee";
         public const string Role_Usuario = "Usuario";
         public const string Role_Manager = "Manager";
+        public const string Role_Delivery = "Delivery";
 
         public static class EstadoPedido
         {

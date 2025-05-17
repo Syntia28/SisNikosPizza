@@ -6,136 +6,360 @@
     Layout = "~/Views/Shared/_Admin.cshtml";
 }
 
-<!-- Estilos personalizados -->
 <style>
-    /* Centrado de la tarjeta */
+    /* Estilo general */
+    body {
+        background: linear-gradient(135deg, #f5f7fa 0%, #c3cfe2 100%);
+        font-family: 'Inter', sans-serif;
+        margin: 0;
+        padding: 0;
+    }
+
     .card-wrapper {
         display: flex;
         justify-content: center;
         align-items: center;
-        height: 100vh;
+        min-height: 100vh;
+        padding: 20px;
     }
 
     .card {
         width: 100%;
-        max-width: 800px;
-        border-radius: 15px;
+        max-width: 950px;
+        border-radius: 25px;
+        box-shadow: 0 12px 32px rgba(0, 0, 0, 0.15);
+        background: #ffffff;
+        overflow: hidden;
+        position: relative;
+        animation: slideIn 0.6s ease-out;
+    }
+
+    /* Animación de entrada */
+    @@keyframes slideIn {
+        from {
+            opacity: 0;
+            transform: translateY(50px);
+        }
+
+        to {
+            opacity: 1;
+            transform: translateY(0);
+        }
+    }
+
+    /* Encabezado */
+    .card-header {
+        background: linear-gradient(135deg, #ff8f00, #ffc107);
+        color: #fff;
+        border-top-left-radius: 25px;
+        border-top-right-radius: 25px;
+        padding: 2.5rem;
+        text-align: center;
+        position: relative;
+        overflow: hidden;
+    }
+
+        .card-header::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: radial-gradient(circle, rgba(255,255,255,0.2) 0%, transparent 70%);
+            opacity: 0.5;
+        }
+
+        .card-header h2 {
+            font-weight: 800;
+            font-size: 2.3rem;
+            text-transform: uppercase;
+            letter-spacing: 1.5px;
+            margin: 0;
+            position: relative;
+            z-index: 1;
+        }
+
+    /* Imagen de productos */
+    .img-fluid {
+        width: 70px;
+        height: 70px;
+        object-fit: cover;
+        border-radius: 12px;
+        box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+        transition: transform 0.3s ease, box-shadow 0.3s ease;
+    }
+
+        .img-fluid:hover {
+            transform: scale(1.15);
+            box-shadow: 0 6px 12px rgba(0, 0, 0, 0.2);
+        }
+
+    /* Tabla */
+    .table {
+        border-collapse: separate;
+        border-spacing: 0;
+        border-radius: 12px;
+        overflow: hidden;
+        background: #f9fafb;
+    }
+
+        .table th, .table td {
+            padding: 1.2rem;
+            text-align: center;
+            vertical-align: middle;
+            font-size: 0.95rem;
+        }
+
+        .table th {
+            background: #e9ecef;
+            color: #2c3e50;
+            font-weight: 600;
+            text-transform: uppercase;
+            font-size: 0.9rem;
+        }
+
+        .table tbody tr {
+            transition: background 0.3s ease;
+        }
+
+            .table tbody tr:hover {
+                background: #f1f3f5;
+            }
+
+    /* Botones */
+    .btn-primary, .btn-success {
+        border-radius: 50px;
+        padding: 0.8rem 2.5rem;
+        font-weight: 600;
+        text-transform: uppercase;
+        letter-spacing: 1px;
+        transition: all 0.3s ease;
         box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
     }
 
-    /* Estilos del encabezado con fondo degradado amarillo y centrado */
-    .card-header {
-        background: linear-gradient(135deg, #f39c12, #f1c40f); /* Degradado amarillo */
-        color: #fff;
-        border-top-left-radius: 15px;
-        border-top-right-radius: 15px;
-        text-align: center;
-        padding: 30px;
-        box-shadow: 0 4px 10px rgba(0, 0, 0, 0.15);
-    }
-
-        .card-header h2 {
-            font-family: 'Poppins', sans-serif; /* Tipografía moderna */
-            font-weight: 700;
-            font-size: 2.5rem;
-            text-transform: uppercase; /* Título en mayúsculas */
-            letter-spacing: 2px; /* Espaciado entre letras */
-        }
-
-    /* Estilos de la imagen */
-    .img-fluid {
-        width: 100px; /* Tamaño de la imagen ajustado */
-        height: 100px;
-        object-fit: cover; /* Para que la imagen cubra todo el espacio disponible sin distorsionarse */
-        border-radius: 10px;
-        box-shadow: 0 4px 8px rgba(0, 0, 0, 0.15);
-    }
-
-    /* Formato de la tabla */
-    .table th, .table td {
-        text-align: center;
-        padding: 15px;
-    }
-
-    .table th {
-        background-color: #f8f9fa;
-    }
-
-    .table-hover tbody tr:hover {
-        background-color: #f1f1f1;
-    }
-
-    /* Botones personalizados */
-    .btn-primary, .btn-success {
-        border-radius: 25px;
-        font-weight: 500;
-    }
-
     .btn-primary {
-        background-color: #007bff;
+        background: #007bff;
         border-color: #007bff;
     }
 
+        .btn-primary:hover {
+            background: #0056b3;
+            transform: translateY(-3px);
+            box-shadow: 0 6px 16px rgba(0, 123, 255, 0.3);
+        }
+
     .btn-success {
-        background-color: #28a745;
+        background: #28a745;
         border-color: #28a745;
     }
 
-    .highlight-text {
-        color: #e74c3c;
-        font-weight: bold;
+        .btn-success:hover {
+            background: #218838;
+            transform: translateY(-3px);
+            box-shadow: 0 6px 16px rgba(40, 167, 69, 0.3);
+        }
+
+    /* Radio buttons personalizados */
+    .radio-group {
+        display: flex;
+        gap: 1rem;
+        margin-bottom: 1.5rem;
+        flex-wrap: wrap;
     }
 
-    .section-title {
-        font-size: 1.5rem;
-        color: #2c3e50;
-        margin-bottom: 20px;
+        .radio-group input {
+            display: none;
+        }
+
+        .radio-group label {
+            flex: 1;
+            text-align: center;
+            padding: 0.8rem;
+            border-radius: 12px;
+            background: #f1f3f5;
+            color: #34495e;
+            font-weight: 500;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+        }
+
+        .radio-group input:checked + label {
+            background: #007bff;
+            color: #fff;
+            box-shadow: 0 4px 12px rgba(0, 123, 255, 0.3);
+        }
+
+        .radio-group label:hover {
+            background: #e9ecef;
+        }
+
+    /* Inputs */
+    .form-control {
+        border-radius: 12px;
+        border: 1px solid #dee2e6;
+        padding: 0.8rem;
+        font-size: 1rem;
+        transition: all 0.3s ease;
+    }
+
+        .form-control:focus {
+            border-color: #007bff;
+            box-shadow: 0 0 10px rgba(0, 123, 255, 0.2);
+        }
+
+    .input-group-text {
+        background: #e9ecef;
+        border: none;
+        border-radius: 12px 0 0 12px;
+        padding: 0.8rem;
+        font-size: 1.2rem;
+    }
+
+    /* Resumen */
+    .order-summary {
+        background: #f8f9fa;
+        padding: 2rem;
+        border-radius: 12px;
+        margin-top: 2rem;
+        box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
     }
 
     .subtotal, .impuestos, .total {
-        font-size: 1.25rem;
-        margin-top: 10px;
+        font-size: 1.2rem;
+        margin: 0.8rem 0;
+        display: flex;
+        justify-content: space-between;
     }
 
-        .subtotal span, .impuestos span, .total span {
-            font-weight: bold;
+    .total {
+        font-size: 1.6rem;
+        font-weight: 700;
+        color: #2c3e50;
+        border-top: 1px solid #dee2e6;
+        padding-top: 1rem;
+    }
+
+    /* Títulos de secciones */
+    .section-title {
+        font-size: 1.9rem;
+        color: #2c3e50;
+        margin-bottom: 1.5rem;
+        font-weight: 700;
+        position: relative;
+    }
+
+        .section-title::after {
+            content: '';
+            width: 60px;
+            height: 4px;
+            background: #ff8f00;
+            position: absolute;
+            bottom: -8px;
+            left: 0;
+            border-radius: 2px;
         }
 
     .card-body {
-        background-color: #f9fafb;
-        border-radius: 10px;
-        padding: 30px;
+        padding: 2.5rem;
+        background: #fff;
+    }
+
+    /* Mensaje de carrito vacío */
+    .empty-cart {
+        background: #f8f9fa;
+        padding: 3rem;
+        border-radius: 12px;
+        text-align: center;
+        animation: fadeIn 0.5s ease-in;
+    }
+
+    @@keyframes fadeIn {
+        from {
+            opacity: 0;
+        }
+
+        to {
+            opacity: 1;
+        }
+    }
+
+    /* Responsividad */
+    @@media (max-width: 768px) {
+        .card {
+            margin: 0 10px;
+        }
+
+        .card-header h2 {
+            font-size: 1.8rem;
+        }
+
+        .table th, .table td {
+            font-size: 0.85rem;
+            padding: 0.8rem;
+        }
+
+        .radio-group {
+            flex-direction: column;
+            gap: 0.8rem;
+        }
+
+            .radio-group label {
+                padding: 0.7rem;
+            }
+
+        .btn-primary, .btn-success {
+            padding: 0.7rem 2rem;
+        }
+    }
+
+    @@media (max-width: 576px) {
+        .card-header {
+            padding: 1.5rem;
+        }
+
+        .card-body {
+            padding: 1.5rem;
+        }
+
+        .section-title {
+            font-size: 1.5rem;
+        }
+
+        .img-fluid {
+            width: 50px;
+            height: 50px;
+        }
     }
 </style>
 
-<!-- Contenedor principal centrado -->
-<div class="container py-5 card-wrapper">
-    <div class="card shadow-sm">
-        <!-- Cabecera -->
-        <div class="card-header">
-            <h2 class="mb-0">Nuevo Pedido</h2>
-        </div>
+<!-- Importar Google Fonts -->
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=Montserrat:wght@700;800&display=swap" rel="stylesheet">
 
-        <!-- Contenido -->
+<div class="card-wrapper">
+    <div class="card">
+        <div class="card-header">
+            <h2>Nuevo Pedido</h2>
+        </div>
         <div class="card-body">
             @if (!Model.CarritoProductos.Any())
             {
-                <div class="text-center">
-                    <p class="text-muted fs-5">No hay productos en tu carrito.</p>
-                    <a href="/Carta" class="btn btn-primary">Ver Carta</a>
+                <div class="empty-cart">
+                    <p class="text-muted fs-4 mb-4">¡Tu carrito está vacío!</p>
+                    <a href="/Carta" class="btn btn-primary">Descubre Nuestra Carta</a>
                 </div>
             }
             else
             {
-                <!-- Tabla de Productos -->
-                <div class="table-responsive mb-4">
+                <div class="table-responsive mb-5">
                     <table class="table table-bordered table-hover align-middle">
                         <thead>
                             <tr>
                                 <th>Imagen</th>
-                                <th>Nombre</th>
+                                <th>Producto</th>
                                 <th>Cantidad</th>
-                                <th>Precio Unitario</th>
+                                <th>Precio</th>
                                 <th>Total</th>
                             </tr>
                         </thead>
@@ -143,43 +367,45 @@
                             @foreach (var carritoItem in Model.CarritoProductos)
                             {
                                 <tr>
-                                    <td class="text-center">
-                                        <img src="@carritoItem.Producto.ImagenUrl" alt="@carritoItem.Producto.Nombre" class="img-fluid rounded" style="width: 50px; height: 50px;">
+                                    <td>
+                                        <img src="@carritoItem.Producto.ImagenUrl" alt="@carritoItem.Producto.Nombre" class="img-fluid">
                                     </td>
                                     <td>@carritoItem.Producto.Nombre</td>
-                                    <td class="text-center">@carritoItem.Cantidad</td>
-                                    <td class="text-end">S/. @carritoItem.Producto.Precio:0.00</td>
-                                    <td class="text-end">S/. @(carritoItem.Cantidad * carritoItem.Producto.Precio):0.00</td>
+                                    <td>@carritoItem.Cantidad</td>
+                                    <td>S/. @carritoItem.Producto.Precio</td>
+                                    <td>S/. @(carritoItem.Cantidad * carritoItem.Producto.Precio)</td>
                                 </tr>
                             }
                         </tbody>
                     </table>
                 </div>
 
-                <!-- Formulario -->
                 <form method="post" asp-controller="Pedidos" asp-action="CrearPedido">
-                    <div class="section-title" style="font-weight: bold; font-style: italic;">INFORMACIÓN DEL PEDIDO</div>
-                    <div class="mb-3">
-                        <label for="TipoPedido" class="form-label">Tipo de Pedido</label>
-                        <select id="tipoPedidoSelect" name="TipoPedido" asp-for="@Model.Pedido.TipoPedido" class="form-select">
-                            <option value="">Selecciona el tipo de pedido</option>
-                            <option value="@VCG.TipoPedido.Delivery" selected="@((ViewBag.TipoPedido == VCG.TipoPedido.Delivery) ? "selected" : null)">Delivery</option>
-                            <option value="@VCG.TipoPedido.Recoger" selected="@((ViewBag.TipoPedido == VCG.TipoPedido.Recoger) ? "selected" : null)">Recoger</option>
-                            <option value="@VCG.TipoPedido.Mesa" selected="@((ViewBag.TipoPedido == VCG.TipoPedido.Mesa) ? "selected" : null)">En Mesa</option>
-                        </select>
-                        <span id="errorTipoPedido" class="text-danger">@ViewBag.ErrorTipoPedido</span>
-                    </div>
+                    <div class="section-title">Detalles del Pedido</div>
+                    <div class="radio-group">
+                        <input type="radio" name="TipoPedido" id="delivery" value="@VCG.TipoPedido.Delivery"
+                               checked="@(ViewBag.TipoPedido == VCG.TipoPedido.Delivery)">
+                        <label for="delivery">Delivery</label>
 
-                    <!-- Campos Condicionales -->
+                        <input type="radio" name="TipoPedido" id="recoger" value="@VCG.TipoPedido.Recoger"
+                               checked="@(ViewBag.TipoPedido == VCG.TipoPedido.Recoger)">
+                        <label for="recoger">Recoger</label>
+
+                        <input type="radio" name="TipoPedido" id="mesa" value="@VCG.TipoPedido.Mesa"
+                               checked="@(ViewBag.TipoPedido == VCG.TipoPedido.Mesa)">
+                        <label for="mesa">Mesa</label>
+                    </div>
+                    <span id="errorTipoPedido" class="text-danger">@ViewBag.ErrorTipoPedido</span>
+
                     @if (ViewBag.TipoPedido == VCG.TipoPedido.Delivery)
                     {
                         <div class="input-group mb-3">
                             <span class="input-group-text">📱</span>
-                            <input type="text" id="Telefono" name="Telefono" asp-for="@Model.Pedido.Telefono" class="form-control" placeholder="Teléfono">
+                            <input type="text" id="Telefono" name="Telefono" asp-for="@Model.Pedido.Telefono" class="form-control" placeholder="Teléfono" required>
                         </div>
                         <div class="input-group mb-3">
                             <span class="input-group-text">🏠</span>
-                            <input type="text" id="Direccion" name="Direccion" asp-for="@Model.Pedido.Direccion" class="form-control" placeholder="Dirección">
+                            <input type="text" id="Direccion" name="Direccion" asp-for="@Model.Pedido.Direccion" class="form-control" placeholder="Dirección" required>
                         </div>
                         <div class="input-group mb-3">
                             <span class="input-group-text">📍</span>
@@ -188,35 +414,38 @@
                     }
                     @if (ViewBag.TipoPedido == VCG.TipoPedido.Recoger)
                     {
-                        <div class="mb-3">
-                            <p><strong>Recoger en:</strong> Jr. Reina Farje N° 175</p>
-                            <p><strong>Referencia:</strong> Media cuadra del BCP de Sucre</p>
+                        <div class="mb-4">
+                            <p class="mb-2"><strong>Recoger en:</strong> Jr. Reina Farje N° 175</p>
+                            <p class="mb-3"><strong>Referencia:</strong> Media cuadra del BCP de Sucre</p>
                             <label for="FechaRecogo" class="form-label">Fecha de Recogida</label>
-                            <input type="datetime-local" id="FechaRecogo" name="FechaRecogo" asp-for="@Model.Pedido.FechaRecogo" class="form-control">
+                            <input type="datetime-local" id="FechaRecogo" name="FechaRecogo" asp-for="@Model.Pedido.FechaRecogo" class="form-control" required>
                         </div>
                     }
                     @if (ViewBag.TipoPedido == VCG.TipoPedido.Mesa)
                     {
-                        <div class="mb-3">
+                        <div class="mb-4">
                             <label for="Mesa" class="form-label">Número o Nombre de la Mesa</label>
-                            <input type="text" id="Mesa" name="Mesa" asp-for="@Model.Pedido.Mesa" class="form-control">
+                            <input type="text" id="Mesa" name="Mesa" asp-for="@Model.Pedido.Mesa" class="form-control" placeholder="Ej: Mesa 5" required>
                         </div>
                     }
 
-                    <!-- Resumen y Total -->
-                    <div class="subtotal">
-                        <span>Subtotal:</span> S/. @Math.Round(Model.CarritoProductos.Sum(item => item.Cantidad * item.Producto.Precio) * 0.82, 2)
-                    </div>
-                    <div class="impuestos">
-                        <span>Impuestos (18%):</span> S/. @Math.Round(Model.CarritoProductos.Sum(item => item.Cantidad * item.Producto.Precio) * 0.18, 2)
-                    </div>
-                    <div class="total">
-                        <span>Total:</span> S/. @Math.Round(Model.CarritoProductos.Sum(item => item.Cantidad * item.Producto.Precio), 2)
+                    <div class="order-summary">
+                        <div class="subtotal">
+                            <span>Subtotal:</span>
+                            <span>S/. @Math.Round(Model.CarritoProductos.Sum(item => item.Cantidad * item.Producto.Precio) * 0.82, 2)</span>
+                        </div>
+                        <div class="impuestos">
+                            <span>Impuestos (18%):</span>
+                            <span>S/. @Math.Round(Model.CarritoProductos.Sum(item => item.Cantidad * item.Producto.Precio) * 0.18, 2)</span>
+                        </div>
+                        <div class="total">
+                            <span>Total:</span>
+                            <span>S/. @Math.Round(Model.CarritoProductos.Sum(item => item.Cantidad * item.Producto.Precio), 2)</span>
+                        </div>
                     </div>
 
-                    <!-- Botón -->
-                    <div class="text-end mt-3">
-                        <button type="submit" class="btn btn-success">Realizar Pedido</button>
+                    <div class="text-end mt-4">
+                        <button type="submit" class="btn btn-success">Confirmar Pedido</button>
                     </div>
                 </form>
             }
@@ -225,8 +454,9 @@
 </div>
 
 <script>
-    document.getElementById('tipoPedidoSelect').addEventListener('change', function () {
-        var selectedValue = this.value;
-        window.location.href = '@Url.Action("Nuevo", "Pedidos")?TipoPedido=' + selectedValue;
+    document.querySelectorAll('input[name="TipoPedido"]').forEach(radio => {
+        radio.addEventListener('change', () => {
+            window.location.href = '@Url.Action("Nuevo", "Pedidos")?TipoPedido=' + radio.value;
+        });
     });
 </script>

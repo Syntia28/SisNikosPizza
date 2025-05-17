@@ -9,19 +9,13 @@ namespace SisNikosPizza.Repository.Interfaces
     public  interface IUniwork : IDisposable
     {
         ICategoriaRepository CategoriaRepo { get; }
-        Task GuardarCategoria();
         IProductoRepository ProductoRepo { get; }
-        Task GuardarProducto();
-       IProveedorRepository ProveedorRepo { get; }
-        Task GuardarProveedor();
+        IInsumoRepository InsumoRepo { get; }
+        IProveedorRepository ProveedorRepo { get; }
         IPedidoRepository PedidoRepo { get; }
-        Task GuardarPedido();
-
+        IProductoInsumoRepo ProductoInsumoRepo { get; }
         ICarritoRepository CarritoRepo { get; }
-
-        Task GuardarCarrito();
-
         IVentaRepository VentaRepo { get; }
-        Task GuardarVenta();
+        Task GuradarAsync();
     }
 }
