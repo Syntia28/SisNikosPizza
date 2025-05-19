@@ -23,7 +23,7 @@ namespace SisNikosPizza.Repository.Implements
         public async Task<List<Pedido>> ObtenerPedidosDetallados(string ownerId)
         {
             return await _db.pedido
-                .Include(p => p.DetallePedidos)
+                .Include(p => p.DetallePedido)
                 .ThenInclude(pp => pp.Producto)
                 .Where(p => p.OwnerId == ownerId)
                 .ToListAsync();
@@ -31,21 +31,21 @@ namespace SisNikosPizza.Repository.Implements
         public async Task<List<Pedido>> ObtenerPedidosDetalladosTodos()
         {
             return await _db.pedido
-                .Include(p => p.DetallePedidos)
+                .Include(p => p.DetallePedido)
                 .ThenInclude(pp => pp.Producto).Include(p => p.Owner)
                 .ToListAsync();
         }
         public async Task<Pedido> ObtenerPedidoDetallado(int pedidoId, string baseUrl)
         {
             var pedido = await _db.pedido
-                .Include(p => p.DetallePedidos)
+                .Include(p => p.DetallePedido)
                 .ThenInclude(pp => pp.Producto).Include(p=>p.Owner)
                 .Where(p => p.PedidoId == pedidoId)
                 .FirstOrDefaultAsync();
 
             if (pedido != null)
             {
-                foreach (var detalle in pedido.DetallePedidos)
+                foreach (var detalle in pedido.DetallePedido)
                 {
                     if (detalle.Producto != null && !string.IsNullOrEmpty(detalle.Producto.ImagenUrl))
                     {

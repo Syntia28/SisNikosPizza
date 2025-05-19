@@ -59,11 +59,11 @@
                     </div>
 
 
-
                     <div class='flex flex-col items-center justify-center '
                         x-data="{ reportsOpen: false }">
-                        <div @click="reportsOpen = !reportsOpen" class='w-full overflow-hidden bg-green-500 p-2 rounded-2xl text-center hover:bg-blue-600 md:mt-0 mx-auto'>
-                            Ver lista de pedido
+                        <div @click="reportsOpen = !reportsOpen" class='w-full flex items-center gap-2 justify-center overflow-hidden bg-green-500 p-2 rounded-2xl text-center hover:bg-blue-600 md:mt-0 mx-auto'>
+                            <i class="fa-solid fa-clipboard-list"></i>
+                            <span>Ver lista de pedido</span>
                         </div>
                     
                         <div class="flex gap-2 md:p-0 w-full transform transition duration-300 ease-in-out" x-cloak
@@ -136,11 +136,6 @@
                         </div>
                     
                     </div>
-
-
-
-
-
 
         
                     <button
