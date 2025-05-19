@@ -13,6 +13,7 @@ namespace SisNikosPizza.Repository.Interfaces
         IInsumoRepository InsumoRepo { get; }
         IProveedorRepository ProveedorRepo { get; }
         IPedidoRepository PedidoRepo { get; }
+        IDetallesPedidoRepository DetallesPedidoRepo { get; }
         IProductoInsumoRepo ProductoInsumoRepo { get; }
         ICarritoRepository CarritoRepo { get; }
         IVentaRepository VentaRepo { get; }

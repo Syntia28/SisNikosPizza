@@ -18,6 +18,7 @@ namespace SisNikosPizza.Repository.Implements
         public IInsumoRepository InsumoRepo { get; private set; }
         public IProveedorRepository ProveedorRepo { get; private set; }
         public IPedidoRepository PedidoRepo { get; private set; }
+        public IDetallesPedidoRepository DetallesPedidoRepo { get; private set; }
         public IVentaRepository VentaRepo { get; private set; }
         public ICarritoRepository CarritoRepo { get; private set; }
 
@@ -32,6 +33,7 @@ namespace SisNikosPizza.Repository.Implements
             ProductoRepo = new ProductoRepository(_db);
             ProveedorRepo = new ProveedorRepository(_db);
             PedidoRepo = new PedidoRepository(_db);
+            DetallesPedidoRepo = new DetallesPedidoRepository(_db);
             CarritoRepo = new CarritoRepository(_db, logger);
             VentaRepo = new VentaRepository(_db);
             InsumoRepo = new InsumoRepository(_db);

@@ -1,5 +1,5 @@
 ﻿@using SisNikosPizza.Utilidades
-@model SisNikosPizza.Models.CobrarPedidoModel
+@model IEnumerable<SisNikosPizza.Models.CobrarPedidoModel>
 
 @{
     ViewData["Title"] = "Cobrar Pedido";
@@ -276,7 +276,7 @@
     }
 </style>
 
-<div class="container-fluid">
+@* <div class="container-fluid">
     <div class="card">
         <div class="card-header">
             <h3 style="text-align: center; width: 100%;">Cobrar Pedido</h3>
@@ -300,9 +300,9 @@
                         </tr>
                     </thead>
                     <tbody>
-                        @if (Model.Pedido.DetallePedidos != null && Model.Pedido.DetallePedidos.Any())
+                        @if (Model.Pedido.DetallePedido != null && Model.Pedido.DetallePedido.Any())
                         {
-                            foreach (var item in Model.Pedido.DetallePedidos)
+                            foreach (var item in Model.Pedido.DetallePedido)
                             {
                                 <tr>
                                     <td>
@@ -338,4 +338,4 @@
             </form>
         </div>
     </div>
-</div>
+</div> *@

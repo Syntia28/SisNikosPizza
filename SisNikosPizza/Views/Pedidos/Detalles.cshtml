@@ -1,5 +1,5 @@
 ﻿@using SisNikosPizza.Utilidades
-@model SisNikosPizza.Domain.Models.Pedido
+@model IEnumerable<SisNikosPizza.Domain.Models.Pedido>
 
 @{
     ViewData["Title"] = "Detalle del Pedido";
@@ -282,7 +282,7 @@
     }
 </style>
 
-<div class="container">
+@* <div class="container">
     <div class="card">
         <div class="card-header">
             <h1>Detalle del Pedido</h1>
@@ -357,7 +357,7 @@
                         </tr>
                     </thead>
                     <tbody>
-                        @foreach (var detalle in Model.DetallePedidos)
+                        @foreach (var detalle in Model.DetallePedido)
                         {
                             <tr>
                                 <td>
@@ -378,9 +378,9 @@
 
             <div class="totals">
                 @{
-                    var subtotal = Model.DetallePedidos.Sum(dp => dp.Cantidad * dp.Producto.Precio) * 0.82;
-                    var impuestos = Model.DetallePedidos.Sum(dp => dp.Cantidad * dp.Producto.Precio) * 0.18;
-                    var total = Model.DetallePedidos.Sum(dp => dp.Cantidad * dp.Producto.Precio);
+                    var subtotal = Model.DetallePedido.Sum(dp => dp.Cantidad * dp.Producto.Precio) * 0.82;
+                    var impuestos = Model.DetallePedido.Sum(dp => dp.Cantidad * dp.Producto.Precio) * 0.18;
+                    var total = Model.DetallePedido.Sum(dp => dp.Cantidad * dp.Producto.Precio);
                 }
                 <p><strong>Subtotal:</strong> S/. @subtotal</p>
                 <p><strong>IGV (18%):</strong> S/. @impuestos</p>
@@ -394,4 +394,4 @@
             </div>
         </div>
     </div>
-</div>
+</div> *@
