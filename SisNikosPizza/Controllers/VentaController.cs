@@ -74,28 +74,28 @@ namespace SisNikosPizza.Controllers
             //verificar que existan productos en el pedido.
 
 
-            if (pedido.DetallePedidos.Count <=0)
-            {
-                return NotFound();//mas a futuro dejar que si el pedido esta vacio, entonces puedes agregar producto al cobrar le venta
-            }
+            // if (pedido.DetallePedidos.Count <=0)
+            // {
+            //     return NotFound();//mas a futuro dejar que si el pedido esta vacio, entonces puedes agregar producto al cobrar le venta
+            // }
             //obtener propiedadesss de la venta
             var venta = new Venta();
             var detallesVentas = new List<DetalleVenta>();
 
-            foreach (var pedidoProducto in pedido.DetallePedidos)
-            {
-                var detalleVenta = new DetalleVenta()
-                {
-                    ProductoId = pedidoProducto.ProductoId,
-                    PrecioTotal = pedidoProducto.Cantidad * pedidoProducto.Producto.Precio,
-                    PrecioUnitario = pedidoProducto.Producto.Precio,
-                    Cantidad = pedidoProducto.Cantidad,
-                    VentaId = venta.VentaId,
+            // foreach (var pedidoProducto in pedido.DetallePedidos)
+            // {
+            //     var detalleVenta = new DetalleVenta()
+            //     {
+            //         ProductoId = pedidoProducto.ProductoId,
+            //         PrecioTotal = pedidoProducto.Cantidad * pedidoProducto.Producto.Precio,
+            //         PrecioUnitario = pedidoProducto.Producto.Precio,
+            //         Cantidad = pedidoProducto.Cantidad,
+            //         VentaId = venta.VentaId,
                     
 
-                };
-                detallesVentas.Add(detalleVenta);
-            }
+            //     };
+            //     detallesVentas.Add(detalleVenta);
+            // }
             
             venta.Detalles = detallesVentas;
             venta.Fecha = DateTime.Now;

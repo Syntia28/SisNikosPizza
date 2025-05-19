@@ -1,10 +1,5 @@
 ﻿using Microsoft.AspNetCore.Identity;
 using System;
-using System.Collections.Generic;
-using System.ComponentModel.DataAnnotations.Schema;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace SisNikosPizza.Domain.Models
 {
@@ -32,14 +27,9 @@ namespace SisNikosPizza.Domain.Models
 
         public DateTime FechaPedido { get; set; }
 
-        public virtual ICollection<DetallePedido>? DetallePedidos { get; set; }
+        public virtual IEnumerable<DetallePedido> DetallePedido { get; set; }
         //no database properties
      
         public IdentityUser Owner { get; set; }
-        [NotMapped]
-        public float PrecioTotal { get; set; }
-       
-
-
     }
 }

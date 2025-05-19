@@ -1,14 +1,10 @@
 ﻿using Microsoft.AspNetCore.Authorization;
-using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.CodeAnalysis.CSharp.Syntax;
-using Microsoft.IdentityModel.Tokens;
 using SisNikosPizza.Domain.Models;
 using SisNikosPizza.Models;
 using SisNikosPizza.Repository.Interfaces;
 using SisNikosPizza.Utilidades;
-using static SisNikosPizza.Utilidades.VCG;
 
 namespace SisNikosPizza.Controllers
 {
@@ -38,9 +34,21 @@ namespace SisNikosPizza.Controllers
             return View(pedidosUsuario);
         }
 
+        // GET: para la vista del delivery
+        public async Task<ActionResult> Delivery()
+        {
+            var pedidosDelivery = await _unitWork.DetallesPedidoRepo.ObtenerTodosAsync(
+                filtro: p => p.Pedido.TipoPedido == VCG.TipoPedido.Delivery,
+                ordenarPor: p => p.OrderByDescending(p => p.Pedido.CreatedAt),
+                incluirPropiedades: "Pedido,Pedido.Owner,Producto"
+            );
+
+
+            return View(pedidosDelivery);
+        }
 
         // GET: PedidodsController/Details/5
-        public async Task< ActionResult> Detalles(int id)
+        public async Task<ActionResult> Detalles(int id)
         {
             var userSign = await _userManager.GetUserAsync(User);
             var baseUrl = $"{Request.Scheme}://{Request.Host}/images";
@@ -50,15 +58,15 @@ namespace SisNikosPizza.Controllers
                 return NotFound();
             }
             //get role 
-            if (User.IsInRole(VCG.Role_Admin) )
+            if (User.IsInRole(VCG.Role_Admin))
             {
-               
-             
+
+
                 return View(pedido);
 
             }
 
-            
+
             if (pedido.OwnerId != userSign.Id)
             {
                 return NotFound();
@@ -117,7 +125,7 @@ namespace SisNikosPizza.Controllers
             var pedido = new Pedido
             {
                 OwnerId = userId,
-                DetallePedidos = new List<DetallePedido>(),
+                DetallePedido = new List<DetallePedido>(),
                 FechaPedido = DateTime.Now,
                 TipoPedido = formPedido.TipoPedido,
                 EstadoPedido = VCG.EstadoPedido.Pendiente
@@ -158,15 +166,12 @@ namespace SisNikosPizza.Controllers
                 pedido.Mesa = formPedido.Mesa;
             }
 
-            // Crear los detalles del pedido
-            foreach (var carritoProducto in carritoProductos)
+            // Crear los detalles del pedido usando IEnumerable
+            pedido.DetallePedido = carritoProductos.Select(carritoProducto => new DetallePedido
             {
-                pedido.DetallePedidos.Add(new DetallePedido
-                {
-                    ProductoId = carritoProducto.ProductoId,
-                    Cantidad = carritoProducto.Cantidad
-                });
-            }
+                ProductoId = carritoProducto.ProductoId,
+                Cantidad = carritoProducto.Cantidad
+            }).ToList();
 
             // Guardar el pedido
             await _unitWork.PedidoRepo.AgregarAsync(pedido);
