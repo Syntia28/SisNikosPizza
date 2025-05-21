@@ -1,4 +1,5 @@
 ﻿using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.Mvc.Rendering;
 using SisNikosPizza.Domain.Models;
 using SisNikosPizza.Repository.Interfaces;
 
@@ -21,14 +22,20 @@ namespace SisNikosPizza.Controllers
         [HttpGet]
         public async Task<IActionResult> Index()
         {
-            var insumos = await _unitWork.InsumoRepo.ObtenerTodosAsync(ordenarPor: c => c.OrderByDescending(c => c.InsumoId));
-
+            var insumos = await _unitWork.InsumoRepo.ObtenerTodosAsync(
+                incluirPropiedades: "Proveedor", // Incluir el proveedor para mostrarlo en la vista
+                ordenarPor: c => c.OrderByDescending(c => c.InsumoId)
+            );
             return View(insumos);
         }
 
         [HttpGet]
         public async Task<IActionResult> Create()
         {
+            // Cargar la lista de proveedores para el dropdown
+            var proveedores = await _unitWork.ProveedorRepo.ObtenerTodosAsync();
+            ViewBag.Proveedores = new SelectList(proveedores, "ProveedorId", "Nombre");
+
             return View();
         }
 
@@ -39,24 +46,53 @@ namespace SisNikosPizza.Controllers
             insumo.CreatedAt = DateTime.Now;
             insumo.UpdatedAt = DateTime.Now;
 
-            Console.WriteLine($"estado del modelo: {ModelState.IsValid}");
+            Console.WriteLine($"Estado del modelo: {ModelState.IsValid}");
+            Console.WriteLine($"ProveedorId recibido: {insumo.ProveedorId}");
 
             if (ModelState.IsValid)
             {
                 try
                 {
+                    // Verificar que existe el proveedor
+                    var proveedor = await _unitWork.ProveedorRepo.ObtenerAsync(insumo.ProveedorId);
+                    if (proveedor == null)
+                    {
+                        ModelState.AddModelError("ProveedorId", "El proveedor seleccionado no existe.");
+                        var proveedores = await _unitWork.ProveedorRepo.ObtenerTodosAsync();
+                        ViewBag.Proveedores = new SelectList(proveedores, "ProveedorId", "Nombre");
+                        return View(insumo);
+                    }
 
                     await _unitWork.InsumoRepo.AgregarAsync(insumo);
                     await _unitWork.GuradarAsync();
-
                     TempData["Satisfactorio"] = "Insumo creado correctamente.";
                     return RedirectToAction("Details", new { id = insumo.InsumoId });
                 }
                 catch (Exception ex)
                 {
-                    TempData["Error"] = "Ocurrió un error al guardar el insumo. Intenta nuevamente.";
+                    TempData["Error"] = $"Ocurrió un error al guardar el insumo: {ex.Message}";
+                    Console.WriteLine($"Error al guardar: {ex.Message}");
+                    if (ex.InnerException != null)
+                    {
+                        Console.WriteLine($"Error interno: {ex.InnerException.Message}");
+                    }
                 }
             }
+            else
+            {
+                // Imprimir los errores de validación para debugging
+                foreach (var modelState in ModelState.Values)
+                {
+                    foreach (var error in modelState.Errors)
+                    {
+                        Console.WriteLine($"Error de validación: {error.ErrorMessage}");
+                    }
+                }
+            }
+
+            // Si llegamos aquí, hubo un error, volvemos a cargar los proveedores
+            var proveedoresReload = await _unitWork.ProveedorRepo.ObtenerTodosAsync();
+            ViewBag.Proveedores = new SelectList(proveedoresReload, "ProveedorId", "Nombre", insumo.ProveedorId);
 
             TempData["Error"] = "No se pudo guardar el insumo. Verifica los datos ingresados.";
             return View(insumo);
@@ -69,6 +105,10 @@ namespace SisNikosPizza.Controllers
             if (insumo is null)
                 return NotFound();
 
+            // Cargar la lista de proveedores para el dropdown
+            var proveedores = await _unitWork.ProveedorRepo.ObtenerTodosAsync();
+            ViewBag.Proveedores = new SelectList(proveedores, "ProveedorId", "Nombre", insumo.ProveedorId);
+
             return View(insumo);
         }
 
@@ -76,10 +116,28 @@ namespace SisNikosPizza.Controllers
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> Edit(Insumo insumoForm)
         {
-            _unitWork.InsumoRepo.Actualizar(insumoForm);
-            await _unitWork.GuradarAsync();
-            TempData["Satisfactorio"] = "Insumo actualizado correctamente.";
-            return RedirectToAction("Index");
+            if (ModelState.IsValid)
+            {
+                insumoForm.UpdatedAt = DateTime.Now;
+
+                try
+                {
+                    _unitWork.InsumoRepo.Actualizar(insumoForm);
+                    await _unitWork.GuradarAsync();
+                    TempData["Satisfactorio"] = "Insumo actualizado correctamente.";
+                    return RedirectToAction("Index");
+                }
+                catch (Exception ex)
+                {
+                    TempData["Error"] = $"Ocurrió un error al actualizar el insumo: {ex.Message}";
+                }
+            }
+
+            // Si llegamos aquí, hubo un error, volvemos a cargar los proveedores
+            var proveedores = await _unitWork.ProveedorRepo.ObtenerTodosAsync();
+            ViewBag.Proveedores = new SelectList(proveedores, "ProveedorId", "Nombre", insumoForm.ProveedorId);
+
+            return View(insumoForm);
         }
 
         [HttpGet]
@@ -87,9 +145,13 @@ namespace SisNikosPizza.Controllers
         {
             if (id is null) return NotFound();
 
-            var insumo = await _unitWork.InsumoRepo.ObtenerPrimeroAsync(filtro: c => c.InsumoId == id);
-            if (insumo == null) return NotFound();
+            // Incluir el proveedor relacionado al obtener el insumo
+            var insumo = await _unitWork.InsumoRepo.ObtenerPrimeroAsync(
+                filtro: c => c.InsumoId == id,
+                incluirPropiedades: "Proveedor"
+            );
 
+            if (insumo == null) return NotFound();
             return View(insumo);
         }
 
@@ -98,9 +160,13 @@ namespace SisNikosPizza.Controllers
         {
             if (id is null) return NotFound();
 
-            var insumo = await _unitWork.InsumoRepo.ObtenerPrimeroAsync(filtro: c => c.InsumoId == id);
-            if (insumo == null) return NotFound();
+            // Incluir el proveedor relacionado al obtener el insumo
+            var insumo = await _unitWork.InsumoRepo.ObtenerPrimeroAsync(
+                filtro: c => c.InsumoId == id,
+                incluirPropiedades: "Proveedor"
+            );
 
+            if (insumo == null) return NotFound();
             return View(insumo);
         }
 
@@ -110,9 +176,17 @@ namespace SisNikosPizza.Controllers
         {
             if (insumo is not null)
             {
-                _unitWork.InsumoRepo.Eliminar(insumo);
-                await _unitWork.GuradarAsync();
-                return RedirectToAction("Index");
+                try
+                {
+                    _unitWork.InsumoRepo.Eliminar(insumo);
+                    await _unitWork.GuradarAsync();
+                    TempData["Satisfactorio"] = "Insumo eliminado correctamente.";
+                    return RedirectToAction("Index");
+                }
+                catch (Exception ex)
+                {
+                    TempData["Error"] = $"Ocurrió un error al eliminar el insumo: {ex.Message}";
+                }
             }
 
             return View(insumo);

@@ -3,65 +3,238 @@
 @{
     ViewData["Title"] = "Registrate";
     Layout = "~/Views/Shared/_Layout.cshtml";
-
 }
 
-<div class="vh-100 d-flex align-items-center justify-content-center" style="background-color: #f8c471;">
-    <div class="row w-100">
-        <!-- Formulario de registro -->
-        <div class="col-lg-6 col-md-8 p-5 rounded shadow-lg h-auto overflow-visible" style="background-color: #f9e79f; box-shadow: 0px 4px 15px rgba(0, 0, 0, 0.2);">
-            <h1 class="text-center mb-4 text-dark">@ViewData["Title"]</h1>
-            <h2 class="text-center mb-3 text-dark">Crea tu cuenta en Nikos Pizza</h2>
-            <hr class="border-dark mb-4" />
-            <form id="registerForm" asp-route-returnUrl="@Model.ReturnUrl" method="post">
-                <div asp-validation-summary="ModelOnly" class="text-danger mb-3" role="alert"></div>
+<link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css" rel="stylesheet">
+<link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-QWTKZyjpPEjISv5WaRU9OFeRpok6YctnYmDr5pNlyT2bRjXh0JMhjY6hW+ALEwIH" crossorigin="anonymous">
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.5/font/bootstrap-icons.css">
 
-                <!-- Correo Electrónico -->
-                <div class="form-floating mb-3">
-                    <input asp-for="Input.Email" class="form-control text-dark bg-light border-secondary" autocomplete="username" aria-required="true" placeholder="name@example.com" />
-                    <label asp-for="Input.Email" class="text-dark">Email</label>
-                    <span asp-validation-for="Input.Email" class="text-danger"></span>
+<style>
+    body {
+        font-family: 'Inter', sans-serif;
+        margin: 0;
+        padding: 0;
+        overflow-x: hidden;
+    }
+
+    .fondo-imagen {
+        background-image: url('/Imagenes/register.png');
+        background-size: cover;
+        background-position: center;
+        background-attachment: fixed;
+        background-repeat: no-repeat;
+        min-height: 100vh;
+    }
+
+    .card-login {
+        background: rgba(255, 255, 255, 0.5);
+        backdrop-filter: blur(10px);
+        border: 2px solid rgba(255, 202, 40, 0.6);
+        border-radius: 1rem;
+        animation: slideIn 0.7s ease-out;
+        padding: 2rem;
+        position: relative;
+    }
+
+    @@keyframes slideIn {
+        from {
+            opacity: 0;
+            transform: translateY(30px);
+        }
+
+        to {
+            opacity: 1;
+            transform: translateY(0);
+        }
+    }
+
+    .text-title {
+        font-family: 'Poppins', sans-serif;
+        font-size: 2.2rem;
+        font-weight: 700;
+        color: #000000;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        margin-bottom: 1rem;
+    }
+
+    .underline {
+        width: 80px;
+        height: 4px;
+        background: #ffca28;
+        margin: 0.5rem auto 1.5rem;
+        border-radius: 2px;
+    }
+
+    .text-subtitle, .text-description {
+        color: #000000;
+        opacity: 0.8;
+    }
+
+    .text-subtitle {
+        font-size: 1.1rem;
+        margin-bottom: 1rem;
+    }
+
+    .text-description {
+        font-size: 0.95rem;
+        margin-bottom: 1.5rem;
+    }
+
+    .form-control {
+        border-radius: 30px;
+        height: 55px;
+        padding-left: 70px;
+        border: 2px solid #ffca28;
+        background: #ffffff;
+        transition: all 0.3s ease;
+        width: 100%;
+    }
+
+        .form-control:focus {
+            border-color: #060100;
+            box-shadow: 0 0 10px rgba(255, 143, 0, 0.4);
+        }
+
+    .form-floating > label {
+        padding-left: 70px;
+        color: #000000;
+    }
+
+    .input-icon {
+        position: absolute;
+        left: 25px;
+        top: 50%;
+        transform: translateY(-50%);
+        font-size: 1.3rem;
+        color: #ff8f00;
+        z-index: 1;
+    }
+
+    .form-check-input {
+        border: 2px solid #ffca28;
+        background-color: #ffffff;
+        width: 22px;
+        height: 22px;
+        border-radius: 5px;
+    }
+
+        .form-check-input:checked {
+            background-color: #060100;
+            border-color: #060100;
+        }
+
+    .text-link {
+        color: #000000;
+        text-decoration: none;
+        font-weight: 500;
+    }
+
+        .text-link:hover {
+            color: #e67e22;
+            text-decoration: underline;
+        }
+
+    .alert-danger {
+        border-radius: 15px;
+        background: #ffebee;
+        color: #000000;
+        border: 2px solid #ef5350;
+        font-size: 0.95rem;
+        padding: 0.8rem;
+        text-align: center;
+        margin-bottom: 1.5rem;
+    }
+
+    .btn-custom {
+        background-color: #ffca28;
+        color: #000;
+        padding: 8px 16px; 
+        border-radius: 30px;
+        font-weight: 600;
+        font-size: 0.9rem;
+        border: none;
+        transition: all 0.3s ease;
+        width: auto; 
+        margin: 0 auto; 
+    }
+
+        .btn-custom i {
+            font-size: 0.9rem; 
+        }
+
+        .btn-custom:hover {
+            animation: pulse 1.5s infinite;
+        }
+
+    @@keyframes pulse {
+        0% {
+            box-shadow: 0 0 0 0 rgba(255, 215, 0, 0.7);
+        }
+
+        70% {
+            box-shadow: 0 0 0 15px rgba(255, 215, 0, 0);
+        }
+
+        100% {
+            box-shadow: 0 0 0 0 rgba(255, 215, 0, 0);
+        }
+    }
+</style>
+
+<div class="container-fluid min-h-screen d-flex align-items-center justify-content-center fondo-imagen">
+    <div class="row w-100 justify-content-center">
+        <div class="col-12 col-md-6 col-lg-4">
+            <div class="card-login">
+                <div class="text-center mb-4">
+                    <dotlottie-player src="https://lottie.host/2d7a8310-619e-4f37-a0f8-01b3e0b8d1e4/8z9vF1gWnE.lottie"
+                                      background="transparent" speed="1"
+                                      style="width: 180px; height: 180px; margin: 0 auto;" loop autoplay>
+                    </dotlottie-player>
+                    <h1 class="text-title"><i class="bi bi-utensils me-2"></i>@ViewData["Title"]</h1>
+                    <div class="underline"></div>
+                    <p class="text-subtitle">¡Bienvenido a Nikos Pizza!</p>
+                    <p class="text-description">Regístrate para disfrutar de nuestras promociones exclusivas y personalizar tus pedidos.</p>
                 </div>
 
-                <!-- Telefono del cliente -->
-                <div class="form-floating mb-3">
-                    <input asp-for="Input.PhoneNumber" class="form-control text-dark bg-light border-secondary"
-                        autocomplete="" aria-required="true" placeholder="" />
-                    <label asp-for="Input.PhoneNumber" class="text-dark">Telefono</label>
-                    <span asp-validation-for="Input.PhoneNumber" class="text-danger"></span>
+                <form id="registerForm" asp-route-returnUrl="@Model.ReturnUrl" method="post">
+                    <div class="form-floating mb-4 position-relative">
+                        <input asp-for="Input.Email" class="form-control ps-5" placeholder="Correo Electrónico" autocomplete="username" aria-required="true" />
+                        <label asp-for="Input.Email">Correo Electrónico</label>
+                        <i class="bi bi-envelope input-icon"></i>
+                        <span asp-validation-for="Input.Email" class="text-danger mt-1 d-block"></span>
+                    </div>
+
+                    <div class="form-floating mb-4 position-relative">
+                        <input asp-for="Input.PhoneNumber" class="form-control ps-5" placeholder="Teléfono" autocomplete="tel" aria-required="true" />
+                        <label asp-for="Input.PhoneNumber">Teléfono</label>
+                        <i class="bi bi-telephone input-icon"></i>
+                        <span asp-validation-for="Input.PhoneNumber" class="text-danger mt-1 d-block"></span>
+                    </div>
+
+                    <div class="form-floating mb-4 position-relative">
+                        <input asp-for="Input.Password" type="password" class="form-control ps-5" placeholder="Contraseña" autocomplete="new-password" aria-required="true" />
+                        <label asp-for="Input.Password">Contraseña</label>
+                        <i class="bi bi-lock input-icon"></i>
+                        <span asp-validation-for="Input.Password" class="text-danger mt-1 d-block"></span>
+                    </div>
+
+                    <div class="form-floating mb-4 position-relative">
+                        <input asp-for="Input.ConfirmPassword" type="password" class="form-control ps-5" placeholder="Confirmar Contraseña" autocomplete="new-password" aria-required="true" />
+                        <label asp-for="Input.ConfirmPassword">Confirmar Contraseña</label>
+                        <i class="bi bi-lock input-icon"></i>
+                        <span asp-validation-for="Input.ConfirmPassword" class="text-danger mt-1 d-block"></span>
+                    </div>
+
+                    <button type="submit" class="btn-custom d-flex align-items-center justify-content-center">
+                        <i class="bi bi-check2 me-2"></i>REGISTRAR
+                    </button>
+                </form>
+
+                <div class="text-center mt-4">
+                    <p><a asp-page="./Login" class="text-link">¿Ya tienes una cuenta? Inicia Sesión</a></p>
                 </div>
-
-                <!-- Contraseña -->
-                <div class="form-floating mb-3">
-                    <input asp-for="Input.Password" type="password" class="form-control text-dark bg-light border-secondary" autocomplete="new-password" aria-required="true" placeholder="password" />
-                    <label asp-for="Input.Password" class="text-dark">Contraseña</label>
-                    <span asp-validation-for="Input.Password" class="text-danger"></span>
-                </div>
-
-                <!-- Confirmar Contraseña -->
-                <div class="form-floating mb-3">
-                    <input asp-for="Input.ConfirmPassword" type="password" class="form-control text-dark bg-light border-secondary" autocomplete="new-password" aria-required="true" placeholder="password" />
-                    <label asp-for="Input.ConfirmPassword" class="text-dark">Confirma la Contraseña</label>
-                    <span asp-validation-for="Input.ConfirmPassword" class="text-danger"></span>
-                </div>
-
-                <!-- Botón de Registro -->
-                <button id="registerSubmit" type="submit" class="w-100 btn btn-lg" style="background-color: #e59866; color: #fff; border: none;">
-                    REGISTAR
-                </button>
-            </form>
-        </div>
-
-        <!-- Imagen y texto -->
-        <div class="col-lg-6 col-md-8 d-flex align-items-center justify-content-center">
-            <div class="text-center">
-                <!-- Imagen -->
-                <img src="/Imagenes/register.jpg"
-                     alt="Nikos Pizza Logo"
-                     class="img-fluid rounded shadow-lg mb-4"
-                     style="max-width: 400px; height: auto;">
-                <h3 class="text-dark">¡Bienvenido a Nikos Pizza!</h3>
-                <p class="text-secondary">Regístrate para disfrutar de nuestras promociones exclusivas y personalizar tus pedidos.</p>
             </div>
         </div>
     </div>

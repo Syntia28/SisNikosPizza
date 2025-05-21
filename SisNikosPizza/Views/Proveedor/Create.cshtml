@@ -1,225 +1,9 @@
 ﻿@model SisNikosPizza.Domain.Models.Proveedor
+
 @{
     ViewData["Title"] = "Crear Proveedor";
     Layout = "~/Views/Shared/_Admin.cshtml";
 }
-
-<link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css" rel="stylesheet">
-<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.5/font/bootstrap-icons.css">
-<link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700&display=swap" rel="stylesheet">
-<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/4.1.1/animate.min.css" />
-
-<style>
-    body {
-        background: linear-gradient(135deg, #facc15, #eab308);
-        font-family: 'Poppins', sans-serif;
-        overflow-x: hidden;
-    }
-
-    .card {
-        background: rgba(255, 255, 255, 0.15);
-        backdrop-filter: blur(12px);
-        border-radius: 1.5rem;
-        border: 1px solid rgba(255, 255, 255, 0.3);
-        box-shadow: 0 15px 40px rgba(0, 0, 0, 0.25);
-        transition: transform 0.4s ease, box-shadow 0.4s ease;
-    }
-
-        .card:hover {
-            transform: translateY(-10px);
-            box-shadow: 0 20px 50px rgba(0, 0, 0, 0.35);
-        }
-
-    .form-group {
-        position: relative;
-        margin-bottom: 1.75rem;
-    }
-
-    .form-control {
-        background: rgba(255, 255, 255, 0.95);
-        border: none;
-        border-radius: 0.75rem;
-        padding: 0.75rem 1rem 0.75rem 2.75rem;
-        transition: all 0.3s ease;
-        box-shadow: 0 2px 6px rgba(0, 0, 0, 0.1);
-    }
-
-        .form-control:focus {
-            background: #fff;
-            box-shadow: 0 0 0 4px rgba(249, 115, 22, 0.3);
-            outline: none;
-        }
-
-    .form-label {
-        position: absolute;
-        top: 0.75rem;
-        left: 2.75rem;
-        color: #6b7280;
-        transition: all 0.3s ease;
-        pointer-events: none;
-        font-size: 0.9rem;
-    }
-
-    .form-control:focus + .form-label,
-    .form-control:not(:placeholder-shown) + .form-label {
-        top: -0.75rem;
-        left: 1.25rem;
-        font-size: 0.75rem;
-        color: #f97316;
-        background: #fff;
-        padding: 0 0.25rem;
-    }
-
-    .input-icon {
-        position: absolute;
-        left: 0.75rem;
-        top: 50%;
-        transform: translateY(-50%);
-        color: #f97316;
-        font-size: 1.2rem;
-    }
-
-    .btn-primary {
-        position: relative;
-        overflow: hidden;
-        background: linear-gradient(90deg, #f97316, #ef4444);
-        border: none;
-        border-radius: 0.75rem;
-        padding: 0.75rem 1.75rem;
-        color: white;
-        font-weight: 600;
-        transition: transform 0.3s ease;
-    }
-
-        .btn-primary:hover {
-            transform: translateY(-3px);
-            box-shadow: 0 5px 20px rgba(249, 115, 22, 0.6);
-        }
-
-        .btn-primary::after {
-            content: '';
-            position: absolute;
-            top: 50%;
-            left: 50%;
-            width: 0;
-            height: 0;
-            background: rgba(255, 255, 255, 0.4);
-            border-radius: 50%;
-            transform: translate(-50%, -50%);
-            transition: width 0.4s ease, height 0.4s ease;
-        }
-
-        .btn-primary:hover::after {
-            width: 250px;
-            height: 250px;
-        }
-
-    .btn-secondary {
-        background: #4b5563;
-        border: none;
-        border-radius: 0.75rem;
-        padding: 0.75rem 1.75rem;
-        color: white;
-        font-weight: 600;
-        transition: transform 0.3s ease, background 0.3s ease;
-    }
-
-        .btn-secondary:hover {
-            background: #374151;
-            transform: translateY(-3px);
-        }
-
-    .back-btn {
-        background: linear-gradient(90deg, #ff6b6b, #ef4444);
-        color: #fff;
-        border-radius: 9999px;
-        padding: 0.5rem 1.5rem;
-        font-weight: 500;
-        transition: transform 0.3s ease, background 0.3s ease;
-    }
-
-        .back-btn:hover {
-            background: linear-gradient(90deg, #ef4444, #dc2626);
-            transform: scale(1.1);
-        }
-
-    .error-text {
-        color: #dc2626;
-        font-size: 0.75rem;
-        margin-top: 0.25rem;
-    }
-
-    .search-container {
-        position: relative;
-        margin-bottom: 2rem;
-    }
-
-    .search-input {
-        background: rgba(255, 255, 255, 0.95);
-        border: none;
-        border-radius: 0.75rem;
-        padding: 0.75rem 3rem;
-        width: 100%;
-        box-shadow: 0 2px 6px rgba(0, 0, 0, 0.1);
-        transition: box-shadow 0.3s ease;
-    }
-
-        .search-input:focus {
-            box-shadow: 0 0 0 4px rgba(249, 115, 22, 0.3);
-            outline: none;
-        }
-
-    .search-icon, .clear-icon {
-        position: absolute;
-        top: 50%;
-        transform: translateY(-50%);
-        color: #f97316;
-        font-size: 1.2rem;
-    }
-
-    .search-icon {
-        left: 1rem;
-    }
-
-    .clear-icon {
-        right: 1rem;
-        cursor: pointer;
-        display: none;
-    }
-
-    .table-container {
-        margin-top: 2rem;
-        background: rgba(255, 255, 255, 0.1);
-        border-radius: 1rem;
-        padding: 1.5rem;
-        backdrop-filter: blur(8px);
-    }
-
-    .table {
-        width: 100%;
-        border-collapse: collapse;
-    }
-
-        .table th, .table td {
-            padding: 0.75rem;
-            text-align: left;
-            border-bottom: 1px solid rgba(255, 255, 255, 0.2);
-        }
-
-        .table th {
-            background: rgba(249, 115, 22, 0.3);
-            color: #fff;
-            font-weight: 600;
-        }
-
-        .table td {
-            color: #e5e7eb;
-        }
-
-        .table tr:hover {
-            background: rgba(255, 255, 255, 0.05);
-        }
-</style>
 
 <div class="container py-12">
     <div class="row justify-content-center">
@@ -230,62 +14,44 @@
                     <p class="text-gray-600 text-sm">Registra o busca proveedores para SisNikosPizza</p>
                 </div>
 
-                <div class="mb-6">
-                    <a href="javascript:history.back()" class="inline-flex items-center back-btn animate__animated animate__pulse animate__infinite">
-                        <i class="bi bi-arrow-left-circle mr-2"></i> Regresar
-                    </a>
-                </div>
-
-                <!-- Search Bar -->
-                <div class="search-container">
-                    <input type="text" id="searchInput" class="search-input" placeholder="Buscar por nombre o cantidad..." />
-                    <i class="bi bi-search search-icon"></i>
-                    <i class="bi bi-x-circle clear-icon" id="clearSearch"></i>
-                </div>
-
-                <!-- Form -->
                 <form method="post" asp-controller="Proveedor" asp-action="Create">
-                    <!-- Campo Nombre -->
+                    <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+
                     <div class="form-group">
                         <input type="text" asp-for="Nombre" class="form-control" placeholder=" " />
-                        <label for="Nombre" class="form-label">Nombre <span class="text-red-500">*</span></label>
+                        <label asp-for="Nombre" class="form-label">Nombre <span class="text-red-500">*</span></label>
                         <i class="bi bi-person-fill input-icon"></i>
-                        <span asp-validation-for="Nombre" class="error-text"></span>
+                        <span asp-validation-for="Nombre" class="text-danger"></span>
                     </div>
 
-                    <!-- Campo Empresa -->
                     <div class="form-group">
                         <input type="text" asp-for="Empresa" class="form-control" placeholder=" " />
-                        <label for="Empresa" class="form-label">Empresa <span class="text-red-500">*</span></label>
+                        <label asp-for="Empresa" class="form-label">Empresa <span class="text-red-500">*</span></label>
                         <i class="bi bi-building-fill input-icon"></i>
-                        <span asp-validation-for="Empresa" class="error-text"></span>
+                        <span asp-validation-for="Empresa" class="text-danger"></span>
                     </div>
 
-                    <!-- Campo Producto -->
                     <div class="form-group">
-                        <input type="text" asp-for="Producto" class="form-control" placeholder=" " />
-                        <label for="Producto" class="form-label">Producto <span class="text-red-500">*</span></label>
-                        <i class="bi bi-box-fill input-icon"></i>
-                        <span asp-validation-for="Producto" class="error-text"></span>
+                        <input type="text" asp-for="ProveedorInsumo" class="form-control" placeholder=" " />
+                        <label asp-for="ProveedorInsumo" class="form-label">Insumo <span class="text-red-500">*</span></label>
+                        <i class="bi bi-box-seam input-icon"></i>
+                        <span asp-validation-for="ProveedorInsumo" class="text-danger"></span>
                     </div>
 
-                    <!-- Campo Cantidad -->
                     <div class="form-group">
                         <input type="number" asp-for="Ccantidad" class="form-control" placeholder=" " />
-                        <label for="Ccantidad" class="form-label">Cantidad <span class="text-red-500">*</span></label>
+                        <label asp-for="Ccantidad" class="form-label">Cantidad <span class="text-red-500">*</span></label>
                         <i class="bi bi-hash input-icon"></i>
-                        <span asp-validation-for="Ccantidad" class="error-text"></span>
+                        <span asp-validation-for="Ccantidad" class="text-danger"></span>
                     </div>
 
-                    <!-- Campo Fecha de Registro -->
                     <div class="form-group">
                         <input type="date" asp-for="FechaRegistro" class="form-control" placeholder=" " />
-                        <label for="FechaRegistro" class="form-label">Fecha de Registro <span class="text-red-500">*</span></label>
+                        <label asp-for="FechaRegistro" class="form-label">Fecha de Registro <span class="text-red-500">*</span></label>
                         <i class="bi bi-calendar-fill input-icon"></i>
-                        <span asp-validation-for="FechaRegistro" class="error-text"></span>
+                        <span asp-validation-for="FechaRegistro" class="text-danger"></span>
                     </div>
 
-                    <!-- Botones Guardar y Cancelar -->
                     <div class="flex justify-end gap-4 mt-8">
                         <button type="submit" class="btn btn-primary">
                             <i class="bi bi-save mr-2"></i> Guardar
@@ -295,38 +61,6 @@
                         </a>
                     </div>
                 </form>
-
-                <!-- Supplier Table -->
-                <div class="table-container animate__animated animate__fadeIn" id="supplierTable">
-                    <table class="table">
-                        <thead>
-                            <tr>
-                                <th>Nombre</th>
-                                <th>Empresa</th>
-                                <th>Producto</th>
-                                <th>Cantidad</th>
-                                <th>Fecha Registro</th>
-                            </tr>
-                        </thead>
-                        <tbody id="supplierTableBody">
-                            <!-- Sample data; replace with actual data from ViewModel or API -->
-                            <tr class="supplier-row">
-                                <td>Juan Pérez</td>
-                                <td>Distribuidora ABC</td>
-                                <td>Tomates</td>
-                                <td>100</td>
-                                <td>2025-05-10</td>
-                            </tr>
-                            <tr class="supplier-row">
-                                <td>María Gómez</td>
-                                <td>Alimentos XYZ</td>
-                                <td>Queso</td>
-                                <td>50</td>
-                                <td>2025-05-12</td>
-                            </tr>
-                        </tbody>
-                    </table>
-                </div>
             </div>
         </div>
     </div>
@@ -334,33 +68,4 @@
 
 @section Scripts {
     <partial name="_ValidationScriptsPartial" />
-    <script>
-        document.addEventListener('DOMContentLoaded', function () {
-            const searchInput = document.getElementById('searchInput');
-            const clearSearch = document.getElementById('clearSearch');
-            const supplierRows = document.querySelectorAll('.supplier-row');
-
-            // Show/hide clear button
-            searchInput.addEventListener('input', function () {
-                clearSearch.style.display = this.value ? 'block' : 'none';
-                filterSuppliers(this.value.toLowerCase());
-            });
-
-            // Clear search input
-            clearSearch.addEventListener('click', function () {
-                searchInput.value = '';
-                clearSearch.style.display = 'none';
-                filterSuppliers('');
-            });
-
-            function filterSuppliers(query) {
-                supplierRows.forEach(row => {
-                    const name = row.children[0].textContent.toLowerCase();
-                    const quantity = parseInt(row.children[3].textContent);
-                    const matches = name.includes(query) || (!isNaN(quantity) && quantity.toString().includes(query));
-                    row.style.display = matches ? '' : 'none';
-                });
-            }
-        });
-    </script>
 }
