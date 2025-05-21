@@ -7,11 +7,6 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <Content Remove="Views\ApplicationUser\Login.cshtml" />
-  </ItemGroup>
-
-  <ItemGroup>
-    <None Include="Views\ApplicationUser\Login.cshtml" />
     <None Include="wwwroot\js\site.js" />
   </ItemGroup>
 

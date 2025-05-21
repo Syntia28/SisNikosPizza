@@ -78,6 +78,14 @@
                         <input asp-for="Cantidad" type="number" step="0.01" class="mt-1 w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-yellow-500 focus:border-yellow-500" placeholder="Ej. 10.00" />
                         <span asp-validation-for="Cantidad" class="text-red-500 text-sm"></span>
                     </div>
+                    <!-- Proveedor (Campo nuevo) -->
+                    <div>
+                        <label asp-for="ProveedorId" class="block text-sm font-medium text-gray-700">Proveedor <span class="text-red-500">*</span></label>
+                        <select asp-for="ProveedorId" asp-items="ViewBag.Proveedores" class="mt-1 w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-yellow-500 focus:border-yellow-500">
+                            <option value="">-- Seleccione un proveedor --</option>
+                        </select>
+                        <span asp-validation-for="ProveedorId" class="text-red-500 text-sm"></span>
+                    </div>
                     <!-- Descripción -->
                     <div class="md:col-span-2">
                         <label asp-for="Descripcion" class="block text-sm font-medium text-gray-700">Descripción <span class="text-red-500">*</span></label>
@@ -124,13 +132,16 @@
         right: 0;
         border-color: #10b981;
     }
-    .toggle-checkbox:checked + .toggle-label {
-        background-color: #10b981;
-    }
+
+        .toggle-checkbox:checked + .toggle-label {
+            background-color: #10b981;
+        }
+
     .toggle-checkbox {
         transition: all 0.2s ease-in-out;
         right: 20px;
     }
+
     .toggle-label {
         transition: background-color 0.2s ease-in-out;
     }
@@ -163,28 +174,44 @@
             updateEstadoLabel(); // Initialize label
 
             form.addEventListener('submit', async (e) => {
-                e.preventDefault();
-                const formData = new FormData(form);
+                // Validar que se ha seleccionado un proveedor
+                const proveedorId = document.querySelector('[name="ProveedorId"]').value;
+                if (!proveedorId) {
+                    e.preventDefault();
+                    alert('Por favor, seleccione un proveedor para el insumo.');
+                    return;
+                }
 
-                try {
-                    const response = await fetch(form.action, {
-                        method: 'POST',
-                        body: formData
-                    });
-
-                    if (response.ok) {
-                        toast.classList.remove('hidden');
-                        setTimeout(() => {
-                            toast.classList.add('hidden');
-                            window.location.href = '@Url.Action("Index", "Insumo")';
-                        }, 2000);
-                    } else {
-                        const errors = await response.json();
-                        console.error('Validation errors:', errors);
-                        // Display errors if needed
+                // Código original del submit
+                if (form.reportValidity()) {
+                    // Si usas AJAX, deja esta parte
+                    if (e.submitter && e.submitter.getAttribute('type') === 'submit') {
+                        return; // Permite el envío normal del formulario
                     }
-                } catch (error) {
-                    console.error('Error:', error);
+
+                    e.preventDefault();
+                    const formData = new FormData(form);
+
+                    try {
+                        const response = await fetch(form.action, {
+                            method: 'POST',
+                            body: formData
+                        });
+
+                        if (response.ok) {
+                            toast.classList.remove('hidden');
+                            setTimeout(() => {
+                                toast.classList.add('hidden');
+                                window.location.href = '@Url.Action("Index", "Insumo")';
+                            }, 2000);
+                        } else {
+                            const errors = await response.json();
+                            console.error('Validation errors:', errors);
+                            // Display errors if needed
+                        }
+                    } catch (error) {
+                        console.error('Error:', error);
+                    }
                 }
             });
         });

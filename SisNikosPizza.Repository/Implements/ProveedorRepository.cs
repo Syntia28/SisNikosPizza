@@ -24,7 +24,6 @@ namespace SisNikosPizza.Repository.Implements
             {
                 proveedorDB.Nombre = proveedor.Nombre;
                 proveedorDB.Ccantidad = proveedor.Ccantidad;
-                proveedorDB.Producto = proveedor.Producto;
                 proveedorDB.Empresa = proveedor.Empresa;
                 proveedorDB.UpdatedAt = DateTime.Now;
                 _db.SaveChanges();
