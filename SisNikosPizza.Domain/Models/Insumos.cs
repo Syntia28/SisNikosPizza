@@ -17,6 +17,7 @@ namespace SisNikosPizza.Domain.Models
         public float Cantidad { get; set; }
 
         public List<ProductoInsumo>? Productos { get; set; }
-
+        public int ProveedorId { get; set; }
+        public Proveedor Proveedor { get; set; }
     }
 }

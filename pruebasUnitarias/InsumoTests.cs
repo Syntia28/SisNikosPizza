@@ -18,7 +18,6 @@ namespace ProyectoPruebas
                 InsumoId = 1,
                 Nombre = "Harina",
                 Descripcion = "Harina de trigo",
-                ImagenUrl = "http://ejemplo.com/harina.jpg",
                 Precio = 15.5f,
                 UnidadeDeMedida = "Kilogramos",
                 Cantidad = 20f,
@@ -29,7 +28,6 @@ namespace ProyectoPruebas
             Assert.AreEqual(1, insumo.InsumoId);
             Assert.AreEqual("Harina", insumo.Nombre);
             Assert.AreEqual("Harina de trigo", insumo.Descripcion);
-            Assert.AreEqual("http://ejemplo.com/harina.jpg", insumo.ImagenUrl);
             Assert.AreEqual(15.5f, insumo.Precio);
             Assert.AreEqual("Kilogramos", insumo.UnidadeDeMedida);
             Assert.AreEqual(20f, insumo.Cantidad);
@@ -50,8 +48,6 @@ namespace ProyectoPruebas
                 Productos = new List<ProductoInsumo>()
             };
 
-            // Assert
-            Assert.IsNull(insumo.ImagenUrl);
         }
 
         [TestMethod]
@@ -404,8 +400,7 @@ namespace ProyectoPruebas
                 Direccion = "Av. Principal 123",
                 Referencia = "Frente a la plaza",
                 FechaPedido = DateTime.Now,
-                DetallePedidos = new List<DetallePedido>(),
-                PrecioTotal = 150.0f
+
             };
 
             // Assert

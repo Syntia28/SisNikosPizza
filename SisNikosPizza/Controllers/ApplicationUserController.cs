@@ -1,46 +1,106 @@
-﻿//using System.Net;
-//using MediatR;
-//using Microsoft.AspNetCore.Mvc;
-//using NikosPizza.Application.Queries.Login.UserLoginQuery;
+﻿using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.Identity;
+using Microsoft.EntityFrameworkCore;
+using System.Threading.Tasks;
+using System.Linq;
 
-//namespace NikosPizza.Api.Controllers
-//{
-//    [Route("Users")]
-//    public class ApplicationUserController : Controller
-//    {
-//        private readonly IMediator _mediator;
+public class UsersController : Controller
+{
+    private readonly UserManager<IdentityUser> _userManager;
 
-//        public ApplicationUserController(IMediator mediator)
-//        {
-//            _mediator = mediator;
-//        }
+    public UsersController(UserManager<IdentityUser> userManager)
+    {
+        _userManager = userManager;
+    }
 
-//        [HttpGet("Login")]
-//        public IActionResult Login()
-//        {
-//            // Muestra el formulario de inicio de sesión
-//            return View();
-//        }
+    // Lista de usuarios
+    public async Task<IActionResult> Index()
+    {
+        var users = await _userManager.Users.ToListAsync();
+        return View(users);
+    }
 
-//        [HttpPost("Login")]
-//        [ProducesResponseType(typeof(string), (int)HttpStatusCode.OK)]
-//        public async Task<IActionResult> Login([FromForm] UserLoginQuery request)
-//        {
-//            var result = await _mediator.Send(request);
-//            if (result.IsSuccess)
-//            {
-//                return RedirectToAction("Welcome");
-//            }
-//            else
-//            {
-//                ViewBag.ErrorMessage = "Usuario o contraseña incorrectos.";
-//                return View();
-//            }
-//        }
-//        [HttpGet("Welcome")]
-//        public IActionResult Welcome()
-//        {
-//            return View();
-//        }
-//    }
-//}
+    // Detalles de un usuario
+    public async Task<IActionResult> Details(string id)
+    {
+        if (id == null) return NotFound();
+
+        var user = await _userManager.FindByIdAsync(id);
+        if (user == null) return NotFound();
+
+        return View(user);
+    }
+
+    // Vista para editar
+    public async Task<IActionResult> Edit(string id)
+    {
+        if (id == null) return NotFound();
+
+        var user = await _userManager.FindByIdAsync(id);
+        if (user == null) return NotFound();
+
+        return View(user);
+    }
+
+    // Guardar edición
+    [HttpPost]
+    [ValidateAntiForgeryToken]
+    public async Task<IActionResult> Edit(string id, IdentityUser updatedUser)
+    {
+        if (id != updatedUser.Id) return BadRequest();
+
+        if (!ModelState.IsValid)
+        {
+            TempData["Error"] = "El modelo no es válido.";
+            return View(updatedUser);
+        }
+
+        var user = await _userManager.FindByIdAsync(id);
+        if (user == null) return NotFound();
+
+        user.Email = updatedUser.Email;
+        user.PhoneNumber = updatedUser.PhoneNumber;
+
+        var result = await _userManager.UpdateAsync(user);
+        if (result.Succeeded)
+        {
+            TempData["Satisfactorio"] = "Usuario actualizado correctamente.";
+            return RedirectToAction(nameof(Index));
+        }
+
+        TempData["Error"] = string.Join(", ", result.Errors.Select(e => e.Description));
+        return View(updatedUser);
+    }
+
+    // Confirmar eliminación
+    public async Task<IActionResult> Delete(string id)
+    {
+        if (id == null) return NotFound();
+
+        var user = await _userManager.FindByIdAsync(id);
+        if (user == null) return NotFound();
+
+        return View(user);
+    }
+
+    // Eliminar usuario
+    [HttpPost, ActionName("Delete")]
+    [ValidateAntiForgeryToken]
+    public async Task<IActionResult> DeleteConfirmed(string id)
+    {
+        var user = await _userManager.FindByIdAsync(id);
+        if (user == null) return NotFound();
+
+        var result = await _userManager.DeleteAsync(user);
+        if (result.Succeeded)
+        {
+            TempData["Satisfactorio"] = "Usuario eliminado correctamente.";
+        }
+        else
+        {
+            TempData["Error"] = string.Join(", ", result.Errors.Select(e => e.Description));
+        }
+
+        return RedirectToAction(nameof(Index));
+    }
+}
