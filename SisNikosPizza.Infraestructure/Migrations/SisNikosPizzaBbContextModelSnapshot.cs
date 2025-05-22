@@ -568,7 +568,7 @@ namespace SisNikosPizza.Infraestructure.Migrations
 
                     b.HasKey("ProveedorId");
 
-                    b.ToTable("proveedor");
+                    b.ToTable("proveedores");
                 });
 
             modelBuilder.Entity("SisNikosPizza.Domain.Models.Venta", b =>
