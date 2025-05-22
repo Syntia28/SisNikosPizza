@@ -37,6 +37,9 @@ namespace SisNikosPizza.Repository.Implements
             }
         }
 
-
+        public Task<List<Insumo>> ObtenerInsumosPorProveedorAsync(int proveedorId)
+        {
+            throw new NotImplementedException();
+        }
     }
 }

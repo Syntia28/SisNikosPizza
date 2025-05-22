@@ -14,9 +14,11 @@ namespace SisNikosPizza.Domain.Models
         public string Empresa { get; set; }
         public string Ccantidad { get; set; }
         public DateTime FechaRegistro { get; set; }
-        public  ICollection<Insumo> ProveedorInsumo { get; set; }
+        public ICollection<Insumo> ProveedorInsumo { get; set; } = new List<Insumo>();
+
+
     }
 
 
-    
+
 }

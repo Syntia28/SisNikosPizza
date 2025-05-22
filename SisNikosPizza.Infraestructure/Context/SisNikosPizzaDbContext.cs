@@ -13,7 +13,7 @@ namespace SisNikosPizza.Infrastructure.Context
         public DbSet<Categoria> categoria { get; set; }
         public DbSet<Producto> producto { get; set; }
         public DbSet<Insumo> insumo { get; set; }
-        public DbSet<Proveedor> proveedor { get; set; }
+        public DbSet<Proveedor> proveedores { get; set; }
         public DbSet<Pedido> pedido { get; set; }
         public DbSet<Carrito> carrito { get; set; }
         public DbSet<Venta> venta { get; set; }
@@ -33,9 +33,9 @@ namespace SisNikosPizza.Infrastructure.Context
                 .OnDelete(DeleteBehavior.SetNull);
 
             modelBuilder.Entity<Insumo>()
-                .HasOne(i => i.Proveedor)
-                .WithMany(p => p.ProveedorInsumo)
-                .HasForeignKey(i => i.ProveedorId);
+                           .HasOne(i => i.Proveedor)
+                           .WithMany(p => p.ProveedorInsumo)
+                           .HasForeignKey(i => i.ProveedorId);
 
             modelBuilder.Entity<Carrito>().HasMany(s => s.CarritoProductos);
             modelBuilder.Entity<Producto>().HasMany(s => s.ProductoInsumos);

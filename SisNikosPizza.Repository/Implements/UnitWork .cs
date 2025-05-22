@@ -44,10 +44,6 @@ namespace SisNikosPizza.Repository.Implements
         {
             _db.Dispose();
         }
-       public Task<string?> ObtenerTodosAsync(Func<object, object> ordenarPor)
-        {
-            throw new NotImplementedException();
-        }
 
         public async Task GuradarAsync()
         {
