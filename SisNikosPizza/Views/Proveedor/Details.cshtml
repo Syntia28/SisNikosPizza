@@ -1,4 +1,6 @@
-﻿@{
+﻿@model SisNikosPizza.Domain.Models.Proveedor
+
+@{
     ViewData["Title"] = "Crear Proveedor";
     Layout = "~/Views/Shared/_Admin.cshtml";
 }
@@ -246,7 +248,7 @@
                 <form method="post" asp-controller="Proveedor" asp-action="Create">
                     <!-- Campo Nombre -->
                     <div class="form-group">
-                        <input type="text" asp-for="nombre" class="form-control" placeholder=" " />
+                        <input type="text" asp-for="Nombre" class="form-control" placeholder=" " />
                         <label for="Nombre" class="form-label">Nombre <span class="text-red-500">*</span></label>
                         <i class="bi bi-person-fill input-icon"></i>
                         <span asp-validation-for="Nombre" class="error-text"></span>
@@ -262,10 +264,10 @@
 
                     <!-- Campo Producto -->
                     <div class="form-group">
-                        <input type="text" asp-for="Producto" class="form-control" placeholder=" " />
-                        <label for="Producto" class="form-label">Producto <span class="text-red-500">*</span></label>
+                        <input type="text" asp-for="ProveedorInsumo" class="form-control" placeholder=" " />
+                        <label for="Producto" class="form-label">Insumo <span class="text-red-500">*</span></label>
                         <i class="bi bi-box-fill input-icon"></i>
-                        <span asp-validation-for="Producto" class="error-text"></span>
+                        <span asp-validation-for="ProveedorInsumo" class="error-text"></span>
                     </div>
 
                     <!-- Campo Cantidad -->
