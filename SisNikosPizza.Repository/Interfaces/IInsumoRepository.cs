@@ -11,6 +11,8 @@ namespace SisNikosPizza.Repository.Interfaces
     public interface IInsumoRepository : IRepositoryBase<Insumo>
     {
         void Actualizar(Insumo insumo);
+        Task<List<Insumo>> ObtenerInsumosPorProveedorAsync(int proveedorId);
+
 
     }
 }

@@ -10,7 +10,7 @@ namespace SisNikosPizza.Repository.Interfaces
     public interface IProveedorRepository: IRepositoryBase<Proveedor>
     {
         void ActualizarProveedor(Proveedor proveedor);
-    
 
+        Task<List<Insumo>> ObtenerInsumosPorProveedorAsync(int proveedorId);
     }
 }
