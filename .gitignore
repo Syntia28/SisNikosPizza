@@ -361,3 +361,6 @@ MigrationBackup/
 
 # Fody - auto-generated XML schema
 FodyWeavers.xsd
+
+# eliminamos la catpeta de imagenes para que no se siban las imagenes cargadas en ek servidor
+./wwwroot/imagenes/*
