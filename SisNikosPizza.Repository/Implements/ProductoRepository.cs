@@ -74,26 +74,25 @@ namespace SisNikosPizza.Repository.Implements
 
         public IEnumerable<SelectListItem> ListarCategorias(string obj)
         {
-            if (obj == "Estados")
+            if (obj == "categorias")
             {
-                return _db.categoria.Where(c => c.EsEstado != VCG.Estado_Activo && c.EsEstado != VCG.Estado_Inactivo).Select(c => new SelectListItem
+                return _db.categoria.Select(c => new SelectListItem
                 {
-                    Text = c.EsEstado,
-                    Value = c.EstadosId.ToString()
+                    Text = c.nombre,
+                    Value = c.CategoriaId.ToString()
                 });
-
             }
 
             return null;
         }
         public IEnumerable<SelectListItem> ListarInsumos(string obj)
         {
-            if (obj == "Categorias")
+            if (obj == "insumos")
             {
                 return _db.insumo.Select(c => new SelectListItem
                 {
-                    Text = c.CtNombre,
-                    Value = c.CategoriasId.ToString()
+                    Text = c.Nombre,
+                    Value = c.InsumoId.ToString()
                 });
             }
 

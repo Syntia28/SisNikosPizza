@@ -55,6 +55,15 @@ namespace SisNikosPizza.Controllers
         [HttpGet]
         public async Task<IActionResult> Create()
         {
+            VMDProducto DocVM = new VMDProducto()
+            {
+                Doc = new Documento(),
+                EstadosList = _UnidadDeTrabajo.DocumentoRepo.ListarEstados("Estados"),
+                CategoriaList = _UnidadDeTrabajo.DocumentoRepo.ListarCategorias("Categorias"),
+                ClientesList = _UnidadDeTrabajo.DocumentoRepo.ListarClientes("Cliente")
+
+            };
+            return View(DocVM);
             ViewBag.CategoriesList = (await _unitWork.CategoriaRepo.ObtenerTodosAsync())
                 .Select(c => new SelectListItem { Text = c.nombre, Value = c.CategoriaId.ToString() });
             ViewBag.InsumosList = await _unitWork.InsumoRepo.ObtenerTodosAsync(i => i.Estado == true);
