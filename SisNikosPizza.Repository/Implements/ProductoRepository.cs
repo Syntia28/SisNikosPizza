@@ -70,5 +70,34 @@ namespace SisNikosPizza.Repository.Implements
                 await _db.SaveChangesAsync();
             }
         }
+
+        public IEnumerable<SelectListItem> ListarCategorias(string obj)
+        {
+            if (obj == "Estados")
+            {
+                return _db.categoria.Where(c => c.EsEstado != VCG.Estado_Activo && c.EsEstado != VCG.Estado_Inactivo).Select(c => new SelectListItem
+                {
+                    Text = c.EsEstado,
+                    Value = c.EstadosId.ToString()
+                });
+
+            }
+
+            return null;
+        }
+        public IEnumerable<SelectListItem> ListarInsumos(string obj)
+        {
+            if (obj == "Categorias")
+            {
+                return _db.insumo.Select(c => new SelectListItem
+                {
+                    Text = c.CtNombre,
+                    Value = c.CategoriasId.ToString()
+                });
+            }
+
+            return null;
+        }
+
     }
 }

@@ -25,7 +25,7 @@ namespace SisNikosPizza.Repository.Implements
             {
                 proveedorDB.Nombre = proveedor.Nombre;
                 proveedorDB.Empresa = proveedor.Empresa;
-                proveedorDB.Ccantidad = proveedor.Ccantidad;
+                proveedorDB.Cantidad = proveedor.Cantidad;
                
                 proveedorDB.UpdatedAt = DateTime.Now;
                 _db.SaveChanges();
@@ -42,7 +42,7 @@ namespace SisNikosPizza.Repository.Implements
         public async Task<Proveedor?> ObtenerProveedorConInsumosAsync(int proveedorId)
         {
             return await _db.proveedores
-                .Include(p => p.ProveedorInsumo) 
+                .Include(p => p.Insumos) 
                 .FirstOrDefaultAsync(p => p.ProveedorId == proveedorId);
         }
     }

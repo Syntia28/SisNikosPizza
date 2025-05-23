@@ -9,15 +9,13 @@ namespace SisNikosPizza.Domain.Models
     public class Insumo : EntididadBase
     {
         public int InsumoId { get; set; }
+        public int ProveedorId { get; set; }
+        public Proveedor Proveedor { get; set; }
         public string Nombre { get; set; }
         public string Descripcion { get; set; }
-
         public float Precio { get; set; }
         public string UnidadeDeMedida { get; set; }
         public float Cantidad { get; set; }
-
-        public List<ProductoInsumo>? Productos { get; set; }
-        public int ProveedorId { get; set; }
-        public Proveedor Proveedor { get; set; }
+        public List<ProductoInsumo>? ProductoInsumos { get; set; }
     }
 }
