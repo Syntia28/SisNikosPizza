@@ -6,17 +6,16 @@ namespace SisNikosPizza.Domain.Models
     public class Pedido : EntididadBase
     {
         public int PedidoId { get; set; }
-        public string OwnerId { get; set; }
+        public string UserId { get; set; }
+        public IdentityUser User { get; set; }
 
         public string EstadoPedido { get; set; } //pendiente, anulado, entregado.
         public string TipoPedido { get; set; } //delivery, recogo_en_local, mesa.
 
         //propiedades para delivery.
-
         public string? Telefono { get; set; }
         public string? Direccion { get; set; }
         public string? Referencia { get; set; }
-
 
         //propiedades para recogo en local.
         public DateTime? FechaRecogo { get; set; }
@@ -28,8 +27,6 @@ namespace SisNikosPizza.Domain.Models
         public DateTime FechaPedido { get; set; }
 
         public virtual IEnumerable<DetallePedido> DetallePedido { get; set; }
-        //no database properties
      
-        public IdentityUser Owner { get; set; }
     }
 }
