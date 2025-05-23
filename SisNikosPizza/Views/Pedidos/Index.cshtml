@@ -380,7 +380,7 @@
                         {
                             <tr>
                                 <td>@pedido.FechaPedido.ToString("dd/MM/yyyy HH:mm")</td>
-                                <td>@pedido.Owner.NormalizedEmail</td>
+                                <td>@pedido.User.NormalizedEmail</td>
                                 <td>S/. @pedido.DetallePedido.First().PrecioTotal</td>
                                 <td>
                                     @switch (pedido.EstadoPedido)

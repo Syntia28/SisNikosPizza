@@ -1,6 +1,6 @@
-﻿using SisNikosPizza.Domain.Models;
-using System.Collections.Generic;
-using System.Threading.Tasks;
+﻿using System;
+using SisNikosPizza.Domain.Models;
+using Microsoft.AspNetCore.Mvc.Rendering;
 
 namespace SisNikosPizza.Repository.Interfaces
 {
@@ -10,5 +10,7 @@ namespace SisNikosPizza.Repository.Interfaces
         Task AgregarInsumoAsync(int productoId, int insumoId, float cantidad);
         Task EliminarInsumoAsync(int productoId, int insumoId);
         Task ActualizarInsumoAsync(int productoId, int insumoId, float nuevaCantidad);
+        IEnumerable<SelectListItem> ListarCategorias(string obj);
+        IEnumerable<SelectListItem> ListarInsumos(string obj);
     }
 }
