@@ -5,7 +5,6 @@ using SisNikosPizza.Repository.Implements;
 using SisNikosPizza.Repository.Interfaces;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Authorization;
-using SisNikosPizza;
 using F_M_Maquinarias.Infrastructure.Data;
 
 var builder = WebApplication.CreateBuilder(args);
