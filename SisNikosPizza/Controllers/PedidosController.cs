@@ -67,7 +67,7 @@ namespace SisNikosPizza.Controllers
             }
 
 
-            if (pedido.OwnerId != userSign.Id)
+            if (pedido.UserId != userSign.Id)
             {
                 return NotFound();
             }
@@ -85,10 +85,10 @@ namespace SisNikosPizza.Controllers
 
 
            var carritoProductos = carrito.CarritoProductos;
-            var nuevoPedidoVista = new NuevoPedidoVista()
+            var nuevoPedidoVista = new NuevoPedidoVista();
             {
-                CarritoProductos = carritoProductos.ToList(),
-                Pedido = new Pedido()
+                CarritoProductos = carritoProductos.ToList();
+                Pedido = new Pedido();
             };
             ViewBag.TipoPedido = TipoPedido;
             return View(nuevoPedidoVista);
@@ -124,7 +124,7 @@ namespace SisNikosPizza.Controllers
             // Crear el pedido
             var pedido = new Pedido
             {
-                OwnerId = userId,
+                UserId = userId,
                 DetallePedido = new List<DetallePedido>(),
                 FechaPedido = DateTime.Now,
                 TipoPedido = formPedido.TipoPedido,

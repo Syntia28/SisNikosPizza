@@ -264,26 +264,26 @@
 
                     <!-- Campo Producto -->
                     <div class="form-group">
-                        <input type="text" asp-for="ProveedorInsumo" class="form-control" placeholder=" " />
+                        <input type="text" asp-for="Insumos" class="form-control" placeholder=" " />
                         <label for="Producto" class="form-label">Insumo <span class="text-red-500">*</span></label>
                         <i class="bi bi-box-fill input-icon"></i>
-                        <span asp-validation-for="ProveedorInsumo" class="error-text"></span>
+                        <span asp-validation-for="Insumos" class="error-text"></span>
                     </div>
 
                     <!-- Campo Cantidad -->
                     <div class="form-group">
-                        <input type="number" asp-for="Ccantidad" class="form-control" placeholder=" " />
-                        <label for="Ccantidad" class="form-label">Cantidad <span class="text-red-500">*</span></label>
+                        <input type="number" asp-for="Cantidad" class="form-control" placeholder=" " />
+                        <label for="Cantidad" class="form-label">Cantidad <span class="text-red-500">*</span></label>
                         <i class="bi bi-hash input-icon"></i>
-                        <span asp-validation-for="Ccantidad" class="error-text"></span>
+                        <span asp-validation-for="Cantidad" class="error-text"></span>
                     </div>
 
                     <!-- Campo Fecha de Registro -->
                     <div class="form-group">
-                        <input type="date" asp-for="FechaRegistro" class="form-control" placeholder=" " />
-                        <label for="FechaRegistro" class="form-label">Fecha de Registro <span class="text-red-500">*</span></label>
+                        <input type="date" asp-for="CreatedAt" class="form-control" placeholder=" " />
+                        <label for="CreatedAt" class="form-label">Fecha de Registro <span class="text-red-500">*</span></label>
                         <i class="bi bi-calendar-fill input-icon"></i>
-                        <span asp-validation-for="FechaRegistro" class="error-text"></span>
+                        <span asp-validation-for="CreatedAt" class="error-text"></span>
                     </div>
 
                     <!-- Botones Guardar y Cancelar -->

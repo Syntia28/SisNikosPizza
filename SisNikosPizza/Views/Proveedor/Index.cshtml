@@ -190,11 +190,11 @@
                                     <td class="px-6 py-4 text-gray-800 font-medium text-center">@proveedor.ProveedorId</td>
                                     <td class="px-6 py-4 text-gray-800 font-medium text-center">@proveedor.Nombre</td>
                                     <td class="px-6 py-4 text-gray-800 font-medium text-center">@proveedor.Empresa</td>
-                                    <td class="px-6 py-4 text-gray-800 font-medium text-center">@proveedor.ProveedorInsumo</td>
+                                    <td class="px-6 py-4 text-gray-800 font-medium text-center">@proveedor.Insumos</td>
                                     <td class="px-6 py-4 text-center">
                                         @{
                                             int cantidad;
-                                            bool parsed = int.TryParse(proveedor.Ccantidad, out cantidad);
+                                            bool parsed = int.TryParse(proveedor.Cantidad, out cantidad);
                                             if (!parsed)
                                             {
                                                 cantidad = 0;
