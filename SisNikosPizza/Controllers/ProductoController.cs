@@ -1,9 +1,7 @@
-﻿using Microsoft.AspNetCore.Mvc;
-using Microsoft.AspNetCore.Mvc.Rendering;
-using Microsoft.EntityFrameworkCore;
+﻿using Maquinarias.Domain.ViewModels;
+using Microsoft.AspNetCore.Mvc;
 using SisNikosPizza.Domain.Models;
 using SisNikosPizza.Repository.Interfaces;
-using SisNikosPizza.Utilidades;
 
 namespace SisNikosPizza.Controllers
 {
@@ -55,27 +53,18 @@ namespace SisNikosPizza.Controllers
         [HttpGet]
         public async Task<IActionResult> Create()
         {
-            VMDProducto DocVM = new VMDProducto()
+            VMDProducto ProductoVM = new VMDProducto()
             {
-                Doc = new Documento(),
-                EstadosList = _UnidadDeTrabajo.DocumentoRepo.ListarEstados("Estados"),
-                CategoriaList = _UnidadDeTrabajo.DocumentoRepo.ListarCategorias("Categorias"),
-                ClientesList = _UnidadDeTrabajo.DocumentoRepo.ListarClientes("Cliente")
-
+                producto = new Producto(), 
+                CategoriasList = _unitWork.ProductoRepo.ListarCategorias("categorias"),
+                InsumosList = _unitWork.ProductoRepo.ListarInsumos("insumos"),
             };
-            return View(DocVM);
-            ViewBag.CategoriesList = (await _unitWork.CategoriaRepo.ObtenerTodosAsync())
-                .Select(c => new SelectListItem { Text = c.nombre, Value = c.CategoriaId.ToString() });
-            ViewBag.InsumosList = await _unitWork.InsumoRepo.ObtenerTodosAsync(i => i.Estado == true);
-            return View();
+            return View(ProductoVM);
         }
-
-
-
 
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Create(Producto producto, int[] insumoIds, float[] insumoCantidades)
+        public async Task<IActionResult> Create(VMDProducto VMDP, int[] insumoIds, float[] insumoCantidades)
         {
             string rutaPrincipal = _webHostEnvironment.WebRootPath;
             var archivos = HttpContext.Request.Form.Files;
@@ -92,73 +81,67 @@ namespace SisNikosPizza.Controllers
 
                 using (var fileStreams = new FileStream(Path.Combine(subidas, nombreArchivo + extension), FileMode.Create)) await archivo.CopyToAsync(fileStreams);
 
-                producto.ImagenUrl = @"\imagenes\" + nombreArchivo + extension;
+                VMDP.producto.ImagenUrl = @"\imagenes\" + nombreArchivo + extension;
             }
 
             if (ModelState.IsValid)
             {
-                await _unitWork.ProductoRepo.AgregarAsync(producto);
+                await _unitWork.ProductoRepo.AgregarAsync(VMDP.producto);
                 await _unitWork.GuradarAsync();
 
                 TempData["Satisfactorio"] = "Producto creado correctamente.";
-                return RedirectToAction("Details", new { id = producto.ProductoId });
+                return RedirectToAction("Details", new { id = VMDP.producto.ProductoId });
             }
-            return View(producto);
+            return View(VMDP);
         }
-       
 
-    // Categories/Edit/5
-    [HttpGet]
+
+        // Categories/Edit/5
+        [HttpGet]
         public async Task<IActionResult> Edit(int id)
         {
-            //if (id <= 0)
-            //    return NotFound();
-   
-            var producto = await _unitWork.ProductoRepo.ObtenerAsync(id);
-            if (producto is null)
+
+
+            VMDProducto PVM = new VMDProducto()
+            {
+                producto = new Producto(), 
+                CategoriasList = _unitWork.ProductoRepo.ListarCategorias("categorias"),
+                InsumosList = _unitWork.ProductoRepo.ListarInsumos("insumos"),
+            };
+
+            PVM.producto = await _unitWork.ProductoRepo.ObtenerAsync(id);
+
+            if (PVM is null)
                 return NotFound();
 
-
-            var categories = await _unitWork.CategoriaRepo.ObtenerTodosAsync();
-            IEnumerable<SelectListItem> categoriesList = categories.Select(c => new SelectListItem
-            {
-                Text = c.nombre,
-                Value = c.CategoriaId.ToString()
-            }).ToList();
-
-
-            // Si hay errores de validación, regresar a la vista
-            ViewBag.CategoriesList = categoriesList;
-
-
-            return View(producto);
+            return View(PVM);
         }
 
         // producto/Edit
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Edit(Producto productoForm, IFormFile imageFile)
+        public async Task<IActionResult> Edit(VMDProducto VMDP, IFormFile imageFile)
         {
 
 
             if (ModelState.IsValid)
             {
                 // cargar el producto existente de la base de datos
-                var productoDB = await _unitWork.ProductoRepo.ObtenerAsync(productoForm.ProductoId);
+                var productoDB = await _unitWork.ProductoRepo.ObtenerAsync(VMDP.producto.ProductoId);
 
                 if (productoDB == null) return NotFound();
 
-              
-                productoForm.UpdatedAt = DateTime.Now;
+
+                VMDP.producto.UpdatedAt = DateTime.Now;
 
                 //actualizar propiedades del producto
-                productoDB.Nombre= productoForm.Nombre;
-                productoDB.Descripcion = productoForm.Descripcion;
-                productoDB.Descripcion = productoForm.Descripcion;
-                productoDB.CategoriaId = productoForm.CategoriaId;
-                productoDB.Precio = productoForm.Precio;
-                productoDB.Stock = productoForm.Stock;
-                productoDB.Estado = productoForm.Estado;
+                productoDB.Nombre= VMDP.producto.Nombre;
+                productoDB.Descripcion = VMDP.producto.Descripcion;
+                productoDB.Descripcion = VMDP.producto.Descripcion;
+                productoDB.CategoriaId = VMDP.producto.CategoriaId;
+                productoDB.Precio = VMDP.producto.Precio;
+                productoDB.Stock = VMDP.producto.Stock;
+                productoDB.Estado = VMDP.producto.Estado;
 
                 // Manejar la subida de imagen
                 if (imageFile != null && imageFile.Length > 0)
@@ -187,19 +170,9 @@ namespace SisNikosPizza.Controllers
             }
 
 
-            var categories = await _unitWork.CategoriaRepo.ObtenerTodosAsync();
-            IEnumerable<SelectListItem> categoriesList = categories.Select(c => new SelectListItem
-            {
-                Text = c.nombre,
-                Value = c.CategoriaId.ToString()
-            }).ToList();
-
-
-            // Si hay errores de validación, regresar a la vista
-            ViewBag.CategoriesList = categoriesList;
-
-
-            return View(productoForm);
+            VMDP.CategoriasList = _unitWork.ProductoRepo.ListarCategorias("categorias");
+            VMDP.InsumosList = _unitWork.ProductoRepo.ListarInsumos("insumos");
+            return View(VMDP);
         }
 
         // producto/Details/5

@@ -1,13 +1,11 @@
-﻿using SisNikosPizza.Domain.Models;
-using System.Web.Mvc;
+﻿using Microsoft.AspNetCore.Mvc.Rendering;
+using SisNikosPizza.Domain.Models;
 
 namespace Maquinarias.Domain.ViewModels;
 
 public class VMDProducto
 {
     public Producto producto { get; set; }
-    // Lista de Categorías
-    public IEnumerable<SelectListItem>? EstadosList { get; set; }
-    public IEnumerable<SelectListItem>? CategoriaList { get; set; }
-    public IEnumerable<SelectListItem>? ClientesList { get; set; }
+    public IEnumerable<SelectListItem>? CategoriasList { get; set; }
+    public IEnumerable<SelectListItem>? InsumosList { get; set; }
 }
