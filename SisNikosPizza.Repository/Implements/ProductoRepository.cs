@@ -2,10 +2,7 @@
 using SisNikosPizza.Domain.Models;
 using SisNikosPizza.Infrastructure.Context;
 using SisNikosPizza.Repository.Interfaces;
-using System;
-using System.Linq;
-using System.Threading.Tasks;
-using System.Web.Mvc;
+using Microsoft.AspNetCore.Mvc.Rendering;
 
 namespace SisNikosPizza.Repository.Implements
 {
