@@ -1,4 +1,4 @@
-namespace Maquinarias.Domain.ViewModels
+namespace SisNikosPizza.Domain.ViewModels
 {
     public class ErrorViewModel
     {

@@ -1,7 +1,7 @@
 ﻿using Microsoft.AspNetCore.Mvc.Rendering;
 using SisNikosPizza.Domain.Models;
 
-namespace Maquinarias.Domain.ViewModels;
+namespace SisNikosPizza.Domain.ViewModels;
 
 public class VMDProducto
 {
