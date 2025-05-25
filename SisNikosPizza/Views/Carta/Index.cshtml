@@ -2,7 +2,6 @@
 @using Microsoft.AspNetCore.Identity
 
 @inject SignInManager<IdentityUser> SignInManager
-@inject UserManager<IdentityUser> UserManager
 
 @{
     ViewData["Title"] = "Home Page";
@@ -27,9 +26,13 @@
                     </p>
                     @if (SignInManager.IsSignedIn(User))
                     {
-                        <form action="/Carrito/AgregarProducto" method="post">
+                        <form action="/Carrito/Create" method="post">
                             <input type="hidden" name="ProductoId" value="@pizza.ProductoId" />
-                            <button type="submit" class="btn btn-primary w-100" style="background-color: #b2611a; border: none; font-size: 1rem; padding: 10px;">
+                            <input type="hidden" name="UsuarioId" value="@ViewBag.UsuarioId" />
+                            <input type="hidden" name="Cantidad" value="1" />
+                            <input type="hidden" name="PrecioUnitario" value="@pizza.Precio" />
+
+                             <button type="submit" class="btn btn-primary w-100" style="background-color: #b2611a; border: none; font-size: 1rem; padding: 10px;">
                                 Agregar al carrito
                             </button>
                         </form>
@@ -45,3 +48,35 @@
         }
     </div>
 </div>
+
+@section Scripts {
+    <partial name="_ValidationScriptsPartial" />
+
+    <script>
+        document.addEventListener("DOMContentLoaded", () => {
+            const forms = document.querySelectorAll('form[action="/Carrito/Create"]');
+
+            forms.forEach(form => {
+                form.addEventListener("submit", async (e) => {
+                    e.preventDefault(); // 🚫 evita redirección
+
+                    const formData = new FormData(form);
+
+                    const response = await fetch(form.action, {
+                        method: "POST",
+                        body: formData
+                    });
+
+                    const result = await response.text();
+
+                    if (result === "ok") {
+                        alert("Producto agregado al carrito correctamente ✅");
+                        // Opcional: actualizar contador o icono del carrito
+                    } else {
+                        alert("❌ Error al agregar al carrito");
+                    }
+                });
+            });
+        });
+    </script>
+}

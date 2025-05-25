@@ -1,106 +1,106 @@
-﻿
-using Microsoft.AspNetCore.Authorization;
+﻿using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using SisNikosPizza.Domain.Models;
+using SisNikosPizza.Domain.ViewModels;
 using SisNikosPizza.Repository.Interfaces;
+using SisNikosPizza.Utilidades;
 
 namespace SisNikosPizza.Controllers
 {
-    [Authorize]
     public class CarritoController : Controller
+
     {
         private readonly IUniwork _unitWork;
         private readonly UserManager<IdentityUser> _userManager;
-
         public CarritoController(IUniwork unitWork, UserManager<IdentityUser> userManager)
         {
             _unitWork = unitWork;
             _userManager = userManager;
         }
-
-        // GET: /Carrito/
+        [HttpGet]
         public async Task<IActionResult> Index()
         {
-            var userId = _userManager.GetUserId(User);
+            // var carritoItems = await _unitWork.CarritoItemsRepo.ObtenerTodosAsync(ordenarPor: c => c.OrderByDescending(c => c.ProductoId), incluirPropiedades: "Producto");
+            // return View(carritoItems);
 
-            if (string.IsNullOrEmpty(userId))
+            var user = await _userManager.GetUserAsync(User);
+            if (user == null) return RedirectToAction("Login", "Account");
+
+            var carritoItems = _unitWork.CarritoItemsRepo.ListarCarritoItems(user?.Id).ToList();
+
+            VMDCarrito VMDC = new VMDCarrito()
             {
-                return RedirectToAction("Login", "Account");
-            }
+                listaCarritoItems = carritoItems,
+                Pedido = new Pedido(),
+                Total = carritoItems.Sum(item => item.PrecioTotal)
+            };
 
-            string baseUrl = $"{Request.Scheme}://{Request.Host}/images";
-            var carrito = await _unitWork.CarritoRepo.ObtenerCarritoDeUsuario(userId, baseUrl);
-
-            if (carrito == null)
-            {
-                carrito = new Carrito
-                {
-                    CarritoProductos = new List<CarritoProducto>()
-                };
-            }
-
-            return View(carrito);
+            return View(VMDC);
         }
 
-        // POST: /Carrito/AgregarProducto
-        [HttpPost]
-        public async Task<IActionResult> AgregarProducto(int productoId)
-        {
-            var userId = _userManager.GetUserId(User);
-
-            if (string.IsNullOrEmpty(userId))
-            {
-                return RedirectToAction("Login", "Account");
-            }
-
-            await _unitWork.CarritoRepo.AgregarProductoAlCarrito(userId, productoId, 1);
-
-            return RedirectToAction("Index");
-        }
-
-        // POST: /Carrito/IncrementarCantidad
-        [HttpPost]
-        public async Task<IActionResult> IncrementarCantidad(int productoId)
-        {
-            var userId = _userManager.GetUserId(User);
-
-            await _unitWork.CarritoRepo.IncrementarCantidadProducto(userId, productoId);
-
-            return RedirectToAction("Index");
-        }
-
-        // POST: /Carrito/DecrementarCantidad
-        [HttpPost]
-        public async Task<IActionResult> DecrementarCantidad(int productoId)
-        {
-            var userId = _userManager.GetUserId(User);
-
-            await _unitWork.CarritoRepo.DecrementarCantidadProducto(userId, productoId);
-
-            return RedirectToAction("Index");
-        }
-
-        // POST: /Carrito/EliminarProducto
-        [HttpPost]
-        public async Task<IActionResult> EliminarProducto(int productoId)
-        {
-            var userId = _userManager.GetUserId(User);
-
-            await _unitWork.CarritoRepo.EliminarProductoDeCarrito(userId, productoId);
-
-            return RedirectToAction("Index");
-        }
-
-        // GET: /Carrito/ObtenerTotal
         [HttpGet]
-        public async Task<IActionResult> ObtenerTotal()
+        public async Task<IActionResult> Total()
         {
-            var userId = _userManager.GetUserId(User);
+            var total = await _unitWork.CarritoItemsRepo.ObtenerTodosAsync();
+            int totalItems = total.Count();
+            return Json(totalItems);
+        }
 
-            var total = await _unitWork.CarritoRepo.ObtenerTotalCarrito(userId);
+        // crear un registro en el carrito
+        [HttpPost]
+        public async Task<IActionResult> Create(CarritoItems carritoItems)
+        {
+            carritoItems.PrecioTotal = carritoItems.PrecioUnitario * carritoItems.Cantidad;
+            if (ModelState.IsValid)
+            {
+                await _unitWork.CarritoItemsRepo.AgregarAsync(carritoItems);
+                await _unitWork.GuardarAsync();
+                return Content("ok");
+            }
+            return Content("error");
+        }
 
-            return Json(total);
+        [HttpPost]
+        public async Task<IActionResult> Update(int CarritoItemId, int cantidad)
+        {
+            var carrito = await _unitWork.CarritoItemsRepo.ObtenerAsync(CarritoItemId);
+            if (carrito is null)
+            {
+                return NotFound();
+            }
+
+            if (ModelState.IsValid)
+            {
+                if (cantidad > 0)
+                {
+                    carrito.Cantidad += cantidad;
+                }
+                else
+                {
+                    cantidad = Math.Abs(cantidad);
+                    carrito.Cantidad -= cantidad;
+                }
+                carrito.PrecioTotal = carrito.PrecioUnitario * carrito.Cantidad;
+                _unitWork.CarritoItemsRepo.ActualizarCantidadCarritoItems(carrito);
+                await _unitWork.GuardarAsync();
+                return Json(new { success = true, cantidad = carrito.Cantidad, total = carrito.PrecioTotal });
+            }
+            return Json(new { success = false });
+        }
+
+        [HttpPost]
+        public async Task<IActionResult> Delete(int CarritoItemId)
+        {
+            var carrito = await _unitWork.CarritoItemsRepo.ObtenerAsync(CarritoItemId);
+            if (carrito is null)
+            {   
+                return NotFound();
+            }
+
+            _unitWork.CarritoItemsRepo.Eliminar(carrito);
+            await _unitWork.GuardarAsync();
+            return RedirectToAction("Index");
         }
     }
 }

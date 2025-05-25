@@ -97,22 +97,69 @@
 
                 <!-- Insumos -->
                 <div class="mb-6">
-                    <label class="block text-gray-600 font-medium mb-2">Insumos <span class="text-red-500">*</span></label>
-                    <table class="w-full border-collapse bg-white rounded-lg shadow-md" id="insumosTable">
-                        <thead class="bg-gray-200 text-gray-700">
+                    <label class="block text-gray-600 font-medium mb-2">Insumos <span
+                            class="text-red-500">*</span></label>
+
+                    <table id="tablaInsumos" class="w-full border-collapse bg-white rounded-lg shadow-md text-sm">
+                        <thead class="bg-gray-200">
                             <tr>
-                                <th class="px-4 py-3 text-left text-sm font-semibold">Insumo</th>
-                                <th class="px-4 py-3 text-left text-sm font-semibold">Cantidad</th>
-                                <th class="px-4 py-3 text-left text-sm font-semibold">Unidad de Medida</th>
-                                <th class="px-4 py-3 text-center text-sm font-semibold">Acción</th>
+                                <th class="px-4 py-2">Insumo</th>
+                                <th class="px-4 py-2">Cantidad</th>
+                                <th class="px-4 py-2 text-center">Acción</th>
                             </tr>
                         </thead>
-                        <tbody class="divide-y divide-gray-200"></tbody>
+                        <tbody>
+                            @if(Model.InsumosSeleccionados != null){
+                                @for (int i = 0; i < Model.InsumosSeleccionados.Count; i++)
+                                {
+                                    <tr>
+                                        <td class="px-4 py-2">
+                                            <select asp-for="InsumosSeleccionados[@i].InsumoId" asp-items="Model.InsumosList"
+                                                class="w-full border rounded px-2 py-1">
+                                                <option disabled selected>--Seleccione--</option>
+                                            </select>
+                                        </td>
+                                        <td class="px-4 py-2">
+                                            <input asp-for="InsumosSeleccionados[@i].Cantidad" type="number" step="0.01" min="0"
+                                                class="w-full border rounded px-2 py-1" />
+                                        </td>
+                                        <td class="text-center">
+                                            <button type="button" class="text-red-600" onclick="quitarFila(this)">
+                                                <i class="bi bi-trash"></i>
+                                            </button>
+                                        </td>
+                                    </tr>
+                                }
+                            }
+
+                        </tbody>
                     </table>
-                    <button type="button" class="mt-4 inline-flex items-center px-4 py-2 bg-gradient-to-r from-yellow-600 to-yellow-800 text-white rounded-full hover:bg-gradient-to-r hover:from-yellow-700 hover:to-yellow-900 transition duration-300 ease-in-out transform hover:scale-105 animate-pulse" onclick="addInsumoRow()">
-                        <i class="bi bi-plus-circle mr-2"></i> Añadir Insumo
-                    </button>
+
+                    <!-- Selector + botón para agregar -->
+                    <div class="flex items-center gap-4 mt-4">
+                        <select id="ddlInsumos" class="flex-1 border rounded px-3 py-1">
+                            <option disabled selected>--Selecciona un insumo--</option>
+                            @if(Model.InsumosList != null)
+                            {
+                                @foreach (var insumo in Model.InsumosList!)
+                                {
+                                    <option value="@insumo.Value">@insumo.Text</option>
+                                }
+                            }
+                        </select>
+
+                        <input id="txtCantidad" type="number" step="0.01" min="0" class="w-32 border rounded px-2 py-1"
+                            placeholder="Cantidad" />
+
+                        <button type="button" onclick="agregarFila()"
+                            class="bg-yellow-600 text-white px-4 py-2 rounded">
+                            <i class="bi bi-plus-circle"></i> Añadir Insumo
+                        </button>
+
+                    </div>
                 </div>
+
+
 
                 <!-- Imagen -->
                 <div class="mb-6">
@@ -120,7 +167,6 @@
                     <input type="file" name="imageFile" accept="image/*" required class="block w-full text-sm text-gray-500 file:mr-4 file:py-2 file:px-4 file:rounded-full file:border-0 file:text-sm file:font-semibold file:bg-yellow-500 file:text-white hover:file:bg-yellow-600" />
                     <span asp-validation-for="producto.ImagenUrl" class="text-red-600 text-sm"></span>
                 </div>
-
                 <!-- Estado -->
                 <div class="mb-6">
                     <label class="block text-gray-600 font-medium mb-2">Estado <span class="text-red-500">*</span></label>
@@ -131,7 +177,6 @@
                     </select>
                     <span asp-validation-for="producto.Estado" class="text-red-600 text-sm"></span>
                 </div>
-
                 <!-- Action Buttons -->
                 <div class="flex justify-end space-x-4 mt-6">
                     <button type="submit" class="inline-flex items-center px-10 py-4 bg-gradient-to-r from-red-600 to-yellow-500 text-white rounded-full hover:bg-gradient-to-r hover:from-red-700 hover:to-yellow-600 transition duration-300 ease-in-out transform hover:scale-115 animate-pulse shadow-xl text-xl font-bold">
@@ -148,119 +193,65 @@
 
 @section Scripts {
     <partial name="_ValidationScriptsPartial" />
-    @* <script>
-        // Lista de insumos desde ViewBag
-        const insumos = @Html.Raw(Json.Serialize(ViewBag.InsumosList ?? new List<SisNikosPizza.Domain.Models.Insumo>()));
-        console.log('Insumos:', insumos);
 
-        function addInsumoRow() {
-            if (!insumos || insumos.length === 0) {
-                alert('No hay insumos disponibles para añadir. Por favor, crea algunos insumos primero.');
+    <script>
+
+        console.log("Iniciando script...");
+        let contador = @((Model.InsumosSeleccionados?.Count ?? 0));
+
+        console.log("Contador inicial: " + contador);
+
+        function agregarFila() {
+            const insumoSelect = document.getElementById('ddlInsumos');
+            const cantidadInput = document.getElementById('txtCantidad');
+            const tabla = document.getElementById('tablaInsumos').getElementsByTagName('tbody')[0];
+
+            const insumoId = insumoSelect.value;
+            const insumoText = insumoSelect.options[insumoSelect.selectedIndex].text;
+            const cantidad = cantidadInput.value;
+
+            if (!insumoId || cantidad <= 0) {
+                alert('Selecciona un insumo y una cantidad válida.');
                 return;
             }
 
-            const tbody = document.querySelector('#insumosTable tbody');
-            const tr = document.createElement('tr');
+            // Crear nueva fila
+            const fila = tabla.insertRow();
 
-            // Columna: Insumo (select)
-            const tdInsumo = document.createElement('td');
-            const select = document.createElement('select');
-            select.name = 'insumoIds';
-            select.className = 'w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-yellow-500 focus:border-yellow-500 insumo-select';
-            select.required = true;
-            select.addEventListener('change', () => updateUnidadMedida(select));
+            // Insumo (select oculto y texto)
+            const celdaInsumo = fila.insertCell();
+            celdaInsumo.innerHTML = `
+                <input type="hidden" name="InsumosSeleccionados[${contador}].InsumoId" value="${insumoId}" />
+                <input type="text" value="${insumoText}" disabled class="w-full border rounded px-2 py-1" />
+            `;
 
-            const defaultOption = document.createElement('option');
-            defaultOption.value = '';
-            defaultOption.textContent = '--Seleccionar insumo--';
-            select.appendChild(defaultOption);
+            // Cantidad
+            const celdaCantidad = fila.insertCell();
+            celdaCantidad.innerHTML = `
+                <input type="number" name="InsumosSeleccionados[${contador}].Cantidad" value="${cantidad}" step="0.01" min="0" class="w-full border rounded px-2 py-1" />
+            `;
 
-            insumos.forEach(insumo => {
-                const option = document.createElement('option');
-                option.value = insumo.insumoId;
-                option.textContent = insumo.nombre;
-                option.dataset.unidad = insumo.unidadeDeMedida;
-                select.appendChild(option);
-            });
-            tdInsumo.appendChild(select);
+            // Botón eliminar
+            const celdaAccion = fila.insertCell();
+            celdaAccion.className = "text-center";
+            celdaAccion.innerHTML = `
+                <button type="button" class="text-red-600" onclick="quitarFila(this)">
+                    <i class="bi bi-trash"></i>
+                </button>
+            `;
 
-            // Columna: Cantidad (input)
-            const tdCantidad = document.createElement('td');
-            const inputCantidad = document.createElement('input');
-            inputCantidad.type = 'number';
-            inputCantidad.name = 'insumoCantidades';
-            inputCantidad.className = 'w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-yellow-500 focus:border-yellow-500';
-            inputCantidad.step = '0.01';
-            inputCantidad.placeholder = 'Cantidad';
-            inputCantidad.min = '0.01';
-            inputCantidad.required = true;
-            tdCantidad.appendChild(inputCantidad);
+            // Limpiar inputs
+            insumoSelect.selectedIndex = 0;
+            cantidadInput.value = '';
 
-            // Columna: Unidad de Medida (input readonly)
-            const tdUnidad = document.createElement('td');
-            const inputUnidad = document.createElement('input');
-            inputUnidad.type = 'text';
-            inputUnidad.className = 'w-full px-4 py-2 border border-gray-300 rounded-lg bg-gray-100 unidad-medida';
-            inputUnidad.readOnly = true;
-            tdUnidad.appendChild(inputUnidad);
-
-            // Columna: Acción (botón eliminar)
-            const tdAccion = document.createElement('td');
-            const btnEliminar = document.createElement('button');
-            btnEliminar.type = 'button';
-            btnEliminar.className = 'px-4 py-2 bg-red-500 text-white rounded-full hover:bg-red-600 transition duration-300 transform hover:scale-105';
-            btnEliminar.innerHTML = '<i class="bi bi-trash"></i>';
-            btnEliminar.addEventListener('click', () => removeInsumoRow(btnEliminar));
-            tdAccion.className = 'text-center';
-            tdAccion.appendChild(btnEliminar);
-
-            // Agregar celdas a la fila
-            tr.append(tdInsumo, tdCantidad, tdUnidad, tdAccion);
-            tbody.appendChild(tr);
+            // Incrementar contador
+            contador++;
         }
 
-        function removeInsumoRow(button) {
-            button.closest('tr').remove();
+        function quitarFila(boton) {
+            const fila = boton.closest("tr");
+            fila.remove();
         }
+    </script>
 
-        function updateUnidadMedida(select) {
-            const unidadMedidaInput = select.closest('tr').querySelector('.unidad-medida');
-            const selectedOption = select.options[select.selectedIndex];
-            unidadMedidaInput.value = selectedOption.dataset.unidad || '';
-        }
-
-        // Validar antes de enviar el formulario
-        document.querySelector('form').addEventListener('submit', (e) => {
-            const rows = document.querySelectorAll('#insumosTable tbody tr');
-            if (rows.length === 0) {
-                e.preventDefault();
-                alert('Debes añadir al menos un insumo.');
-                return;
-            }
-
-            let isValid = true;
-            const selectedInsumos = [];
-            rows.forEach(row => {
-                const select = row.querySelector('.insumo-select');
-                const cantidad = row.querySelector('input[name="insumoCantidades"]');
-                if (!select.value || !cantidad.value || parseFloat(cantidad.value) <= 0) {
-                    isValid = false;
-                    alert('Por favor, selecciona un insumo y especifica una cantidad válida para todas las filas.');
-                    return;
-                }
-                if (selectedInsumos.includes(select.value)) {
-                    isValid = false;
-                    alert('No puedes seleccionar el mismo insumo más de una vez.');
-                    return;
-                }
-                selectedInsumos.push(select.value);
-            });
-
-            if (!isValid) {
-                e.preventDefault();
-            }
-        });
-    </script> *@
 }
-
-<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>

@@ -1,11 +1,5 @@
-﻿using Microsoft.Extensions.Logging;
-using SisNikosPizza.Infrastructure.Context;
+﻿using SisNikosPizza.Infrastructure.Context;
 using SisNikosPizza.Repository.Interfaces;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace SisNikosPizza.Repository.Implements
 {
@@ -14,24 +8,23 @@ namespace SisNikosPizza.Repository.Implements
         private readonly SisNikosPizzaBbContext _db;
 
         public ICategoriaRepository CategoriaRepo { get; private set; }
+        public ICarritoItemsRepository CarritoItemsRepo { get; private set; }
         public IDetallesPedidoRepository DetallesPedidoRepo { get; private set; }
         public IInsumoRepository InsumoRepo { get; private set; }
         public IPedidoRepository PedidoRepo { get; private set; }
         public IProductoInsumoRepo ProductoInsumoRepo { get; private set; }
         public IProductoRepository ProductoRepo { get; private set; }
         public IProveedorRepository ProveedorRepo { get; private set; }
-        public IVentaRepository VentaRepo { get; private set; }
-
 
         public UnitWork(SisNikosPizzaBbContext db)
         {
             _db = db;
             CategoriaRepo = new CategoriaRepository(_db);
+            CarritoItemsRepo = new CarritoItemsRepository(_db);
             ProductoRepo = new ProductoRepository(_db);
             ProveedorRepo = new ProveedorRepository(_db);
             PedidoRepo = new PedidoRepository(_db);
             DetallesPedidoRepo = new DetallesPedidoRepository(_db);
-            VentaRepo = new VentaRepository(_db);
             InsumoRepo = new InsumoRepository(_db);
             ProductoInsumoRepo = new ProductoInsumoImpl(_db);
 
@@ -41,9 +34,9 @@ namespace SisNikosPizza.Repository.Implements
             _db.Dispose();
         }
 
-        public async Task GuradarAsync()
+        public async Task GuardarAsync()
         {
-           await  _db.SaveChangesAsync();
+            await _db.SaveChangesAsync();
         }
     }
 }

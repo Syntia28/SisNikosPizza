@@ -11,6 +11,7 @@ namespace SisNikosPizza.Infrastructure.Context
         { }
 
         public DbSet<Categoria> categoria { get; set; }
+        public DbSet<CarritoItems> carritoItems { get; set; }
         public DbSet<Producto> producto { get; set; }
         public DbSet<Insumo> insumo { get; set; }
         public DbSet<Proveedor> proveedores { get; set; }

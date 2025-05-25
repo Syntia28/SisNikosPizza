@@ -10,7 +10,7 @@ namespace SisNikosPizza.Domain.Models
     {
         public int InsumoId { get; set; }
         public int ProveedorId { get; set; }
-        public Proveedor Proveedor { get; set; }
+        public Proveedor? Proveedor { get; set; }
         public string Nombre { get; set; }
         public string Descripcion { get; set; }
         public float Precio { get; set; }

@@ -2,7 +2,8 @@
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using SisNikosPizza.Domain.Models;
-using SisNikosPizza.Models;
+using SisNikosPizza.Domain.ViewModels;
+
 using SisNikosPizza.Repository.Interfaces;
 using SisNikosPizza.Utilidades;
 
@@ -39,7 +40,7 @@ namespace SisNikosPizza.Controllers
         {
             var pedidosDelivery = await _unitWork.DetallesPedidoRepo.ObtenerTodosAsync(
                 filtro: p => p.Pedido.TipoPedido == VCG.TipoPedido.Delivery,
-                ordenarPor: p => p.OrderByDescending(p => p.Pedido.CreatedAt),
+                ordenarPor: p => p.OrderByDescending(p => p.Pedido.FechaPedido),
                 incluirPropiedades: "Pedido,Pedido.Owner,Producto"
             );
 
@@ -75,161 +76,70 @@ namespace SisNikosPizza.Controllers
 
         }
 
-
-        [Authorize]
-        [HttpGet]
-        public async Task<ActionResult> Nuevo(string TipoPedido)
-        {
-            string baseUrl = $"{Request.Scheme}://{Request.Host}/images";
-            var carrito = await _unitWork.CarritoRepo.ObtenerCarritoDeUsuario(_userManager.GetUserId(User),baseUrl);
-
-
-           var carritoProductos = carrito.CarritoProductos;
-            var nuevoPedidoVista = new NuevoPedidoVista();
-            {
-                CarritoProductos = carritoProductos.ToList();
-                Pedido = new Pedido();
-            };
-            ViewBag.TipoPedido = TipoPedido;
-            return View(nuevoPedidoVista);
-        }
-
-
-
-
-
         [Authorize]
         [HttpPost]
-        public async Task<ActionResult> CrearPedido(Pedido formPedido)
+        public async Task<ActionResult> CrearPedido(VMDCarrito VMD)
         {
-            // Obtener el carrito del usuario
-            var userId = _userManager.GetUserId(User);
-            var carrito = await _unitWork.CarritoRepo.ObtenerCarritoDeUsuario(userId, "");
-            var carritoProductos = carrito.CarritoProductos;
+            var userSign = await _userManager.GetUserAsync(User);
 
-            // Validar si el carrito está vacío
-            if (!carritoProductos.Any())
+            if (userSign == null)
             {
-                TempData["ErrorCarroVacio"] = "El carrito está vacío.";
-                return RedirectToAction("Nuevo", new { TipoPedido = formPedido.TipoPedido });
+                return RedirectToAction("Login", "Account");
             }
 
-            // Validar si el tipo de pedido es nulo o vacío
-            if (string.IsNullOrEmpty(formPedido.TipoPedido))
+            VMD.Pedido.UserId = userSign.Id;
+            VMD.Pedido.EstadoPedido = VCG.EstadoPedido.Pendiente;
+            VMD.Pedido.FechaPedido = DateTime.Now;
+
+            ModelState.Remove("Pedido.UserId");
+            ModelState.Remove("Pedido.EstadoPedido");
+            for (int i = 0; i < VMD.listaCarritoItems.Count; i++)
             {
-                TempData["ErrorTipoPedido"] = "Tipo de pedido es requerido.";
-                return RedirectToAction("Nuevo", new { TipoPedido = formPedido.TipoPedido });
+                ModelState.Remove($"listaCarritoItems[{i}].UsuarioId");
             }
 
-            // Crear el pedido
-            var pedido = new Pedido
+            if (ModelState.IsValid)
             {
-                UserId = userId,
-                DetallePedido = new List<DetallePedido>(),
-                FechaPedido = DateTime.Now,
-                TipoPedido = formPedido.TipoPedido,
-                EstadoPedido = VCG.EstadoPedido.Pendiente
-            };
+                await _unitWork.PedidoRepo.AgregarAsync(VMD.Pedido);
+                await _unitWork.GuardarAsync();
 
-            // Validar campos específicos del tipo de pedido
-            if (formPedido.TipoPedido == VCG.TipoPedido.Delivery)
-            {
-                if (string.IsNullOrEmpty(formPedido.Telefono))
-                    return RedirectToAction("Nuevo", new { TipoPedido = formPedido.TipoPedido });
-                if (string.IsNullOrEmpty(formPedido.Direccion))
-                    return RedirectToAction("Nuevo", new { TipoPedido = formPedido.TipoPedido });
-                if (string.IsNullOrEmpty(formPedido.Referencia))
-                    return RedirectToAction("Nuevo", new { TipoPedido = formPedido.TipoPedido });
-
-
-
-                pedido.Telefono = formPedido.Telefono;
-                pedido.Direccion = formPedido.Direccion;
-                pedido.Referencia = formPedido.Referencia;
-            }
-            else if (formPedido.TipoPedido == VCG.TipoPedido.Recoger)
-            {
-                if (!formPedido.FechaRecogo.HasValue)
+                if (VMD.listaCarritoItems == null || !VMD.listaCarritoItems.Any())
                 {
-                    TempData["ErrorFechaRecogo"] = "Fecha de recogo es requerida.";
-                    return RedirectToAction("Nuevo", new { TipoPedido = formPedido.TipoPedido });
+                    return RedirectToAction(nameof(Index));
                 }
-                pedido.FechaRecogo = formPedido.FechaRecogo;
-            }
-            else if (formPedido.TipoPedido == VCG.TipoPedido.Mesa)
-            {
-                if (string.IsNullOrEmpty(formPedido.Mesa))
+
+                foreach (var item in VMD.listaCarritoItems)
                 {
-                    TempData["ErrorMesa"] = "Mesa es requerida.";
-                    return RedirectToAction("Nuevo", new { TipoPedido = formPedido.TipoPedido });
+                    var DetallePedido = new DetallePedido()
+                    {
+                        PedidoId = VMD.Pedido.PedidoId,
+                        ProductoId = item.ProductoId,
+                        Cantidad = item.Cantidad,
+                        PrecioUnitario = item.PrecioUnitario,
+                        PrecioTotal = item.PrecioTotal
+                    };
+                    await _unitWork.DetallesPedidoRepo.AgregarAsync(DetallePedido);
+                    var carritoItems = _unitWork.CarritoItemsRepo.ListarCarritoItems(userSign.Id).ToList();
+                    foreach (var carritoItem in carritoItems)
+                    {
+                        _unitWork.CarritoItemsRepo.Eliminar(carritoItem);
+                    }
+                    
+                    await _unitWork.GuardarAsync();
                 }
-                pedido.Mesa = formPedido.Mesa;
+                return RedirectToAction(nameof(Index));
             }
-
-            // Crear los detalles del pedido usando IEnumerable
-            pedido.DetallePedido = carritoProductos.Select(carritoProducto => new DetallePedido
+            else
             {
-                ProductoId = carritoProducto.ProductoId,
-                Cantidad = carritoProducto.Cantidad
-            }).ToList();
-
-            // Guardar el pedido
-            await _unitWork.PedidoRepo.AgregarAsync(pedido);
-            await _unitWork.GuradarAsync();
-
-            // Vaciar el carrito del usuario
-            await _unitWork.CarritoRepo.VaciarCarrito(userId);
-
-            // Redirigir al índice de pedidos
-            return RedirectToAction(nameof(Index));
+                return Content("error");
+            }
         }
-
-
 
         [Authorize(Roles = VCG.Role_Admin)]
         [HttpGet]
         public async Task<ActionResult> Cobrar(int id)
         {
-
-            string baseUrl = $"{Request.Scheme}://{Request.Host}/images";
-
-            //obtener el pedido de un usuario
-            Pedido pedido = await _unitWork.PedidoRepo.ObtenerPedidoDetallado(id, baseUrl);
-
-            if (pedido == null)
-            {
-                return NotFound();
-            }
-
-            CobrarPedidoModel cobrarPedidoModel = new CobrarPedidoModel()
-            {
-                Pedido = pedido
-            };
-            return View(cobrarPedidoModel);
-        }
-
-      
-        // GET: PedidodsController/Delete/5
-        public ActionResult Anular(int id)
-        {
             return View();
-        }
-
-        // POST: PedidodsController/Delete/5
-        [Authorize]
-        [ValidateAntiForgeryToken]
-        //only admin
-        [HttpPost]
-        public ActionResult AnularPedido(int id, IFormCollection collection)
-        {
-            try
-            {
-                return RedirectToAction(nameof(Index));
-            }
-            catch
-            {
-                return View();
-            }
         }
     }
 }

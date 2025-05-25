@@ -6,16 +6,16 @@ using System.Threading.Tasks;
 
 namespace SisNikosPizza.Repository.Interfaces
 {
-    public  interface IUniwork : IDisposable
+    public interface IUniwork : IDisposable
     {
         ICategoriaRepository CategoriaRepo { get; }
+        ICarritoItemsRepository CarritoItemsRepo { get; }
         IDetallesPedidoRepository DetallesPedidoRepo { get; }
         IInsumoRepository InsumoRepo { get; }
         IPedidoRepository PedidoRepo { get; }
         IProductoInsumoRepo ProductoInsumoRepo { get; }
         IProductoRepository ProductoRepo { get; }
         IProveedorRepository ProveedorRepo { get; }
-        IVentaRepository VentaRepo { get; }
-        Task GuradarAsync();
+        Task GuardarAsync();
     }
 }

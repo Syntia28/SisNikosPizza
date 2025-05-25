@@ -376,50 +376,53 @@
                         </tr>
                     </thead>
                     <tbody>
-                        @foreach (var pedido in Model)
+                        @if(Model != null && Model.Any())
                         {
-                            <tr>
-                                <td>@pedido.FechaPedido.ToString("dd/MM/yyyy HH:mm")</td>
-                                <td>@pedido.User.NormalizedEmail</td>
-                                <td>S/. @pedido.DetallePedido.First().PrecioTotal</td>
-                                <td>
-                                    @switch (pedido.EstadoPedido)
-                                    {
-                                        case VCG.EstadoPedido.Pagado:
-                                            <span class="badge bg-success">Pagado</span>
-                                            break;
-                                        case VCG.EstadoPedido.Entregado:
-                                            <span class="badge bg-primary">Entregado</span>
-                                            break;
-                                        case VCG.EstadoPedido.Anulado:
-                                            <span class="badge bg-danger">Anulado</span>
-                                            break;
-                                        default:
-                                            <span class="badge bg-warning">Pendiente</span>
-                                            break;
-                                    }
-                                </td>
-                                <td class="text-center">
-                                    <a class="btn btn-info btn-custom me-1" asp-controller="Pedidos" asp-action="Detalles" asp-route-id="@pedido.PedidoId" title="Ver Detalles">
-                                        <i class="bi bi-eye"></i>
-                                    </a>
-                                    @if (User.IsInRole(VCG.Role_Admin))
-                                    {
-                                        if (pedido.EstadoPedido != VCG.EstadoPedido.Pagado)
+                            @foreach (var pedido in Model)
+                            {
+                                <tr>
+                                    <td>@pedido.FechaPedido.ToString("dd/MM/yyyy HH:mm")</td>
+                                    <td>@pedido.User.NormalizedEmail</td>
+                                    <td>S/. @pedido.DetallePedido.First().</td>
+                                    <td>
+                                        @switch (pedido.EstadoPedido)
                                         {
-                                            <a class="btn btn-success btn-custom" asp-controller="Pedidos" asp-action="Cobrar" asp-route-id="@pedido.PedidoId" title="Cobrar Pedido">
-                                                <i class="bi bi-cash-coin"></i>
-                                            </a>
+                                            case VCG.EstadoPedido.Pagado:
+                                                <span class="badge bg-success">Pagado</span>
+                                                break;
+                                            case VCG.EstadoPedido.Entregado:
+                                                <span class="badge bg-primary">Entregado</span>
+                                                break;
+                                            case VCG.EstadoPedido.Anulado:
+                                                <span class="badge bg-danger">Anulado</span>
+                                                break;
+                                            default:
+                                                <span class="badge bg-warning">Pendiente</span>
+                                                break;
                                         }
-                                        else
+                                    </td>
+                                    <td class="text-center">
+                                        <a class="btn btn-info btn-custom me-1" asp-controller="Pedidos" asp-action="Detalles" asp-route-id="@pedido.PedidoId" title="Ver Detalles">
+                                            <i class="bi bi-eye"></i>
+                                        </a>
+                                        @if (User.IsInRole(VCG.Role_Admin))
                                         {
-                                            <button class="btn btn-success btn-custom" disabled title="Ya Pagado">
-                                                <i class="bi bi-cash-coin"></i>
-                                            </button>
+                                            if (pedido.EstadoPedido != VCG.EstadoPedido.Pagado)
+                                            {
+                                                <a class="btn btn-success btn-custom" asp-controller="Pedidos" asp-action="Cobrar" asp-route-id="@pedido.PedidoId" title="Cobrar Pedido">
+                                                    <i class="bi bi-cash-coin"></i>
+                                                </a>
+                                            }
+                                            else
+                                            {
+                                                <button class="btn btn-success btn-custom" disabled title="Ya Pagado">
+                                                    <i class="bi bi-cash-coin"></i>
+                                                </button>
+                                            }
                                         }
-                                    }
-                                </td>
-                            </tr>
+                                    </td>
+                                </tr>
+                            }   
                         }
                     </tbody>
                 </table>

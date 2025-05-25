@@ -1,6 +1,6 @@
-﻿using Maquinarias.Domain.ViewModels;
-using Microsoft.AspNetCore.Mvc;
+﻿using Microsoft.AspNetCore.Mvc;
 using SisNikosPizza.Domain.Models;
+using SisNikosPizza.Domain.ViewModels;
 using SisNikosPizza.Repository.Interfaces;
 
 namespace SisNikosPizza.Controllers
@@ -8,7 +8,7 @@ namespace SisNikosPizza.Controllers
     public class ProductoController : Controller
     {
         private readonly IUniwork _unitWork;
-         private readonly IWebHostEnvironment _webHostEnvironment;
+        private readonly IWebHostEnvironment _webHostEnvironment;
 
         public ProductoController(
             //HotelElCieloDbContext context,
@@ -18,8 +18,8 @@ namespace SisNikosPizza.Controllers
         {
             //_context = context;
             _unitWork = unitWork;
-               _webHostEnvironment = webHostEnvironment ?? throw new ArgumentNullException(nameof(webHostEnvironment));
-  
+            _webHostEnvironment = webHostEnvironment ?? throw new ArgumentNullException(nameof(webHostEnvironment));
+
         }
 
         [HttpGet]
@@ -34,37 +34,25 @@ namespace SisNikosPizza.Controllers
                 item.ProductoInsumos = insumos.ToList();
             }
 
-            // Construir la URL completa para cada producto
-            string baseUrl = $"{Request.Scheme}://{Request.Host}/images";
-            foreach (var producto in productos)
-            {
-                if (!string.IsNullOrEmpty(producto.ImagenUrl))
-                {
-                    producto.ImagenUrl = $"{baseUrl}/{producto.ImagenUrl}";
-                }
-            }
-
             return View(productos);
         }
-
-        // Categories/Create
-        // Rooms/Create
 
         [HttpGet]
         public async Task<IActionResult> Create()
         {
             VMDProducto ProductoVM = new VMDProducto()
             {
-                producto = new Producto(), 
+                producto = new Producto(),
                 CategoriasList = _unitWork.ProductoRepo.ListarCategorias("categorias"),
                 InsumosList = _unitWork.ProductoRepo.ListarInsumos("insumos"),
             };
+
             return View(ProductoVM);
         }
 
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Create(VMDProducto VMDP, int[] insumoIds, float[] insumoCantidades)
+        public async Task<IActionResult> Create(VMDProducto VMDP)
         {
             string rutaPrincipal = _webHostEnvironment.WebRootPath;
             var archivos = HttpContext.Request.Form.Files;
@@ -72,7 +60,7 @@ namespace SisNikosPizza.Controllers
             if (archivos.Count > 0)
             {
                 string nombreArchivo = Guid.NewGuid().ToString();
-                var subidas = Path.Combine(rutaPrincipal, @"imagenes\");
+                var subidas = Path.Combine(rutaPrincipal, @"productos");
 
                 if (!Directory.Exists(subidas)) Directory.CreateDirectory(subidas);
 
@@ -81,13 +69,29 @@ namespace SisNikosPizza.Controllers
 
                 using (var fileStreams = new FileStream(Path.Combine(subidas, nombreArchivo + extension), FileMode.Create)) await archivo.CopyToAsync(fileStreams);
 
-                VMDP.producto.ImagenUrl = @"\imagenes\" + nombreArchivo + extension;
+                VMDP.producto.ImagenUrl = @"\productos\" + nombreArchivo + extension;
             }
 
             if (ModelState.IsValid)
             {
                 await _unitWork.ProductoRepo.AgregarAsync(VMDP.producto);
-                await _unitWork.GuradarAsync();
+                await _unitWork.GuardarAsync();
+
+                if (VMDP.InsumosSeleccionados != null)
+                {
+                    foreach (var item in VMDP.InsumosSeleccionados)
+                    {
+                        ProductoInsumo productoInsumo = new ProductoInsumo()
+                        {
+                            ProductoId = VMDP.producto.ProductoId, // ahora ya tiene el ID
+                            InsumoId = item.InsumoId,
+                            Cantidad = item.Cantidad
+                        };
+                        await _unitWork.ProductoInsumoRepo.AgregarAsync(productoInsumo);
+                    }
+                    await _unitWork.GuardarAsync();
+                }
+
 
                 TempData["Satisfactorio"] = "Producto creado correctamente.";
                 return RedirectToAction("Details", new { id = VMDP.producto.ProductoId });
@@ -104,7 +108,7 @@ namespace SisNikosPizza.Controllers
 
             VMDProducto PVM = new VMDProducto()
             {
-                producto = new Producto(), 
+                producto = new Producto(),
                 CategoriasList = _unitWork.ProductoRepo.ListarCategorias("categorias"),
                 InsumosList = _unitWork.ProductoRepo.ListarInsumos("insumos"),
             };
@@ -135,7 +139,7 @@ namespace SisNikosPizza.Controllers
                 VMDP.producto.UpdatedAt = DateTime.Now;
 
                 //actualizar propiedades del producto
-                productoDB.Nombre= VMDP.producto.Nombre;
+                productoDB.Nombre = VMDP.producto.Nombre;
                 productoDB.Descripcion = VMDP.producto.Descripcion;
                 productoDB.Descripcion = VMDP.producto.Descripcion;
                 productoDB.CategoriaId = VMDP.producto.CategoriaId;
@@ -159,13 +163,13 @@ namespace SisNikosPizza.Controllers
                     }
 
                     // Guardar solo el nombre del archivo en la base de datos
-                  
+
                     productoDB.ImagenUrl = uniqueFileName;
                 }
 
 
                 // Actualizar los datos del producto en la base de datos
-                await _unitWork.GuradarAsync();
+                await _unitWork.GuardarAsync();
                 return RedirectToAction("Index");
             }
 
@@ -187,7 +191,7 @@ namespace SisNikosPizza.Controllers
             // Construir la URL completa de la imagen
             if (!string.IsNullOrEmpty(producto.ImagenUrl))
             {
-                string baseUrl = $"{Request.Scheme}://{Request.Host}/images";
+                string baseUrl = $"{Request.Scheme}://{Request.Host}";
                 producto.ImagenUrl = $"{baseUrl}/{producto.ImagenUrl}";
             }
 
@@ -223,7 +227,7 @@ namespace SisNikosPizza.Controllers
                 //_context.Category.Remove(category);
                 //await _context.SaveChangesAsync();
                 _unitWork.ProductoRepo.Eliminar(producto);
-                await _unitWork.GuradarAsync();
+                await _unitWork.GuardarAsync();
                 return RedirectToAction("Index");
             }
 
