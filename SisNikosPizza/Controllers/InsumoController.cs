@@ -46,9 +46,6 @@ namespace SisNikosPizza.Controllers
             insumo.CreatedAt = DateTime.Now;
             insumo.UpdatedAt = DateTime.Now;
 
-            Console.WriteLine($"Estado del modelo: {ModelState.IsValid}");
-            Console.WriteLine($"ProveedorId recibido: {insumo.ProveedorId}");
-
             if (ModelState.IsValid)
             {
                 try
@@ -64,18 +61,13 @@ namespace SisNikosPizza.Controllers
                     }
 
                     await _unitWork.InsumoRepo.AgregarAsync(insumo);
-                    await _unitWork.GuradarAsync();
+                    await _unitWork.GuardarAsync();
                     TempData["Satisfactorio"] = "Insumo creado correctamente.";
                     return RedirectToAction("Details", new { id = insumo.InsumoId });
                 }
                 catch (Exception ex)
                 {
                     TempData["Error"] = $"Ocurrió un error al guardar el insumo: {ex.Message}";
-                    Console.WriteLine($"Error al guardar: {ex.Message}");
-                    if (ex.InnerException != null)
-                    {
-                        Console.WriteLine($"Error interno: {ex.InnerException.Message}");
-                    }
                 }
             }
             else
@@ -123,7 +115,7 @@ namespace SisNikosPizza.Controllers
                 try
                 {
                     _unitWork.InsumoRepo.Actualizar(insumoForm);
-                    await _unitWork.GuradarAsync();
+                    await _unitWork.GuardarAsync();
                     TempData["Satisfactorio"] = "Insumo actualizado correctamente.";
                     return RedirectToAction("Index");
                 }
@@ -179,7 +171,7 @@ namespace SisNikosPizza.Controllers
                 try
                 {
                     _unitWork.InsumoRepo.Eliminar(insumo);
-                    await _unitWork.GuradarAsync();
+                    await _unitWork.GuardarAsync();
                     TempData["Satisfactorio"] = "Insumo eliminado correctamente.";
                     return RedirectToAction("Index");
                 }

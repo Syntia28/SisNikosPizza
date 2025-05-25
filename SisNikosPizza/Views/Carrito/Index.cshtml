@@ -1,46 +1,22 @@
-﻿@using SisNikosPizza.Domain.Models
-@model List<CarritoProducto>
+﻿@using SisNikosPizza.Utilidades
+@model SisNikosPizza.Domain.ViewModels.VMDCarrito
 
 @{
     ViewData["Title"] = "Carrito de Compras";
     Layout = "~/Views/Shared/_Admin.cshtml";
 }
 
-<!DOCTYPE html>
-<html lang="es">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>@ViewData["Title"]</title>
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-QWTKZyjpPEjISv5WaRU9OFeRpok6YctnYmDr5pNlyT2bRjXh0JMhjY6hW+ALEwIH" crossorigin="anonymous">
     <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons/font/bootstrap-icons.css" rel="stylesheet">
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Poppins:wght@600;700&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" integrity="sha512-iecdLmaskl7CVkqkXNQ/ZH/XLlvWZOJyj7Yy7tcenmpD1ypASozpmT/E0iPtmFIB46ZmdtAc9eNBvH0H/ZpiBw==" crossorigin="anonymous" referrerpolicy="no-referrer" />
-   
-</head>
-<body>
-    <div class="container-fluid">
-        <div class="text-center mb-5">
-            <h2 class="text-title">Tu Carrito de Compras</h2>
-            <p class="text-subtitle">¡Revisa tu pedido antes de finalizar!</p>
-        </div>
+    <link rel="stylesheet" href="~/css/carrito.index.css" asp-append-version="true" />
 
-        <div class="lottie-container text-center d-flex justify-content-center align-items-center">
-            <dotlottie-player id="lottie-player" src="https://lottie.host/7cc5c610-8081-4951-9ff8-f03dfb0a38d0/vO4r4zS6zv.lottie"
-                              background="transparent" speed="1" style="width: 190px; height: 190px" loop autoplay aria-label="Animación de carrito de compras">
-            </dotlottie-player>
-            <div id="lottie-fallback" class="d-none">
-                <img src="/images/fallback-cart.png" alt="Carrito de Compras" style="width: 190px; height: 190px; object-fit: contain;" />
-            </div>
-        </div>
-        <div class="text-center d-flex justify-content-center align-items-center">
-    <!-- Asegúrate de que el script esté cargado correctamente -->
-    @Html.Raw("<script src=\"https://unpkg.com/@dotlottie/player-component@2.7.12/dist/dotlottie-player.mjs\" type=\"module\"></script>")
-
-    <!-- Usa el componente dotlottie-player para cargar la animación -->
     
-</div>
-        @if (Model == null || !Model.Any())
+    <div class="container-fluid">
+        @Html.Raw("<script src=\"https://unpkg.com/@dotlottie/player-component@2.7.12/dist/dotlottie-player.mjs\" type=\"module\"></script>")
+   
+        @if (Model.listaCarritoItems == null || !Model.listaCarritoItems.Any())
         {
             <div class="empty-cart">
                 <h4 class="text-danger mb-4">¡Tu carrito está vacío!</h4>
@@ -49,390 +25,248 @@
         }
         else
         {
-            <div class="row">
-                @foreach (var carritoItem in Model)
-                {
-                    <div class="col-12 col-md-6 col-lg-4 mb-4">
-                        <div class="card">
-                            <div class="card-header">
-                                <i class="fas fa-pizza-slice me-2"></i> Tu Pedido
-                            </div>
-                            <div class="card-body">
-                                <div class="row align-items-center">
-                                    <div class="col-12 col-md-5 mb-3 mb-md-0">
-                                        <div class="product-img-container">
-                                            <img src="@carritoItem.Producto.ImagenUrl" alt="@carritoItem.Producto.Nombre" class="product-img" />
-                                        </div>
-                                    </div>
-                                    <div class="col-12 col-md-7">
-                                        <div class="product-details">
-                                            <h5 class="mb-2">@carritoItem.Producto.Nombre</h5>
-                                            <p class="mb-1"><strong>Cantidad:</strong> <span class="badge bg-warning text-dark">@carritoItem.Cantidad</span></p>
-                                            <p class="mb-1"><strong>Precio Unitario:</strong> S/. @carritoItem.Producto.Precio</p>
-                                            <p class="mb-1"><strong>Total:</strong> <span class="text-success fw-bold">S/. @(carritoItem.Cantidad * carritoItem.Producto.Precio)</span></p>
-                                        </div>
-                                    </div>
-                                </div>
-                                <div class="action-buttons d-flex justify-content-end mt-3 gap-2">
-                                    <form asp-controller="Carrito" asp-action="IncrementarCantidad" method="post" class="d-inline-block">
-                                        <input type="hidden" name="productoId" value="@carritoItem.Producto.ProductoId" />
-                                        <button type="submit" class="btn btn-info btn-custom" title="Aumentar cantidad">
-                                            <i class="fas fa-plus"></i>
-                                        </button>
-                                    </form>
-                                    <form asp-controller="Carrito" asp-action="DecrementarCantidad" method="post" class="d-inline-block">
-                                        <input type="hidden" name="ProductoId" value="@carritoItem.Producto.ProductoId" />
-                                        <button type="submit" class="btn btn-warning btn-custom" title="Disminuir cantidad">
-                                            <i class="fas fa-minus"></i>
-                                        </button>
-                                    </form>
-                                    <form asp-controller="Carrito" asp-action="EliminarProducto" method="post" class="d-inline-block">
-                                        <input type="hidden" name="ProductoId" value="@carritoItem.Producto.ProductoId" />
-                                        <button type="submit" class="btn btn-danger btn-custom" title="Eliminar producto">
-                                            <i class="fas fa-trash"></i>
-                                        </button>
-                                    </form>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                }
-            </div>
+            @* opciones del tipo de pedido *@
 
-            <div class="mt-5">
-                <div class="summary-card p-4">
-                    <h4 class="text-center text-title mb-4">Resumen de tu Pago</h4>
-                    @{
-                        var subtotal = Math.Round(Model.Sum(item => item.Cantidad * item.Producto.Precio) * 0.82, 2);
-                        var impuestos = Math.Round(Model.Sum(item => item.Cantidad * item.Producto.Precio) * 0.18, 2);
-                        var total = Math.Round(subtotal + impuestos, 2);
-                    }
-                    <div class="d-flex justify-content-between mb-3">
-                        <span class="fw-bold">Subtotal:</span>
-                        <span>S/. @subtotal</span>
+            <div class="card-wrapper">
+                <div class="card">
+                    <div class="card-header">
+                        <dotlottie-player id="lottie-player" src="https://lottie.host/7cc5c610-8081-4951-9ff8-f03dfb0a38d0/vO4r4zS6zv.lottie"
+                              background="transparent" speed="1" style="position: absolute; top: 10px; right: 10px; width: 100px; height: 100px" loop autoplay aria-label="Animación de carrito de compras">
+                        </dotlottie-player>
+                        <h2>Nuevo Pedido</h2>
                     </div>
-                    <div class="d-flex justify-content-between mb-3">
-                        <span class="fw-bold">Impuestos (18%):</span>
-                        <span>S/. @impuestos</span>
-                    </div>
-                    <div class="d-flex justify-content-between mb-4">
-                        <span class="fw-bold text-success">Total:</span>
-                        <span class="text-success fs-5">S/. @total</span>
-                    </div>
-                    <div class="text-center">
-                        <a class="btn btn-finalizar" asp-controller="Pedidos" asp-action="Nuevo">Finalizar Pedido</a>
+                    <div class="card-body">
+                        @if (!Model.listaCarritoItems.Any())
+                        {
+                            <div class="empty-cart">
+                                <p class="text-muted fs-4 mb-4">¡Tu carrito está vacío!</p>
+                                <a href="/Carta" class="btn btn-primary">Descubre Nuestra Carta</a>
+                            </div>
+                        }
+                        else
+                        {
+                            <div class="table-responsive mb-5">
+                                <table class="table table-bordered table-hover align-middle">
+                                    <thead>
+                                        <tr>
+                                            <th></th>
+                                            <th>Producto</th>
+                                            <th>Cantidad</th>
+                                            <th>Precio</th>
+                                            <th>Total</th>
+                                            <th>Acciones</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        @foreach (var carritoItem in Model.listaCarritoItems)
+                                        {
+                                            <tr>
+                                                <td>
+                                                    <img src="@carritoItem.Producto.ImagenUrl" alt="@carritoItem.Producto.Nombre" class="img-fluid">
+                                                </td>
+                                                <td>@carritoItem.Producto.Nombre</td>
+                                                <td>@carritoItem.Cantidad</td>
+                                                <td>S/. @carritoItem.Producto.Precio</td>
+                                                <td>S/. @(carritoItem.Cantidad * carritoItem.Producto.Precio)</td>
+                                                <td>
+                                                    <div class="action-buttons d-flex justify-content-end mt-3 gap-2">
+                                                        <form asp-controller="Carrito" asp-action="Update" method="post" class="d-inline-block form-cantidad">
+                                                            <input type="hidden" name="CarritoItemId" value="@carritoItem.CarritoItemsId" />
+                                                            <input type="hidden" name="Cantidad" value="1" />
+                                                            <button type="submit" class="btn btn-info btn-custom" title="Aumentar cantidad">
+                                                                <i class="fas fa-plus"></i>
+                                                            </button>
+                                                        </form>
+                                                        <form asp-controller="Carrito" asp-action="Update" method="post" class="d-inline-block form-cantidad">
+                                                            <input type="hidden" name="CarritoItemId" value="@carritoItem.CarritoItemsId" />
+                                                            <input type="hidden" name="Cantidad" value="-1" />
+                                                            <button type="submit" class="btn btn-warning btn-custom" title="Disminuir cantidad">
+                                                                <i class="fas fa-minus"></i>
+                                                            </button>
+                                                        </form>
+                                                        <form asp-controller="Carrito" asp-action="Delete" method="post" class="d-inline-block">
+                                                            <input type="hidden" name="CarritoItemId" value="@carritoItem.CarritoItemsId" />
+                                                            <button type="submit" class="btn btn-danger btn-custom" title="Eliminar producto">
+                                                                <i class="fas fa-trash"></i>
+                                                            </button>
+                                                        </form>
+                                                    </div>
+                                                </td>
+                                            </tr>
+                                        }
+                                        <tr>
+                                                <td>
+                                                    <img src="~/logo/logo.png" alt="logo" class="img-fluid">
+                                                </td>
+                                                <td></td>
+                                                <td></td>
+                                                <td></td>
+                                                <td>S/. @Model.Total</td>
+                                                <td>
+                                                    
+                                                </td>
+                                            </tr>
+                                    </tbody>
+                                </table>
+                            </div>
+
+                            <form method="post" id="formPedido" asp-controller="Pedidos" asp-action="CrearPedido">
+                                @* lista para enviar al servidor *@
+                                @for (int i = 0; i < Model.listaCarritoItems.Count; i++)
+                                {
+                                    <input type="hidden" name="listaCarritoItems[@i].CarritoItemsId" value="@Model.listaCarritoItems[i].CarritoItemsId" />
+                                    <input type="hidden" name="listaCarritoItems[@i].ProductoId"     value="@Model.listaCarritoItems[i].ProductoId" />
+                                    <input type="hidden" name="listaCarritoItems[@i].Cantidad"       value="@Model.listaCarritoItems[i].Cantidad" />
+                                    <input type="hidden" name="listaCarritoItems[@i].PrecioUnitario" value="@Model.listaCarritoItems[i].PrecioUnitario" />
+                                    <input type="hidden" name="listaCarritoItems[@i].PrecioTotal"    value="@Model.listaCarritoItems[i].PrecioTotal" />
+                                }
+                                <input type="hidden" asp-for="@Model.Total" value="@Math.Round(Model.Total * new decimal(0.18) + Model.Total, 2)" />
+                                
+
+
+                                <div class="section-title">Detalles del Pedido</div>
+                                <div class="radio-group">
+                                    <input type="radio" name="TipoPedido" id="delivery" value="@VCG.TipoPedido.Delivery">
+                                    <label for="delivery">Delivery</label>
+
+                                    <input type="radio" name="TipoPedido" id="recoger" value="@VCG.TipoPedido.Recoger">
+                                    <label for="recoger">Recoger</label>
+
+                                    <input type="radio" name="TipoPedido" id="mesa" value="@VCG.TipoPedido.Mesa">
+                                    <label for="mesa">Mesa</label>
+                                </div>
+
+                                <div id="section-delivery" style="display:none;">
+                                    @* <!-- inputs de Teléfono, Dirección, Referencia --> *@
+                                    <input type="hidden" asp-for="@Model.Pedido.TipoPedido" value="@VCG.TipoPedido.Delivery" />
+                                    <div class="input-group mb-3">
+                                        <span class="input-group-text">📱</span>
+                                        <input type="text" asp-for="@Model.Pedido.Telefono" class="form-control" placeholder="Teléfono" required>
+                                    </div>
+                                    <div class="input-group mb-3">
+                                        <span class="input-group-text">🏠</span>
+                                        <input type="text" asp-for="@Model.Pedido.Direccion" class="form-control" placeholder="Dirección" required>
+                                    </div>
+                                    <div class="input-group mb-3">
+                                        <span class="input-group-text">📍</span>
+                                        <input type="text" asp-for="@Model.Pedido.Referencia" class="form-control" placeholder="Referencia">
+                                    </div>
+                                </div>
+                                <div id="section-recoger" style="display:none;">
+                                    @* <!-- inputs de FechaRecogo --> *@
+                                    <input type="hidden" asp-for="@Model.Pedido.TipoPedido" value="@VCG.TipoPedido.Recoger" />
+                                    <div class="mb-4">
+                                        <p class="mb-2"><strong>Recoger en:</strong> Jr. Reina Farje N° 175</p>
+                                        <p class="mb-3"><strong>Referencia:</strong> Media cuadra del BCP de Sucre</p>
+                                        <span class="form-label">Fecha de Recogida</span>
+                                        <input type="datetime-local" asp-for="@Model.Pedido.FechaRecogo" class="form-control" required>
+                                    </div>
+                                </div>
+                                <div id="section-mesa" style="display:none;">
+                                    @* <!-- inputs de Mesa --> *@
+                                    <input type="hidden" asp-for="@Model.Pedido.TipoPedido" value="@VCG.TipoPedido.Mesa" />
+                                    <div class="mb-4">
+                                        <span class="form-label">Número o Nombre de la Mesa</span>
+                                        <input type="text" asp-for="@Model.Pedido.Mesa" class="form-control" placeholder="Ej: Mesa 5" required>
+                                    </div>
+                                </div>
+
+
+                                <div class="order-summary">
+                                    <div class="subtotal">
+                                        <span>Subtotal:</span>
+                                        <span>S/. @Model.Total</span>
+                                    </div>
+                                    <div class="impuestos">
+                                        <span>Impuestos (18%):</span>
+                                        <span>S/. @Math.Round(Model.listaCarritoItems.Sum(item => item.Cantidad * item.Producto.Precio) * 0.18, 2)</span>
+                                    </div>
+                                    <div class="total">
+                                        <span>Total:</span>
+                                        <span>S/. @Math.Round(Model.Total * new decimal(0.18) + Model.Total, 2)</span>
+                                    </div>
+                                </div>
+
+                                <div class="text-end mt-4">
+                                    <button type="submit" class="btn btn-success">Confirmar Pedido</button>
+                                </div>
+                            </form>
+                        }
                     </div>
                 </div>
             </div>
-
         }
+    
     </div>
 
-    <style>
-        body {
-            font-family: 'Inter', sans-serif;
-            background: linear-gradient(135deg, #fff3e0 0%, #ffe082 100%);
-            color: #212121; /* Black letters */
-            margin: 0;
-            padding: 0;
-        }
-
-        .container-fluid {
-            max-width: 1300px;
-            padding: 4rem 1.5rem;
-            margin: 0 auto;
-        }
-
-        .text-title {
-            font-family: 'Poppins', sans-serif;
-            font-size: 2.5rem;
-            font-weight: 700;
-            color: #ff8f00;
-            text-shadow: 1px 1px 3px rgba(0, 0, 0, 0.1);
-            margin-bottom: 0.5rem;
-        }
-
-        .text-subtitle {
-            font-size: 1.1rem;
-            color: #212121;
-            opacity: 0.8;
-        }
-
-        .card {
-            border-radius: 20px;
-            box-shadow: 0 12px 35px rgba(0, 0, 0, 0.2);
-            background: #ffffff;
-            border: 2px solid #ffca28;
-            overflow: hidden;
-            transition: transform 0.3s ease, box-shadow 0.3s ease;
-            animation: slideIn 0.7s ease-out;
-        }
-
-        @@keyframes slideIn {
-            from {
-                opacity: 0;
-                transform: translateY(20px);
-            }
-
-            to {
-                opacity: 1;
-                transform: translateY(0);
-            }
-        }
-
-        .card:hover {
-            transform: translateY(-5px);
-            box-shadow: 0 15px 45px rgba(0, 0, 0, 0.25);
-        }
-
-        .card-header {
-            background: linear-gradient(90deg, #ff8f00, #ffca28);
-            color: #fff;
-            padding: 1.2rem;
-            font-family: 'Poppins', sans-serif;
-            font-size: 1.6rem;
-            font-weight: 700;
-            text-align: center;
-            border-top-left-radius: 20px;
-            border-top-right-radius: 20px;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            text-shadow: 1px 1px 2px rgba(0, 0, 0, 0.2);
-        }
-
-        .card-body {
-            padding: 2rem;
-            background: #fff8e1;
-        }
-
-        .product-img-container {
-            overflow: hidden;
-            border-radius: 15px;
-            transition: transform 0.3s ease;
-        }
-
-        .product-img {
-            width: 100%;
-            height: 180px;
-            object-fit: cover;
-            border-radius: 15px;
-            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
-            transition: transform 0.3s ease;
-        }
-
-        .product-img-container:hover .product-img {
-            transform: scale(1.05);
-        }
-
-        .btn-custom {
-            width: 45px;
-            height: 45px;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            border-radius: 50%;
-            padding: 0;
-            font-size: 1rem;
-            transition: all 0.3s ease;
-            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
-        }
-
-            .btn-custom:hover {
-                transform: scale(1.1);
-                box-shadow: 0 6px 15px rgba(0, 0, 0, 0.2);
-            }
-
-        .btn-finalizar {
-            background: linear-gradient(90deg, #ff8f00, #ffca28);
-            color: #fff;
-            font-size: 1.1rem;
-            padding: 0.8rem 2rem;
-            border-radius: 50px;
-            transition: all 0.3s ease;
-        }
-
-            .btn-finalizar:hover {
-                background: linear-gradient(90deg, #e67e22, #ffb300);
-                transform: translateY(-3px);
-                box-shadow: 0 6px 15px rgba(255, 143, 0, 0.3);
-            }
-
-        .btn-info {
-            background: #0288d1;
-            border: none;
-            color: #fff;
-        }
-
-            .btn-info:hover {
-                background: #0277bd;
-            }
-
-        .btn-warning {
-            background: #ffb300;
-            border: none;
-            color: #fff;
-        }
-
-            .btn-warning:hover {
-                background: #e67e22;
-            }
-
-        .btn-danger {
-            background: #d32f2f;
-            border: none;
-            color: #fff;
-        }
-
-            .btn-danger:hover {
-                background: #c62828;
-            }
-
-        .badge {
-            padding: 0.5rem 1rem;
-            font-size: 0.9rem;
-            border-radius: 12px;
-            font-weight: 600;
-        }
-
-        .empty-cart {
-            background: #fff;
-            border-radius: 20px;
-            padding: 3rem;
-            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.15);
-            text-align: center;
-            animation: slideIn 0.7s ease-out;
-        }
-
-            .empty-cart .btn {
-                background: linear-gradient(90deg, #ff8f00, #ffca28);
-                color: #fff;
-                font-size: 1.1rem;
-                padding: 0.8rem 2rem;
-                border-radius: 50px;
-                transition: all 0.3s ease;
-            }
-
-                .empty-cart .btn:hover {
-                    background: linear-gradient(90deg, #e67e22, #ffb300);
-                    transform: translateY(-3px);
-                    box-shadow: 0 6px 15px rgba(255, 143, 0, 0.3);
-                }
-
-        .summary-card {
-            background: #fff;
-            border-radius: 20px;
-            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.15);
-            border: 2px solid #ffca28;
-            animation: slideIn 0.7s ease-out;
-        }
-
-        .lottie-container {
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            margin: 2rem 0;
-        }
-
-        .lottie-fallback {
-            display: none;
-        }
-
-        .product-details h5 {
-            font-family: 'Poppins', sans-serif;
-            font-size: 1.4rem;
-            font-weight: 600;
-            color: #212121;
-        }
-
-        .product-details p {
-            font-size: 1rem;
-            color: #212121;
-            margin-bottom: 0.5rem;
-        }
-
-        @@media (max-width: 768px) {
-            .container-fluid {
-                padding: 3rem 1rem;
-            }
-
-            .text-title {
-                font-size: 2rem;
-            }
-
-            .card-header {
-                font-size: 1.4rem;
-                padding: 1rem;
-            }
-
-            .card-body {
-                padding: 1.5rem;
-            }
-
-            .product-img {
-                height: 140px;
-            }
-
-            .btn-finalizar {
-                font-size: 1rem;
-                padding: 0.7rem 1.5rem;
-            }
-
-            .btn-custom {
-                width: 40px;
-                height: 40px;
-            }
-
-            .lottie-container dotlottie-player,
-            .lottie-fallback img {
-                width: 150px !important;
-                height: 150px !important;
-            }
-        }
-
-        @@media (max-width: 576px) {
-            .text-title {
-                font-size: 1.8rem;
-            }
-
-            .product-details h5 {
-                font-size: 1.2rem;
-            }
-
-            .product-details p {
-                font-size: 0.9rem;
-            }
-
-            .action-buttons {
-                gap: 0.5rem;
-            }
-
-            .btn-custom {
-                width: 35px;
-                height: 35px;
-                font-size: 0.9rem;
-            }
-        }
-    </style>
-
-    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap bundle.min.js" integrity="sha384-YvpcrYf0tY3lHB60NNkmXc5s9fDVZLESaAA55NDzOxhy9GkcIdslK1eN7N6jIeHz" crossorigin="anonymous"></script>
+    
+@section Scripts {
     <script>
-        document.addEventListener('DOMContentLoaded', () => {
-            const lottiePlayer = document.getElementById('lottie-player');
-            const fallback = document.getElementById('lottie-fallback');
 
-            if (!lottiePlayer || !window.customElements.get('dotlottie-player')) {
-                console.error('DotLottie player failed to load.');
-                fallback.classList.remove('d-none');
-                lottiePlayer.style.display = 'none';
-            }
+        document.querySelectorAll('.form-cantidad').forEach(form => {
+            form.addEventListener('submit', async function (e) {
+                e.preventDefault(); // Evita que recargue la página
 
-            lottiePlayer.addEventListener('error', (e) => {
-                console.error('Error loading Lottie animation:', e);
-                fallback.classList.remove('d-none');
-                lottiePlayer.style.display = 'none';
+                const formData = new FormData(this);
+                const data = new URLSearchParams(formData);
+                
+                const response = await fetch(this.action, {
+                    method: 'POST',
+                    body: data,
+                    headers: {
+                        'X-Requested-With': 'XMLHttpRequest'
+                    }
+                });
+
+                if (response.ok) {
+                    location.reload();
+                } else {
+                    alert("Error al actualizar el carrito.");
+                }
             });
         });
+
+        function toggleTipoPedidoSection() {
+        const tipo = document.querySelector('input[name="TipoPedido"]:checked').value;
+
+        if (tipo === 'Delivery') {
+            document.getElementById('section-delivery').style.display = 'block';
+
+
+            document.getElementById('section-mesa').style.display = 'none';
+            document.getElementById('section-recoger').style.display = 'none';
+
+
+            document.getElementById("Pedido_FechaRecogo").required = false;
+            document.getElementById("Pedido_Mesa").required = false;
+        } else if (tipo === 'Recoger') {
+            document.getElementById("Pedido_Telefono").required = false;
+            document.getElementById("Pedido_Direccion").required = false;
+            document.getElementById("Pedido_FechaRecogo").required = false;
+
+
+            document.getElementById('section-mesa').style.display = 'none';
+            document.getElementById('section-delivery').style.display = 'none';
+
+            document.getElementById('section-recoger').style.display = 'block';
+        } else if (tipo === 'Mesa') {
+            document.getElementById("Pedido_FechaRecogo").required = false;
+            document.getElementById("Pedido_Telefono").required = false;
+            document.getElementById("Pedido_Direccion").required = false;
+
+
+            document.getElementById('section-recoger').style.display = 'none';
+            document.getElementById('section-delivery').style.display = 'none';
+
+            document.getElementById('section-mesa').style.display = 'block';
+        }
+    }
+
+    document.querySelectorAll('input[name="TipoPedido"]').forEach(input => {
+        input.addEventListener('change', toggleTipoPedidoSection);
+    });
+
+    // Ejecutar al cargar por si ya hay un tipo marcado
+    window.addEventListener('DOMContentLoaded', toggleTipoPedidoSection);
     </script>
-</body>
-</html>
+}

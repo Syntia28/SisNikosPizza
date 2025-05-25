@@ -13,6 +13,6 @@ namespace SisNikosPizza.Domain.Models
         public string Nombre { get; set; }
         public string Empresa { get; set; }
         public string Cantidad { get; set; }
-        public IEnumerable<Insumo> Insumos { get; set; }
+        public IEnumerable<Insumo>? Insumos { get; set; }
     }
 }
