@@ -42,7 +42,7 @@ namespace SisNikosPizza.Controllers
                 proveedor.UpdatedAt = DateTime.Now;
 
                 await _unitWork.ProveedorRepo.AgregarAsync(proveedor);
-                await _unitWork.GuradarAsync();
+                await _unitWork.GuardarAsync();
 
                 TempData[VCG.Satisfactorio] = "Proveedor guardado correctamente.";
                 return RedirectToAction("Details", new { id = proveedor.ProveedorId });
@@ -74,7 +74,7 @@ namespace SisNikosPizza.Controllers
             proveedor.UpdatedAt = DateTime.Now;
 
             _unitWork.ProveedorRepo.ActualizarProveedor(proveedor);
-            await _unitWork.GuradarAsync();
+            await _unitWork.GuardarAsync();
 
             TempData[VCG.Satisfactorio] = "Proveedor actualizado correctamente.";
             return RedirectToAction("Index");
@@ -113,7 +113,7 @@ namespace SisNikosPizza.Controllers
             if (proveedor != null)
             {
                 _unitWork.ProveedorRepo.Eliminar(proveedor);
-                await _unitWork.GuradarAsync();
+                await _unitWork.GuardarAsync();
 
                 TempData[VCG.Satisfactorio] = "Proveedor eliminado correctamente.";
                 return RedirectToAction("Index");

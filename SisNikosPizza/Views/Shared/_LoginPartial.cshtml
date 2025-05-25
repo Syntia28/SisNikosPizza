@@ -111,7 +111,7 @@
 <script>
     // Lógica para cargar la cantidad total desde el servidor
     document.addEventListener('DOMContentLoaded', function () {
-        fetch('/Carrito/ObtenerTotal')
+        fetch('/Carrito/Total')
             .then(response => response.json())
             .then(data => {
                 document.getElementById('cart-total').textContent = data;

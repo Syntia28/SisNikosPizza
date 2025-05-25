@@ -1,4 +1,5 @@
 ﻿using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using SisNikosPizza.Domain.Models;
 using SisNikosPizza.Repository.Interfaces;
@@ -9,26 +10,22 @@ namespace SisNikosPizza.Controllers
     public class CartaController : Controller
 
     {
-          private readonly IUniwork _unitWork;
-    public CartaController(IUniwork unitWork)
-    {
+        private readonly IUniwork _unitWork;
+        private readonly UserManager<IdentityUser> _userManager;
+        public CartaController(IUniwork unitWork, UserManager<IdentityUser> userManager)
+        {
             _unitWork = unitWork;
-    }
+            _userManager = userManager;
+        }
+
         [HttpGet]
         public async Task<IActionResult> Index()
         {
-            var productos = await _unitWork.ProductoRepo.ObtenerTodosAsync(ordenarPor: c => c.OrderByDescending(c => c.ProductoId));
+            var productos = await _unitWork.ProductoRepo.ObtenerTodosAsync(
+            ordenarPor: c => c.OrderByDescending(c => c.ProductoId));
 
-            // Construir la URL completa para cada producto
-            string baseUrl = $"{Request.Scheme}://{Request.Host}/images";
-            foreach (var producto in productos)
-            {
-                Console.Write(producto.Nombre);
-                if (!string.IsNullOrEmpty(producto.ImagenUrl))
-                {
-                    producto.ImagenUrl = $"{baseUrl}/{producto.ImagenUrl}";
-                }
-            }
+            var user = await _userManager.GetUserAsync(User);
+            ViewBag.UsuarioId = user?.Id;
 
             return View(productos);
         }

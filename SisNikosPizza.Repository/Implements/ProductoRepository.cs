@@ -32,43 +32,6 @@ namespace SisNikosPizza.Repository.Implements
             }
         }
 
-        public async Task AgregarInsumoAsync(int productoId, int insumoId, float cantidad)
-        {
-            var productoInsumo = new ProductoInsumo
-            {
-                ProductoId = productoId,
-                InsumoId = insumoId,
-                Cantidad = cantidad
-            };
-
-            await _db.ProductoInsumo.AddAsync(productoInsumo);
-            await _db.SaveChangesAsync();
-        }
-
-        public async Task EliminarInsumoAsync(int productoId, int insumoId)
-        {
-            var productoInsumo = await _db.ProductoInsumo
-                .FirstOrDefaultAsync(pi => pi.ProductoId == productoId && pi.InsumoId == insumoId);
-
-            if (productoInsumo != null)
-            {
-                _db.ProductoInsumo.Remove(productoInsumo);
-                await _db.SaveChangesAsync();
-            }
-        }
-
-        public async Task ActualizarInsumoAsync(int productoId, int insumoId, float nuevaCantidad)
-        {
-            var productoInsumo = await _db.ProductoInsumo
-                .FirstOrDefaultAsync(pi => pi.ProductoId == productoId && pi.InsumoId == insumoId);
-
-            if (productoInsumo != null)
-            {
-                productoInsumo.Cantidad = nuevaCantidad;
-                await _db.SaveChangesAsync();
-            }
-        }
-
         public IEnumerable<SelectListItem> ListarCategorias(string obj)
         {
             if (obj == "categorias")

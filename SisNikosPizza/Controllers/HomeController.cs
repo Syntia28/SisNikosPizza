@@ -1,5 +1,5 @@
 using Microsoft.AspNetCore.Mvc;
-using SisNikosPizza.Models;
+using SisNikosPizza.Domain.ViewModels;
 using SisNikosPizza.Repository.Interfaces;
 using System.Diagnostics;
 
@@ -26,7 +26,6 @@ namespace SisNikosPizza.Controllers
             string baseUrl = $"{Request.Scheme}://{Request.Host}/images";
             foreach (var producto in productos)
             {
-                Console.Write(producto.Nombre);
                 if (!string.IsNullOrEmpty(producto.ImagenUrl))
                 {
                     producto.ImagenUrl = $"{baseUrl}/{producto.ImagenUrl}";

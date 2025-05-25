@@ -9,8 +9,6 @@ using System.Threading.Tasks;
 
 namespace SisNikosPizza.Repository.Implements
 {
-    
-    
         public class CategoriaRepository : RepositoryBase<Categoria>, ICategoriaRepository
         {
             private readonly SisNikosPizzaBbContext _db;

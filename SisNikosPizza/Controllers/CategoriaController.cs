@@ -12,7 +12,7 @@ namespace SisNikosPizza.Controllers
         private readonly IUniwork _unitWork;
 
         public CategoriaController(
-            
+
             IUniwork unitWork
             )
         {
@@ -24,13 +24,13 @@ namespace SisNikosPizza.Controllers
         [HttpGet]
         public async Task<IActionResult> Index()
         {
-            
+
             var Categorias = await _unitWork.CategoriaRepo.ObtenerTodosAsync(ordenarPor: c => c.OrderByDescending(c => c.CategoriaId));
             return View(Categorias);
         }
 
 
-       
+
         // Categories/Create
         [HttpGet]
         [Authorize(Roles = VCG.Role_Admin)]
@@ -51,7 +51,7 @@ namespace SisNikosPizza.Controllers
                 //await _context.Category.AddAsync(category);
                 //await _context.SaveChangesAsync();
                 await _unitWork.CategoriaRepo.AgregarAsync(categorias);
-                await _unitWork.GuradarAsync();
+                await _unitWork.GuardarAsync();
                 TempData[VCG.Satisfactorio] = "Categoría actualizada correctamente";
                 //return RedirectToAction("Index");
                 //return RedirectToAction("Details", new(category.CategoryId.ToString()));
@@ -68,7 +68,7 @@ namespace SisNikosPizza.Controllers
         [HttpGet]
         public async Task<IActionResult> Edit(int id)
         {
-            
+
             var categorias = await _unitWork.CategoriaRepo.ObtenerAsync(id);
             if (categorias is null)
                 return NotFound();
@@ -84,7 +84,7 @@ namespace SisNikosPizza.Controllers
             if (categoria is null) return NotFound();// Si todos los datos enviados son correctos
             {
                 _unitWork.CategoriaRepo.ActualizarCategoria(categoria);
-                await _unitWork.GuradarAsync();
+                await _unitWork.GuardarAsync();
                 TempData[VCG.Satisfactorio] = "Categoría actualizada correctamente.";
                 return RedirectToAction("Index");
             }
@@ -122,7 +122,7 @@ namespace SisNikosPizza.Controllers
                 //_context.Category.Remove(category);
                 //await _context.SaveChangesAsync();
                 _unitWork.CategoriaRepo.Eliminar(categorias);
-                await _unitWork.GuradarAsync();
+                await _unitWork.GuardarAsync();
                 return RedirectToAction("Index");
             }
 

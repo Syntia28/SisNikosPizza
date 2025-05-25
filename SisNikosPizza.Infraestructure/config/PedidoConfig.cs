@@ -38,22 +38,13 @@ public class PedidoConfig : IEntityTypeConfiguration<Pedido>
             .IsRequired(false);
 
         builder.Property(pe => pe.FechaRecogo)
-            .IsRequired();
+            .IsRequired(false);
 
         builder.Property(pe => pe.Mesa)
             .HasMaxLength(10)
             .IsRequired(false);
 
         builder.Property(pe => pe.FechaPedido)
-            .IsRequired();
-
-        builder.Property(pe => pe.Estado)
-            .IsRequired();
-
-        builder.Property(pe => pe.CreatedAt)
-            .IsRequired();
-
-        builder.Property(pe => pe.UpdatedAt)
             .IsRequired();
 
         // Relacion de uno a muchos con DetallePedido

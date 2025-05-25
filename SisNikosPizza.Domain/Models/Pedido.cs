@@ -1,14 +1,15 @@
 ﻿using Microsoft.AspNetCore.Identity;
+using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.Mvc.ModelBinding;
 using System;
 
 namespace SisNikosPizza.Domain.Models
 {
-    public class Pedido : EntididadBase
+    public class Pedido
     {
         public int PedidoId { get; set; }
         public string UserId { get; set; }
-        public IdentityUser User { get; set; }
-
+        public IdentityUser? User { get; set; }
         public string EstadoPedido { get; set; } //pendiente, anulado, entregado.
         public string TipoPedido { get; set; } //delivery, recogo_en_local, mesa.
 
@@ -26,7 +27,7 @@ namespace SisNikosPizza.Domain.Models
 
         public DateTime FechaPedido { get; set; }
 
-        public virtual IEnumerable<DetallePedido> DetallePedido { get; set; }
+        public virtual IEnumerable<DetallePedido>? DetallePedido { get; set; }
      
     }
 }
