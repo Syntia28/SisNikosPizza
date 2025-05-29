@@ -148,10 +148,10 @@
                 <div class="details-value">@(Model.Direccion ?? "No disponible")</div>
             </div>
             <div class="d-flex justify-content-end gap-3 mt-4">
-                <a asp-controller="User" asp-action="Edit" asp-route-id="@Model.Id" class="btn btn-primary" aria-label="Editar usuario @Model.Nombre">
+                <a asp-controller="Cliente" asp-action="Edit" asp-route-id="@Model.Id" class="btn btn-primary" aria-label="Editar usuario @Model.Nombre">
                     <i class="bi bi-pencil-square"></i> Editar
                 </a>
-                <a asp-controller="User" asp-action="Index" class="btn btn-secondary" aria-label="Volver a la lista de usuarios">
+                <a asp-controller="Cliente" asp-action="Index" class="btn btn-secondary" aria-label="Volver a la lista de usuarios">
                     <i class="bi bi-arrow-left"></i> Volver
                 </a>
             </div>

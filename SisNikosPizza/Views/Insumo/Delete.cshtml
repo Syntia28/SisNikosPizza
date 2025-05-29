@@ -31,48 +31,49 @@
                 <div class="grid grid-cols-1 sm:grid-cols-2 gap-4 mb-6">
                     <div class="flex items-center">
                         <span class="w-1/3 text-right font-medium text-gray-600 pr-4">Insumo ID:</span>
-                        <span class="text-gray-800">@Model.InsumoId</span>
+                        <input asp-for="InsumoId" class="text-gray-800" />
                     </div>
                     <div class="flex items-center">
                         <span class="w-1/3 text-right font-medium text-gray-600 pr-4">Nombre:</span>
-                        <span class="text-gray-800">@Model.Nombre</span>
+                        <input asp-for="Nombre" class="text-gray-800" />
                     </div>
                     <div class="flex items-center">
                         <span class="w-1/3 text-right font-medium text-gray-600 pr-4">Precio:</span>
-                        <span class="text-gray-800">S/. @Model.Precio</span>
+                        <input asp-for="Precio" class="text-gray-800" />
                     </div>
                     <div class="flex items-center">
                         <span class="w-1/3 text-right font-medium text-gray-600 pr-4">Cantidad:</span>
-                        <span class="text-gray-800">@Model.Cantidad</span>
+                        <input asp-for="Cantidad" class="text-gray-800" />
                     </div>
                     <div class="flex items-center">
                         <span class="w-1/3 text-right font-medium text-gray-600 pr-4">Unidad de Medida:</span>
-                        <span class="text-gray-800">@Model.UnidadeDeMedida</span>
+                        <input asp-for="UnidadeDeMedida" class="text-gray-800" />
                     </div>
                     <div class="flex items-center">
                         <span class="w-1/3 text-right font-medium text-gray-600 pr-4">Descripción:</span>
-                        <span class="text-gray-800">@Model.Descripcion</span>
+                        <input asp-for="Descripcion" class="text-gray-800" />
                     </div>
                     <div class="flex items-center">
-                        <span class="w-1/3 text-right font-medium text-gray-600 pr-4">Estado:</span>
+                        <span class="w-1/3 text-right font-medium text-gray-600 pr-4" />
                         <span>
                             @if (Model.Estado)
                             {
-                                <span class="inline-block px-3 py-1 bg-green-500 text-white text-sm font-medium rounded-full">Activo</span>
+                                <input asp-for="Estado" class="inline-block px-3 py-1 bg-green-500 text-white text-sm font-medium rounded-full">
                             }
                             else
                             {
-                                <span class="inline-block px-3 py-1 bg-red-500 text-white text-sm font-medium rounded-full">Inactivo</span>
+                                <input asp-for="Estado" class="inline-block px-3 py-1 bg-red-500 text-white text-sm font-medium rounded-full">
+
                             }
                         </span>
                     </div>
                     <div class="flex items-center">
                         <span class="w-1/3 text-right font-medium text-gray-600 pr-4">Creado el:</span>
-                        <span class="text-gray-800">@Model.CreatedAt.ToString("dd/MM/yyyy HH:mm")</span>
+                        <input asp-for="CreatedAt" class="text-gray-800" />
                     </div>
                     <div class="flex items-center">
                         <span class="w-1/3 text-right font-medium text-gray-600 pr-4">Actualizado el:</span>
-                        <span class="text-gray-800">@Model.UpdatedAt.ToString("dd/MM/yyyy HH:mm")</span>
+                        <input asp-for="UpdatedAt" class="text-gray-800" />
                     </div>
                 </div>
 
