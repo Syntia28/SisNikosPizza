@@ -1,4 +1,5 @@
-﻿using Microsoft.AspNetCore.Authorization;
+﻿using ClosedXML.Excel;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
@@ -45,6 +46,49 @@ namespace SisNikosPizza.Controllers
             }
 
             return View(venta);
+        }
+
+        [HttpGet]
+        public async Task<IActionResult> ExportToExcel()
+        {
+            var ventas = await _unitWork.VentaRepo.ObtenerVentasDetallados();
+
+            using (var workbook = new XLWorkbook())
+            {
+                var worksheet = workbook.Worksheets.Add("Ventas");
+                worksheet.Cell(1, 1).Value = "ID";
+                worksheet.Cell(1, 2).Value = "FECHA";
+                worksheet.Cell(1, 3).Value = "CLIENTE";
+                worksheet.Cell(1, 4).Value = "DETALLE";
+                worksheet.Cell(1, 5).Value = "TOTAL";
+
+                int row = 2;
+                foreach (var v in ventas)
+                {
+                    worksheet.Cell(row, 1).Value = v.VentaId;
+                    worksheet.Cell(row, 2).Value = v.Fecha;
+                    worksheet.Cell(row, 3).Value = v.Owner.Email;
+
+                    string detalles = "";
+                    foreach (var det in v.Detalles)
+                    {
+                        detalles += det.Producto?.Nombre + "\n";
+                    }
+
+                    worksheet.Cell(row, 4).Value = detalles;
+                    worksheet.Cell(row, 5).Value = v.Total;
+                    row++;
+                }
+
+                using (var stream = new MemoryStream())
+                {
+                    workbook.SaveAs(stream);
+                    var content = stream.ToArray();
+                    return File(content,
+                                "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet",
+                                "ReporteVentas.xlsx");
+                }
+            }
         }
 
 

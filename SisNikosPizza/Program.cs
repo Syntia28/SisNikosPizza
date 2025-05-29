@@ -10,7 +10,7 @@ using F_M_Maquinarias.Infrastructure.Data;
 
 var builder = WebApplication.CreateBuilder(args);
 //agregar la cadena de conexion a utilizar
-var conexion = builder.Configuration.GetConnectionString("ConnectionSQLServer");
+var conexion = builder.Configuration.GetConnectionString("ConnectionLocal");
 builder.Services.AddDbContext<SisNikosPizzaBbContext>(options => options.UseSqlServer(conexion));
 
 //builder.Services.AddDefaultIdentity<IdentityUser>(options => options.SignIn.RequireConfirmedAccount = true).AddEntityFrameworkStores<F_MDbContext>();
