@@ -56,7 +56,7 @@ namespace ProyectoPruebas
             // Arrange
             var insumo = new Insumo
             {
-                Nombre = "Azúcar",
+                Nombre = "Azï¿½car",
                 Precio = 12.0f
             };
 
@@ -79,7 +79,7 @@ namespace ProyectoPruebas
             {
                 UserName = "usuario123",
                 Email = "usuario@example.com",
-                Nombre = "Juan Pérez",
+                Nombre = "Juan Pï¿½rez",
                 Direccion = "Calle 123",
                 FechaNacimiento = new DateTime(1990, 5, 15),
                 Role = "Administrador"
@@ -88,7 +88,7 @@ namespace ProyectoPruebas
             // Assert
             Assert.AreEqual("usuario123", usuario.UserName);
             Assert.AreEqual("usuario@example.com", usuario.Email);
-            Assert.AreEqual("Juan Pérez", usuario.Nombre);
+            Assert.AreEqual("Juan Pï¿½rez", usuario.Nombre);
             Assert.AreEqual("Calle 123", usuario.Direccion);
             Assert.AreEqual(new DateTime(1990, 5, 15), usuario.FechaNacimiento);
             Assert.AreEqual("Administrador", usuario.Role);
@@ -102,14 +102,14 @@ namespace ProyectoPruebas
             {
                 UserName = "usuario456",
                 Email = "otro@example.com",
-                Nombre = "Ana López",
+                Nombre = "Ana Lï¿½pez",
                 Role = "Usuario"
             };
 
             // Assert
             Assert.IsNull(usuario.Direccion);
             Assert.IsNull(usuario.FechaNacimiento);
-            Assert.AreEqual("Ana López", usuario.Nombre);
+            Assert.AreEqual("Ana Lï¿½pez", usuario.Nombre);
         }
 
         [TestMethod]
@@ -125,7 +125,7 @@ namespace ProyectoPruebas
             bool nombreValido = !string.IsNullOrEmpty(usuario.Nombre);
 
             // Assert
-            Assert.IsFalse(nombreValido, "El campo Nombre debería ser obligatorio.");
+            Assert.IsFalse(nombreValido, "El campo Nombre deberï¿½a ser obligatorio.");
         }
     }
     // prueba unitaria  de la entidad carrito 
@@ -133,20 +133,20 @@ namespace ProyectoPruebas
     public class CarritoTests
     {
         [TestMethod]
-        public void CrearCarrito_SinOwnerId_DeberiaSerInvalido()
+        public void CrearCarrito_SinUserId_DeberiaSerInvalido()
         {
             // Arrange
             var carrito = new Carrito
             {
                 CarritoId = 3,
-                OwnerId = null 
+                UserId = null
             };
 
             // Act
-            bool ownerIdValido = !string.IsNullOrEmpty(carrito.OwnerId);
+            bool UserIdValido = !string.IsNullOrEmpty(carrito.UserId);
 
             // Assert
-            Assert.IsFalse(ownerIdValido, "El carrito no debería ser válido sin un OwnerId.");
+            Assert.IsFalse(UserIdValido, "El carrito no deberï¿½a ser vï¿½lido sin un UserId.");
         }
     }
     // prueba unitaria de la entidad carritoProducto
@@ -159,11 +159,11 @@ namespace ProyectoPruebas
             CarritoProducto cp = new CarritoProducto();
             cp.Producto = new Producto();
             cp.Producto.Nombre = "Pizza Hawaina";
-            cp.Producto.Descripcion = "Pizza con jamón, piña y queso mozzarella";
-            cp.ProductoId = 1; 
+            cp.Producto.Descripcion = "Pizza con jamï¿½n, piï¿½a y queso mozzarella";
+            cp.ProductoId = 1;
             cp.CarritoId = 5002;
             cp.Carrito = new Carrito();
-            cp.Cantidad = 5; 
+            cp.Cantidad = 5;
 
             cp.CarritoProductoId = 9002;
         }
@@ -181,7 +181,7 @@ namespace ProyectoPruebas
             bool cantidadValida = carritoProducto.Cantidad > 0;
 
             // Assert
-            Assert.IsFalse(cantidadValida, "La cantidad debería ser positiva.");
+            Assert.IsFalse(cantidadValida, "La cantidad deberï¿½a ser positiva.");
         }
     }
     // prueba unitaria de la entidad categoria
@@ -217,7 +217,7 @@ namespace ProyectoPruebas
             bool nombreValido = !string.IsNullOrEmpty(categoria.nombre);
 
             // Assert
-            Assert.IsFalse(nombreValido, "El nombre de la categoría no debería ser nulo o vacío.");
+            Assert.IsFalse(nombreValido, "El nombre de la categorï¿½a no deberï¿½a ser nulo o vacï¿½o.");
         }
 
     }
@@ -292,14 +292,14 @@ namespace ProyectoPruebas
             // Arrange
             var detalle = new DetallePedido
             {
-                Cantidad = -1 // Cantidad inválida
+                Cantidad = -1 // Cantidad invï¿½lida
             };
 
             // Act
             bool cantidadValida = detalle.Cantidad > 0;
 
             // Assert
-            Assert.IsFalse(cantidadValida, "La cantidad debe ser un número positivo.");
+            Assert.IsFalse(cantidadValida, "La cantidad debe ser un nï¿½mero positivo.");
         }
 
     }
@@ -378,7 +378,7 @@ namespace ProyectoPruebas
             bool cantidadValida = detalleVenta.Cantidad > 0;
 
             // Assert
-            Assert.IsFalse(cantidadValida, "La cantidad debe ser un número positivo.");
+            Assert.IsFalse(cantidadValida, "La cantidad debe ser un nï¿½mero positivo.");
         }
 
     }
@@ -393,7 +393,7 @@ namespace ProyectoPruebas
             var pedido = new Pedido
             {
                 PedidoId = 1,
-                OwnerId = "user1",
+                UserId = "user1",
                 EstadoPedido = "pendiente",
                 TipoPedido = "delivery",
                 Telefono = "987654321",
@@ -405,7 +405,7 @@ namespace ProyectoPruebas
 
             // Assert
             Assert.AreEqual(1, pedido.PedidoId);
-            Assert.AreEqual("user1", pedido.OwnerId);
+            Assert.AreEqual("user1", pedido.UserId);
             Assert.AreEqual("pendiente", pedido.EstadoPedido);
             Assert.AreEqual("delivery", pedido.TipoPedido);
             Assert.AreEqual("987654321", pedido.Telefono);
@@ -423,7 +423,7 @@ namespace ProyectoPruebas
             var pedido = new Pedido
             {
                 PedidoId = 2,
-                OwnerId = "user2",
+                UserId = "user2",
                 EstadoPedido = "pendiente",
                 TipoPedido = "recogo_en_local",
                 FechaRecogo = fechaRecogo,
@@ -444,7 +444,7 @@ namespace ProyectoPruebas
             var pedido = new Pedido
             {
                 PedidoId = 3,
-                OwnerId = "user3",
+                UserId = "user3",
                 EstadoPedido = "pendiente",
                 TipoPedido = "mesa",
                 Mesa = "Mesa 5",
@@ -464,7 +464,7 @@ namespace ProyectoPruebas
             // Arrange
             var pedido = new Pedido
             {
-                EstadoPedido = "desconocido" // Valor inválido
+                EstadoPedido = "desconocido" // Valor invï¿½lido
             };
 
             // Act
@@ -488,7 +488,7 @@ namespace ProyectoPruebas
             var categoria = new Categoria
             {
                 CategoriaId = 1,
-                nombre = "Electrónica"
+                nombre = "Electrï¿½nica"
             };
 
             var producto = new Producto
@@ -513,7 +513,7 @@ namespace ProyectoPruebas
             Assert.AreEqual(299.99f, producto.Precio);
             Assert.AreEqual("Disponible", producto.Stock);
             Assert.IsNotNull(producto.ProductoInsumos);
-            Assert.AreEqual("Electrónica", producto.categoria.nombre);
+            Assert.AreEqual("Electrï¿½nica", producto.categoria.nombre);
         }
 
         [TestMethod]
@@ -545,9 +545,9 @@ namespace ProyectoPruebas
             bool stockValido = !string.IsNullOrEmpty(producto.Stock);
 
             // Assert
-            Assert.IsFalse(stockValido, "El stock no debe ser nulo o vacío.");
+            Assert.IsFalse(stockValido, "El stock no debe ser nulo o vacï¿½o.");
         }
-        
+
     }
     // prueba unitaria de la entidad productoInsumo
     [TestClass]
@@ -644,7 +644,7 @@ namespace ProyectoPruebas
             bool cantidadValida = !string.IsNullOrEmpty(proveedor.Ccantidad);
 
             // Assert
-            Assert.IsFalse(cantidadValida, "La cantidad no debe ser nula ni vacía.");
+            Assert.IsFalse(cantidadValida, "La cantidad no debe ser nula ni vacï¿½a.");
         }
 
         [TestMethod]
@@ -673,9 +673,9 @@ namespace ProyectoPruebas
             bool nombreValido = !string.IsNullOrEmpty(proveedor.Nombre);
 
             // Assert
-            Assert.IsTrue(nombreValido, "El nombre no debe ser nulo ni vacío.");
+            Assert.IsTrue(nombreValido, "El nombre no debe ser nulo ni vacï¿½o.");
         }
-       
+
     }
     // prueba unitaria de la entidad venta 
     [TestClass]
@@ -685,7 +685,7 @@ namespace ProyectoPruebas
         public void CrearVenta_PropiedadesAsignadasCorrectamente()
         {
             // Arrange
-            var owner = new IdentityUser
+            var User = new IdentityUser
             {
                 Id = "user123",
                 UserName = "usuario1"
@@ -694,7 +694,7 @@ namespace ProyectoPruebas
             var venta = new Venta
             {
                 VentaId = 1,
-                OwnerId = owner.Id,
+                UserId = User.Id,
                 Fecha = new DateTime(2025, 4, 27),
                 Detalles = new List<DetalleVenta>
                 {
@@ -707,12 +707,12 @@ namespace ProyectoPruebas
                         PrecioTotal = 61.0f
                     }
                 },
-                Owner = owner
+                User = User
             };
 
             // Assert
             Assert.AreEqual(1, venta.VentaId);
-            Assert.AreEqual("user123", venta.OwnerId);
+            Assert.AreEqual("user123", venta.UserId);
             Assert.AreEqual(new DateTime(2025, 4, 27), venta.Fecha);
             Assert.IsNotNull(venta.Detalles);
             Assert.AreEqual(1, venta.Detalles.Count);
@@ -721,7 +721,7 @@ namespace ProyectoPruebas
             Assert.AreEqual(2, venta.Detalles[0].Cantidad);
             Assert.AreEqual(30.5f, venta.Detalles[0].PrecioUnitario);
             Assert.AreEqual(61.0f, venta.Detalles[0].PrecioTotal);
-            Assert.AreEqual("usuario1", venta.Owner.UserName);
+            Assert.AreEqual("usuario1", venta.User.UserName);
         }
 
         [TestMethod]
@@ -750,20 +750,20 @@ namespace ProyectoPruebas
             bool detallesValido = venta.Detalles.Count > 0;
 
             // Assert
-            Assert.IsFalse(detallesValido, "La lista de detalles no debe estar vacía.");
+            Assert.IsFalse(detallesValido, "La lista de detalles no debe estar vacï¿½a.");
         }
 
         [TestMethod]
-        public void Venta_OwnerNoDebeSerNulo()
+        public void Venta_UserNoDebeSerNulo()
         {
             // Arrange
             var venta = new Venta
             {
-                Owner = null
+                User = null
             };
 
             // Act & Assert
-            Assert.IsNull(venta.Owner, "El propietario de la venta no debe ser nulo.");
+            Assert.IsNull(venta.User, "El propietario de la venta no debe ser nulo.");
         }
     }
 }
