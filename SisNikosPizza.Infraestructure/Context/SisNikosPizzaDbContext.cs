@@ -16,7 +16,7 @@ namespace SisNikosPizza.Infrastructure.Context
         public DbSet<Insumo> insumo { get; set; }
         public DbSet<Proveedor> proveedores { get; set; }
         public DbSet<Pedido> pedido { get; set; }
-    
+        public DbSet<DetallePedido> detallePedido { get; set; }
         public DbSet<ProductoInsumo> ProductoInsumo { get; set; }
         public DbSet<ApplicationUser> Users { get; set; }
 

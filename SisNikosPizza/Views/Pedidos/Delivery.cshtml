@@ -1,5 +1,5 @@
 @using SisNikosPizza.Utilidades
-@model IEnumerable<SisNikosPizza.Domain.Models.DetallePedido>
+@model IEnumerable<SisNikosPizza.Domain.ViewModels.VMDDetallesPedido>
 
 @{
     ViewData["Title"] = "Lista de Categorías";
@@ -15,93 +15,98 @@
 
 
 <div class="flex flex-grow gap-2" role="main">
-    
+
 
     @foreach (var item in Model)
     {
-            <div class="max-w-sm w-full h-auto bg-white rounded-xl shadow-lg overflow-hidden hover:shadow-xl transition-all">
-                <div class="relative">
-                    <img src="https://placehold.co/400x300" alt="Product" class="w-full h-52 object-cover" />
-                    <span class="absolute top-3 right-3 bg-red-500 text-white px-3 py-1 rounded-full text-sm font-medium">
+        <div class="max-w-sm w-full h-auto bg-white rounded-xl shadow-lg overflow-hidden hover:shadow-xl transition-all">
+            <div class="relative">
+                <img src="https://placehold.co/400x300" alt="Product" class="w-full h-52 object-cover" />
+                <span class="absolute top-3 right-3 bg-red-500 text-white px-3 py-1 rounded-full text-sm font-medium">
                     delivery
-                    </span>
+                </span>
+            </div>
+
+            <div class="p-2 space-y-2">
+                <div>
+                    <div class="flex items-center gap-1">
+                        <i class="fa-solid fa-truck-fast"></i>
+                        <h3 class="text-xl font-bold text-gray-900">Producto 1</h3>
+                    </div>
+
+                    <div class="flex items-center gap-1">
+                        <i class="fa-solid fa-user"></i>
+                        <p class="text-gray-500 mt-1">@item.Usuario.UserName</p>
+                    </div>
+
+                    <div class="flex items-center gap-1">
+                        <i class="fa-solid fa-location-dot"></i>
+                        <p class="text-gray-500 mt-1">@item.Detalles.First().Pedido.Direccion</p>
+                    </div>
+
                 </div>
 
-                <div class="p-2 space-y-2">
-                    <div>
-                        <div class="flex items-center gap-1">
-                            <i class="fa-solid fa-truck-fast"></i>
-                            <h3 class="text-xl font-bold text-gray-900">Producto 1</h3>
-                        </div>
-
-                        <div class="flex items-center gap-1">
-                            <i class="fa-solid fa-user"></i>
-                            <p class="text-gray-500 mt-1">@item.Pedido.User.UserName</p>
-                        </div>
-
-                        <div class="flex items-center gap-1">
-                            <i class="fa-solid fa-location-dot"></i>
-                            <p class="text-gray-500 mt-1">@item.Pedido.Direccion</p>
-                        </div>
-                        
+                <div class="flex justify-between items-center">
+                    <div class="space-y-1">
+                        <p class="text-2xl font-bold text-gray-900">@item.Detalles.First().PrecioTotal</p>
                     </div>
 
-                    <div class="flex justify-between items-center">
-                        <div class="space-y-1">
-                        <p class="text-2xl font-bold text-gray-900">@item.PrecioTotal</p>
-                        </div>
-
-                        <div class="flex items-center gap-1">
-                            <span>cantidad</span>
-                        </div>
+                    <div class="flex items-center gap-1">
+                        <span>cantidad</span>
                     </div>
+                </div>
 
 
-                    <div class='flex flex-col items-center justify-center ' x-data="{ reportsOpen: false }">
-                        <div @@click="reportsOpen = !reportsOpen"
-                            class='w-full cursor-pointer flex items-center gap-2 justify-center overflow-hidden bg-green-500 p-2 rounded-2xl'>
-                            <i class="fa-solid fa-clipboard-list"></i>
+                <div class='flex flex-col items-center justify-center ' x-data="{ reportsOpen: false }">
+                    <div @@click="reportsOpen = !reportsOpen"
+                        class='w-full cursor-pointer flex items-center gap-2 justify-center overflow-hidden bg-green-500 p-2 rounded-2xl'>
+                        <i class="fa-solid fa-clipboard-list"></i>
                         <span class="cursor-pointer">Ver lista de pedido</span>
-                        </div>
+                    </div>
 
-                        <div class="flex gap-2 md:p-0 w-full transform transition duration-300 ease-in-out" x-cloak
-                            x-show="reportsOpen" x-collapse x-collapse.duration.500ms>
+                    <div class="flex gap-2 md:p-0 w-full transform transition duration-300 ease-in-out" x-cloak
+                        x-show="reportsOpen" x-collapse x-collapse.duration.500ms>
 
-                            <ul class="flex flex-col gap-2 w-full font-bold">
+                        <ul class="flex flex-col gap-2 w-full font-bold">
 
-
+                            @foreach (var pedido in item.Detalles)
+                            {
                                 <li class="flex w-full items-center justify-between">
                                     <div class="flex items-center gap-1">
                                         <i class="fa-solid fa-truck-fast"></i>
-                                        <h3 class="mt-1">@item.Cantidad</h3>
+                                        <h3 class="mt-1">@pedido.Cantidad</h3>
                                     </div>
                                     <div class="flex items-center gap-1">
                                         <i class="fa-solid fa-dollar"></i>
-                                        <p class="mt-1">@item.PrecioTotal</p>
+                                        <p class="mt-1">@pedido.PrecioTotal</p>
                                     </div>
                                     <div class="flex items-center gap-1">
                                         <i class="fa-solid fa-box-open"></i>
-                                        <p class="mt-1">@item.Cantidad</p>
+                                        <p class="mt-1">@pedido.Cantidad</p>
                                     </div>
                                 </li>
+                            }
 
 
 
-                            </ul>
-                        </div>
 
+
+
+                        </ul>
                     </div>
 
-
-                    <button
-                        class="w-full bg-indigo-600 hover:bg-indigo-700 text-white font-medium py-3 rounded-lg transition-colors">
-                        Pagado
-                    </button>
                 </div>
+
+
+                <button
+                    class="w-full bg-indigo-600 hover:bg-indigo-700 text-white font-medium py-3 rounded-lg transition-colors">
+                    Pagado
+                </button>
             </div>
+        </div>
     }
 
-    
+
 </div>
 
 @section Scripts {

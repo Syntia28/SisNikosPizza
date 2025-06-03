@@ -10,7 +10,7 @@ namespace SisNikosPizza.Controllers
         private readonly ILogger<HomeController> _logger;
         private readonly IUniwork _unitWork;
 
-        public HomeController(IUniwork unitWork,ILogger<HomeController> logger)
+        public HomeController(IUniwork unitWork, ILogger<HomeController> logger)
         {
             _logger = logger;
             _unitWork = unitWork;
@@ -31,7 +31,7 @@ namespace SisNikosPizza.Controllers
                     producto.ImagenUrl = $"{baseUrl}/{producto.ImagenUrl}";
                 }
             }
-            
+
             return View(productos);
         }
 
