@@ -9,10 +9,10 @@ namespace SisNikosPizza.Repository.Interfaces
 {
     public interface IPedidoRepository : IRepositoryBase<Pedido>
     {
-   
-        public Task<List<Pedido>> ObtenerPedidosDetallados(string ownerId);
+
+        public Task<List<Pedido>> ObtenerPedidosDetallados(string UserId);
         public Task<List<Pedido>> ObtenerPedidosDetalladosTodos();
 
-        public Task<Pedido> ObtenerPedidoDetallado(int pedidoId,string baseUrl);
+        public Task<Pedido> ObtenerPedidoDetallado(int pedidoId, string baseUrl);
     }
 }

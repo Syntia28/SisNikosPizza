@@ -1,6 +1,7 @@
 ﻿using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
+using SisNikosPizza.Domain;
 using SisNikosPizza.Domain.Models;
 using SisNikosPizza.Domain.ViewModels;
 
@@ -25,7 +26,8 @@ namespace SisNikosPizza.Controllers
         {
             var userSign = await _userManager.GetUserAsync(User);
             //get role 
-          if (User.IsInRole(VCG.Role_Admin)) {
+            if (User.IsInRole(VCG.Role_Admin))
+            {
                 var pedidos = await _unitWork.PedidoRepo.ObtenerPedidosDetalladosTodos();
                 return View(pedidos);
             }
@@ -41,11 +43,20 @@ namespace SisNikosPizza.Controllers
             var pedidosDelivery = await _unitWork.DetallesPedidoRepo.ObtenerTodosAsync(
                 filtro: p => p.Pedido.TipoPedido == VCG.TipoPedido.Delivery,
                 ordenarPor: p => p.OrderByDescending(p => p.Pedido.FechaPedido),
-                incluirPropiedades: "Pedido,Pedido.Owner,Producto"
+                incluirPropiedades: "Pedido,Pedido.User,Producto"
             );
 
+            var pedidosAgrupados = pedidosDelivery
+                .GroupBy(p => p.PedidoId)
+                .Select(grupo => new VMDDetallesPedido
+                {
+                    PedidoId = grupo.Key,
+                    FechaPedido = grupo.First().Pedido.FechaPedido,
+                    Usuario = grupo.First().Pedido.User,
+                    Detalles = grupo.ToList()
+                }).ToList();
 
-            return View(pedidosDelivery);
+            return View(pedidosAgrupados);
         }
 
         // GET: PedidodsController/Details/5
@@ -124,7 +135,7 @@ namespace SisNikosPizza.Controllers
                     {
                         _unitWork.CarritoItemsRepo.Eliminar(carritoItem);
                     }
-                    
+
                     await _unitWork.GuardarAsync();
                 }
                 return RedirectToAction(nameof(Index));
