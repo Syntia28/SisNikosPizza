@@ -25,16 +25,24 @@ namespace SisNikosPizza.Controllers
         public async Task<ActionResult> Index()
         {
             var userSign = await _userManager.GetUserAsync(User);
-            //get role 
-            if (User.IsInRole(VCG.Role_Admin))
-            {
-                var pedidos = await _unitWork.PedidoRepo.ObtenerPedidosDetalladosTodos();
-                return View(pedidos);
-            }
 
-            var pedidosUsuario = await _unitWork.PedidoRepo.ObtenerPedidosDetallados(userSign.Id);
+            var pedidosDelivery = await _unitWork.DetallesPedidoRepo.ObtenerTodosAsync(
+                // filtro: p => p.Pedido.TipoPedido == VCG.TipoPedido.Delivery,
+                ordenarPor: p => p.OrderByDescending(p => p.Pedido.FechaPedido),
+                incluirPropiedades: "Pedido,Pedido.User,Producto"
+            );
 
-            return View(pedidosUsuario);
+            var pedidosAgrupados = pedidosDelivery
+                .GroupBy(p => p.PedidoId)
+                .Select(grupo => new VMDDetallesPedido
+                {
+                    PedidoId = grupo.Key,
+                    FechaPedido = grupo.First().Pedido.FechaPedido,
+                    Usuario = grupo.First().Pedido.User,
+                    Detalles = grupo.ToList()
+                }).ToList();
+
+            return View(pedidosAgrupados);
         }
 
         // GET: para la vista del delivery
@@ -63,26 +71,23 @@ namespace SisNikosPizza.Controllers
         public async Task<ActionResult> Detalles(int id)
         {
             var userSign = await _userManager.GetUserAsync(User);
-            var baseUrl = $"{Request.Scheme}://{Request.Host}/images";
-            var pedido = await _unitWork.PedidoRepo.ObtenerPedidoDetallado(id, baseUrl);
+            
+            var pedido = await _unitWork.DetallesPedidoRepo.ObtenerPrimeroAsync(
+                filtro: p => p.DetallePedidoId == id
+            );
             if (pedido == null)
             {
                 return NotFound();
             }
             //get role 
-            if (User.IsInRole(VCG.Role_Admin))
-            {
+            // if (User.IsInRole(VCG.Role_Admin))
+            // {
 
 
-                return View(pedido);
+            //     return View(pedido);
 
-            }
+            // }
 
-
-            if (pedido.UserId != userSign.Id)
-            {
-                return NotFound();
-            }
             return View(pedido);
 
         }
@@ -101,6 +106,7 @@ namespace SisNikosPizza.Controllers
             VMD.Pedido.UserId = userSign.Id;
             VMD.Pedido.EstadoPedido = VCG.EstadoPedido.Pendiente;
             VMD.Pedido.FechaPedido = DateTime.Now;
+            VMD.Pedido.Pagado = false;
 
             ModelState.Remove("Pedido.UserId");
             ModelState.Remove("Pedido.EstadoPedido");

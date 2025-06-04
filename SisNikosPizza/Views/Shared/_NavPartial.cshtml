@@ -10,13 +10,18 @@
         <div class="nav">
             <div class="sb-sidenav-menu-heading">Core</div>
             <a class="nav-link" asp-controller="Carta" asp-action="Index">
-                <div class="sb-nav-link-icon"><i class="fas fa-tachometer-alt"></i></div>
+                <div class="sb-nav-link-icon"><i class="fas fa-pizza-slice"></i></div>
                 Pizzas
             </a>
 
             <a class="nav-link" asp-controller="Pedidos" asp-action="Index">
                 <div class="sb-nav-link-icon"><i class="fas fa-tachometer-alt"></i></div>
                 Pedidos
+            </a>
+
+            <a class="nav-link" asp-controller="Pedidos" asp-action="Delivery">
+                <div class="sb-nav-link-icon"><i class="fas fa-motorcycle"></i></div>
+                Delivery
             </a>
 
             @if (User.IsInRole(VCG.Role_Admin)) // Corrección: cierre de paréntesis agregado aquí
@@ -45,7 +50,7 @@
 
                 <div class="sb-sidenav-menu-heading">Addons</div>
                 //ventas
-                <a class="nav-link" asp-controller="Venta" asp-action="Index">
+                <a class="nav-link" asp-controller="Ventas" asp-action="Index">
                     <div class="sb-nav-link-icon"><i class="fas fa-shopping-cart"></i></div>
                     Ventas
                     </a>

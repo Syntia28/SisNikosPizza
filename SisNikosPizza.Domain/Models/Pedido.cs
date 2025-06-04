@@ -13,6 +13,8 @@ namespace SisNikosPizza.Domain.Models
         public string EstadoPedido { get; set; } //pendiente, anulado, entregado.
         public string TipoPedido { get; set; } //delivery, recogo_en_local, mesa.
 
+        public bool? Pagado { get; set; }
+
         //propiedades para delivery.
         public string? Telefono { get; set; }
         public string? Direccion { get; set; }

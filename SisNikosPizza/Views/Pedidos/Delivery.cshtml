@@ -48,7 +48,7 @@
 
                 <div class="flex justify-between items-center">
                     <div class="space-y-1">
-                        <p class="text-2xl font-bold text-gray-900">@item.Detalles.First().PrecioTotal</p>
+                        <p class="text-2xl font-bold text-gray-900">@item.Detalles.Sum(d => d.PrecioTotal)</p>
                     </div>
 
                     <div class="flex items-center gap-1">
