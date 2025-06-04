@@ -6,7 +6,7 @@
 @inject UserManager<IdentityUser> UserManager
 
 @{
-    ViewData["Title"] = "Pedidos";
+    ViewData["Title"] = "Ventas";
     Layout = "~/Views/Shared/_Admin.cshtml";
 }
 
@@ -372,7 +372,6 @@
                             <th>Cliente</th>
                             <th>Total</th>
                             <th>Productos</th>
-                            <th>Opciones</th>
                         </tr>
                     </thead>
                     <tbody>
@@ -385,11 +384,6 @@
                                     <td>@pedido.Usuario.UserName</td>
                                     <td>S/. @pedido.Detalles.Sum(d => d.PrecioTotal)</td>
                                     <td>@pedido.Detalles.Count()</td>
-                                    <td class="text-center">
-                                        <a class="btn btn-info btn-custom me-1" asp-controller="Pedidos" asp-action="Detalles" asp-route-id="@pedido.Detalles.First().DetallePedidoId" title="Ver Detalles">
-                                            <i class="bi bi-eye"></i>
-                                        </a>
-                                    </td>
                                 </tr>
                             }   
                         

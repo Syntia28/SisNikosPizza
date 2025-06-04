@@ -25,6 +25,9 @@ public class PedidoConfig : IEntityTypeConfiguration<Pedido>
             .HasMaxLength(50)
             .IsRequired();
 
+        builder.Property(pe => pe.Pagado)
+             .IsRequired(false);
+
         builder.Property(pe => pe.Telefono)
             .HasMaxLength(20)
             .IsRequired(false);
