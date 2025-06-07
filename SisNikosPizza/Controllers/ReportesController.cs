@@ -20,14 +20,29 @@ public class ReportesController : Controller
     [HttpGet]
     public async Task<IActionResult> DescargarExcel()
     {
-        var detallePedidos = (await _unitWork.DetallesPedidoRepo.ObtenerTodosAsync()).ToList();
+        var pedidosDelivery = await _unitWork.DetallesPedidoRepo.ObtenerTodosAsync(
+                // filtro: p => p.Pedido.TipoPedido == VCG.TipoPedido.Delivery,
+                ordenarPor: p => p.OrderByDescending(p => p.Pedido.FechaPedido),
+                incluirPropiedades: "Pedido,Pedido.User,Producto"
+            );
+        var Reporte = pedidosDelivery
+           .GroupBy(R => R.ProductoId)
+           .Select(g => new VMDReportes
+           {
+               PedidoId = g.Key,
+               FechaPedido = g.First().Pedido.FechaPedido,
+               Cliente = g.First().Pedido.User.UserName,
+               Productos = g.Count(),
+               Total = g.Sum( r => r.PrecioTotal)
+           }).ToList();
+        string nombreArchivo = $"Reporte-Ventas-{DateTime.Now:yyyy-mm-dd}";
 
-        byte[] archivoExcel = Reportes.FromList(detallePedidos, "DetallesPedido");
+        byte[] archivoExcel = Reportes.FromList(Reporte, nombreArchivo);
 
         return File(
             fileContents: archivoExcel,
             contentType: "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet",
-            fileDownloadName: "ReporteDetallesPedido.xlsx"
+            fileDownloadName: $"{nombreArchivo}.xlsx"
         );
     }
 }
