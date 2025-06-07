@@ -10,450 +10,325 @@
     Layout = "~/Views/Shared/_Admin.cshtml";
 }
 
-<link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
-<link href="https://cdn.jsdelivr.net/npm/bootstrap-icons/font/bootstrap-icons.css" rel="stylesheet">
-<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Poppins:wght@600;700&display=swap" rel="stylesheet">
-
-<style>
-    body {
-        font-family: 'Inter', sans-serif;
-        background: linear-gradient(135deg, #fff3e0 0%, #ffe082 100%);
-        margin: 0;
-        padding: 0;
-        color: #4a4a4a; /* Gray letters for better contrast */
-    }
-
-    .container-fluid {
-        max-width: 1300px;
-        padding: 3rem 1.5rem;
-        margin: 0 auto;
-    }
-
-    .card {
-        border-radius: 25px;
-        box-shadow: 0 12px 40px rgba(0, 0, 0, 0.15);
-        background: #ffffff;
-        border: 2px solid #ffca28;
-        overflow: hidden;
-        animation: slideIn 0.7s ease-out;
-    }
-
-    @@keyframes slideIn {
-        from {
-            opacity: 0;
-            transform: translateY(30px);
-        }
-
-        to {
-            opacity: 1;
-            transform: translateY(0);
-        }
-    }
-
-    .card-header {
-        background: linear-gradient(135deg, #a04000, #ff9900);
-        color: #fff;
-        padding: 2.5rem;
-        border-top-left-radius: 25px;
-        border-top-right-radius: 25px;
-        display: flex;
-        justify-content: space-between;
-        align-items: center;
-        position: relative;
-    }
-
-        .card-header::before {
-            content: '';
-            position: absolute;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            background: radial-gradient(circle, rgba(255,255,255,0.3) 0%, transparent 70%);
-            opacity: 0.4;
-        }
-
-        .card-header h2 {
-            font-family: 'Poppins', sans-serif;
-            font-size: 2.3rem;
-            font-weight: 700;
+@section Styles {
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-QWTKZyjpPEjISv5WaRU9OFeRpok6YctnYmDr5pNlyT2bRjXh0JMhjY6hW+ALEwIH" crossorigin="anonymous">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons/font/bootstrap-icons.css" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Poppins:wght@600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" integrity="sha512-iecdLmaskl7CVkqkXNQ/ZH/XLlvWZOJyj7Yy7tcenmpD1ypASozpmT/E0iPtmFIB46ZmdtAc9eNBvH0H/ZpiBw==" crossorigin="anonymous" referrerpolicy="no-referrer">
+    <style>
+        body {
+            font-family: 'Inter', sans-serif;
+            background: linear-gradient(135deg, #fff3e0 0%, #ffe082 100%);
+            color: #212121;
             margin: 0;
-            position: relative;
-            z-index: 1;
+            padding: 0;
         }
-
-    .card-body {
-        padding: 3rem;
-        background: #fff8e1;
-    }
-
-    .filters {
-        display: flex;
-        justify-content: space-between;
-        align-items: center;
-        gap: 1.5rem;
-        margin-bottom: 2.5rem;
-        flex-wrap: wrap;
-        background: #fff;
-        padding: 1.5rem;
-        border-radius: 15px;
-        box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
-    }
-
-    .filter-group {
-        display: flex;
-        align-items: center;
-        gap: 1rem;
-    }
-
-        .filter-group label {
-            font-weight: 500;
-            color: #4a4a4a;
-        }
-
-    .form-select, .form-control {
-        border-radius: 15px;
-        border: 1px solid #ffca28;
-        padding: 0.8rem;
-        font-size: 1rem;
-        background: #fff;
-        transition: all 0.3s ease;
-    }
-
-        .form-control:focus {
-            border-color: #ff9900;
-            box-shadow: 0 0 10px rgba(255, 153, 0, 0.3);
-            outline: none;
-        }
-
-    .input-group {
-        max-width: 400px;
-        position: relative;
-    }
-
-    .input-group-text {
-        background: #fff3e0;
-        border: 1px solid #ffca28;
-        border-right: none;
-        border-radius: 15px 0 0 15px;
-        padding: 0.8rem;
-        color: #a04000;
-        font-size: 1.2rem;
-    }
-
-    .input-group .form-control {
-        border-left: none;
-        border-radius: 0 15px 15px 0;
-        padding-left: 0.5rem;
-    }
-
-    .table {
-        border-collapse: separate;
-        border-spacing: 0;
-        border-radius: 15px;
-        overflow: hidden;
-        background: #fff;
-        box-shadow: 0 6px 15px rgba(0, 0, 0, 0.1);
-        border: 1px solid #ffe082;
-    }
-
-        .table th, .table td {
-            padding: 1.4rem;
-            text-align: center;
-            vertical-align: middle;
-            font-size: 1rem;
-            color: #4a4a4a;
-        }
-
-        .table th {
-            background: #fff3e0;
-            color: #a04000;
-            font-weight: 700;
-            text-transform: uppercase;
-            font-size: 0.95rem;
-        }
-
-        .table tbody tr {
-            transition: background 0.3s ease, transform 0.3s ease;
-        }
-
-            .table tbody tr:hover {
-                background: #fff9e6;
-                transform: translateY(-3px);
-            }
-
-    .btn-custom {
-        border-radius: 50px;
-        padding: 0.7rem 1.8rem;
-        font-weight: 600;
-        font-size: 0.95rem;
-        text-transform: uppercase;
-        transition: all 0.3s ease;
-        display: inline-flex;
-        align-items: center;
-        gap: 0.6rem;
-        box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
-    }
-
-    .btn-success {
-        background: linear-gradient(90deg, #ff8f00, #ffca28);
-        border: none;
-        color: #fff;
-    }
-
-        .btn-success:hover {
-            background: linear-gradient(90deg, #e67e22, #ffb300);
-            transform: translateY(-3px);
-            box-shadow: 0 6px 15px rgba(255, 143, 0, 0.3);
-        }
-
-        .btn-success:disabled {
-            background: #ccc;
-            cursor: not-allowed;
-            box-shadow: none;
-        }
-
-    .btn-info {
-        background: #0288d1;
-        border: none;
-        color: #fff;
-    }
-
-        .btn-info:hover {
-            background: #0277bd;
-            transform: translateY(-3px);
-            box-shadow: 0 6px 15px rgba(2, 136, 209, 0.3);
-        }
-
-    .badge {
-        padding: 0.6rem 1.2rem;
-        font-size: 0.95rem;
-        border-radius: 15px;
-        font-weight: 500;
-    }
-
-        .badge.bg-success {
-            background: #28a745;
-            color: #fff;
-        }
-
-        .badge.bg-primary {
-            background: #0288d1;
-            color: #fff;
-        }
-
-        .badge.bg-danger {
-            background: #d32f2f;
-            color: #fff;
-        }
-
-        .badge.bg-warning {
-            background: #ff8f00;
-            color: #fff;
-        }
-
-    .pagination {
-        justify-content: center;
-        margin-top: 2.5rem;
-    }
-
-        .pagination .page-item a {
-            background: #a04000;
-            color: #fff;
-            border-radius: 12px;
-            padding: 0.7rem 1.3rem;
-            margin: 0 0.4rem;
-            border: none;
-            font-weight: 500;
-            transition: all 0.3s ease;
-        }
-
-        .pagination .page-item.active a {
-            background: #ff9900;
-            color: #fff;
-        }
-
-        .pagination .page-item a:hover {
-            background: #ffca28;
-            color: #4a4a4a;
-        }
-
-    .no-results {
-        text-align: center;
-        padding: 2rem;
-        background: #fef0e7;
-        color: #d32f2f;
-        border-radius: 15px;
-        font-size: 1.2rem;
-        font-weight: 500;
-        margin-top: 1rem;
-        display: none;
-    }
-
-    @@media (max-width: 768px) {
-        .card-header h2 {
-            font-size: 1.8rem;
-        }
-
-        .filters {
-            flex-direction: column;
-            align-items: stretch;
-            padding: 1rem;
-        }
-
-        .input-group {
-            max-width: 100%;
-        }
-
-        .table th, .table td {
-            font-size: 0.9rem;
-            padding: 1rem;
-        }
-
-        .btn-custom {
-            padding: 0.6rem 1.5rem;
-            font-size: 0.9rem;
-        }
-    }
-
-    @@media (max-width: 576px) {
         .container-fluid {
-            padding: 2rem 1rem;
+            max-width: 1400px;
+            padding: 4rem 1.5rem;
+            margin: 0 auto;
         }
-
+        .card {
+            border-radius: 20px;
+            box-shadow: 0 12px 35px rgba(0, 0, 0, 0.2);
+            background: #ffffff;
+            border: 2px solid #ffca28;
+            animation: slideIn 0.7s ease-out;
+        }
+        @@keyframes slideIn {
+            from { opacity: 0; transform: translateY(20px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
         .card-header {
-            padding: 1.8rem;
-            flex-direction: column;
-            gap: 1rem;
-            text-align: center;
+            background: linear-gradient(90deg, #ff8f00, #ffca28);
+            color: #fff;
+            padding: 1.5rem;
+            border-top-left-radius: 20px;
+            border-top-right-radius: 20px;
+            font-family: 'Poppins', sans-serif;
+            font-size: 1.8rem;
+            font-weight: 700;
+            text-shadow: 1px 1px 2px rgba(0, 0, 0, 0.2);
         }
-
         .card-body {
+            background: #fff8e1;
             padding: 2rem;
         }
-
-        .filter-group {
-            flex-direction: column;
-            align-items: stretch;
-            width: 100%;
+        .table th, .table td {
+            text-align: center;
+            padding: 1rem;
+            font-size: 1rem;
+            vertical-align: middle;
         }
-    }
-</style>
+        .table th {
+            background: linear-gradient(90deg, #ffca28, #ffe082);
+            color: #212121;
+            font-weight: 600;
+            text-transform: uppercase;
+            font-size: 0.9rem;
+            letter-spacing: 0.05rem;
+        }
+        .table tbody tr {
+            transition: all 0.3s ease;
+        }
+        .table tbody tr:hover {
+            background: #fff3e0;
+            transform: translateY(-2px);
+            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+        }
+        .form-select, .form-control {
+            border-radius: 30px;
+            height: 45px;
+            padding-left: 15px;
+            border: 2px solid #ffca28;
+            transition: all 0.3s ease;
+        }
+        .form-select:focus, .form-control:focus {
+            border-color: #ff8f00;
+            box-shadow: 0 0 8px rgba(255, 143, 0, 0.3);
+        }
+        .btn-info, .btn-success {
+            background: linear-gradient(90deg, #ff8f00, #ffca28);
+            border: none;
+            color: #fff;
+            border-radius: 30px;
+            padding: 0.5rem 1.5rem;
+            font-size: 0.95rem;
+            font-weight: 600;
+            transition: all 0.3s ease;
+            display: inline-flex;
+            align-items: center;
+            gap: 0.5rem;
+            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+        }
+        .btn-info:hover, .btn-success:hover {
+            background: linear-gradient(90deg, #e67e22, #ffb300);
+            transform: translateY(-2px);
+            box-shadow: 0 6px 15px rgba(255, 143, 0, 0.3);
+        }
+        .btn-outline-warning {
+            border: 2px solid #ffca28;
+            color: #ff8f00;
+            border-radius: 30px;
+            padding: 0.5rem 1.5rem;
+            font-size: 0.95rem;
+            font-weight: 600;
+            transition: all 0.3s ease;
+        }
+        .btn-outline-warning:hover {
+            background: #ffca28;
+            color: #212121;
+            transform: translateY(-2px);
+            box-shadow: 0 6px 15px rgba(255, 143, 0, 0.3);
+        }
+        .search-container, .date-container {
+            position: relative;
+        }
+        .search-container input {
+            padding-left: 40px;
+            background: #ffffff;
+        }
+        .search-container .bi-search {
+            left: 12px;
+            top: 50%;
+            transform: translateY(-50%);
+            font-size: 1.2rem;
+            color: #ff8f00;
+            transition: color 0.3s ease;
+        }
+        .search-container input:focus + .bi-search {
+            color: #e67e22;
+        }
+        .pagination .page-item a {
+            background: #ff8f00;
+            color: #fff;
+            border-radius: 30px;
+            padding: 0.5rem 1rem;
+            margin: 0 0.3rem;
+            border: none;
+            transition: all 0.3s ease;
+        }
+        .pagination .page-item.active a {
+            background: #ffca28;
+            color: #212121;
+            font-weight: 600;
+        }
+        .pagination .page-item a:hover {
+            background: #e67e22;
+            transform: translateY(-2px);
+            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+        }
+        .pagination .page-item.disabled a {
+            background: #ccc;
+            color: #666;
+            cursor: not-allowed;
+        }
+        @@media (max-width: 768px) {
+            .container-fluid { padding: 3rem 1rem; }
+            .card-header { font-size: 1.5rem; padding: 1.2rem; }
+            .card-body { padding: 1.5rem; }
+            .table th, .table td { font-size: 0.9rem; padding: 0.8rem; }
+            .form-select, .form-control { height: 40px; max-width: 100%; }
+            .btn-info, .btn-success, .btn-outline-warning { padding: 0.4rem 1rem; font-size: 0.9rem; }
+        }
+        @@media (max-width: 576px) {
+            .card-header { font-size: 1.3rem; }
+            .table th, .table td { font-size: 0.85rem; padding: 0.6rem; }
+            .btn-info, .btn-success, .btn-outline-warning { font-size: 0.85rem; padding: 0.3rem 0.8rem; }
+            .d-flex.flex-wrap { flex-direction: column; align-items: stretch; }
+            .search-container, .date-container { width: 100%; }
+            .search-container input, .date-container input { width: 100%; max-width: none; }
+        }
+    </style>
+}
 
-<div class="container-fluid">
+<div class="container-fluid py-5">
     <div class="card">
-        <div class="card-header">
-            <h2>Gestión de Pedidos</h2>
+        <div class="card-header d-flex justify-content-between align-items-center">
+            <h2 class="mb-0"><i class="fas fa-pizza-slice me-2"></i> Ventas</h2>
         </div>
-
         <div class="card-body">
-            <div class="filters">
-                <div class="filter-group">
-                    <label for="entries" class="form-label">Mostrar</label>
-                    <select id="entries" class="form-select" style="width: auto;">
-                        <option value="10">10</option>
-                        <option value="25">25</option>
-                        <option value="50">50</option>
-                        <option value="100">100</option>
+            <!-- Filter and Export Form -->
+            <div class="d-flex flex-wrap gap-3 mb-4">
+                <div class="d-flex align-items-center gap-2">
+                    <label for="entries" class="form-label mb-0">Mostrar</label>
+                    <select id="entries" name="pageSize" class="form-select" style="width: auto; border-color: #ffca28;">
+                        <option value="10" selected="@(ViewBag.PageSize == 10)">10</option>
+                        <option value="25" selected="@(ViewBag.PageSize == 25)">25</option>
+                        <option value="50" selected="@(ViewBag.PageSize == 50)">50</option>
+                        <option value="100" selected="@(ViewBag.PageSize == 100)">100</option>
                     </select>
                     <span>registros por página</span>
                 </div>
-                <div class="input-group">
-                    <span class="input-group-text"><i class="bi bi-search"></i></span>
-                    <input type="search" id="searchInput" class="form-control" placeholder="Buscar por cliente, fecha o total" aria-label="Buscar pedidos" />
+                <div class="search-container position-relative flex-grow-1">
+                    <input type="text" name="searchEmail" class="form-control" placeholder="Buscar por email..." value="@ViewBag.SearchEmail" style="width: 100%; max-width: 300px; border-color: #ffca28;" />
+                    <i class="bi bi-search position-absolute"></i>
                 </div>
+                <div class="date-container position-relative">
+                    <input type="date" name="searchDate" class="form-control" value="@(ViewBag.SearchDate != null ? ViewBag.SearchDate.ToString("yyyy-MM-dd") : "")" style="width: 100%; max-width: 200px; border-color: #ffca28;" />
+                </div>
+                <div class="d-flex align-items-center gap-2">
+                    <label for="exportPeriod" class="form-label mb-0">Exportar por</label>
+                    <select id="exportPeriod" name="exportPeriod" class="form-select" style="width: auto; border-color: #ffca28;">
+                        <option value="daily">Diario</option>
+                        <option value="weekly">Semanal</option>
+                        <option value="monthly">Mensual</option>
+                    </select>
+                </div>
+                    <form asp-controller="Reportes" asp-action="DescargarExcel" method="get">
+                        <button type="submit" class="btn btn-success ms-2">
+                            <i class="bi bi-file-earmark-excel"></i> Exportar a Excel
+                        </button>
+                    </form>
             </div>
 
+            <!-- Sales Table -->
             <div class="table-responsive">
-                <table class="table table-bordered table-striped align-middle" id="pedidosTable">
+                <table class="table table-striped table-hover">
                     <thead>
                         <tr>
                             <th>Fecha</th>
                             <th>Cliente</th>
                             <th>Total</th>
                             <th>Productos</th>
+                            <th>Opciones</th>
                         </tr>
                     </thead>
-                    <tbody>
-                        @if(Model != null && Model.Any())
+                    <tbody id="salesTable">
+                        @if (!Model.Any())
                         {
-                            @foreach (var pedido in Model)
+                            <tr>
+                                <td colspan="4" class="text-center text-muted">No se encontraron resultados.</td>
+                            </tr>
+                        }
+                        else
+                        {
+                            @foreach (var venta in Model)
                             {
                                 <tr>
-                                    <td>@pedido.FechaPedido.ToString("dd/MM/yyyy HH:mm")</td>
-                                    <td>@pedido.Usuario.UserName</td>
-                                    <td>S/. @pedido.Detalles.Sum(d => d.PrecioTotal)</td>
-                                    <td>@pedido.Detalles.Count()</td>
+                                    <td>@venta.FechaPedido.ToString("dd/MM/yyyy HH:mm")</td>
+                                    <td>@venta.Usuario.UserName</td>
+                                    <td class="text-success fw-bold">@venta.Detalles.Sum(total => total.PrecioTotal)</td>
+                                    <td> @venta.Detalles.Count()</td>
+                                    <td class="text-center">
+                                        <a asp-controller="Ventas" asp-action="Cobrar" asp-route-id="@venta.PedidoId">Ver Detalles</a>
+
+                                    </td>
                                 </tr>
-                            }   
-                        
-
-
-                        
+                            }
                         }
                     </tbody>
                 </table>
-                <div class="no-results" id="noResults">No se encontraron pedidos que coincidan con la búsqueda.</div>
-            </div>
-
-            <div class="pagination">
-                <nav aria-label="Page navigation">
-                    <ul class="pagination">
-                        <li class="page-item">
-                            <a class="page-link" href="#">Anterior</a>
-                        </li>
-                        <li class="page-item active">
-                            <a class="page-link" href="#">1</a>
-                        </li>
-                        <li class="page-item">
-                            <a class="page-link" href="#">2</a>
-                        </li>
-                        <li class="page-item">
-                            <a class="page-link" href="#">3</a>
-                        </li>
-                        <li class="page-item">
-                            <a class="page-link" href="#">Siguiente</a>
-                        </li>
-                    </ul>
-                </nav>
             </div>
         </div>
     </div>
+
+    <!-- Pagination -->
+    <div class="d-flex justify-content-center mt-4">
+        <nav aria-label="Page navigation">
+            <ul class="pagination">
+                <li class="page-item @(ViewBag.CurrentPage == 1 ? "disabled" : "")">
+                    <a class="page-link" href="@Url.Action("Index", new { page = ViewBag.CurrentPage - 1, pageSize = ViewBag.PageSize, searchEmail = ViewBag.SearchEmail, searchDate = ViewBag.SearchDate })" aria-label="Anterior">Anterior</a>
+                </li>
+                @for (int i = 1; i <= ViewBag.TotalPages; i++)
+                {
+                    <li class="page-item @(i == ViewBag.CurrentPage ? "active" : "")">
+                        <a class="page-link" href="@Url.Action("Index", new { page = i, pageSize = ViewBag.PageSize, searchEmail = ViewBag.SearchEmail, searchDate = ViewBag.SearchDate })">@i</a>
+                    </li>
+                }
+                <li class="page-item @(ViewBag.CurrentPage == ViewBag.TotalPages ? "disabled" : "")">
+                    <a class="page-link" href="@Url.Action("Index", new { page = ViewBag.CurrentPage + 1, pageSize = ViewBag.PageSize, searchEmail = ViewBag.SearchEmail, searchDate = ViewBag.SearchDate })" aria-label="Siguiente">Siguiente</a>
+                </li>
+            </ul>
+        </nav>
+    </div>
 </div>
 
-<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
-<script>
-    document.addEventListener('DOMContentLoaded', () => {
-        const searchInput = document.getElementById('searchInput');
-        const table = document.getElementById('pedidosTable');
-        const rows = table.querySelectorAll('tbody tr');
-        const noResults = document.getElementById('noResults');
+@section Scripts {
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js" integrity="sha384-YvpcrYf0tY3lHB60NNkmXc5s9fDVZLESaAA55NDKzOxhy9GkcIdslK1eN7N6jIeHz" crossorigin="anonymous"></script>
+    <script>
+        document.addEventListener('DOMContentLoaded', () => {
+            const searchInput = document.querySelector('input[name="searchEmail"]');
+            const dateInput = document.querySelector('input[name="searchDate"]');
+            const tableRows = document.querySelectorAll('#salesTable tr');
+            const entriesSelect = document.querySelector('#entries');
+            const noResultsRow = document.createElement('tr');
+            noResultsRow.innerHTML = '<td colspan="4" class="text-center text-muted">No se encontraron resultados.</td>';
 
-        searchInput.addEventListener('input', () => {
-            const searchTerm = searchInput.value.toLowerCase().trim();
-            let visibleRows = 0;
+            function filterRows() {
+                let visibleRows = 0;
+                const query = searchInput.value.toLowerCase();
+                const selectedDate = dateInput.value;
 
-            rows.forEach(row => {
-                const fecha = row.cells[0].textContent.toLowerCase();
-                const cliente = row.cells[1].textContent.toLowerCase();
-                const total = row.cells[2].textContent.toLowerCase();
+                tableRows.forEach(row => {
+                    const email = row.cells[1].textContent.toLowerCase();
+                    const date = row.cells[0].textContent.split(' ')[0]; // Extract date part (dd/MM/yyyy)
+                    const formattedDate = selectedDate ? new Date(selectedDate).toLocaleDateString('es-ES', { day: '2-digit', month: '2-digit', year: 'numeric' }) : '';
 
-                if (fecha.includes(searchTerm) || cliente.includes(searchTerm) || total.includes(searchTerm)) {
-                    row.style.display = '';
-                    visibleRows++;
-                } else {
-                    row.style.display = 'none';
+                    const matchesEmail = query ? email.includes(query) : true;
+                    const matchesDate = selectedDate ? date === formattedDate : true;
+
+                    if (matchesEmail && matchesDate) {
+                        row.style.display = '';
+                        visibleRows++;
+                    } else {
+                        row.style.display = 'none';
+                    }
+                });
+
+                const tbody = document.querySelector('#salesTable');
+                if (visibleRows === 0 && !tbody.contains(noResultsRow)) {
+                    tbody.appendChild(noResultsRow);
+                } else if (visibleRows > 0 && tbody.contains(noResultsRow)) {
+                    tbody.removeChild(noResultsRow);
                 }
+            }
+
+            searchInput.addEventListener('input', filterRows);
+            dateInput.addEventListener('change', filterRows);
+            entriesSelect.addEventListener('change', () => {
+                filterRows(); // Reapply filters after changing page size
             });
-
-            noResults.style.display = visibleRows === 0 && searchTerm ? 'block' : 'none';
         });
-
-        const entriesSelect = document.getElementById('entries');
-        entriesSelect.addEventListener('change', () => {
-            const entries = parseInt(entriesSelect.value);
-            // Placeholder for server-side pagination logic
-            console.log(`Mostrar ${entries} registros por página`);
-        });
-    });
-</script>
+    </script>
+}

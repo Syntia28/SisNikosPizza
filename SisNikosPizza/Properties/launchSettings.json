@@ -33,6 +33,9 @@
       "environmentVariables": {
         "ASPNETCORE_ENVIRONMENT": "Development"
       }
+    },
+    "DomainUrls": {
+      "WEB_URL": "http://carlos2108-001-site1.ltempurl.com"
     }
   }
 }
