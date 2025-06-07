@@ -1,7 +1,7 @@
 ﻿@model SisNikosPizza.Domain.Models.Proveedor
 
 @{
-    ViewData["Title"] = "Eliminar Proveedor";
+    ViewData["Title"] = "Eliminar Producto";
     Layout = "~/Views/Shared/_Admin.cshtml";
 }
 
@@ -22,7 +22,7 @@
             <input asp-for="ProveedorId" hidden />
             <!-- Card Header -->
             <div class="bg-gradient-to-r from-yellow-500 to-yellow-700 text-white px-6 py-4 flex justify-between items-center">
-                <h2 class="text-2xl font-semibold"><i class="bi bi-person-x-fill mr-2"></i> Confirmar Eliminación</h2>
+                <h2 class="text-2xl font-semibold"><i class="bi bi-box-seam mr-2"></i> Confirmar Eliminación</h2>
                 <a href="javascript:history.back()" class="inline-flex items-center px-4 py-2 bg-gradient-to-r from-yellow-600 to-yellow-800 text-white rounded-full hover:bg-gradient-to-r hover:from-yellow-700 hover:to-yellow-900 transition duration-300 ease-in-out transform hover:scale-105">
                     <i class="bi bi-arrow-left-circle mr-2"></i> Regresar
                 </a>
@@ -30,46 +30,31 @@
             <!-- Card Body -->
             <div class="p-6 bg-yellow-100">
                 <div asp-validation-summary="ModelOnly" class="text-red-600 mb-4"></div>
-
-                <!-- Nombre -->
-                <div class="mb-6 flex items-center">
-                    <label class="w-1/4 text-gray-600 font-medium">Nombre</label>
-                    <div class="w-3/4">
-                        <input type="text" asp-for="Nombre" class="w-full px-4 py-2 border border-gray-300 rounded-lg bg-gray-100" placeholder="Nombre del proveedor" disabled />
-                        <span asp-validation-for="Nombre" class="text-red-600 text-sm"></span>
+                <dl class="space-y-4">
+                    <!-- Nombre -->
+                    <div class="detail-group">
+                        <dt class="detail-label">Nombre:</dt>
+                        <dd class="detail-value">@Model.Nombre</dd>
                     </div>
-                </div>
 
-                <!-- Producto -->
-                <div class="mb-6 flex items-center">
-                    <label class="w-1/4 text-gray-600 font-medium">Producto</label>
-                    
-                </div>
-
-                <!-- Cantidad -->
-                <div class="mb-6 flex items-center">
-                    <label class="w-1/4 text-gray-600 font-medium">Cantidad</label>
-                    <div class="w-3/4">
-                        <input type="text" asp-for="Cantidad" class="w-full px-4 py-2 border border-gray-300 rounded-lg bg-gray-100" placeholder="Cantidad" disabled />
-                        <span asp-validation-for="Cantidad" class="text-red-600 text-sm"></span>
+                    <!-- Empresa -->
+                    <div class="detail-group">
+                        <dt class="detail-label">Empresa:</dt>
+                        <dd class="detail-value">@Model.Empresa</dd>
                     </div>
-                </div>
 
-                <!-- Empresa -->
-                <div class="mb-6 flex items-center">
-                    <label class="w-1/4 text-gray-600 font-medium">Empresa</label>
-                    <div class="w-3/4">
-                        <input type="text" asp-for="Empresa" class="w-full px-4 py-2 border border-gray-300 rounded-lg bg-gray-100" placeholder="Nombre de la empresa proveedora" disabled />
-                        <span asp-validation-for="Empresa" class="text-red-600 text-sm"></span>
+                    <!-- Cantidad -->
+                    <div class="detail-group">
+                        <dt class="detail-label">Cantidad de Insumos:</dt>
+                        <dd class="detail-value">@Model.Cantidad</dd>
                     </div>
-                </div>
-
+                </dl>
                 <!-- Action Buttons -->
-                <div class="flex justify-end space-x-4 mt-6">
+                <div class="flex justify-center space-x-4 mt-6">
                     <button type="submit" class="inline-flex items-center px-10 py-4 bg-gradient-to-r from-red-600 to-yellow-500 text-white rounded-full hover:bg-gradient-to-r hover:from-red-700 hover:to-yellow-600 transition duration-300 ease-in-out transform hover:scale-115 animate-pulse shadow-xl text-xl font-bold">
                         <i class="bi bi-trash-fill mr-2"></i> Eliminar
                     </button>
-                    <a asp-controller="Proveedor" asp-action="Index" class="inline-flex items-center px-6 py-2 bg-gray-700 text-white rounded-full hover:bg-gray-800 transition duration-300 ease-in-out transform hover:scale-105">
+                    <a asp-controller="Proveedor" asp-action="Index" class="inline-flex items-center px-6 py-2 bg-gray-700 text-white rounded-full hover:bg-gray-800 transition duration-300 ease-in-out transform hover:scale-105 shadow-lg">
                         <i class="bi bi-x-circle mr-2"></i> Cancelar
                     </a>
                 </div>
