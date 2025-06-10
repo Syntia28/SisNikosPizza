@@ -251,8 +251,7 @@
                                     <td class="text-success fw-bold">@venta.Detalles.Sum(total => total.PrecioTotal)</td>
                                     <td> @venta.Detalles.Count()</td>
                                     <td class="text-center">
-                                        <a asp-controller="Ventas" asp-action="Cobrar" asp-route-id="@venta.PedidoId">Ver Detalles</a>
-
+                                        <a asp-controller="Ventas" asp-action="Detalles" asp-route-id="@venta.PedidoId">Ver Detalles</a>
                                     </td>
                                 </tr>
                             }

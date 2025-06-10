@@ -28,7 +28,7 @@ namespace SisNikosPizza.Utilidades
 
             string htmlContent = CargarYReemplazarHtml(path, user);
 
-            string asunto = "recuperacion de cuenta";
+            string asunto = "CONFIRMACION DE PEDIDO";
             bool enviado = enviarCorreo.EnviarCorreo(Correo, asunto, htmlContent);
             if (!enviado)
             {

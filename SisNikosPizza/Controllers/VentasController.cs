@@ -26,29 +26,16 @@ namespace SisNikosPizza.Controllers
         {
             var userSign = await _userManager.GetUserAsync(User);
 
-            var pedidosDelivery = await _unitWork.DetallesPedidoRepo.ObtenerTodosAsync(
-                // filtro: p => p.Pedido.TipoPedido == VCG.TipoPedido.Delivery,
-                ordenarPor: p => p.OrderByDescending(p => p.Pedido.FechaPedido),
-                incluirPropiedades: "Pedido,Pedido.User,Producto"
-            );
-
-            var pedidosAgrupados = pedidosDelivery
-                .GroupBy(p => p.PedidoId)
-                .Select(grupo => new VMDDetallesPedido
-                {
-                    PedidoId = grupo.Key,
-                    FechaPedido = grupo.First().Pedido.FechaPedido,
-                    Usuario = grupo.First().Pedido.User,
-                    Detalles = grupo.ToList()
-                }).ToList();
+            var pedidosAgrupados = await _unitWork.DetallesPedidoRepo.GetVentasAsync();
 
             return View(pedidosAgrupados);
         }
-        [Authorize(Roles = VCG.Role_Admin)]
+
         [HttpGet]
-        public async Task<ActionResult> Cobrar(int id)
+        public async Task<ActionResult> Detalles(int id)
         {
-            return View();
+            var pedidosAgrupados = await _unitWork.DetallesPedidoRepo.GetDetallesByPedidoIdAsync(id);
+            return View(pedidosAgrupados);
         }
     }
 }
