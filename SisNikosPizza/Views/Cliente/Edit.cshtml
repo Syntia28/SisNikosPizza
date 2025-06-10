@@ -1,38 +1,60 @@
-﻿@model SisNikosPizza.Domain.Models.ApplicationUser
+﻿@model SisNikosPizza.Domain.ViewModels.EditUserViewModel 
 
 @{
-    ViewData["Title"] = "Detalles del Usuario";
+    ViewData["Title"] = "Editar Usuario";
     Layout = "~/Views/Shared/_Admin.cshtml";
 }
 
 <div class="container mt-5">
     <div class="card shadow-lg">
         <div class="card-header bg-warning text-white text-center">
-            <h3>Detalles del Usuario</h3>
+            <h3>Editar Usuario</h3>
         </div>
         <div class="card-body">
-            <dl class="row">
-                <dt class="col-sm-4">Nombre de Usuario</dt>
-                <dd class="col-sm-8">@Model.Nombre</dd>
+            <form asp-action="Edit" method="post">
+                <div asp-validation-summary="ModelOnly" class="text-danger mb-3"></div>
+                <input type="hidden" asp-for="Id" />
 
-                <dt class="col-sm-4">Email</dt>
-                <dd class="col-sm-8">@Model.Email</dd>
+                <div class="mb-3">
+                    <label asp-for="UserName" class="form-label fw-bold">Nombre de Usuario</label>
+                    <input asp-for="UserName" class="form-control" />
+                    <span asp-validation-for="UserName" class="text-danger"></span>
+                </div>
 
-                <dt class="col-sm-4">Teléfono</dt>
-                <dd class="col-sm-8">@Model.PhoneNumber</dd>
+                <div class="mb-3">
+                    <label asp-for="Email" class="form-label fw-bold">Email</label>
+                    <input asp-for="Email" class="form-control" />
+                    <span asp-validation-for="Email" class="text-danger"></span>
+                </div>
 
-                <dt class="col-sm-4">Dirección</dt>
-                <dd class="col-sm-8">@Model.Direccion</dd>
-            </dl>
+                <div class="mb-3">
+                    <label asp-for="PhoneNumber" class="form-label fw-bold">Teléfono</label>
+                    <input asp-for="PhoneNumber" class="form-control" />
+                    <span asp-validation-for="PhoneNumber" class="text-danger"></span>
+                </div>
+                
+                @* Si ApplicationUser tiene más propiedades editables que estén en EditUserViewModel, agrégalas aquí.
+                   Por ejemplo, si tuvieras Dirección en EditUserViewModel:
+                <div class="mb-3">
+                    <label asp-for="Direccion" class="form-label fw-bold">Dirección</label>
+                    <input asp-for="Direccion" class="form-control" />
+                    <span asp-validation-for="Direccion" class="text-danger"></span>
+                </div>
+                *@
 
-            <div class="text-end">
-                <a asp-action="Edit" asp-route-id="@Model.Id" class="btn btn-primary">
-                    <i class="bi bi-pencil-square"></i> Editar
-                </a>
-                <a asp-action="Index" class="btn btn-secondary">
-                    <i class="bi bi-arrow-left"></i> Volver
-                </a>
-            </div>
+                <div class="text-end mt-4">
+                    <button type="submit" class="btn btn-success">
+                        <i class="bi bi-check-circle"></i> Guardar Cambios
+                    </button>
+                    <a asp-action="Index" class="btn btn-secondary">
+                        <i class="bi bi-x-circle"></i> Cancelar
+                    </a>
+                </div>
+            </form>
         </div>
     </div>
 </div>
+
+@section Scripts {
+    @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
+}

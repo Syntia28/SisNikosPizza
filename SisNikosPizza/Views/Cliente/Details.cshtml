@@ -1,4 +1,4 @@
-﻿@model SisNikosPizza.Domain.Models.ApplicationUser
+﻿@model Microsoft.AspNetCore.Identity.IdentityUser
 
 
 @{
@@ -35,9 +35,9 @@
         margin: 0 auto;
     }
 
-        .details-card:hover {
-            transform: translateY(-5px);
-        }
+    .details-card:hover {
+        transform: translateY(-5px);
+    }
 
     .details-header {
         background: linear-gradient(45deg, #f1c40f, #f39c12);
@@ -47,14 +47,14 @@
         border-radius: 20px 20px 0 0;
     }
 
-        .details-header h3 {
-            font-size: 2rem;
-            font-weight: 700;
-            margin: 0;
-            text-transform: uppercase;
-            letter-spacing: 1px;
-            text-shadow: 1px 1px 5px rgba(0, 0, 0, 0.2);
-        }
+    .details-header h3 {
+        font-size: 2rem;
+        font-weight: 700;
+        margin: 0;
+        text-transform: uppercase;
+        letter-spacing: 1px;
+        text-shadow: 1px 1px 5px rgba(0, 0, 0, 0.2);
+    }
 
     .details-body {
         padding: 30px;
@@ -99,10 +99,10 @@
         color: #fff;
     }
 
-        .btn-primary:hover {
-            background: linear-gradient(45deg, #2980b9, #3498db);
-            transform: scale(1.05);
-        }
+    .btn-primary:hover {
+        background: linear-gradient(45deg, #2980b9, #3498db);
+        transform: scale(1.05);
+    }
 
     .btn-secondary {
         background: linear-gradient(45deg, #6c757d, #5a6268);
@@ -110,10 +110,10 @@
         color: #fff;
     }
 
-        .btn-secondary:hover {
-            background: linear-gradient(45deg, #5a6268, #6c757d);
-            transform: scale(1.05);
-        }
+    .btn-secondary:hover {
+        background: linear-gradient(45deg, #5a6268, #6c757d);
+        transform: scale(1.05);
+    }
 
     .btn:focus {
         outline: none;
@@ -133,7 +133,7 @@
             </div>
             <div class="details-item">
                 <span class="details-label">Nombre de Usuario</span>
-                <div class="details-value">@Model.Nombre</div>
+                <div class="details-value">@Model.UserName</div>
             </div>
             <div class="details-item">
                 <span class="details-label">Email</span>
@@ -143,15 +143,13 @@
                 <span class="details-label">Teléfono</span>
                 <div class="details-value">@(Model.PhoneNumber ?? "No disponible")</div>
             </div>
-            <div class="details-item">
-                <span class="details-label">Dirección</span>
-                <div class="details-value">@(Model.Direccion ?? "No disponible")</div>
-            </div>
             <div class="d-flex justify-content-end gap-3 mt-4">
-                <a asp-controller="User" asp-action="Edit" asp-route-id="@Model.Id" class="btn btn-primary" aria-label="Editar usuario @Model.Nombre">
+                <a asp-controller="Cliente" asp-action="Edit" asp-route-id="@Model.Id" class="btn btn-primary"
+                    aria-label="Editar usuario @Model.UserName">
                     <i class="bi bi-pencil-square"></i> Editar
                 </a>
-                <a asp-controller="User" asp-action="Index" class="btn btn-secondary" aria-label="Volver a la lista de usuarios">
+                <a asp-controller="Cliente" asp-action="Index" class="btn btn-secondary"
+                    aria-label="Volver a la lista de usuarios">
                     <i class="bi bi-arrow-left"></i> Volver
                 </a>
             </div>
@@ -159,4 +157,4 @@
     </div>
 </div>
 
-<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script> 
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>

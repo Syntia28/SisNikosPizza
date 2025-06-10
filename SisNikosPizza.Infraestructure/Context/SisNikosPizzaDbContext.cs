@@ -8,7 +8,7 @@ namespace SisNikosPizza.Infrastructure.Context
     public class SisNikosPizzaBbContext : IdentityDbContext
     {
         public SisNikosPizzaBbContext(DbContextOptions<SisNikosPizzaBbContext> options) : base(options)
-        { }
+        {}
 
         public DbSet<Categoria> categoria { get; set; }
         public DbSet<CarritoItems> carritoItems { get; set; }

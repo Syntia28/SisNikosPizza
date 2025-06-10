@@ -126,48 +126,45 @@
 
                                 <div class="section-title">Detalles del Pedido</div>
                                 <div class="radio-group">
-                                    <input type="radio" name="TipoPedido" id="delivery" value="@VCG.TipoPedido.Delivery">
+                                    <input type="radio" asp-for="Pedido.TipoPedido" id="delivery" value="@VCG.TipoPedido.Delivery" checked="@(Model.Pedido?.TipoPedido == VCG.TipoPedido.Delivery || Model.Pedido?.TipoPedido == null)">
                                     <label for="delivery">Delivery</label>
 
-                                    <input type="radio" name="TipoPedido" id="recoger" value="@VCG.TipoPedido.Recoger">
+                                    <input type="radio" asp-for="Pedido.TipoPedido" id="recoger" value="@VCG.TipoPedido.Recoger" checked="@(Model.Pedido?.TipoPedido == VCG.TipoPedido.Recoger)">
                                     <label for="recoger">Recoger</label>
 
-                                    <input type="radio" name="TipoPedido" id="mesa" value="@VCG.TipoPedido.Mesa">
+                                    <input type="radio" asp-for="Pedido.TipoPedido" id="mesa" value="@VCG.TipoPedido.Mesa" checked="@(Model.Pedido?.TipoPedido == VCG.TipoPedido.Mesa)">
                                     <label for="mesa">Mesa</label>
                                 </div>
 
                                 <div id="section-delivery" style="display:none;">
                                     @* <!-- inputs de Teléfono, Dirección, Referencia --> *@
-                                    <input type="hidden" asp-for="@Model.Pedido.TipoPedido" value="@VCG.TipoPedido.Delivery" />
                                     <div class="input-group mb-3">
                                         <span class="input-group-text">📱</span>
-                                        <input type="text" asp-for="@Model.Pedido.Telefono" class="form-control" placeholder="Teléfono" required>
+                                        <input type="text" asp-for="Pedido.Telefono" class="form-control" placeholder="Teléfono">
                                     </div>
                                     <div class="input-group mb-3">
                                         <span class="input-group-text">🏠</span>
-                                        <input type="text" asp-for="@Model.Pedido.Direccion" class="form-control" placeholder="Dirección" required>
+                                        <input type="text" asp-for="Pedido.Direccion" class="form-control" placeholder="Dirección">
                                     </div>
                                     <div class="input-group mb-3">
                                         <span class="input-group-text">📍</span>
-                                        <input type="text" asp-for="@Model.Pedido.Referencia" class="form-control" placeholder="Referencia">
+                                        <input type="text" asp-for="Pedido.Referencia" class="form-control" placeholder="Referencia">
                                     </div>
                                 </div>
                                 <div id="section-recoger" style="display:none;">
                                     @* <!-- inputs de FechaRecogo --> *@
-                                    <input type="hidden" asp-for="@Model.Pedido.TipoPedido" value="@VCG.TipoPedido.Recoger" />
                                     <div class="mb-4">
                                         <p class="mb-2"><strong>Recoger en:</strong> Jr. Reina Farje N° 175</p>
                                         <p class="mb-3"><strong>Referencia:</strong> Media cuadra del BCP de Sucre</p>
-                                        <span class="form-label">Fecha de Recogida</span>
-                                        <input type="datetime-local" asp-for="@Model.Pedido.FechaRecogo" class="form-control" required>
+                                        <label asp-for="Pedido.FechaRecogo" class="form-label">Fecha de Recogida</label>
+                                        <input type="datetime-local" asp-for="Pedido.FechaRecogo" class="form-control">
                                     </div>
                                 </div>
                                 <div id="section-mesa" style="display:none;">
                                     @* <!-- inputs de Mesa --> *@
-                                    <input type="hidden" asp-for="@Model.Pedido.TipoPedido" value="@VCG.TipoPedido.Mesa" />
                                     <div class="mb-4">
-                                        <span class="form-label">Número o Nombre de la Mesa</span>
-                                        <input type="text" asp-for="@Model.Pedido.Mesa" class="form-control" placeholder="Ej: Mesa 5" required>
+                                        <label asp-for="Pedido.Mesa" class="form-label">Número o Nombre de la Mesa</label>
+                                        <input type="text" asp-for="Pedido.Mesa" class="form-control" placeholder="Ej: Mesa 5">
                                     </div>
                                 </div>
 
@@ -227,46 +224,69 @@
         });
 
         function toggleTipoPedidoSection() {
-        const tipo = document.querySelector('input[name="TipoPedido"]:checked').value;
+            const tipoPedidoRadios = document.querySelectorAll('input[name="Pedido.TipoPedido"]');
+            let tipoSeleccionado = '';
+            tipoPedidoRadios.forEach(radio => {
+                if (radio.checked) {
+                    tipoSeleccionado = radio.value;
+                }
+            });
 
-        if (tipo === 'Delivery') {
-            document.getElementById('section-delivery').style.display = 'block';
+            const sectionDelivery = document.getElementById('section-delivery');
+            const sectionRecoger = document.getElementById('section-recoger');
+            const sectionMesa = document.getElementById('section-mesa');
 
+            const inputTelefono = document.getElementById('Pedido_Telefono');
+            const inputDireccion = document.getElementById('Pedido_Direccion');
+            // const inputReferencia = document.getElementById('Pedido_Referencia'); // Referencia no es obligatoria
+            const inputFechaRecogo = document.getElementById('Pedido_FechaRecogo');
+            const inputMesa = document.getElementById('Pedido_Mesa');
 
-            document.getElementById('section-mesa').style.display = 'none';
-            document.getElementById('section-recoger').style.display = 'none';
+            // Ocultar todas las secciones y quitar 'required' de todos los campos específicos
+            sectionDelivery.style.display = 'none';
+            if (inputTelefono) inputTelefono.required = false;
+            if (inputDireccion) inputDireccion.required = false;
 
+            sectionRecoger.style.display = 'none';
+            if (inputFechaRecogo) inputFechaRecogo.required = false;
+            
+            sectionMesa.style.display = 'none';
+            if (inputMesa) inputMesa.required = false;
 
-            document.getElementById("Pedido_FechaRecogo").required = false;
-            document.getElementById("Pedido_Mesa").required = false;
-        } else if (tipo === 'Recoger') {
-            document.getElementById("Pedido_Telefono").required = false;
-            document.getElementById("Pedido_Direccion").required = false;
-            document.getElementById("Pedido_FechaRecogo").required = false;
-
-
-            document.getElementById('section-mesa').style.display = 'none';
-            document.getElementById('section-delivery').style.display = 'none';
-
-            document.getElementById('section-recoger').style.display = 'block';
-        } else if (tipo === 'Mesa') {
-            document.getElementById("Pedido_FechaRecogo").required = false;
-            document.getElementById("Pedido_Telefono").required = false;
-            document.getElementById("Pedido_Direccion").required = false;
-
-
-            document.getElementById('section-recoger').style.display = 'none';
-            document.getElementById('section-delivery').style.display = 'none';
-
-            document.getElementById('section-mesa').style.display = 'block';
+            if (tipoSeleccionado === '@VCG.TipoPedido.Delivery') {
+                sectionDelivery.style.display = 'block';
+                if (inputTelefono) inputTelefono.required = true;
+                if (inputDireccion) inputDireccion.required = true;
+            } else if (tipoSeleccionado === '@VCG.TipoPedido.Recoger') {
+                sectionRecoger.style.display = 'block';
+                if (inputFechaRecogo) inputFechaRecogo.required = true;
+            } else if (tipoSeleccionado === '@VCG.TipoPedido.Mesa') {
+                sectionMesa.style.display = 'block';
+                if (inputMesa) inputMesa.required = true;
+            }
         }
-    }
 
-    document.querySelectorAll('input[name="TipoPedido"]').forEach(input => {
-        input.addEventListener('change', toggleTipoPedidoSection);
-    });
+        document.querySelectorAll('input[name="Pedido.TipoPedido"]').forEach(input => {
+            input.addEventListener('change', toggleTipoPedidoSection);
+        });
 
-    // Ejecutar al cargar por si ya hay un tipo marcado
-    window.addEventListener('DOMContentLoaded', toggleTipoPedidoSection);
+        // Ejecutar al cargar para establecer el estado inicial correcto
+        window.addEventListener('DOMContentLoaded', () => {
+            // Asegurarse de que el radio button correcto esté marcado si Model.Pedido.TipoPedido tiene un valor
+            const tipoPedidoActual = "@Model.Pedido?.TipoPedido";
+            if (tipoPedidoActual) {
+                const radioAChequear = document.querySelector(`input[name="Pedido.TipoPedido"][value="${tipoPedidoActual}"]`);
+                if (radioAChequear) {
+                    radioAChequear.checked = true;
+                }
+            } else {
+                // Si no hay valor, marcar 'Delivery' por defecto si existe
+                const deliveryRadio = document.getElementById('delivery');
+                if (deliveryRadio) {
+                    deliveryRadio.checked = true;
+                }
+            }
+            toggleTipoPedidoSection(); // Llamar para mostrar/ocultar y setear required
+        });
     </script>
 }

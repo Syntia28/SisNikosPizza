@@ -22,6 +22,10 @@
         padding: 0;
         color: #4a4a4a; /* Gray letters for better contrast */
     }
+    .fila-delivery {
+        background-color: #ff8254 !important; /* fondo rojo claro */
+    }
+
 
     .container-fluid {
         max-width: 1300px;
@@ -386,16 +390,17 @@
                                     <td>S/. @pedido.Detalles.Sum(d => d.PrecioTotal)</td>
                                     <td>@pedido.Detalles.Count()</td>
                                     <td class="text-center">
-                                        <a class="btn btn-info btn-custom me-1" asp-controller="Pedidos" asp-action="Detalles" asp-route-id="@pedido.Detalles.First().DetallePedidoId" title="Ver Detalles">
-                                            <i class="bi bi-eye"></i>
-                                        </a>
+                                        <form method="post" asp-action="Cobrar"
+                                            class="d-inline">
+                                            <input type="hidden" name="id" value="@pedido.Detalles.First().PedidoId" />
+                                            <input type="hidden" name="userid" value="@pedido.Detalles.First().Pedido.UserId" />
+                                            <button type="submit" class="btn btn-success btn-custom me-1" title="Cancelar Pedido">
+                                                <i class="bi bi-cash-coin"></i>
+                                            </button>
+                                        </form>
                                     </td>
                                 </tr>
-                            }   
-                        
-
-
-                        
+                            }                        
                         }
                     </tbody>
                 </table>
