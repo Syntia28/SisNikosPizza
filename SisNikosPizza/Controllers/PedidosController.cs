@@ -14,64 +14,41 @@ namespace SisNikosPizza.Controllers
     {
         private readonly IUniwork _unitWork;
         private readonly UserManager<IdentityUser> _userManager;
+        private readonly gmail _correoUtilidad;
 
-        public PedidosController(IUniwork unitWork, UserManager<IdentityUser> userManager)
+
+        public PedidosController(IUniwork unitWork, UserManager<IdentityUser> userManager, gmail correoUtilidad)
         {
             _unitWork = unitWork;
             _userManager = userManager;
+            _correoUtilidad = correoUtilidad;
         }
 
         [Authorize]
         public async Task<ActionResult> Index()
         {
-            var userSign = await _userManager.GetUserAsync(User);
-
-            var pedidosDelivery = await _unitWork.DetallesPedidoRepo.ObtenerTodosAsync(
-                // filtro: p => p.Pedido.TipoPedido == VCG.TipoPedido.Delivery,
-                ordenarPor: p => p.OrderByDescending(p => p.Pedido.FechaPedido),
-                incluirPropiedades: "Pedido,Pedido.User,Producto"
-            );
-
-            var pedidosAgrupados = pedidosDelivery
-                .GroupBy(p => p.PedidoId)
-                .Select(grupo => new VMDDetallesPedido
-                {
-                    PedidoId = grupo.Key,
-                    FechaPedido = grupo.First().Pedido.FechaPedido,
-                    Usuario = grupo.First().Pedido.User,
-                    Detalles = grupo.ToList()
-                }).ToList();
-
-            return View(pedidosAgrupados);
+            var pedidosDelivery = await _unitWork.DetallesPedidoRepo.GetPedidosAsync();
+            return View(pedidosDelivery);
         }
 
         // GET: para la vista del delivery
         public async Task<ActionResult> Delivery()
         {
-            var pedidosDelivery = await _unitWork.DetallesPedidoRepo.ObtenerTodosAsync(
-                filtro: p => p.Pedido.TipoPedido == VCG.TipoPedido.Delivery,
-                ordenarPor: p => p.OrderByDescending(p => p.Pedido.FechaPedido),
-                incluirPropiedades: "Pedido,Pedido.User,Producto"
-            );
+            var pedidosDelivery = await _unitWork.DetallesPedidoRepo.GetDeliveryPedidosAsync();
+            return View(pedidosDelivery);
+        }
 
-            var pedidosAgrupados = pedidosDelivery
-                .GroupBy(p => p.PedidoId)
-                .Select(grupo => new VMDDetallesPedido
-                {
-                    PedidoId = grupo.Key,
-                    FechaPedido = grupo.First().Pedido.FechaPedido,
-                    Usuario = grupo.First().Pedido.User,
-                    Detalles = grupo.ToList()
-                }).ToList();
-
-            return View(pedidosAgrupados);
+        public async Task<ActionResult> Vaucher(int id)
+        {
+            var pedidosDelivery = await _unitWork.DetallesPedidoRepo.GetDetallesByPedidoIdAsync(id);
+            return View(pedidosDelivery);
         }
 
         // GET: PedidodsController/Details/5
         public async Task<ActionResult> Detalles(int id)
         {
             var userSign = await _userManager.GetUserAsync(User);
-            
+
             var pedido = await _unitWork.DetallesPedidoRepo.ObtenerPrimeroAsync(
                 filtro: p => p.DetallePedidoId == id
             );
@@ -79,14 +56,6 @@ namespace SisNikosPizza.Controllers
             {
                 return NotFound();
             }
-            //get role 
-            // if (User.IsInRole(VCG.Role_Admin))
-            // {
-
-
-            //     return View(pedido);
-
-            // }
 
             return View(pedido);
 
@@ -143,8 +112,11 @@ namespace SisNikosPizza.Controllers
                     }
 
                     await _unitWork.GuardarAsync();
+
+                    _correoUtilidad.enviarcorreoderecuperaciondecuenta(userSign.Email, userSign.UserName);
+
                 }
-                return RedirectToAction(nameof(Index));
+                return RedirectToAction(nameof(Vaucher), new { id = VMD.Pedido.PedidoId });
             }
             else
             {
@@ -153,10 +125,24 @@ namespace SisNikosPizza.Controllers
         }
 
         [Authorize(Roles = VCG.Role_Admin)]
-        [HttpGet]
-        public async Task<ActionResult> Cobrar(int id)
+        [HttpPost]
+        public async Task<ActionResult> Cobrar(int id, string userid)
         {
-            return View();
+            var userlogin = await _userManager.GetUserAsync(User);
+            var pedido = await _unitWork.PedidoRepo.CobrarPedido(
+                pedidoId: id,
+                UserId: userid
+            );
+
+            if (await _userManager.IsInRoleAsync(userlogin, VCG.Role_Admin))
+            {
+                return RedirectToAction(nameof(Index));
+            }
+            else if (await _userManager.IsInRoleAsync(userlogin, VCG.Role_Delivery))
+            {
+                return RedirectToAction(nameof(Delivery));
+            }
+            return View(nameof(Index));
         }
     }
 }

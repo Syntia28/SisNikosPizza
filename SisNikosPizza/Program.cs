@@ -6,10 +6,11 @@ using SisNikosPizza.Repository.Interfaces;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Authorization;
 using F_M_Maquinarias.Infrastructure.Data;
+using SisNikosPizza.Utilidades;
 
 var builder = WebApplication.CreateBuilder(args);
 //agregar la cadena de conexion a utilizar
-var conexion = builder.Configuration.GetConnectionString("ConnectionSQLServer");
+var conexion = builder.Configuration.GetConnectionString("rdev");
 builder.Services.AddDbContext<SisNikosPizzaBbContext>(options => options.UseSqlServer(conexion));
 
 //builder.Services.AddDefaultIdentity<IdentityUser>(options => options.SignIn.RequireConfirmedAccount = true).AddEntityFrameworkStores<F_MDbContext>();
@@ -21,7 +22,8 @@ builder.Services.AddIdentity<IdentityUser, IdentityRole>(options => options.Sign
 builder.Services.AddControllersWithViews();
 
 // Agregar las referencias a la unidad de trabajo (UnidadDeTrabajo)
-builder.Services.AddScoped<IUniwork, UnitWork>(); 
+builder.Services.AddScoped<IUniwork, UnitWork>();
+builder.Services.AddTransient<gmail>();
 
 //datos iniciales
 builder.Services.AddScoped<IDbInitialize, DbInitialize>();

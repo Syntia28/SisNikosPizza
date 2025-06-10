@@ -200,7 +200,14 @@
 
                 <form id="registerForm" asp-route-returnUrl="@Model.ReturnUrl" method="post">
                     <div class="form-floating mb-4 position-relative">
-                        <input asp-for="Input.Email" class="form-control ps-5" placeholder="Correo Electrónico" autocomplete="username" aria-required="true" />
+                        <input asp-for="Input.Username" class="form-control ps-5" placeholder="Usuario" autocomplete="username" aria-required="true" />
+                        <label asp-for="Input.Username">Nombre de usuario</label>
+                        <i class="bi bi-person input-icon"></i>
+                        <span asp-validation-for="Input.Username" class="text-danger mt-1 d-block"></span>
+                    </div>
+
+                    <div class="form-floating mb-4 position-relative">
+                        <input asp-for="Input.Email" class="form-control ps-5" placeholder="Correo Electrónico" autocomplete="email" aria-required="true" />
                         <label asp-for="Input.Email">Correo Electrónico</label>
                         <i class="bi bi-envelope input-icon"></i>
                         <span asp-validation-for="Input.Email" class="text-danger mt-1 d-block"></span>

@@ -39,7 +39,7 @@ namespace SisNikosPizza.Repository.Implements
         {
             var pedido = await _db.pedido
                 .Include(p => p.DetallePedido)
-                .ThenInclude(pp => pp.Producto).Include(p=>p.User)
+                .ThenInclude(pp => pp.Producto).Include(p => p.User)
                 .Where(p => p.PedidoId == pedidoId)
                 .FirstOrDefaultAsync();
 
@@ -52,6 +52,22 @@ namespace SisNikosPizza.Repository.Implements
                         detalle.Producto.ImagenUrl = $"{baseUrl}/{detalle.Producto.ImagenUrl}";
                     }
                 }
+            }
+
+            return pedido;
+        }
+        
+        public async Task<Pedido> CobrarPedido(int pedidoId, string UserId)
+        {
+            var pedido = await _db.pedido
+                .Where(p => p.PedidoId == pedidoId && p.UserId == UserId)
+                .FirstOrDefaultAsync();
+
+            if (pedido != null)
+            {
+                pedido.Pagado = true;
+                _db.pedido.Update(pedido);
+                await _db.SaveChangesAsync();
             }
 
             return pedido;

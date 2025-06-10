@@ -7,7 +7,9 @@
 
 <link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css" rel="stylesheet">
 <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.5/font/bootstrap-icons.css">
-<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Poppins:wght@600;700&display=swap" rel="stylesheet">
+<link
+    href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Poppins:wght@600;700&display=swap"
+    rel="stylesheet">
 
 <style>
     body {
@@ -82,7 +84,8 @@
 <div class="container mx-auto py-8 px-4 sm:px-6 lg:px-8" role="main">
     <!-- Header -->
     <div class="mb-6">
-        <h1 class="text-3xl sm:text-4xl font-extrabold text-transparent bg-clip-text bg-gradient-to-r from-yellow-500 to-yellow-700 animate-pulse">
+        <h1
+            class="text-3xl sm:text-4xl font-extrabold text-transparent bg-clip-text bg-gradient-to-r from-yellow-500 to-yellow-700 animate-pulse">
             Lista de Usuarios
         </h1>
     </div>
@@ -103,15 +106,19 @@
 
     <!-- Back Button -->
     <div class="mb-6">
-        <a asp-controller="Home" asp-action="Index" class="inline-flex items-center px-4 py-2 bg-gradient-to-r from-yellow-500 to-yellow-600 text-white rounded-full hover:bg-gradient-to-r hover:from-yellow-600 hover:to-yellow-700 transition duration-300 ease-in-out transform hover:scale-105 shadow-md" aria-label="Regresar al inicio">
+        <a asp-controller="Home" asp-action="Index"
+            class="inline-flex items-center px-4 py-2 bg-gradient-to-r from-yellow-500 to-yellow-600 text-white rounded-full hover:bg-gradient-to-r hover:from-yellow-600 hover:to-yellow-700 transition duration-300 ease-in-out transform hover:scale-105 shadow-md"
+            aria-label="Regresar al inicio">
             <i class="bi bi-arrow-left-circle mr-2"></i> Regresar
         </a>
     </div>
 
     <!-- Card -->
-    <div class="bg-white shadow-2xl rounded-2xl overflow-hidden border-2 border-yellow-400 card" aria-labelledby="card-header">
+    <div class="bg-white shadow-2xl rounded-2xl overflow-hidden border-2 border-yellow-400 card"
+        aria-labelledby="card-header">
         <!-- Card Header -->
-        <div class="bg-gradient-to-r from-yellow-500 to-yellow-700 text-white px-6 py-4 flex justify-between items-center relative">
+        <div
+            class="bg-gradient-to-r from-yellow-500 to-yellow-700 text-white px-6 py-4 flex justify-between items-center relative">
             <h2 class="text-2xl font-semibold font-['Poppins']" id="card-header">Gestión de Usuarios</h2>
             <div class="absolute inset-0 bg-radial-gradient from-white/30 to-transparent opacity-40"></div>
         </div>
@@ -127,10 +134,13 @@
             else
             {
                 <!-- Filters -->
-                <div class="mb-6 bg-white p-4 rounded-xl shadow-md flex flex-col sm:flex-row justify-between items-center gap-4">
+                <div
+                    class="mb-6 bg-white p-4 rounded-xl shadow-md flex flex-col sm:flex-row justify-between items-center gap-4">
                     <div class="flex items-center gap-2">
                         <label for="entries" class="text-gray-700 font-medium">Mostrar</label>
-                        <select id="entries" class="border border-gray-300 rounded-xl px-3 py-2 focus:ring-2 focus:ring-yellow-500 focus:border-yellow-500" onchange="updateEntries()" aria-label="Seleccionar número de registros por página">
+                        <select id="entries"
+                            class="border border-gray-300 rounded-xl px-3 py-2 focus:ring-2 focus:ring-yellow-500 focus:border-yellow-500"
+                            onchange="updateEntries()" aria-label="Seleccionar número de registros por página">
                             <option value="10" selected>10</option>
                             <option value="25">25</option>
                             <option value="50">50</option>
@@ -140,9 +150,15 @@
                     </div>
                     <div class="relative max-w-md w-full">
                         <div class="flex items-center">
-                            <span class="bg-yellow-100 border border-yellow-400 border-r-0 rounded-l-xl px-3 py-2 text-yellow-600"><i class="bi bi-search"></i></span>
-                            <input type="search" id="searchInput" class="w-full border border-yellow-400 border-l-0 rounded-r-xl px-3 py-2 focus:ring-2 focus:ring-yellow-500 focus:border-yellow-500" placeholder="Buscar por ID, Usuario o Email..." aria-label="Buscar usuarios" />
-                            <button id="clearSearch" class="absolute right-3 top-1/2 transform -translate-y-1/2 text-gray-500 hover:text-yellow-500 hidden" aria-label="Limpiar búsqueda">
+                            <span
+                                class="bg-yellow-100 border border-yellow-400 border-r-0 rounded-l-xl px-3 py-2 text-yellow-600"><i
+                                    class="bi bi-search"></i></span>
+                            <input type="search" id="searchInput"
+                                class="w-full border border-yellow-400 border-l-0 rounded-r-xl px-3 py-2 focus:ring-2 focus:ring-yellow-500 focus:border-yellow-500"
+                                placeholder="Buscar por ID, Usuario o Email..." aria-label="Buscar usuarios" />
+                            <button id="clearSearch"
+                                class="absolute right-3 top-1/2 transform -translate-y-1/2 text-gray-500 hover:text-yellow-500 hidden"
+                                aria-label="Limpiar búsqueda">
                                 <i class="bi bi-x"></i>
                             </button>
                         </div>
@@ -169,12 +185,17 @@
                                     <td class="px-6 py-4 text-gray-800 font-medium text-center">@user.Email</td>
                                     <td class="px-6 py-4 text-gray-800 font-medium text-center">@user.PhoneNumber</td>
                                     <td class="px-6 py-4 text-center flex justify-center space-x-2">
-                                        <a asp-controller="Users" asp-action="Details" asp-route-id="@user.Id">Ver Detalles</a>
+                                        <a asp-controller="Cliente" asp-action="Details" asp-route-id="@user.Id"
+                                            class="text-blue-600 hover:text-blue-800">Ver Detalles</a>
 
-                                        <a asp-action="Edit" asp-route-id="@user.Id" class="inline-flex items-center px-3 py-1 bg-yellow-500 text-white rounded-full hover:bg-yellow-600 transition duration-300 transform hover:scale-105" aria-label="Editar @user.UserName">
+                                        <a asp-controller="Cliente" asp-action="Edit" asp-route-id="@user.Id"
+                                            class="inline-flex items-center px-3 py-1 bg-yellow-500 text-white rounded-full hover:bg-yellow-600 transition duration-300 transform hover:scale-105"
+                                            aria-label="Editar @user.UserName">
                                             <i class="bi bi-pencil-square"></i>
                                         </a>
-                                        <a asp-action="Delete" asp-route-id="@user.Id" class="inline-flex items-center px-3 py-1 bg-red-500 text-white rounded-full hover:bg-red-600 transition duration-300 transform hover:scale-105" aria-label="Eliminar @user.UserName">
+                                        <a asp-controller="Cliente" asp-action="Delete" asp-route-id="@user.Id"
+                                            class="inline-flex items-center px-3 py-1 bg-red-500 text-white rounded-full hover:bg-red-600 transition duration-300 transform hover:scale-105"
+                                            aria-label="Eliminar @user.UserName">
                                             <i class="bi bi-trash"></i>
                                         </a>
                                     </td>
@@ -197,7 +218,8 @@
 </div>
 
 <!-- No Results Toast -->
-<div class="fixed bottom-4 right-4 hidden bg-red-500 text-white px-6 py-3 rounded-lg shadow-lg transition-opacity duration-300" id="noResultsToast" role="alert" aria-live="polite">
+<div class="fixed bottom-4 right-4 hidden bg-red-500 text-white px-6 py-3 rounded-lg shadow-lg transition-opacity duration-300"
+    id="noResultsToast" role="alert" aria-live="polite">
     <i class="bi bi-exclamation-circle mr-2"></i> No se encontraron usuarios que coincidan con la búsqueda.
 </div>
 
