@@ -1,172 +1,96 @@
-﻿@model Microsoft.AspNetCore.Identity.IdentityUser
+﻿@using Microsoft.AspNetCore.Identity
+@model IdentityUser
 
 @{
     ViewData["Title"] = "Eliminar Usuario";
     Layout = "~/Views/Shared/_Admin.cshtml";
 }
 
-<link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
-<link href="https://cdn.jsdelivr.net/npm/bootstrap-icons/font/bootstrap-icons.css" rel="stylesheet">
-<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&display=swap" rel="stylesheet">
+<link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css" rel="stylesheet">
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.5/font/bootstrap-icons.css">
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Poppins:wght@600;700&display=block" rel="stylesheet">
 
 <style>
     body {
-        background: linear-gradient(135deg, #f8f9fa 0%, #e9ecef 100%);
         font-family: 'Inter', sans-serif;
-        color: #2d2d2d;
+        background: linear-gradient(135deg, #fff3e0 0%, #ffe082 100%);
+        color: #212121;
         margin: 0;
         padding: 0;
     }
 
-    .container {
-        padding: 60px 20px;
-        max-width: 1200px;
-        margin: 0 auto;
-    }
-
     .delete-card {
-        background: #fff;
-        border-radius: 20px;
-        box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
-        overflow: hidden;
-        max-width: 600px;
-        margin: 0 auto;
-        border-left: 5px solid #dc3545;
-        /* Borde rojo para advertencia */
+        animation: slideIn 0.7s ease-out;
+        border-left: 6px solid #dc2626;
     }
 
-    .delete-header {
-        background: #dc3545;
-        /* Rojo para la cabecera */
-        padding: 20px;
-        text-align: center;
-        color: #fff;
-    }
 
-    .delete-header h3 {
-        font-size: 1.8rem;
-        font-weight: 700;
-        margin: 0;
-        text-transform: uppercase;
-        letter-spacing: 1px;
-    }
-
-    .delete-body {
-        padding: 30px;
-    }
 
     .warning-message {
-        background-color: #f8d7da;
-        /* Fondo rojo claro */
-        color: #721c24;
-        /* Texto oscuro para contraste */
-        border: 1px solid #f5c6cb;
-        padding: 15px;
-        border-radius: 10px;
-        margin-bottom: 25px;
-        font-size: 1.1rem;
-        display: flex;
-        align-items: center;
+        animation: pulse 2s infinite;
     }
 
-    .warning-message i {
-        font-size: 1.5rem;
-        margin-right: 10px;
-    }
 
-    .user-details-summary dt {
-        font-weight: 600;
-        color: #333;
-    }
 
-    .user-details-summary dd {
-        color: #555;
-        margin-bottom: 0.5rem;
-    }
 
     .btn {
-        padding: 12px 24px;
-        border-radius: 50px;
-        font-weight: 600;
-        font-size: 1rem;
-        transition: transform 0.2s ease, background 0.3s ease;
-        display: inline-flex;
-        align-items: center;
-        gap: 8px;
+        transition: all 0.3s ease;
     }
 
-    .btn-danger {
-        background: linear-gradient(45deg, #dc3545, #c82333);
-        border: none;
-        color: #fff;
-    }
-
-    .btn-danger:hover {
-        background: linear-gradient(45deg, #c82333, #dc3545);
-        transform: scale(1.05);
-    }
-
-    .btn-secondary {
-        background: linear-gradient(45deg, #6c757d, #5a6268);
-        border: none;
-        color: #fff;
-    }
-
-    .btn-secondary:hover {
-        background: linear-gradient(45deg, #5a6268, #6c757d);
-        transform: scale(1.05);
-    }
+        .btn:hover {
+            transform: scale(1.05);
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+        }
 </style>
 
-<div class="container" role="main">
-    <div class="delete-card" aria-labelledby="delete-header">
-        <div class="delete-header">
-            <h3 id="delete-header">Confirmar Eliminación</h3>
+<div class="container mx-auto py-12 px-4 sm:px-6 lg:px-8" role="main">
+    <div class="max-w-lg mx-auto bg-white shadow-2xl rounded-2xl overflow-hidden border-2 border-yellow-300 delete-card" aria-labelledby="delete-header">
+        <!-- Card Header -->
+        <div class="bg-gradient-to-r from-red-600 to-red-800 text-white px-6 py-4 text-center relative">
+            <h3 class="text-2xl font-bold font-['Poppins']" id="delete-header">Confirmar Eliminación</h3>
+            <div class="absolute inset-0 bg-radial-gradient from-white/20 to-transparent opacity-30"></div>
         </div>
-        <div class="delete-body">
-            <div class="warning-message">
-                <i class="bi bi-exclamation-triangle-fill"></i>
+        <!-- Card Body -->
+        <div class="p-6 bg-yellow-50">
+            <div class="warning-message flex items-center bg-red-100 text-red-800 p-4 rounded-lg mb-6 border border-red-300">
+                <i class="bi bi-exclamation-triangle-fill text-2xl mr-3"></i>
                 <div>
-                    <strong>¡Atención!</strong> ¿Estás seguro de que deseas eliminar este usuario? Esta acción no se
-                    puede deshacer.
+                    <strong>¡Atención!</strong> ¿Estás seguro de que deseas eliminar este usuario? Esta acción no se puede deshacer.
                 </div>
             </div>
 
-            <h4>Detalles del Usuario a Eliminar:</h4>
-            <dl class="row mt-3 user-details-summary">
-                <dt class="col-sm-4">ID Usuario:</dt>
-                <dd class="col-sm-8">@Model.Id</dd>
-
-                <dt class="col-sm-4">Nombre de Usuario:</dt>
-                <dd class="col-sm-8">@Html.DisplayFor(model => model.UserName)</dd>
-
-                <dt class="col-sm-4">Email:</dt>
-                <dd class="col-sm-8">@Html.DisplayFor(model => model.Email)</dd>
-
-                <dt class="col-sm-4">Teléfono:</dt>
-                <dd class="col-sm-8">@(Model.PhoneNumber ?? "No disponible")</dd>
+            <h4 class="text-lg font-semibold text-gray-700 mb-3">Detalles del Usuario a Eliminar:</h4>
+            <dl class="space-y-3">
+                <div class="flex flex-col">
+                    <dt class="text-gray-700 font-semibold">ID Usuario:</dt>
+                    <dd class="text-gray-600 bg-gray-100 px-4 py-2 rounded-lg border border-gray-200 break-all">@Model.Id</dd>
+                </div>
+                <div class="flex flex-col">
+                    <dt class="text-gray-700 font-semibold">Nombre de Usuario:</dt>
+                    <dd class="text-gray-600 bg-gray-100 px-4 py-2 rounded-lg border border-gray-200">@Html.DisplayFor(model => model.UserName)</dd>
+                </div>
+                <div class="flex flex-col">
+                    <dt class="text-gray-700 font-semibold">Email:</dt>
+                    <dd class="text-gray-600 bg-gray-100 px-4 py-2 rounded-lg border border-gray-200">@Html.DisplayFor(model => model.Email)</dd>
+                </div>
+                <div class="flex flex-col">
+                    <dt class="text-gray-700 font-semibold">Teléfono:</dt>
+                    <dd class="text-gray-600 bg-gray-100 px-4 py-2 rounded-lg border border-gray-200">@(Model.PhoneNumber ?? "No disponible")</dd>
+                </div>
             </dl>
 
-            <form method="post" asp-action="Delete" asp-controller="Cliente" id="delete-form" class="mt-4">
+            <form method="post" asp-action="Delete" asp-controller="Cliente" id="delete-form" class="mt-6">
                 @Html.AntiForgeryToken()
                 <input type="hidden" asp-for="Id" />
-                <div class="d-flex justify-content-end gap-3">
-                    <button type="submit" class="btn btn-danger"
-                        aria-label="Confirmar eliminación del usuario @Model.UserName">
-                        <i class="bi bi-trash-fill"></i> Eliminar Permanentemente
+                <div class="flex justify-end space-x-3">
+                    <button type="submit" class="btn inline-flex items-center px-4 py-2 bg-red-600 text-white rounded-full hover:bg-red-700 transition duration-300 shadow-md" aria-label="Confirmar eliminación del usuario @Model.UserName">
+                        <i class="bi bi-trash-fill mr-2"></i> Eliminar Permanentemente
                     </button>
-                    <a asp-action="Index" asp-controller="Cliente" class="btn btn-secondary"
-                        aria-label="Cancelar y volver a la lista de usuarios">
-                        <i class="bi bi-x-circle-fill"></i> Cancelar
+                    <a asp-action="Index" asp-controller="Cliente" class="btn inline-flex items-center px-4 py-2 bg-gray-600 text-white rounded-full hover:bg-gray-700 transition duration-300 shadow-md" aria-label="Cancelar y volver a la lista de usuarios">
+                        <i class="bi bi-x-circle-fill mr-2"></i> Cancelar
                     </a>
                 </div>
             </form>
         </div>
     </div>
 </div>
-
-<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
-
-                   
-                       
-                       
