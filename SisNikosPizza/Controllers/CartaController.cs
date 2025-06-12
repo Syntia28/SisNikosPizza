@@ -31,7 +31,8 @@ namespace SisNikosPizza.Controllers
         }
 
         [HttpGet]
-        public async Task<IActionResult> Test(){
+        public async Task<IActionResult> Test()
+        {
             // Instanciamos la clase gmail para usar sus métodos
             gmail correoUtilidad = new gmail();
 
@@ -40,12 +41,12 @@ namespace SisNikosPizza.Controllers
             string nombreUsuario = "rdev system"; // Nombre del usuario para personalizar el mensaje
 
             // Llamamos al método de enviar correo con el mensaje generado
-            correoUtilidad.enviarcorreoderecuperaciondecuenta(correoDestino, nombreUsuario);
+            correoUtilidad.CorreoDeCompra(correoDestino, nombreUsuario);
 
             // Retornar una vista o mensaje de confirmación
             return Content("Correo enviado correctamente.");
 
-//            return View();
+            //            return View();
         }
 
     }

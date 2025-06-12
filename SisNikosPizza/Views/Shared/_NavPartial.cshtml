@@ -10,22 +10,31 @@
         <div class="nav">
             <div class="sb-sidenav-menu-heading">Core</div>
             <a class="nav-link" asp-controller="Carta" asp-action="Index">
-                <div class="sb-nav-link-icon"><i class="fas fa-pizza-slice"></i></div>
+                <div class="sb-nav-link-icon">
+                    <i class="fas fa-pizza-slice"></i>
+                </div>
                 Pizzas
             </a>
 
-            <a class="nav-link" asp-controller="Pedidos" asp-action="Index">
-                <div class="sb-nav-link-icon"><i class="fas fa-tachometer-alt"></i></div>
-                Pedidos
-            </a>
-
-            <a class="nav-link" asp-controller="Pedidos" asp-action="Delivery">
-                <div class="sb-nav-link-icon"><i class="fas fa-motorcycle"></i></div>
-                Delivery
-            </a>
+            @if (User.IsInRole(VCG.Role_Admin) || User.IsInRole(VCG.Role_Delivery)){
+                <a class="nav-link" asp-controller="Pedidos" asp-action="Delivery">
+                    <div class="sb-nav-link-icon">
+                        <i class="fas fa-motorcycle"></i>
+                    </div>
+                    Delivery
+                </a>
+            }
 
             @if (User.IsInRole(VCG.Role_Admin)) // Corrección: cierre de paréntesis agregado aquí
             {
+
+                <a class="nav-link" asp-controller="Pedidos" asp-action="Index">
+                    <div class="sb-nav-link-icon">
+                        <i class="fas fa-tachometer-alt"></i>
+                    </div>
+                    Pedidos
+                </a>
+
                 <div class="sb-sidenav-menu-heading">Gestión</div>
                 <a class="nav-link" asp-controller="Cliente" asp-action="Index">
                     <div class="sb-nav-link-icon"><i class="fas fa-user"></i></div>

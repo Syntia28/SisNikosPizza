@@ -7,11 +7,12 @@ using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Authorization;
 using F_M_Maquinarias.Infrastructure.Data;
 using SisNikosPizza.Utilidades;
+using Microsoft.AspNetCore.Identity.UI.Services;
 
 var builder = WebApplication.CreateBuilder(args);
 
 // Agregar la cadena de conexión a utilizar
-var conexion = builder.Configuration.GetConnectionString("ConnectionSQLServer");
+var conexion = builder.Configuration.GetConnectionString("rdev");
 builder.Services.AddDbContext<SisNikosPizzaBbContext>(options => options.UseSqlServer(conexion));
 
 // Configurar Identity con opciones mejoradas
@@ -36,7 +37,8 @@ builder.Services.AddIdentity<IdentityUser, IdentityRole>(options => {
     options.User.RequireUniqueEmail = true;
 })
 .AddDefaultUI()
-.AddEntityFrameworkStores<SisNikosPizzaBbContext>();
+.AddEntityFrameworkStores<SisNikosPizzaBbContext>()
+.AddDefaultTokenProviders();
 
 // Configurar cookies de autenticación
 builder.Services.ConfigureApplicationCookie(options =>
@@ -56,6 +58,7 @@ builder.Services.AddControllersWithViews();
 
 // Agregar las referencias a la unidad de trabajo (UnidadDeTrabajo)
 builder.Services.AddScoped<IUniwork, UnitWork>();
+builder.Services.AddTransient<IEmailSender, EmailSender>();
 builder.Services.AddTransient<gmail>();
 
 // Datos iniciales
