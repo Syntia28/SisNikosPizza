@@ -113,7 +113,7 @@ namespace SisNikosPizza.Controllers
 
                     await _unitWork.GuardarAsync();
 
-                    _correoUtilidad.enviarcorreoderecuperaciondecuenta(userSign.Email, userSign.UserName);
+                    _correoUtilidad.CorreoDeCompra(userSign.Email, userSign.UserName);
 
                 }
                 return RedirectToAction(nameof(Vaucher), new { id = VMD.Pedido.PedidoId });

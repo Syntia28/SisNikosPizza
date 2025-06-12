@@ -21,10 +21,10 @@ namespace SisNikosPizza.Utilidades
 
             return htmlContent;
         }
-        public void enviarcorreoderecuperaciondecuenta(string Correo, string user)
+        public void CorreoDeCompra(string Correo, string user)
         {
             string basePath = Directory.GetCurrentDirectory();
-            string path = Path.Combine(basePath + ".Utilidades", "views", "compra.html"); 
+            string path = Path.Combine(basePath + ".Utilidades", "views", "compra.html");
 
             string htmlContent = CargarYReemplazarHtml(path, user);
 
