@@ -79,7 +79,6 @@ namespace SisNikosPizza.Areas.Identity.Pages.Account
             public string PhoneNumber { get; set; }
         }
 
-
         public async Task OnGetAsync(string returnUrl = null)
         {
             ReturnUrl = returnUrl;
@@ -92,14 +91,17 @@ namespace SisNikosPizza.Areas.Identity.Pages.Account
             ExternalLogins = (await _signInManager.GetExternalAuthenticationSchemesAsync()).ToList();
             if (ModelState.IsValid)
             {
+                Console.WriteLine("========================================================================");
+                Console.WriteLine($"Input: input.username => {Input.Username}, input.email => {Input.Email}, input.password => {Input.Password}, input.phoneNumber => {Input.PhoneNumber}");
+                Console.WriteLine("========================================================================");
+
                 var user = new ApplicationUser
                 {
                     Email = Input.Email,
                     UserName = Input.Username,
-                    Nombre = Input.Email,
+                    Nombre = Input.Username,
                     PhoneNumber = Input.PhoneNumber,
                 };
-
 
                 await _userStore.SetUserNameAsync(user, Input.Username, CancellationToken.None);
                 await _emailStore.SetEmailAsync(user, Input.Email, CancellationToken.None);
@@ -135,6 +137,8 @@ namespace SisNikosPizza.Areas.Identity.Pages.Account
                 }
                 foreach (var error in result.Errors)
                 {
+                    Console.WriteLine("========================================================================");
+                    Console.WriteLine($"Error: {error.Description}");
                     ModelState.AddModelError(string.Empty, error.Description);
                 }
             }

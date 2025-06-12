@@ -307,13 +307,13 @@
                 </div>
                 <form id="account" method="post">
                     <div class="form-floating mb-4 position-relative">
-                        <input asp-for="Input.Email" class="form-control ps-5" autocomplete="username" aria-required="true" placeholder="name@example.com" />
-                        <label asp-for="Input.Email" class="form-label">Correo Electrónico</label>
+                        <input asp-for="Input.Email" type="text" class="form-control ps-5" autocomplete="username" aria-required="true" placeholder="ingresar usuario o correo" />
+                        <label asp-for="Input.Email" class="form-label">Correo o Usuario</label>
                         <i class="bi bi-envelope input-icon"></i>
                         <span asp-validation-for="Input.Email" class="text-danger d-block mt-1"></span>
                     </div>
                     <div class="form-floating mb-4 position-relative">
-                        <input asp-for="Input.Password" type="password" class="form-control ps-5" autocomplete="current-password" aria-required="true" placeholder="password" />
+                        <input asp-for="Input.Password" type="password" class="form-control ps-5" autocomplete="current-password" aria-required="true" placeholder="ingresar contraseña" />
                         <label asp-for="Input.Password" class="form-label">Contraseña</label>
                         <i class="bi bi-lock input-icon"></i>
                         <span asp-validation-for="Input.Password" class="text-danger d-block mt-1"></span>
@@ -323,7 +323,7 @@
                         <label class="form-check-label" asp-for="Input.RememberMe">@Html.DisplayNameFor(m => m.Input.RememberMe)</label>
                         <small id="rememberMeHelp" class="form-text text-muted">- Mantén tu sesión iniciada por 7 días.</small>
                     </div>
-                    <button id="registerSubmit" type="submit" class="btn-custom d-flex align-items-center justify-content-center">
+                    <button type="submit" class="btn-custom d-flex align-items-center justify-content-center">
                         <i class="bi bi-box-arrow-in-right me-2"></i>Ingresar
                     </button>
                     <div class="text-center mt-4">
