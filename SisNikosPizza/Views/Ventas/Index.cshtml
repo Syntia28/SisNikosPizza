@@ -23,11 +23,13 @@
             margin: 0;
             padding: 0;
         }
+
         .container-fluid {
             max-width: 1400px;
             padding: 4rem 1.5rem;
             margin: 0 auto;
         }
+
         .card {
             border-radius: 20px;
             box-shadow: 0 12px 35px rgba(0, 0, 0, 0.2);
@@ -35,10 +37,19 @@
             border: 2px solid #ffca28;
             animation: slideIn 0.7s ease-out;
         }
+
         @@keyframes slideIn {
-            from { opacity: 0; transform: translateY(20px); }
-            to { opacity: 1; transform: translateY(0); }
+            from {
+                opacity: 0;
+                transform: translateY(20px);
+            }
+
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
         }
+
         .card-header {
             background: linear-gradient(90deg, #ff8f00, #ffca28);
             color: #fff;
@@ -50,16 +61,19 @@
             font-weight: 700;
             text-shadow: 1px 1px 2px rgba(0, 0, 0, 0.2);
         }
+
         .card-body {
             background: #fff8e1;
             padding: 2rem;
         }
+
         .table th, .table td {
             text-align: center;
             padding: 1rem;
             font-size: 1rem;
             vertical-align: middle;
         }
+
         .table th {
             background: linear-gradient(90deg, #ffca28, #ffe082);
             color: #212121;
@@ -68,14 +82,17 @@
             font-size: 0.9rem;
             letter-spacing: 0.05rem;
         }
+
         .table tbody tr {
             transition: all 0.3s ease;
         }
-        .table tbody tr:hover {
-            background: #fff3e0;
-            transform: translateY(-2px);
-            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
-        }
+
+            .table tbody tr:hover {
+                background: #fff3e0;
+                transform: translateY(-2px);
+                box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+            }
+
         .form-select, .form-control {
             border-radius: 30px;
             height: 45px;
@@ -83,10 +100,12 @@
             border: 2px solid #ffca28;
             transition: all 0.3s ease;
         }
-        .form-select:focus, .form-control:focus {
-            border-color: #ff8f00;
-            box-shadow: 0 0 8px rgba(255, 143, 0, 0.3);
-        }
+
+            .form-select:focus, .form-control:focus {
+                border-color: #ff8f00;
+                box-shadow: 0 0 8px rgba(255, 143, 0, 0.3);
+            }
+
         .btn-info, .btn-success {
             background: linear-gradient(90deg, #ff8f00, #ffca28);
             border: none;
@@ -101,11 +120,13 @@
             gap: 0.5rem;
             box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
         }
-        .btn-info:hover, .btn-success:hover {
-            background: linear-gradient(90deg, #e67e22, #ffb300);
-            transform: translateY(-2px);
-            box-shadow: 0 6px 15px rgba(255, 143, 0, 0.3);
-        }
+
+            .btn-info:hover, .btn-success:hover {
+                background: linear-gradient(90deg, #e67e22, #ffb300);
+                transform: translateY(-2px);
+                box-shadow: 0 6px 15px rgba(255, 143, 0, 0.3);
+            }
+
         .btn-outline-warning {
             border: 2px solid #ffca28;
             color: #ff8f00;
@@ -115,30 +136,58 @@
             font-weight: 600;
             transition: all 0.3s ease;
         }
-        .btn-outline-warning:hover {
-            background: #ffca28;
-            color: #212121;
-            transform: translateY(-2px);
-            box-shadow: 0 6px 15px rgba(255, 143, 0, 0.3);
+
+            .btn-outline-warning:hover {
+                background: #ffca28;
+                color: #212121;
+                transform: translateY(-2px);
+                box-shadow: 0 6px 15px rgba(255, 143, 0, 0.3);
+            }
+
+        .btn-details {
+            background: linear-gradient(90deg, #ff8f00, #ffca28);
+            border: none;
+            color: #fff;
+            border-radius: 50%;
+            width: 40px;
+            height: 40px;
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            padding: 0;
+            font-size: 1.2rem;
+            transition: all 0.3s ease;
+            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
         }
+
+            .btn-details:hover {
+                background: linear-gradient(90deg, #e67e22, #ffb300);
+                transform: translateY(-2px);
+                box-shadow: 0 6px 15px rgba(255, 143, 0, 0.3);
+            }
+
         .search-container, .date-container {
             position: relative;
         }
-        .search-container input {
-            padding-left: 40px;
-            background: #ffffff;
-        }
-        .search-container .bi-search {
-            left: 12px;
-            top: 50%;
-            transform: translateY(-50%);
-            font-size: 1.2rem;
-            color: #ff8f00;
-            transition: color 0.3s ease;
-        }
-        .search-container input:focus + .bi-search {
-            color: #e67e22;
-        }
+
+            .search-container input {
+                padding-left: 40px;
+                background: #ffffff;
+            }
+
+            .search-container .bi-search {
+                left: 12px;
+                top: 50%;
+                transform: translateY(-50%);
+                font-size: 1.2rem;
+                color: #ff8f00;
+                transition: color 0.3s ease;
+            }
+
+            .search-container input:focus + .bi-search {
+                color: #e67e22;
+            }
+
         .pagination .page-item a {
             background: #ff8f00;
             color: #fff;
@@ -148,36 +197,83 @@
             border: none;
             transition: all 0.3s ease;
         }
+
         .pagination .page-item.active a {
             background: #ffca28;
             color: #212121;
             font-weight: 600;
         }
+
         .pagination .page-item a:hover {
             background: #e67e22;
             transform: translateY(-2px);
             box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
         }
+
         .pagination .page-item.disabled a {
             background: #ccc;
             color: #666;
             cursor: not-allowed;
         }
+
         @@media (max-width: 768px) {
-            .container-fluid { padding: 3rem 1rem; }
-            .card-header { font-size: 1.5rem; padding: 1.2rem; }
-            .card-body { padding: 1.5rem; }
-            .table th, .table td { font-size: 0.9rem; padding: 0.8rem; }
-            .form-select, .form-control { height: 40px; max-width: 100%; }
-            .btn-info, .btn-success, .btn-outline-warning { padding: 0.4rem 1rem; font-size: 0.9rem; }
+            .container-fluid {
+                padding: 3rem 1rem;
+            }
+
+            .card-header {
+                font-size: 1.5rem;
+                padding: 1.2rem;
+            }
+
+            .card-body {
+                padding: 1.5rem;
+            }
+
+            .table th, .table td {
+                font-size: 0.9rem;
+                padding: 0.8rem;
+            }
+
+            .form-select, .form-control {
+                height: 40px;
+                max-width: 100%;
+            }
+
+            .btn-info, .btn-success, .btn-outline-warning, .btn-details {
+                padding: 0.4rem 1rem;
+                font-size: 0.9rem;
+            }
         }
+
         @@media (max-width: 576px) {
-            .card-header { font-size: 1.3rem; }
-            .table th, .table td { font-size: 0.85rem; padding: 0.6rem; }
-            .btn-info, .btn-success, .btn-outline-warning { font-size: 0.85rem; padding: 0.3rem 0.8rem; }
-            .d-flex.flex-wrap { flex-direction: column; align-items: stretch; }
-            .search-container, .date-container { width: 100%; }
-            .search-container input, .date-container input { width: 100%; max-width: none; }
+            .card-header {
+                font-size: 1.3rem;
+            }
+
+            .table th, .table td {
+                font-size: 0.85rem;
+                padding: 0.6rem;
+            }
+
+            .btn-info, .btn-success, .btn-outline-warning, .btn-details {
+                font-size: 0.85rem;
+                padding: 0.3rem 0.8rem;
+            }
+
+            .d-flex.flex-wrap {
+                flex-direction: column;
+                align-items: stretch;
+            }
+
+            .search-container, .date-container {
+                width: 100%;
+            }
+
+                .search-container input, .date-container input {
+                    width: 100%;
+                    max-width: none;
+                }
         }
     </style>
 }
@@ -215,11 +311,11 @@
                         <option value="monthly">Mensual</option>
                     </select>
                 </div>
-                    <form asp-controller="Reportes" asp-action="DescargarExcel" method="get">
-                        <button type="submit" class="btn btn-success ms-2">
-                            <i class="bi bi-file-earmark-excel"></i> Exportar a Excel
-                        </button>
-                    </form>
+                <form asp-controller="Reportes" asp-action="DescargarExcel" method="get">
+                    <button type="submit" class="btn btn-success ms-2">
+                        <i class="bi bi-file-earmark-excel"></i> Exportar a Excel
+                    </button>
+                </form>
             </div>
 
             <!-- Sales Table -->
@@ -249,9 +345,11 @@
                                     <td>@venta.FechaPedido.ToString("dd/MM/yyyy HH:mm")</td>
                                     <td>@venta.Usuario.UserName</td>
                                     <td class="text-success fw-bold">@venta.Detalles.Sum(total => total.PrecioTotal)</td>
-                                    <td> @venta.Detalles.Count()</td>
+                                    <td>@venta.Detalles.Count()</td>
                                     <td class="text-center">
-                                        <a asp-controller="Ventas" asp-action="Detalles" asp-route-id="@venta.PedidoId">Ver Detalles</a>
+                                        <a asp-controller="Ventas" asp-action="Detalles" asp-route-id="@venta.PedidoId" class="btn-details">
+                                            <i class="bi bi-eye-fill"></i>
+                                        </a>
                                     </td>
                                 </tr>
                             }

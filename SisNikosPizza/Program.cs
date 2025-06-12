@@ -9,14 +9,47 @@ using F_M_Maquinarias.Infrastructure.Data;
 using SisNikosPizza.Utilidades;
 
 var builder = WebApplication.CreateBuilder(args);
-//agregar la cadena de conexion a utilizar
-var conexion = builder.Configuration.GetConnectionString("rdev");
+
+// Agregar la cadena de conexión a utilizar
+var conexion = builder.Configuration.GetConnectionString("ConnectionSQLServer");
 builder.Services.AddDbContext<SisNikosPizzaBbContext>(options => options.UseSqlServer(conexion));
 
-//builder.Services.AddDefaultIdentity<IdentityUser>(options => options.SignIn.RequireConfirmedAccount = true).AddEntityFrameworkStores<F_MDbContext>();
-builder.Services.AddIdentity<IdentityUser, IdentityRole>(options => options.SignIn.RequireConfirmedAccount = false)
-    .AddDefaultUI()
-    .AddEntityFrameworkStores<SisNikosPizzaBbContext>();
+// Configurar Identity con opciones mejoradas
+builder.Services.AddIdentity<IdentityUser, IdentityRole>(options => {
+    // Configuración de cuenta
+    options.SignIn.RequireConfirmedAccount = false;
+    options.SignIn.RequireConfirmedEmail = false;
+
+    // Configuración de contraseña
+    options.Password.RequireDigit = true;
+    options.Password.RequireLowercase = true;
+    options.Password.RequireUppercase = false;
+    options.Password.RequireNonAlphanumeric = false;
+    options.Password.RequiredLength = 6;
+
+    // Configuración de bloqueo
+    options.Lockout.DefaultLockoutTimeSpan = TimeSpan.FromMinutes(5);
+    options.Lockout.MaxFailedAccessAttempts = 5;
+    options.Lockout.AllowedForNewUsers = true;
+
+    // Configuración de usuario
+    options.User.RequireUniqueEmail = true;
+})
+.AddDefaultUI()
+.AddEntityFrameworkStores<SisNikosPizzaBbContext>();
+
+// Configurar cookies de autenticación
+builder.Services.ConfigureApplicationCookie(options =>
+{
+    options.LoginPath = "/Identity/Account/Login";
+    options.LogoutPath = "/Identity/Account/Logout";
+    options.AccessDeniedPath = "/Identity/Account/AccessDenied";
+    options.ExpireTimeSpan = TimeSpan.FromDays(7);
+    options.SlidingExpiration = true;
+    options.Cookie.HttpOnly = true;
+    options.Cookie.SecurePolicy = CookieSecurePolicy.SameAsRequest;
+    options.Cookie.SameSite = SameSiteMode.Lax;
+});
 
 // Add services to the container.
 builder.Services.AddControllersWithViews();
@@ -25,11 +58,12 @@ builder.Services.AddControllersWithViews();
 builder.Services.AddScoped<IUniwork, UnitWork>();
 builder.Services.AddTransient<gmail>();
 
-//datos iniciales
+// Datos iniciales
 builder.Services.AddScoped<IDbInitialize, DbInitialize>();
 
 var app = builder.Build();
 
+// Inicializar datos
 using (var scope = app.Services.CreateScope())
 {
     var services = scope.ServiceProvider;
@@ -41,6 +75,9 @@ using (var scope = app.Services.CreateScope())
     }
     catch (Exception ex)
     {
+        // Log the exception properly
+        var logger = services.GetRequiredService<ILogger<Program>>();
+        logger.LogError(ex, "Ocurrió un error durante la inicialización de la base de datos.");
         throw;
     }
 }
@@ -49,16 +86,13 @@ using (var scope = app.Services.CreateScope())
 if (!app.Environment.IsDevelopment())
 {
     app.UseExceptionHandler("/Home/Error");
-    // The default HSTS value is 30 days. You may want to change this for production scenarios, see https://aka.ms/aspnetcore-hsts.
     app.UseHsts();
 }
 
 app.UseHttpsRedirection();
 app.UseStaticFiles();
 
-
-
-// Configurar una ruta espec�fica para las im�genes
+// Configurar una ruta específica para las imágenes
 app.UseStaticFiles(new StaticFileOptions
 {
     FileProvider = new PhysicalFileProvider(
@@ -68,6 +102,8 @@ app.UseStaticFiles(new StaticFileOptions
 
 app.UseRouting();
 
+// ⚠️ IMPORTANTE: Agregar UseAuthentication() ANTES de UseAuthorization()
+app.UseAuthentication(); // 👈 ESTO FALTABA EN TU CÓDIGO
 app.UseAuthorization();
 
 app.MapControllerRoute(
