@@ -12,7 +12,7 @@ using Microsoft.AspNetCore.Identity.UI.Services;
 var builder = WebApplication.CreateBuilder(args);
 
 // Agregar la cadena de conexión a utilizar
-var conexion = builder.Configuration.GetConnectionString("rdev");
+var conexion = builder.Configuration.GetConnectionString("ConnectionSQLServer");
 builder.Services.AddDbContext<SisNikosPizzaBbContext>(options => options.UseSqlServer(conexion));
 
 // Configurar Identity con opciones mejoradas
