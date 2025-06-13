@@ -48,6 +48,7 @@ public class InsumoConfig : IEntityTypeConfiguration<Insumo>
         // relacion de uno a muchos con DetalleVenta
         builder.HasMany(i => i.ProductoInsumos)
             .WithOne(r => r.Insumo)
-            .HasForeignKey(r => r.InsumoId);
+            .HasForeignKey(r => r.InsumoId)
+            .OnDelete(DeleteBehavior.Cascade);
     }
 }

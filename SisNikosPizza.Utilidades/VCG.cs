@@ -22,6 +22,7 @@ namespace SisNikosPizza.Utilidades
         {
             public const string Pendiente = "Pendiente";
             public const string Entregado = "Entregado";
+            public const string Encamino = "EnCamino";
             public const string Anulado = "Anulado";
             public const string Pagado = "Pagado";
         }
