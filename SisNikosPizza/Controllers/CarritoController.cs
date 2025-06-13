@@ -51,15 +51,32 @@ namespace SisNikosPizza.Controllers
         [HttpPost]
         public async Task<IActionResult> Create(CarritoItems carritoItems)
         {
+            if (!ModelState.IsValid)
+                return Content("error:Datos no válidos");
+
+            // 1. Obtener el producto desde la BD
+            var producto = await _unitWork.ProductoRepo.ObtenerAsync(carritoItems.ProductoId);
+            if (producto == null)
+                return Content("error:Producto no encontrado");
+
+            // 2. Verificar stock suficiente
+            if (producto.Stock < carritoItems.Cantidad)
+                return Content("error:Stock insuficiente");
+
+            // 3. Descontar stock
+            producto.Stock -= carritoItems.Cantidad;
+            _unitWork.ProductoRepo.Actualizar(producto);
+
+            // 4. Calcular precio total
             carritoItems.PrecioTotal = carritoItems.PrecioUnitario * carritoItems.Cantidad;
-            if (ModelState.IsValid)
-            {
-                await _unitWork.CarritoItemsRepo.AgregarAsync(carritoItems);
-                await _unitWork.GuardarAsync();
-                return Content("ok");
-            }
-            return Content("error");
+
+            // 5. Guardar el item en el carrito
+            await _unitWork.CarritoItemsRepo.AgregarAsync(carritoItems);
+            await _unitWork.GuardarAsync();
+
+            return Content("ok");
         }
+
 
         [HttpPost]
         public async Task<IActionResult> Update(int CarritoItemId, int cantidad)
