@@ -4,7 +4,6 @@ using Microsoft.AspNetCore.Mvc;
 using SisNikosPizza.Domain;
 using SisNikosPizza.Domain.Models;
 using SisNikosPizza.Domain.ViewModels;
-
 using SisNikosPizza.Repository.Interfaces;
 using SisNikosPizza.Utilidades;
 
@@ -15,7 +14,6 @@ namespace SisNikosPizza.Controllers
         private readonly IUniwork _unitWork;
         private readonly UserManager<IdentityUser> _userManager;
         private readonly gmail _correoUtilidad;
-
 
         public PedidosController(IUniwork unitWork, UserManager<IdentityUser> userManager, gmail correoUtilidad)
         {
@@ -58,7 +56,6 @@ namespace SisNikosPizza.Controllers
             }
 
             return View(pedido);
-
         }
 
         [Authorize]
@@ -73,7 +70,7 @@ namespace SisNikosPizza.Controllers
             }
 
             VMD.Pedido.UserId = userSign.Id;
-            VMD.Pedido.EstadoPedido = VCG.EstadoPedido.Pendiente;
+            VMD.Pedido.EstadoPedido = VCG.EstadoPedido.Pendiente; // Default status
             VMD.Pedido.FechaPedido = DateTime.Now;
             VMD.Pedido.Pagado = false;
 
@@ -114,7 +111,6 @@ namespace SisNikosPizza.Controllers
                     await _unitWork.GuardarAsync();
 
                     _correoUtilidad.CorreoDeCompra(userSign.Email, userSign.UserName);
-
                 }
                 return RedirectToAction(nameof(Vaucher), new { id = VMD.Pedido.PedidoId });
             }
@@ -143,6 +139,39 @@ namespace SisNikosPizza.Controllers
                 return RedirectToAction(nameof(Delivery));
             }
             return View(nameof(Index));
+        }
+
+        [Authorize(Roles = VCG.Role_Admin + "," + VCG.Role_Delivery)]
+        [HttpPost]
+        public async Task<IActionResult> UpdateStatus(int pedidoId, string status)
+        {
+            var pedido = await _unitWork.PedidoRepo.ObtenerPrimeroAsync(p => p.PedidoId == pedidoId);
+            if (pedido == null)
+            {
+                TempData["Error"] = "Pedido no encontrado.";
+                return RedirectToAction(nameof(Index));
+            }
+
+            // Map status to enum or string based on your model
+            switch (status)
+            {
+                case "Pendiente":
+                    pedido.EstadoPedido = VCG.EstadoPedido.Pendiente;
+                    break;
+                case "EnCamino":
+                    pedido.EstadoPedido = VCG.EstadoPedido.Encamino; // Ensure this enum value exists
+                    break;
+                case "Entregado":
+                    pedido.EstadoPedido = VCG.EstadoPedido.Entregado; // Ensure this enum value exists
+                    break;
+                default:
+                    TempData["Error"] = "Estado no válido.";
+                    return RedirectToAction(nameof(Index));
+            }
+
+            await _unitWork.GuardarAsync();
+            TempData["Satisfactorio"] = "Estado actualizado correctamente.";
+            return RedirectToAction(nameof(Index));
         }
     }
 }

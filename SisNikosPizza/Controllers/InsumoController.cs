@@ -170,7 +170,15 @@ namespace SisNikosPizza.Controllers
             {
                 try
                 {
-                    _unitWork.InsumoRepo.Eliminar(insumo);
+                    // Buscar la entidad real en la base de datos
+                    var insumoEnBD = await _unitWork.InsumoRepo.ObtenerAsync(insumo.InsumoId);
+                    if (insumoEnBD is null)
+                    {
+                        TempData["Error"] = "El insumo no fue encontrado.";
+                        return RedirectToAction("Index");
+                    }
+
+                    _unitWork.InsumoRepo.Eliminar(insumoEnBD);
                     await _unitWork.GuardarAsync();
                     TempData["Satisfactorio"] = "Insumo eliminado correctamente.";
                     return RedirectToAction("Index");
@@ -183,5 +191,6 @@ namespace SisNikosPizza.Controllers
 
             return View(insumo);
         }
+
     }
 }

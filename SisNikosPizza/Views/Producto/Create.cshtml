@@ -83,7 +83,7 @@
                         <label class="block text-gray-600 font-medium mb-2">Precio <span class="text-red-500">*</span></label>
                         <input type="number" asp-for="producto.Precio"
                             class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-yellow-500 focus:border-yellow-500"
-                            placeholder="Precio del producto" step="0.01" min="0" />
+                            placeholder="Precio del producto" step="0.01" min="0" oninput="this.value = Math.max(0, this.value)" />
                         <span asp-validation-for="producto.Precio" class="text-red-600 text-sm"></span>
                     </div>
                     <div>
@@ -97,8 +97,7 @@
 
                 <!-- Insumos -->
                 <div class="mb-6">
-                    <label class="block text-gray-600 font-medium mb-2">Insumos <span
-                            class="text-red-500">*</span></label>
+                    <label class="block text-gray-600 font-medium mb-2">Insumos <span class="text-red-500">*</span></label>
 
                     <table id="tablaInsumos" class="w-full border-collapse bg-white rounded-lg shadow-md text-sm">
                         <thead class="bg-gray-200">
@@ -109,7 +108,8 @@
                             </tr>
                         </thead>
                         <tbody>
-                            @if(Model.InsumosSeleccionados != null){
+                            @if (Model.InsumosSeleccionados != null)
+                            {
                                 @for (int i = 0; i < Model.InsumosSeleccionados.Count; i++)
                                 {
                                     <tr>
@@ -121,7 +121,7 @@
                                         </td>
                                         <td class="px-4 py-2">
                                             <input asp-for="InsumosSeleccionados[@i].Cantidad" type="number" step="0.01" min="0"
-                                                class="w-full border rounded px-2 py-1" />
+                                                class="w-full border rounded px-2 py-1" oninput="this.value = Math.max(0, this.value)" />
                                         </td>
                                         <td class="text-center">
                                             <button type="button" class="text-red-600" onclick="quitarFila(this)">
@@ -131,7 +131,6 @@
                                     </tr>
                                 }
                             }
-
                         </tbody>
                     </table>
 
@@ -139,7 +138,7 @@
                     <div class="flex items-center gap-4 mt-4">
                         <select id="ddlInsumos" class="flex-1 border rounded px-3 py-1">
                             <option disabled selected>--Selecciona un insumo--</option>
-                            @if(Model.InsumosList != null)
+                            @if (Model.InsumosList != null)
                             {
                                 @foreach (var insumo in Model.InsumosList!)
                                 {
@@ -149,17 +148,14 @@
                         </select>
 
                         <input id="txtCantidad" type="number" step="0.01" min="0" class="w-32 border rounded px-2 py-1"
-                            placeholder="Cantidad" />
+                            placeholder="Cantidad" oninput="this.value = Math.max(0, this.value)" />
 
                         <button type="button" onclick="agregarFila()"
                             class="bg-yellow-600 text-white px-4 py-2 rounded">
                             <i class="bi bi-plus-circle"></i> Añadir Insumo
                         </button>
-
                     </div>
                 </div>
-
-
 
                 <!-- Imagen -->
                 <div class="mb-6">
@@ -195,10 +191,8 @@
     <partial name="_ValidationScriptsPartial" />
 
     <script>
-
         console.log("Iniciando script...");
         let contador = @((Model.InsumosSeleccionados?.Count ?? 0));
-
         console.log("Contador inicial: " + contador);
 
         function agregarFila() {
@@ -211,7 +205,7 @@
             const cantidad = cantidadInput.value;
 
             if (!insumoId || cantidad <= 0) {
-                alert('Selecciona un insumo y una cantidad válida.');
+                alert('Selecciona un insumo y una cantidad válida mayor a 0.');
                 return;
             }
 
@@ -228,7 +222,7 @@
             // Cantidad
             const celdaCantidad = fila.insertCell();
             celdaCantidad.innerHTML = `
-                <input type="number" name="InsumosSeleccionados[${contador}].Cantidad" value="${cantidad}" step="0.01" min="0" class="w-full border rounded px-2 py-1" />
+                <input type="number" name="InsumosSeleccionados[${contador}].Cantidad" value="${cantidad}" step="0.01" min="0" class="w-full border rounded px-2 py-1" oninput="this.value = Math.max(0, this.value)" />
             `;
 
             // Botón eliminar
@@ -253,5 +247,4 @@
             fila.remove();
         }
     </script>
-
 }

@@ -19,14 +19,17 @@
     <!-- Form Card -->
     <div class="bg-white shadow-xl rounded-2xl overflow-hidden">
         <form method="post" asp-controller="Insumo" asp-action="Delete">
+            <!-- Campo oculto necesario para enviar el ID -->
+            <input type="hidden" asp-for="InsumoId" />
+
             <!-- Card Header -->
             <div class="bg-gradient-to-r from-red-600 to-orange-600 text-white px-6 py-4">
                 <h2 class="text-2xl font-semibold">Confirmar Eliminación</h2>
             </div>
+
             <!-- Card Body -->
             <div class="p-6 bg-yellow-100">
                 <div asp-validation-summary="ModelOnly" class="text-red-600 mb-4"></div>
-                
 
                 <div class="grid grid-cols-1 sm:grid-cols-2 gap-4 mb-6">
                     <div class="flex items-center">
