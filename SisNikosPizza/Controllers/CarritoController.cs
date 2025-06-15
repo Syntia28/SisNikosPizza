@@ -21,8 +21,7 @@ namespace SisNikosPizza.Controllers
         [HttpGet]
         public async Task<IActionResult> Index()
         {
-            // var carritoItems = await _unitWork.CarritoItemsRepo.ObtenerTodosAsync(ordenarPor: c => c.OrderByDescending(c => c.ProductoId), incluirPropiedades: "Producto");
-            // return View(carritoItems);
+            
 
             var user = await _userManager.GetUserAsync(User);
             if (user == null) return RedirectToAction("Login", "Account");
