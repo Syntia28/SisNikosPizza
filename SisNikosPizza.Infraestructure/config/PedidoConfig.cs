@@ -8,13 +8,10 @@ public class PedidoConfig : IEntityTypeConfiguration<Pedido>
 {
     public void Configure(EntityTypeBuilder<Pedido> builder)
     {
-        // Tabla
         builder.ToTable("pedido");
 
-        // Clave primaria
         builder.HasKey(pe => pe.PedidoId);
 
-        // Propiedades
         builder.Property(pe => pe.UserId)
             .IsRequired();
 
@@ -50,7 +47,6 @@ public class PedidoConfig : IEntityTypeConfiguration<Pedido>
         builder.Property(pe => pe.FechaPedido)
             .IsRequired();
 
-        // Relacion de uno a muchos con DetallePedido
         builder.HasMany(pe => pe.DetallePedido)
             .WithOne(r => r.Pedido)
             .HasForeignKey(r => r.PedidoId);

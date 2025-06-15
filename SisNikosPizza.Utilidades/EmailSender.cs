@@ -12,7 +12,6 @@ namespace SisNikosPizza.Utilidades
     {
         public Task SendEmailAsync(string email, string subject, string htmlMessage)
         {
-            // Aquí llamas a tu lógica personalizada
             bool enviado = enviarCorreo.EnviarCorreo(email, subject, htmlMessage);
 
             if (!enviado)

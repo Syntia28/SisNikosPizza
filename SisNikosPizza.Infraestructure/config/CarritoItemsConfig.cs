@@ -8,13 +8,10 @@ public class CarritoItemsConfig : IEntityTypeConfiguration<CarritoItems>
 {
     public void Configure(EntityTypeBuilder<CarritoItems> builder)
     {
-        // Tabla
         builder.ToTable("carritoItems");
 
-        // Clave primaria
         builder.HasKey(c => c.CarritoItemsId);
 
-        // Propiedades
         builder.Property(c => c.ProductoId)
             .IsRequired();
 

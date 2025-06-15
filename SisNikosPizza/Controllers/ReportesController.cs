@@ -22,7 +22,6 @@ public class ReportesController : Controller
     public async Task<IActionResult> DescargarExcel()
     {
         var pedidosDelivery = await _unitWork.DetallesPedidoRepo.ObtenerTodosAsync(
-                // filtro: p => p.Pedido.TipoPedido == VCG.TipoPedido.Delivery,
                 ordenarPor: p => p.OrderByDescending(p => p.Pedido.FechaPedido),
                 incluirPropiedades: "Pedido,Pedido.User,Producto"
             );
@@ -51,7 +50,6 @@ public class ReportesController : Controller
     public async Task<IActionResult> DescargarPdf()
     {
         var pedidosDelivery = await _unitWork.DetallesPedidoRepo.ObtenerTodosAsync(
-                // filtro: p => p.Pedido.TipoPedido == VCG.TipoPedido.Delivery,
                 ordenarPor: p => p.OrderByDescending(p => p.Pedido.FechaPedido),
                 incluirPropiedades: "Pedido,Pedido.User,Producto"
             );

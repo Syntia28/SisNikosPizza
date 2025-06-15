@@ -25,7 +25,6 @@
         }
         else
         {
-            @* opciones del tipo de pedido *@
 
             <div class="card-wrapper">
                 <div class="card">
@@ -111,7 +110,6 @@
                             </div>
 
                             <form method="post" id="formPedido" asp-controller="Pedidos" asp-action="CrearPedido">
-                                @* lista para enviar al servidor *@
                                 @for (int i = 0; i < Model.listaCarritoItems.Count; i++)
                                 {
                                     <input type="hidden" name="listaCarritoItems[@i].CarritoItemsId" value="@Model.listaCarritoItems[i].CarritoItemsId" />
@@ -137,7 +135,6 @@
                                 </div>
 
                                 <div id="section-delivery" style="display:none;">
-                                    @* <!-- inputs de Teléfono, Dirección, Referencia --> *@
                                     <div class="input-group mb-3">
                                         <span class="input-group-text">📱</span>
                                         <input type="text" asp-for="Pedido.Telefono" class="form-control" placeholder="Teléfono">
@@ -152,7 +149,6 @@
                                     </div>
                                 </div>
                                 <div id="section-recoger" style="display:none;">
-                                    @* <!-- inputs de FechaRecogo --> *@
                                     <div class="mb-4">
                                         <p class="mb-2"><strong>Recoger en:</strong> Jr. Reina Farje N° 175</p>
                                         <p class="mb-3"><strong>Referencia:</strong> Media cuadra del BCP de Sucre</p>
@@ -161,7 +157,6 @@
                                     </div>
                                 </div>
                                 <div id="section-mesa" style="display:none;">
-                                    @* <!-- inputs de Mesa --> *@
                                     <div class="mb-4">
                                         <label asp-for="Pedido.Mesa" class="form-label">Número o Nombre de la Mesa</label>
                                         <input type="text" asp-for="Pedido.Mesa" class="form-control" placeholder="Ej: Mesa 5">
@@ -202,7 +197,7 @@
 
         document.querySelectorAll('.form-cantidad').forEach(form => {
             form.addEventListener('submit', async function (e) {
-                e.preventDefault(); // Evita que recargue la página
+                e.preventDefault(); 
 
                 const formData = new FormData(this);
                 const data = new URLSearchParams(formData);
@@ -238,11 +233,9 @@
 
             const inputTelefono = document.getElementById('Pedido_Telefono');
             const inputDireccion = document.getElementById('Pedido_Direccion');
-            // const inputReferencia = document.getElementById('Pedido_Referencia'); // Referencia no es obligatoria
             const inputFechaRecogo = document.getElementById('Pedido_FechaRecogo');
             const inputMesa = document.getElementById('Pedido_Mesa');
 
-            // Ocultar todas las secciones y quitar 'required' de todos los campos específicos
             sectionDelivery.style.display = 'none';
             if (inputTelefono) inputTelefono.required = false;
             if (inputDireccion) inputDireccion.required = false;
@@ -270,9 +263,7 @@
             input.addEventListener('change', toggleTipoPedidoSection);
         });
 
-        // Ejecutar al cargar para establecer el estado inicial correcto
         window.addEventListener('DOMContentLoaded', () => {
-            // Asegurarse de que el radio button correcto esté marcado si Model.Pedido.TipoPedido tiene un valor
             const tipoPedidoActual = "@Model.Pedido?.TipoPedido";
             if (tipoPedidoActual) {
                 const radioAChequear = document.querySelector(`input[name="Pedido.TipoPedido"][value="${tipoPedidoActual}"]`);
@@ -280,13 +271,12 @@
                     radioAChequear.checked = true;
                 }
             } else {
-                // Si no hay valor, marcar 'Delivery' por defecto si existe
                 const deliveryRadio = document.getElementById('delivery');
                 if (deliveryRadio) {
                     deliveryRadio.checked = true;
                 }
             }
-            toggleTipoPedidoSection(); // Llamar para mostrar/ocultar y setear required
+            toggleTipoPedidoSection(); 
         });
     </script>
 }

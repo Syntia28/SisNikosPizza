@@ -102,14 +102,12 @@
             color: #fff !important;
     }
 
-    /* Separación entre botones */
     .nav-item {
         margin-right: 10px;
     }
 </style>
 
 <script>
-    // Lógica para cargar la cantidad total desde el servidor
     document.addEventListener('DOMContentLoaded', function () {
         fetch('/Carrito/Total')
             .then(response => response.json())

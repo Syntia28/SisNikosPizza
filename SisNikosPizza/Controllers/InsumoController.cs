@@ -23,7 +23,7 @@ namespace SisNikosPizza.Controllers
         public async Task<IActionResult> Index()
         {
             var insumos = await _unitWork.InsumoRepo.ObtenerTodosAsync(
-                incluirPropiedades: "Proveedor", // Incluir el proveedor para mostrarlo en la vista
+                incluirPropiedades: "Proveedor", 
                 ordenarPor: c => c.OrderByDescending(c => c.InsumoId)
             );
             return View(insumos);
@@ -32,7 +32,6 @@ namespace SisNikosPizza.Controllers
         [HttpGet]
         public async Task<IActionResult> Create()
         {
-            // Cargar la lista de proveedores para el dropdown
             var proveedores = await _unitWork.ProveedorRepo.ObtenerTodosAsync();
             ViewBag.Proveedores = new SelectList(proveedores, "ProveedorId", "Nombre");
 
@@ -50,7 +49,6 @@ namespace SisNikosPizza.Controllers
             {
                 try
                 {
-                    // Verificar que existe el proveedor
                     var proveedor = await _unitWork.ProveedorRepo.ObtenerAsync(insumo.ProveedorId);
                     if (proveedor == null)
                     {
@@ -72,7 +70,6 @@ namespace SisNikosPizza.Controllers
             }
             else
             {
-                // Imprimir los errores de validación para debugging
                 foreach (var modelState in ModelState.Values)
                 {
                     foreach (var error in modelState.Errors)
@@ -82,7 +79,6 @@ namespace SisNikosPizza.Controllers
                 }
             }
 
-            // Si llegamos aquí, hubo un error, volvemos a cargar los proveedores
             var proveedoresReload = await _unitWork.ProveedorRepo.ObtenerTodosAsync();
             ViewBag.Proveedores = new SelectList(proveedoresReload, "ProveedorId", "Nombre", insumo.ProveedorId);
 
@@ -97,7 +93,6 @@ namespace SisNikosPizza.Controllers
             if (insumo is null)
                 return NotFound();
 
-            // Cargar la lista de proveedores para el dropdown
             var proveedores = await _unitWork.ProveedorRepo.ObtenerTodosAsync();
             ViewBag.Proveedores = new SelectList(proveedores, "ProveedorId", "Nombre", insumo.ProveedorId);
 
@@ -125,7 +120,6 @@ namespace SisNikosPizza.Controllers
                 }
             }
 
-            // Si llegamos aquí, hubo un error, volvemos a cargar los proveedores
             var proveedores = await _unitWork.ProveedorRepo.ObtenerTodosAsync();
             ViewBag.Proveedores = new SelectList(proveedores, "ProveedorId", "Nombre", insumoForm.ProveedorId);
 
@@ -137,7 +131,6 @@ namespace SisNikosPizza.Controllers
         {
             if (id is null) return NotFound();
 
-            // Incluir el proveedor relacionado al obtener el insumo
             var insumo = await _unitWork.InsumoRepo.ObtenerPrimeroAsync(
                 filtro: c => c.InsumoId == id,
                 incluirPropiedades: "Proveedor"
@@ -152,7 +145,6 @@ namespace SisNikosPizza.Controllers
         {
             if (id is null) return NotFound();
 
-            // Incluir el proveedor relacionado al obtener el insumo
             var insumo = await _unitWork.InsumoRepo.ObtenerPrimeroAsync(
                 filtro: c => c.InsumoId == id,
                 incluirPropiedades: "Proveedor"
@@ -170,7 +162,6 @@ namespace SisNikosPizza.Controllers
             {
                 try
                 {
-                    // Buscar la entidad real en la base de datos
                     var insumoEnBD = await _unitWork.InsumoRepo.ObtenerAsync(insumo.InsumoId);
                     if (insumoEnBD is null)
                     {

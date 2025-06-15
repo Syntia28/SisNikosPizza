@@ -10,13 +10,10 @@ namespace SisNikosPizza.Utilidades
 {
     public class gmail
     {
-        // Método para cargar y reemplazar los parámetros en el HTML
         public static string CargarYReemplazarHtml(string rutaArchivo, string userName)
         {
-            // Leer el archivo HTML
             string htmlContent = File.ReadAllText(rutaArchivo);
 
-            // Reemplazar valores dinámicos en el HTML
             htmlContent = htmlContent.Replace("{{USER_NAME}}", userName);
 
             return htmlContent;

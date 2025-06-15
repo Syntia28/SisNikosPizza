@@ -15,12 +15,10 @@ public static class SeedData
             serviceProvider.GetRequiredService<
                 DbContextOptions<SisNikosPizzaBbContext>>()))
         {
-            // Verificar si hay migraciones pendientes y aplicarlas
             context.Database.Migrate();
 
             if (!context.categoria.Any())
             {
-                // Agregar estados predeterminadas
                 context.categoria.AddRange(
                     new Categoria { nombre = "cat1" },
                     new Categoria { nombre = "cat2" },
@@ -35,7 +33,6 @@ public static class SeedData
 
             if (!context.proveedores.Any())
             {
-                // Agregar categorías predeterminadas
                 context.proveedores.AddRange(
                     new Proveedor { Nombre = "proveedor1", Empresa = "empresa1", Cantidad = "100" },
                     new Proveedor { Nombre = "proveedor2", Empresa = "empresa2", Cantidad = "200" },

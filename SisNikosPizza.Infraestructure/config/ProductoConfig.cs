@@ -8,13 +8,10 @@ public class ProductoConfig : IEntityTypeConfiguration<Producto>
 {
     public void Configure(EntityTypeBuilder<Producto> builder)
     {
-        // Tabla
         builder.ToTable("Producto");
 
-        // Clave primaria
         builder.HasKey(p => p.ProductoId);
 
-        // Propiedades
         builder.Property(P => P.CategoriaId)
             .IsRequired();
 
@@ -44,7 +41,6 @@ public class ProductoConfig : IEntityTypeConfiguration<Producto>
         builder.Property(p => p.UpdatedAt)
             .IsRequired();
 
-        // relacion uno a muchos
         builder.HasMany(p => p.ProductoInsumos)
             .WithOne(i => i.Producto)
             .HasForeignKey(i => i.ProductoId)

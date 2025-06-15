@@ -13,14 +13,12 @@ public class UsersController : Controller
         _userManager = userManager;
     }
 
-    // Lista de usuarios
     public async Task<IActionResult> Index()
     {
         var users = await _userManager.Users.ToListAsync();
         return View(users);
     }
 
-    // Detalles de un usuario
     public async Task<IActionResult> Details(string id)
     {
         if (id == null) return NotFound();
@@ -31,7 +29,6 @@ public class UsersController : Controller
         return View(user);
     }
 
-    // Vista para editar
     public async Task<IActionResult> Edit(string id)
     {
         if (id == null) return NotFound();
@@ -42,7 +39,6 @@ public class UsersController : Controller
         return View(user);
     }
 
-    // Guardar edición
     [HttpPost]
     [ValidateAntiForgeryToken]
     public async Task<IActionResult> Edit(string id, IdentityUser updatedUser)
@@ -72,7 +68,6 @@ public class UsersController : Controller
         return View(updatedUser);
     }
 
-    // Confirmar eliminación
     public async Task<IActionResult> Delete(string id)
     {
         if (id == null) return NotFound();
@@ -83,7 +78,6 @@ public class UsersController : Controller
         return View(user);
     }
 
-    // Eliminar usuario
     [HttpPost, ActionName("Delete")]
     [ValidateAntiForgeryToken]
     public async Task<IActionResult> DeleteConfirmed(string id)
