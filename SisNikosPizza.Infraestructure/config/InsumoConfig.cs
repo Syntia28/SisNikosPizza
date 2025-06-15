@@ -8,13 +8,10 @@ public class InsumoConfig : IEntityTypeConfiguration<Insumo>
 {
     public void Configure(EntityTypeBuilder<Insumo> builder)
     {
-        // Tabla
         builder.ToTable("insumo");
 
-        // Clave primaria
         builder.HasKey(i => i.InsumoId);
 
-        // Propiedades
         builder.Property(i => i.ProveedorId)
             .IsRequired();
 
@@ -44,8 +41,6 @@ public class InsumoConfig : IEntityTypeConfiguration<Insumo>
         
         builder.Property(i => i.UpdatedAt)
             .IsRequired();
-
-        // relacion de uno a muchos con DetalleVenta
         builder.HasMany(i => i.ProductoInsumos)
             .WithOne(r => r.Insumo)
             .HasForeignKey(r => r.InsumoId)

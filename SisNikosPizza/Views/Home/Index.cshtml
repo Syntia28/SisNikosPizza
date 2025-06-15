@@ -4,10 +4,8 @@
     Layout = "~/Views/Shared/_Admin.cshtml";
 }
 
-<!-- AOS Animate On Scroll CSS -->
 <link href="https://cdn.jsdelivr.net/npm/aos@2.3.4/dist/aos.css" rel="stylesheet" />
 
-<!-- HERO ANIMADO -->
 <div class="hero-nikos">
     <div class="hero-bg"></div>
     <div class="hero-glass" data-aos="zoom-in" data-aos-duration="1200">
@@ -26,7 +24,6 @@
     </div>
 </div>
 
-<!-- MENSAJE ESPECIAL -->
 <section class="bienvenida-nikos" data-aos="fade-up" data-aos-duration="1200">
     <h2 class="bienvenida-titulo">¡La pizza más deliciosa de la ciudad te espera!</h2>
     <p>
@@ -35,7 +32,6 @@
     </p>
 </section>
 
-<!-- PIZZAS DESTACADAS -->
 <section id="pizzas" class="pizzas-section-nikos">
     <h2 class="section-title-nikos" data-aos="fade-down" data-aos-duration="1000">
         Nuestras Pizzas Estrella
@@ -94,12 +90,10 @@
     </div>
 </section>
 
-<!-- CTA FLOTANTE -->
 <a href="/Carta" class="cta-float-nikos pulse-glow" data-aos="zoom-in-up" data-aos-delay="1200">
     <span>¡Haz tu pedido ahora!</span>
 </a>
 
-<!-- AOS Animate On Scroll JS -->
 <script src="https://cdn.jsdelivr.net/npm/aos@2.3.4/dist/aos.js"></script>
 <script>
     AOS.init({
@@ -107,7 +101,6 @@
         duration: 1200,
         offset: 80
     });
-    // Animación de letras de bienvenida
     document.addEventListener("DOMContentLoaded", function () {
         const letras = document.querySelector('.bienvenida-letras');
         if (letras) {
@@ -117,7 +110,6 @@
 </script>
 
 <style>
-    /* HERO ANIMADO */
     .hero-nikos {
         position: relative;
         height: 80vh;
@@ -278,7 +270,6 @@
         box-shadow: 0 0px 34px #88ff0080, 0 2px 8px #3cff0060;
     }
 
-    /* Decoraciones de pizza */
     .pizza-decor {
         position: absolute;
         opacity: 0.10;
@@ -289,7 +280,6 @@
         background-repeat: no-repeat;
     }
 
-    /* MENSAJE ESPECIAL */
     .bienvenida-nikos {
         background: #fffbe6;
         text-align: center;
@@ -321,7 +311,6 @@
         font-size: 1.5rem;
     }
 
-    /* PIZZAS DESTACADAS */
     .pizzas-section-nikos {
         background: #fffbe6;
         padding: 2rem;
@@ -441,7 +430,6 @@
         font-family: 'Roboto', sans-serif;
     }
 
-    /* CTA FLOTANTE */
     .cta-float-nikos {
         position: fixed;
         right: 2.5vw;
@@ -498,7 +486,6 @@
         }
     }
 
-    /* Animaciones */
     @@keyframes fadeInDown {
         from {
             opacity: 0;
@@ -537,7 +524,6 @@
         }
     }
 
-    /* Responsive */
     @@media (max-width: 900px) {
         .hero-title-nikos {
             font-size: 2.2rem;

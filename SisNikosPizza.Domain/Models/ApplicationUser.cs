@@ -15,6 +15,6 @@ public class ApplicationUser : IdentityUser
     public DateTime? FechaNacimiento { get; set; }
 
     
-    [NotMapped] //No se agrega a la tabla
+    [NotMapped] 
     public string Role { get; set; }
 }

@@ -9,7 +9,6 @@ namespace SisNikosPizza.Repository.Interfaces
 {
     public interface IRepositoryBase<T> where T : class
     {
-        // Listar
         Task<T> ObtenerAsync(int id);
         Task<IEnumerable<T>> ObtenerTodosAsync(
             Expression<Func<T, bool>> filtro = null,
@@ -24,9 +23,7 @@ namespace SisNikosPizza.Repository.Interfaces
             bool isTracking = true
             );
 
-        // Agregar
         Task AgregarAsync(T entity);
-        // Eliminar
         void Eliminar(T entity);
         void EliminarRango(IEnumerable<T> entity);
     }

@@ -8,13 +8,10 @@ public class CategoriaConfig : IEntityTypeConfiguration<Categoria>
 {
     public void Configure(EntityTypeBuilder<Categoria> builder)
     {
-        // Tabla
         builder.ToTable("Categoria");
 
-        // Clave primaria
         builder.HasKey(c => c.CategoriaId);
 
-        // Propiedades
         builder.Property(c => c.nombre)
             .HasMaxLength(50)
             .IsRequired();
@@ -28,7 +25,6 @@ public class CategoriaConfig : IEntityTypeConfiguration<Categoria>
         builder.Property(c => c.UpdatedAt)
             .IsRequired();
 
-        // relacion uno a muchos
         builder.HasMany(c => c.producto)
             .WithOne(r => r.categoria)
             .HasForeignKey(r => r.CategoriaId);

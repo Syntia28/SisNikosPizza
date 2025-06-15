@@ -321,7 +321,7 @@
                         });
 
                         const result = await response.text();
-                        console.log('Server response:', result); // Debug log
+                        console.log('Server response:', result); 
 
                         if (result.startsWith("ok")) {
                             const newStock = currentStock - quantity;
@@ -356,7 +356,7 @@
                             });
                         }
                     } catch (error) {
-                        console.error('Fetch error:', error); // Debug log
+                        console.error('Fetch error:', error); 
                         Swal.fire({
                             icon: 'error',
                             title: 'Error',

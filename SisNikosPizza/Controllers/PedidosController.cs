@@ -29,7 +29,6 @@ namespace SisNikosPizza.Controllers
             return View(pedidosDelivery);
         }
 
-        // GET: para la vista del delivery
         public async Task<ActionResult> Delivery()
         {
             var pedidosDelivery = await _unitWork.DetallesPedidoRepo.GetDeliveryPedidosAsync();
@@ -42,7 +41,6 @@ namespace SisNikosPizza.Controllers
             return View(pedidosDelivery);
         }
 
-        // GET: PedidodsController/Details/5
         public async Task<ActionResult> Detalles(int id)
         {
             var userSign = await _userManager.GetUserAsync(User);
@@ -70,7 +68,7 @@ namespace SisNikosPizza.Controllers
             }
 
             VMD.Pedido.UserId = userSign.Id;
-            VMD.Pedido.EstadoPedido = VCG.EstadoPedido.Pendiente; // Default status
+            VMD.Pedido.EstadoPedido = VCG.EstadoPedido.Pendiente; 
             VMD.Pedido.FechaPedido = DateTime.Now;
             VMD.Pedido.Pagado = false;
 
@@ -152,17 +150,16 @@ namespace SisNikosPizza.Controllers
                 return RedirectToAction(nameof(Index));
             }
 
-            // Map status to enum or string based on your model
             switch (status)
             {
                 case "Pendiente":
                     pedido.EstadoPedido = VCG.EstadoPedido.Pendiente;
                     break;
                 case "EnCamino":
-                    pedido.EstadoPedido = VCG.EstadoPedido.Encamino; // Ensure this enum value exists
+                    pedido.EstadoPedido = VCG.EstadoPedido.Encamino; 
                     break;
                 case "Entregado":
-                    pedido.EstadoPedido = VCG.EstadoPedido.Entregado; // Ensure this enum value exists
+                    pedido.EstadoPedido = VCG.EstadoPedido.Entregado;
                     break;
                 default:
                     TempData["Error"] = "Estado no válido.";

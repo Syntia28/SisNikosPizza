@@ -15,7 +15,6 @@ namespace SisNikosPizza.Controllers
             _unitWork = unitWork;
         }
 
-        // GET: Proveedor/Index
         [HttpGet]
         public async Task<IActionResult> Index()
         {
@@ -24,14 +23,12 @@ namespace SisNikosPizza.Controllers
             return View(proveedores);
         }
 
-        // GET: Proveedor/Create
         [HttpGet]
         public IActionResult Create()
         {
             return View();
         }
 
-        // POST: Proveedor/Create
         [HttpPost]
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> Create(Proveedor proveedor)
@@ -52,7 +49,6 @@ namespace SisNikosPizza.Controllers
             return View(proveedor);
         }
 
-        // GET: Proveedor/Edit
         [HttpGet]
         public async Task<IActionResult> Edit(int id)
         {
@@ -63,7 +59,6 @@ namespace SisNikosPizza.Controllers
             return View(proveedor);
         }
 
-        // POST: Proveedor/Edit
         [HttpPost]
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> Edit(Proveedor proveedor)
@@ -80,8 +75,6 @@ namespace SisNikosPizza.Controllers
             return RedirectToAction("Index");
         }
 
-        // GET: Proveedor/Details
-        [HttpGet]
         public async Task<IActionResult> Details(int? id)
         {
             if (id == null) return NotFound();
@@ -94,7 +87,6 @@ namespace SisNikosPizza.Controllers
             return View(proveedor);
         }
 
-        // GET: Proveedor/Delete
         [HttpGet]
         public async Task<IActionResult> Delete(int id)
         {
@@ -105,7 +97,6 @@ namespace SisNikosPizza.Controllers
             return View(proveedor);
         }
 
-        // POST: Proveedor/Delete
         [HttpPost]
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> Delete(Proveedor proveedor)

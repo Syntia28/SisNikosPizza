@@ -24,11 +24,11 @@ namespace SisNikosPizza.Repository.Implements
         {
             IQueryable<T> query = dbSet;
             if (filtro is not null)
-                query = query.Where(filtro); // select * from where
+                query = query.Where(filtro); 
 
             if (incluirPropiedades is not null)
                 foreach (var incluirPropiedad in incluirPropiedades.Split(new char[] { ',' }, StringSplitOptions.RemoveEmptyEntries))
-                    query = query.Include(incluirPropiedad); // "Category,Cliente"
+                    query = query.Include(incluirPropiedad); 
 
             if (ordenarPor is not null)
                 query = ordenarPor(query);
@@ -43,11 +43,11 @@ namespace SisNikosPizza.Repository.Implements
         {
             IQueryable<T> query = dbSet;
             if (filtro is not null)
-                query = query.Where(filtro); // select * from where
+                query = query.Where(filtro); 
 
             if (incluirPropiedades is not null)
                 foreach (var incluirPropiedad in incluirPropiedades.Split(new char[] { ',' }, StringSplitOptions.RemoveEmptyEntries))
-                    query = query.Include(incluirPropiedad); // "Category,Cliente"
+                    query = query.Include(incluirPropiedad); 
 
             if (isTracking)
                 query = query.AsNoTracking();
@@ -71,7 +71,7 @@ namespace SisNikosPizza.Repository.Implements
 
         public async Task<T> ObtenerAsync(int id)
         {
-            return await dbSet.FindAsync(id); // select * from where id
+            return await dbSet.FindAsync(id); 
         }
 
     }

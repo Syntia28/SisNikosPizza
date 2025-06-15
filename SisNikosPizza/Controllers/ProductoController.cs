@@ -11,12 +11,10 @@ namespace SisNikosPizza.Controllers
         private readonly IWebHostEnvironment _webHostEnvironment;
 
         public ProductoController(
-            //HotelElCieloDbContext context,
             IUniwork unitWork,
             IWebHostEnvironment webHostEnvironment
             )
         {
-            //_context = context;
             _unitWork = unitWork;
             _webHostEnvironment = webHostEnvironment ?? throw new ArgumentNullException(nameof(webHostEnvironment));
 
@@ -83,7 +81,7 @@ namespace SisNikosPizza.Controllers
                     {
                         ProductoInsumo productoInsumo = new ProductoInsumo()
                         {
-                            ProductoId = VMDP.producto.ProductoId, // ahora ya tiene el ID
+                            ProductoId = VMDP.producto.ProductoId, 
                             InsumoId = item.InsumoId,
                             Cantidad = item.Cantidad
                         };
@@ -100,7 +98,6 @@ namespace SisNikosPizza.Controllers
         }
 
 
-        // Categories/Edit/5
         [HttpGet]
         public async Task<IActionResult> Edit(int id)
         {
@@ -121,7 +118,6 @@ namespace SisNikosPizza.Controllers
             return View(PVM);
         }
 
-        // producto/Edit
         [HttpPost]
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> Edit(VMDProducto VMDP, IFormFile imageFile)
@@ -130,7 +126,6 @@ namespace SisNikosPizza.Controllers
 
             if (ModelState.IsValid)
             {
-                // cargar el producto existente de la base de datos
                 var productoDB = await _unitWork.ProductoRepo.ObtenerAsync(VMDP.producto.ProductoId);
 
                 if (productoDB == null) return NotFound();
@@ -138,7 +133,6 @@ namespace SisNikosPizza.Controllers
 
                 VMDP.producto.UpdatedAt = DateTime.Now;
 
-                //actualizar propiedades del producto
                 productoDB.Nombre = VMDP.producto.Nombre;
                 productoDB.Descripcion = VMDP.producto.Descripcion;
                 productoDB.Descripcion = VMDP.producto.Descripcion;
@@ -147,14 +141,12 @@ namespace SisNikosPizza.Controllers
                 productoDB.Stock = VMDP.producto.Stock;
                 productoDB.Estado = VMDP.producto.Estado;
 
-                // Manejar la subida de imagen
                 if (imageFile != null && imageFile.Length > 0)
                 {
                     string uploadsFolder = Path.Combine(_webHostEnvironment.WebRootPath, "images");
                     string uniqueFileName = Guid.NewGuid().ToString() + "_" + Path.GetFileName(imageFile.FileName);
                     string filePath = Path.Combine(uploadsFolder, uniqueFileName);
 
-                    // Crear el directorio si no existe
                     Directory.CreateDirectory(uploadsFolder);
 
                     using (var fileStream = new FileStream(filePath, FileMode.Create))
@@ -162,13 +154,11 @@ namespace SisNikosPizza.Controllers
                         await imageFile.CopyToAsync(fileStream);
                     }
 
-                    // Guardar solo el nombre del archivo en la base de datos
 
                     productoDB.ImagenUrl = uniqueFileName;
                 }
 
 
-                // Actualizar los datos del producto en la base de datos
                 await _unitWork.GuardarAsync();
                 return RedirectToAction("Index");
             }
@@ -179,7 +169,6 @@ namespace SisNikosPizza.Controllers
             return View(VMDP);
         }
 
-        // producto/Details/5
         [HttpGet]
         public async Task<IActionResult> Details(int? id)
         {
@@ -188,7 +177,6 @@ namespace SisNikosPizza.Controllers
             var producto = await _unitWork.ProductoRepo.ObtenerPrimeroAsync(filtro: c => c.ProductoId == id);
             if (producto == null) return NotFound();
 
-            // Construir la URL completa de la imagen
             if (!string.IsNullOrEmpty(producto.ImagenUrl))
             {
                 string baseUrl = $"{Request.Scheme}://{Request.Host}";
@@ -197,17 +185,14 @@ namespace SisNikosPizza.Controllers
 
             return View(producto);
         }
-        // Categories/Delete/5
         [HttpGet]
         public async Task<IActionResult> Delete(int? id)
         {
-            //var category = await _context.Category.FindAsync(id);
             if (id is null) return NotFound();
 
             var producto = await _unitWork.ProductoRepo.ObtenerPrimeroAsync(filtro: c => c.ProductoId == id);
             if (producto == null) return NotFound();
 
-            // Construir la URL completa de la imagen
             if (!string.IsNullOrEmpty(producto.ImagenUrl))
             {
                 string baseUrl = $"{Request.Scheme}://{Request.Host}/images";
@@ -217,21 +202,17 @@ namespace SisNikosPizza.Controllers
             return View(producto);
         }
 
-        // Categories/Delete
         [HttpPost]
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> Delete(Producto producto)
         {
             if (producto is not null)
             {
-                //_context.Category.Remove(category);
-                //await _context.SaveChangesAsync();
                 _unitWork.ProductoRepo.Eliminar(producto);
                 await _unitWork.GuardarAsync();
                 return RedirectToAction("Index");
             }
 
-            // En caso de errores se retorna a la vista
             return View(producto);
 
         }

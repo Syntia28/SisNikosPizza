@@ -25,7 +25,7 @@
                 </a>
             }
 
-            @if (User.IsInRole(VCG.Role_Admin)) // Corrección: cierre de paréntesis agregado aquí
+            @if (User.IsInRole(VCG.Role_Admin)) 
             {
 
                 <a class="nav-link" asp-controller="Pedidos" asp-action="Index">
@@ -58,19 +58,11 @@
                 </a>
 
                 <div class="sb-sidenav-menu-heading">Addons</div>
-                //ventas
                 <a class="nav-link" asp-controller="Ventas" asp-action="Index">
                     <div class="sb-nav-link-icon"><i class="fas fa-shopping-cart"></i></div>
                     Ventas
                     </a>
-               @*  <a class="nav-link" asp-controller="Charts" asp-action="Index">
-                    <div class="sb-nav-link-icon"><i class="fas fa-chart-area"></i></div>
-                    Gráficos
-                </a>
-                <a class="nav-link" asp-controller="Tables" asp-action="Index">
-                    <div class="sb-nav-link-icon"><i class="fas fa-table"></i></div>
-                    Tablas
-                </a> *@
+              
             }
         </div>
     }

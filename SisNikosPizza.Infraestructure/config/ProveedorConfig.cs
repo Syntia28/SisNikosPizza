@@ -8,13 +8,10 @@ public class ProveedorConfig : IEntityTypeConfiguration<Proveedor>
 {
     public void Configure(EntityTypeBuilder<Proveedor> builder)
     {
-        // Tabla
         builder.ToTable("proveedor");
 
-        // Clave primaria
         builder.HasKey(p => p.ProveedorId);
 
-        // Propiedades
         builder.Property(p => p.Nombre)
             .HasMaxLength(50)
             .IsRequired();
@@ -30,7 +27,6 @@ public class ProveedorConfig : IEntityTypeConfiguration<Proveedor>
         builder.Property(p => p.UpdatedAt)
             .IsRequired();
 
-        // relacion uno a muchos
         builder.HasMany(p => p.Insumos)
             .WithOne(i => i.Proveedor)
             .HasForeignKey(i => i.ProveedorId)

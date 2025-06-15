@@ -8,7 +8,6 @@ namespace SisNikosPizza.Controllers
 {
     public class CategoriaController : Controller
     {
-        //private readonly HotelElCieloDbContext _context;
         private readonly IUniwork _unitWork;
 
         public CategoriaController(
@@ -16,11 +15,9 @@ namespace SisNikosPizza.Controllers
             IUniwork unitWork
             )
         {
-            //_context = context;
             _unitWork = unitWork;
         }
 
-        // Categories/Index
         [HttpGet]
         public async Task<IActionResult> Index()
         {
@@ -31,7 +28,6 @@ namespace SisNikosPizza.Controllers
 
 
 
-        // Categories/Create
         [HttpGet]
         [Authorize(Roles = VCG.Role_Admin)]
         public IActionResult Create()
@@ -39,32 +35,25 @@ namespace SisNikosPizza.Controllers
             return View();
         }
 
-        // Categories/Create
         [HttpPost]
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> Create(Categoria categorias)
         {
-            if (ModelState.IsValid) // Si todos los datos enviados son correctos
+            if (ModelState.IsValid) 
             {
                 categorias.CreatedAt = DateTime.Now;
                 categorias.UpdatedAt = DateTime.Now;
-                //await _context.Category.AddAsync(category);
-                //await _context.SaveChangesAsync();
                 await _unitWork.CategoriaRepo.AgregarAsync(categorias);
                 await _unitWork.GuardarAsync();
                 TempData[VCG.Satisfactorio] = "Categoría actualizada correctamente";
-                //return RedirectToAction("Index");
-                //return RedirectToAction("Details", new(category.CategoryId.ToString()));
                 return RedirectToAction("Details", new { id = categorias.CategoriaId });
             }
 
-            // En caso de errores se retorna a la vista
             TempData[VCG.Errado] = "No se pudo guardar la categoría, intente de nuevo.";
             return View(categorias);
 
         }
 
-        // Categories/Edit/5
         [HttpGet]
         public async Task<IActionResult> Edit(int id)
         {
@@ -76,12 +65,11 @@ namespace SisNikosPizza.Controllers
             return View(categorias);
         }
 
-        // Categories/Edit
         [HttpPost]
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> Edit(Categoria categoria)
         {
-            if (categoria is null) return NotFound();// Si todos los datos enviados son correctos
+            if (categoria is null) return NotFound();
             {
                 _unitWork.CategoriaRepo.ActualizarCategoria(categoria);
                 await _unitWork.GuardarAsync();
@@ -90,7 +78,6 @@ namespace SisNikosPizza.Controllers
             }
         }
 
-        // Categories/Details/5
         [HttpGet]
         public async Task<IActionResult> Details(int? id)
         {
@@ -99,11 +86,9 @@ namespace SisNikosPizza.Controllers
             return View(categorias);
         }
 
-        // Categories/Delete/5
         [HttpGet]
         public async Task<IActionResult> Delete(int id)
         {
-            //var category = await _context.Category.FindAsync(id);
             var categorias = await _unitWork.CategoriaRepo.ObtenerAsync(id);
 
             if (categorias is null)
@@ -112,21 +97,17 @@ namespace SisNikosPizza.Controllers
             return View(categorias);
         }
 
-        // Categories/Delete
         [HttpPost]
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> Delete(Categoria categorias)
         {
             if (categorias is not null)
             {
-                //_context.Category.Remove(category);
-                //await _context.SaveChangesAsync();
                 _unitWork.CategoriaRepo.Eliminar(categorias);
                 await _unitWork.GuardarAsync();
                 return RedirectToAction("Index");
             }
 
-            // En caso de errores se retorna a la vista
             return View(categorias);
 
         }
