@@ -16,7 +16,6 @@ namespace SisNikosPizza.Utilidades
 
             if (!enviado)
             {
-                Console.WriteLine("Error al enviar el correo");
                 throw new Exception("No se pudo enviar el correo.");
             }
 

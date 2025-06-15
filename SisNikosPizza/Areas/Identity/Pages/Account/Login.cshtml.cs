@@ -57,9 +57,6 @@ namespace SisNikosPizza.Areas.Identity.Pages.Account
         {
             if (!string.IsNullOrEmpty(ErrorMessage))
             {
-                Console.WriteLine("========================================================================");
-                Console.WriteLine(ErrorMessage);
-                Console.WriteLine("========================================================================");
                 ModelState.AddModelError(string.Empty, ErrorMessage);
             }
 

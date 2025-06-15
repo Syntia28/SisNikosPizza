@@ -27,10 +27,6 @@ namespace SisNikosPizza.Utilidades
 
             string asunto = "CONFIRMACION DE PEDIDO";
             bool enviado = enviarCorreo.EnviarCorreo(Correo, asunto, htmlContent);
-            if (!enviado)
-            {
-                Console.Write("Hubo un error. Verifique su conexión a internet o vuelva a intentarlo más tarde.");
-            }
         }
     }
 }

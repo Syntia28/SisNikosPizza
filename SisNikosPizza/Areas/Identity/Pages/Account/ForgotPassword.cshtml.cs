@@ -40,15 +40,8 @@ namespace SisNikosPizza.Areas.Identity.Pages.Account
 
         public async Task<IActionResult> OnPostAsync()
         {
-            Console.WriteLine("==============================================");
-            Console.WriteLine("==============================================");
-            Console.WriteLine("========= ERRORES DE VALIDACIÓN =========");
-            Console.WriteLine($"recuperacion de cuenta iniciado: {ModelState.IsValid}");
-            Console.WriteLine("==============================================");
-            Console.WriteLine("==============================================");
             if (ModelState.IsValid)
             {
-                Console.WriteLine($"Email: {Input.Email}");
                 var user = await _userManager.FindByEmailAsync(Input.Email);
                 if (user == null /*|| !(await _userManager.IsEmailConfirmedAsync(user))*/)
                 {
@@ -68,12 +61,6 @@ namespace SisNikosPizza.Areas.Identity.Pages.Account
                      $"Haz clic en el siguiente enlace para hacerlo:\n\n" +
                      $"{callbackUrl}\n\n" +
                      $"Si no solicitaste esto, ignora este mensaje.";
-
-                Console.WriteLine("==============================================");
-                Console.WriteLine("==============================================");
-                Console.WriteLine($"correo del usuario: {user.Email}");
-                Console.WriteLine("==============================================");
-                Console.WriteLine("==============================================");
 
                 await _emailSender.SendEmailAsync(user.Email, "Restablecer Contraseña", mensaje);
 

@@ -91,10 +91,6 @@ namespace SisNikosPizza.Areas.Identity.Pages.Account
             ExternalLogins = (await _signInManager.GetExternalAuthenticationSchemesAsync()).ToList();
             if (ModelState.IsValid)
             {
-                Console.WriteLine("========================================================================");
-                Console.WriteLine($"Input: input.username => {Input.Username}, input.email => {Input.Email}, input.password => {Input.Password}, input.phoneNumber => {Input.PhoneNumber}");
-                Console.WriteLine("========================================================================");
-
                 var user = new ApplicationUser
                 {
                     Email = Input.Email,
@@ -137,8 +133,6 @@ namespace SisNikosPizza.Areas.Identity.Pages.Account
                 }
                 foreach (var error in result.Errors)
                 {
-                    Console.WriteLine("========================================================================");
-                    Console.WriteLine($"Error: {error.Description}");
                     ModelState.AddModelError(string.Empty, error.Description);
                 }
             }
