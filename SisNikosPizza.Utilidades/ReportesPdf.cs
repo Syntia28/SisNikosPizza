@@ -16,7 +16,7 @@ using System.Reflection;
 
 namespace SisNikosPizza.Utilidades;
 
-// Ya tienes esta clase, no necesitas modificarla
+
 public class ReportesPdf
 {
     public static byte[] FromList<T>(IEnumerable<T> data, string titulo = "Reporte")
@@ -38,13 +38,11 @@ public class ReportesPdf
         var propiedades = typeof(T).GetProperties();
         var table = new Table(propiedades.Length).UseAllAvailableWidth();
 
-        // Encabezados
         foreach (var prop in propiedades)
         {
             table.AddHeaderCell(new Cell().Add(new Paragraph(prop.Name).SetBold()));
         }
 
-        // Filas de datos
         foreach (var item in data)
         {
             foreach (var prop in propiedades)
@@ -70,50 +68,48 @@ public class ReportesPdf
         var fontBold = PdfFontFactory.CreateFont(StandardFonts.HELVETICA_BOLD);
         var fontRegular = PdfFontFactory.CreateFont(StandardFonts.HELVETICA);
 
-        // === CONTORNO DEL VOUCHER ===
+       
         var marco = new Table(1)
             .SetHorizontalAlignment(HorizontalAlignment.CENTER)
             .SetWidth(UnitValue.CreatePercentValue(90))
-            // .SetBorder(new DottedBorder(ColorConstants.BLACK, 1))
             .SetBorder(new DashedBorder(new DeviceRgb(209, 213, 219), 1f, 5f))
             .SetPadding(15);
 
-        // === CONTENEDOR INTERNO ===
+     
         var contenido = new Div().SetPadding(20);
 
-        // === TÍTULO ===
+     
         contenido.Add(new Paragraph("NIKOS PIZZA")
             .SetFont(fontBold)
             .SetFontSize(20)
             .SetTextAlignment(TextAlignment.CENTER)
             .SetFontColor(new DeviceRgb(67, 56, 202)));
 
-        // === SUBTÍTULO ===
+
         contenido.Add(new Paragraph("Boleta de Pago")
             .SetFont(fontRegular)
             .SetFontSize(11)
             .SetTextAlignment(TextAlignment.CENTER)
             .SetFontColor(new DeviceRgb(107, 114, 128)));
 
-        // === FECHA ===
+
         contenido.Add(new Paragraph($"Fecha: {boleta.Fecha.ToString("dd/MM/yyyy HH:mm")}")
             .SetFont(fontRegular)
             .SetFontSize(10.5f)
             .SetTextAlignment(TextAlignment.CENTER)
             .SetFontColor(new DeviceRgb(156, 163, 175)));
 
-        // === LÍNEA HORIZONTAL ===
-        var lineaGris = new SolidLine(0.5f); // grosor 0.5 puntos
-        lineaGris.SetColor(new DeviceRgb(229, 231, 235)); // aplica color gris
+        var lineaGris = new SolidLine(0.5f); 
+        lineaGris.SetColor(new DeviceRgb(229, 231, 235)); 
         contenido.Add(new LineSeparator(lineaGris).SetMarginTop(5));
 
-        // === DATOS CLIENTE ===
+       
         contenido.Add(GenerarTablaUsuario(boleta, fontRegular, fontBold));
 
-        // === LÍNEA HORIZONTAL ===
+       
         contenido.Add(new LineSeparator(lineaGris).SetMarginTop(5));
 
-        // === DETALLE DE PEDIDO ===
+        
         contenido.Add(new Paragraph("Detalle del Pedido:")
             .SetFont(fontBold)
             .SetFontSize(12)
@@ -122,7 +118,7 @@ public class ReportesPdf
 
         contenido.Add(GenerarTablaDetallePedido(boleta, fontRegular));
 
-        // === TOTAL FINAL (fuente 16, color verde, negrita) ===
+   
         var tablaTotal = new Table(UnitValue.CreatePercentArray(new float[] { 1, 1 }))
             .UseAllAvailableWidth();
 
@@ -140,7 +136,7 @@ public class ReportesPdf
 
         contenido.Add(tablaTotal);
 
-        // === MÉTODO DE ENTREGA (gris, tamaño 11, negrita) ===
+      
         var tablaMetodo = new Table(UnitValue.CreatePercentArray(new float[] { 1, 1 }))
             .UseAllAvailableWidth();
 
@@ -158,7 +154,6 @@ public class ReportesPdf
 
         contenido.Add(tablaMetodo);
 
-        // === Añadir todo dentro del marco ===
         marco.AddCell(new Cell().Add(contenido)
             .SetBorder(Border.NO_BORDER));
         doc.Add(marco);
@@ -191,7 +186,6 @@ public class ReportesPdf
     {
         var tabla = new Table(UnitValue.CreatePercentArray(new float[] { 1, 3, 2 }))
             .UseAllAvailableWidth();
-        // .SetMarginTop(10);
 
         var detalleList = datos.DetallesPedido.ToList();
 
@@ -199,7 +193,6 @@ public class ReportesPdf
         {
             var item = detalleList[i];
             bool esUltima = i == detalleList.Count - 1;
-            // Border bordeInferior = esUltima ? Border.NO_BORDER : new DottedBorder(1f);
             Border bordeInferior = esUltima ? Border.NO_BORDER : new DottedBorder(new DeviceRgb(229, 231, 235), 1f);
 
 

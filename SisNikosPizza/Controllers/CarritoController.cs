@@ -21,8 +21,6 @@ namespace SisNikosPizza.Controllers
         [HttpGet]
         public async Task<IActionResult> Index()
         {
-            // var carritoItems = await _unitWork.CarritoItemsRepo.ObtenerTodosAsync(ordenarPor: c => c.OrderByDescending(c => c.ProductoId), incluirPropiedades: "Producto");
-            // return View(carritoItems);
 
             var user = await _userManager.GetUserAsync(User);
             if (user == null) return RedirectToAction("Login", "Account");
@@ -47,30 +45,24 @@ namespace SisNikosPizza.Controllers
             return Json(totalItems);
         }
 
-        // crear un registro en el carrito
         [HttpPost]
         public async Task<IActionResult> Create(CarritoItems carritoItems)
         {
             if (!ModelState.IsValid)
                 return Content("error:Datos no válidos");
 
-            // 1. Obtener el producto desde la BD
             var producto = await _unitWork.ProductoRepo.ObtenerAsync(carritoItems.ProductoId);
             if (producto == null)
                 return Content("error:Producto no encontrado");
 
-            // 2. Verificar stock suficiente
             if (producto.Stock < carritoItems.Cantidad)
                 return Content("error:Stock insuficiente");
 
-            // 3. Descontar stock
             producto.Stock -= carritoItems.Cantidad;
             _unitWork.ProductoRepo.Actualizar(producto);
 
-            // 4. Calcular precio total
             carritoItems.PrecioTotal = carritoItems.PrecioUnitario * carritoItems.Cantidad;
 
-            // 5. Guardar el item en el carrito
             await _unitWork.CarritoItemsRepo.AgregarAsync(carritoItems);
             await _unitWork.GuardarAsync();
 

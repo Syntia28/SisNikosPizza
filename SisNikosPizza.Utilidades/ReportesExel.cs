@@ -6,7 +6,6 @@ using System.Reflection;
 
 namespace SisNikosPizza.Utilidades;
 
-// Ya tienes esta clase, no necesitas modificarla
 public class ReportesExel
 {
     public static byte[] FromList<T>(IEnumerable<T> data, string sheetName = "Reporte")

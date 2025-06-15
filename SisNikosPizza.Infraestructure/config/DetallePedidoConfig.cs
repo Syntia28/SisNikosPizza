@@ -8,10 +8,8 @@ public class DetallePedidoConfig : IEntityTypeConfiguration<DetallePedido>
 {
     public void Configure(EntityTypeBuilder<DetallePedido> builder)
     {
-        // Tabla
         builder.ToTable("detallePedido");
 
-        // Clave primaria
         builder.HasKey(dp => dp.DetallePedidoId);
 
         builder.Property(dp => dp.PedidoId)

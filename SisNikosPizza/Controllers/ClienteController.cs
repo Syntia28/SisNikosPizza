@@ -26,7 +26,6 @@ namespace SisNikosPizza.Controllers
         {
             var usersInRole = new List<IdentityUser>();
 
-            // Filtrar usuarios que tienen el rol "UserClient"
             foreach (var user in _userManager.Users.ToList())
             {
                 if (await _userManager.IsInRoleAsync(user, VCG.Role_Usuario))
@@ -35,11 +34,9 @@ namespace SisNikosPizza.Controllers
                 }
             }
 
-            // Pasar los usuarios filtrados a la vista
             return View(usersInRole);
         }
 
-        // GET: Cliente/Details/5
         public async Task<IActionResult> Details(string id)
         {
             if (id == null)
@@ -54,10 +51,9 @@ namespace SisNikosPizza.Controllers
                 return RedirectToAction(nameof(Index));
             }
 
-            return View(user); // Necesitarás crear una vista Details.cshtml
+            return View(user); 
         }
 
-        // GET: Cliente/Edit/5
         public async Task<IActionResult> Edit(string id)
         {
             if (id == null)
@@ -80,10 +76,9 @@ namespace SisNikosPizza.Controllers
                 PhoneNumber = user.PhoneNumber
             };
 
-            return View(model); // Necesitarás crear una vista Edit.cshtml
+            return View(model); 
         }
 
-        // POST: Cliente/Edit/5
         [HttpPost]
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> Edit(EditUserViewModel model)
@@ -100,11 +95,6 @@ namespace SisNikosPizza.Controllers
                 user.UserName = model.UserName;
                 user.Email = model.Email;
                 user.PhoneNumber = model.PhoneNumber;
-                // Identity normaliza el UserName y Email a mayúsculas por defecto.
-                // Si quieres evitar que se cambie el email a mayúsculas al actualizar,
-                // puedes considerar no actualizar user.NormalizedEmail o user.NormalizedUserName
-                // o manejarlo según la configuración de tu Identity.
-                // Por simplicidad, aquí se actualizan directamente.
 
                 var result = await _userManager.UpdateAsync(user);
                 if (result.Succeeded)
@@ -118,10 +108,9 @@ namespace SisNikosPizza.Controllers
                     ModelState.AddModelError(string.Empty, error.Description);
                 }
             }
-            return View(model); // Retorna a la vista de edición si hay errores
+            return View(model); 
         }
 
-        // GET: Cliente/Delete/5
         public async Task<IActionResult> Delete(string id)
         {
             if (id == null)
@@ -136,10 +125,9 @@ namespace SisNikosPizza.Controllers
                 return RedirectToAction(nameof(Index));
             }
 
-            return View(user); // Necesitarás crear una vista Delete.cshtml para confirmación
+            return View(user); 
         }
 
-        // POST: Cliente/Delete/5
         [HttpPost, ActionName("Delete")]
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> DeleteConfirmed(string id)
@@ -159,7 +147,6 @@ namespace SisNikosPizza.Controllers
             }
 
             TempData["Error"] = "Error al eliminar el usuario.";
-            // Podrías querer loguear los errores: result.Errors
             return RedirectToAction(nameof(Index));
         }
     }

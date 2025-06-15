@@ -176,10 +176,8 @@
                     <div class="card-content">
                         <div class="relative">
                             @{
-                                // Get the first DetallePedido and its associated Producto
                                 var firstDetalle = item.Detalles.FirstOrDefault();
                                 string imageUrl = firstDetalle?.Producto?.ImagenUrl;
-                                // Adjust the path if images are stored in wwwroot (e.g., prepend "/images/")
                                 if (!string.IsNullOrEmpty(imageUrl) && !imageUrl.StartsWith("http"))
                                 {
                                     imageUrl = $"/images/{imageUrl}";

@@ -8,13 +8,10 @@ public class ProductoInsumoConfig : IEntityTypeConfiguration<ProductoInsumo>
 {
     public void Configure(EntityTypeBuilder<ProductoInsumo> builder)
     {
-        // Tabla
         builder.ToTable("ProductoInsumo");
 
-        // Clave primaria
         builder.HasKey(pi => pi.ProductoInsumoId);
 
-        // Propiedades
         builder.Property(pi => pi.ProductoId)
             .IsRequired();
 

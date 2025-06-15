@@ -14,19 +14,17 @@ namespace SisNikosPizza.Utilidades
     {
         public static bool EnviarCorreo(string correo, string asunto, string mensaje)
         {
-            string myEmail = "syntiaquiroz817@gmail.com";//tu correo
-            string MyPassword = "ekpgyyzyineuckkp";//tu contraseña generada de aplicacion
-            string MyAlias = "NikosPizza";//tu alias que deseas que aparezca cuando reciban tu correo
+            string myEmail = "syntiaquiroz817@gmail.com";
+            string MyPassword = "ekpgyyzyineuckkp";
+            string MyAlias = "NikosPizza";
             MailMessage mCorreo;
-            //creacion del cuerpo
             mCorreo = new MailMessage();
             mCorreo.From = new MailAddress(myEmail, MyAlias);
-            mCorreo.To.Add(correo); //correo del destinatario
-            mCorreo.Subject = asunto;//asunto
-            mCorreo.Body = mensaje; //contenido del mensaje
+            mCorreo.To.Add(correo); 
+            mCorreo.Subject = asunto;
+            mCorreo.Body = mensaje; 
             mCorreo.IsBodyHtml = true;
             mCorreo.Priority = MailPriority.High;
-            //enviar correo
             try
             {
                 SmtpClient smtp = new SmtpClient();
@@ -37,13 +35,11 @@ namespace SisNikosPizza.Utilidades
                 smtp.Credentials = new NetworkCredential(myEmail, MyPassword);
                 ServicePointManager.ServerCertificateValidationCallback = delegate (object s, X509Certificate certificate, X509Chain chain, SslPolicyErrors sslPolicyErrors) { return true; };
                 smtp.Send(mCorreo);
-                //MessageBox.Show("Correo enviado correctamente.");
-                return true; // Correo enviado con éxito
+                return true; 
             }
             catch (Exception)
             {
-                //MessageBox.Show("Error al enviar correo: " + ex.Message);
-                return false; // Error al enviar el correo
+                return false; 
             }
         }
     }

@@ -21,7 +21,6 @@ public class DbInitialize : IDbInitialize
     {
         try
         {
-            //if(_context.Database.GetPendingMigrations().Count() > 0)
             if (_context.Database.GetPendingMigrations().Any())
             {
                 _context.Database.Migrate();

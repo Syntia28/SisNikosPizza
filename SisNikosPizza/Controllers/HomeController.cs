@@ -22,7 +22,6 @@ namespace SisNikosPizza.Controllers
         {
             var productos = await _unitWork.ProductoRepo.ObtenerTodosAsync(ordenarPor: c => c.OrderByDescending(c => c.ProductoId));
 
-            // Construir la URL completa para cada producto
             string baseUrl = $"{Request.Scheme}://{Request.Host}/images";
             foreach (var producto in productos)
             {
