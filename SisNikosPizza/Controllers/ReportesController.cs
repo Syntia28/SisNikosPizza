@@ -77,7 +77,6 @@ public class ReportesController : Controller
     [HttpPost]
     public async Task<IActionResult> ExportarBoleta(int id)
     {
-        Console.WriteLine($"id recibido en la solicitud: {id}");
         var detalle = await _unitWork.DetallesPedidoRepo.GetDetallesByPedidoIdAsync(id);
 
         var detallesUsuario = new List<VMDDetallesUsuaio>
