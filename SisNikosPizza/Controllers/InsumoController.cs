@@ -68,16 +68,6 @@ namespace SisNikosPizza.Controllers
                     TempData["Error"] = $"Ocurrió un error al guardar el insumo: {ex.Message}";
                 }
             }
-            else
-            {
-                foreach (var modelState in ModelState.Values)
-                {
-                    foreach (var error in modelState.Errors)
-                    {
-                        Console.WriteLine($"Error de validación: {error.ErrorMessage}");
-                    }
-                }
-            }
 
             var proveedoresReload = await _unitWork.ProveedorRepo.ObtenerTodosAsync();
             ViewBag.Proveedores = new SelectList(proveedoresReload, "ProveedorId", "Nombre", insumo.ProveedorId);

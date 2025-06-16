@@ -176,9 +176,7 @@
     <partial name="_ValidationScriptsPartial" />
 
     <script>
-        console.log("Iniciando script...");
         let contador = @((Model.InsumosSeleccionados?.Count ?? 0));
-        console.log("Contador inicial: " + contador);
 
         function agregarFila() {
             const insumoSelect = document.getElementById('ddlInsumos');
