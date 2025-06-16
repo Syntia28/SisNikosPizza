@@ -16,6 +16,15 @@ namespace SisNikosPizza.Controllers
         private readonly UserManager<IdentityUser> _userManager;
         private readonly RoleManager<IdentityRole> _roleManager;
 
+        private const string TempDataErrorKey = "Error";
+        private const string TempDataSuccessKey = "Satisfactorio";
+
+        private const string UsuarioNoEncontradoMsg = "Usuario no encontrado o no pertenece al rol esperado.";
+        private const string UsuarioNoEliminadoMsg = "Usuario no encontrado o no se pudo eliminar.";
+        private const string UsuarioEliminadoMsg = "Usuario eliminado correctamente.";
+        private const string UsuarioActualizadoMsg = "Usuario actualizado correctamente.";
+        private const string ErrorAlEliminarMsg = "Error al eliminar el usuario.";
+
         public ClienteController(UserManager<IdentityUser> userManager, RoleManager<IdentityRole> roleManager)
         {
             _userManager = userManager;
@@ -47,11 +56,11 @@ namespace SisNikosPizza.Controllers
             var user = await _userManager.FindByIdAsync(id);
             if (user == null || !await _userManager.IsInRoleAsync(user, VCG.Role_Usuario))
             {
-                TempData["Error"] = "Usuario no encontrado o no pertenece al rol esperado.";
+                TempData[TempDataErrorKey] = UsuarioNoEncontradoMsg;
                 return RedirectToAction(nameof(Index));
             }
 
-            return View(user); 
+            return View(user);
         }
 
         public async Task<IActionResult> Edit(string id)
@@ -64,7 +73,7 @@ namespace SisNikosPizza.Controllers
             var user = await _userManager.FindByIdAsync(id);
             if (user == null || !await _userManager.IsInRoleAsync(user, VCG.Role_Usuario))
             {
-                TempData["Error"] = "Usuario no encontrado o no pertenece al rol esperado.";
+                TempData[TempDataErrorKey] = UsuarioNoEncontradoMsg;
                 return RedirectToAction(nameof(Index));
             }
 
@@ -76,7 +85,7 @@ namespace SisNikosPizza.Controllers
                 PhoneNumber = user.PhoneNumber
             };
 
-            return View(model); 
+            return View(model);
         }
 
         [HttpPost]
@@ -88,7 +97,7 @@ namespace SisNikosPizza.Controllers
                 var user = await _userManager.FindByIdAsync(model.Id);
                 if (user == null || !await _userManager.IsInRoleAsync(user, VCG.Role_Usuario))
                 {
-                    TempData["Error"] = "Usuario no encontrado o no pertenece al rol esperado.";
+                    TempData[TempDataErrorKey] = UsuarioNoEncontradoMsg;
                     return RedirectToAction(nameof(Index));
                 }
 
@@ -99,7 +108,7 @@ namespace SisNikosPizza.Controllers
                 var result = await _userManager.UpdateAsync(user);
                 if (result.Succeeded)
                 {
-                    TempData["Satisfactorio"] = "Usuario actualizado correctamente.";
+                    TempData[TempDataSuccessKey] = UsuarioActualizadoMsg;
                     return RedirectToAction(nameof(Index));
                 }
 
@@ -108,7 +117,7 @@ namespace SisNikosPizza.Controllers
                     ModelState.AddModelError(string.Empty, error.Description);
                 }
             }
-            return View(model); 
+            return View(model);
         }
 
         public async Task<IActionResult> Delete(string id)
@@ -121,11 +130,11 @@ namespace SisNikosPizza.Controllers
             var user = await _userManager.FindByIdAsync(id);
             if (user == null || !await _userManager.IsInRoleAsync(user, VCG.Role_Usuario))
             {
-                TempData["Error"] = "Usuario no encontrado o no pertenece al rol esperado.";
+                TempData[TempDataErrorKey] = UsuarioNoEncontradoMsg;
                 return RedirectToAction(nameof(Index));
             }
 
-            return View(user); 
+            return View(user);
         }
 
         [HttpPost, ActionName("Delete")]
@@ -135,18 +144,18 @@ namespace SisNikosPizza.Controllers
             var user = await _userManager.FindByIdAsync(id);
             if (user == null || !await _userManager.IsInRoleAsync(user, VCG.Role_Usuario))
             {
-                TempData["Error"] = "Usuario no encontrado o no se pudo eliminar.";
+                TempData[TempDataErrorKey] = UsuarioNoEliminadoMsg;
                 return RedirectToAction(nameof(Index));
             }
 
             var result = await _userManager.DeleteAsync(user);
             if (result.Succeeded)
             {
-                TempData["Satisfactorio"] = "Usuario eliminado correctamente.";
+                TempData[TempDataSuccessKey] = UsuarioEliminadoMsg;
                 return RedirectToAction(nameof(Index));
             }
 
-            TempData["Error"] = "Error al eliminar el usuario.";
+            TempData[TempDataErrorKey] = ErrorAlEliminarMsg;
             return RedirectToAction(nameof(Index));
         }
     }
