@@ -7,73 +7,78 @@
 <ul class="navbar-nav">
     @if (SignInManager.IsSignedIn(User))
     {
-        <div class="nav">
-            <div class="sb-sidenav-menu-heading">Core</div>
+        <li class="nav-item sb-sidenav-menu-heading" role="presentation">Core</li>
+        <li class="nav-item">
             <a class="nav-link" asp-controller="Carta" asp-action="Index">
-                <div class="sb-nav-link-icon">
-                    <i class="fas fa-pizza-slice"></i>
-                </div>
+                <i class="fas fa-pizza-slice sb-nav-link-icon"></i>
                 Pizzas
             </a>
-
-            @if (User.IsInRole(VCG.Role_Admin) || User.IsInRole(VCG.Role_Delivery)){
+        </li>
+        @if (User.IsInRole(VCG.Role_Admin) || User.IsInRole(VCG.Role_Delivery))
+        {
+            <li class="nav-item">
                 <a class="nav-link" asp-controller="Pedidos" asp-action="Delivery">
-                    <div class="sb-nav-link-icon">
-                        <i class="fas fa-motorcycle"></i>
-                    </div>
+                    <i class="fas fa-motorcycle sb-nav-link-icon"></i>
                     Delivery
                 </a>
-            }
-
-            @if (User.IsInRole(VCG.Role_Admin)) 
-            {
-
+            </li>
+        }
+        @if (User.IsInRole(VCG.Role_Admin))
+        {
+            <li class="nav-item">
                 <a class="nav-link" asp-controller="Pedidos" asp-action="Index">
-                    <div class="sb-nav-link-icon">
-                        <i class="fas fa-tachometer-alt"></i>
-                    </div>
+                    <i class="fas fa-tachometer-alt sb-nav-link-icon"></i>
                     Pedidos
                 </a>
-
-                <div class="sb-sidenav-menu-heading">Gestión</div>
+            </li>
+            <li class="nav-item sb-sidenav-menu-heading" role="presentation">Gestión</li>
+            <li class="nav-item">
                 <a class="nav-link" asp-controller="Cliente" asp-action="Index">
-                    <div class="sb-nav-link-icon"><i class="fas fa-user"></i></div>
+                    <i class="fas fa-user sb-nav-link-icon"></i>
                     Clientes
                 </a>
+            </li>
+            <li class="nav-item">
                 <a class="nav-link" asp-controller="Proveedor" asp-action="Index">
-                    <div class="sb-nav-link-icon"><i class="fas fa-truck"></i></div>
+                    <i class="fas fa-truck sb-nav-link-icon"></i>
                     Proveedores
                 </a>
+            </li>
+            <li class="nav-item">
                 <a class="nav-link" asp-controller="Producto" asp-action="Index">
-                    <div class="sb-nav-link-icon"><i class="fas fa-box"></i></div>
+                    <i class="fas fa-box sb-nav-link-icon"></i>
                     Productos
                 </a>
+            </li>
+            <li class="nav-item">
                 <a class="nav-link" asp-controller="Insumo" asp-action="Index">
-                    <div class="sb-nav-link-icon"><i class="fas fa-box"></i></div>
+                    <i class="fas fa-box sb-nav-link-icon"></i>
                     Insumos
                 </a>
+            </li>
+            <li class="nav-item">
                 <a class="nav-link" asp-controller="Categoria" asp-action="Index">
-                    <div class="sb-nav-link-icon"><i class="fas fa-tags"></i></div>
+                    <i class="fas fa-tags sb-nav-link-icon"></i>
                     Categorías
                 </a>
-
-                <div class="sb-sidenav-menu-heading">Addons</div>
+            </li>
+            <li class="nav-item sb-sidenav-menu-heading" role="presentation">Addons</li>
+            <li class="nav-item">
                 <a class="nav-link" asp-controller="Ventas" asp-action="Index">
-                    <div class="sb-nav-link-icon"><i class="fas fa-shopping-cart"></i></div>
+                    <i class="fas fa-shopping-cart sb-nav-link-icon"></i>
                     Ventas
-                    </a>
-              
-            }
-        </div>
+                </a>
+            </li>
+        }
     }
     else
     {
-        <div class="nav">
-            <div class="sb-sidenav-menu-heading">Core</div>
+        <li class="nav-item sb-sidenav-menu-heading" role="presentation">Core</li>
+        <li class="nav-item">
             <a class="nav-link" asp-controller="Carta" asp-action="Index">
-                <div class="sb-nav-link-icon"><i class="fas fa-tachometer-alt"></i></div>
+                <i class="fas fa-pizza-slice sb-nav-link-icon"></i>
                 Pizzas
             </a>
-        </div>
+        </li>
     }
 </ul>

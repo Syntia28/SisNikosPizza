@@ -64,7 +64,7 @@
     }
 
     .btn-primary {
-        background-color: #d35400 !important;
+        background-color: #b84300 !important;
         border: none;
     }
 
@@ -110,10 +110,19 @@
 <script>
     document.addEventListener('DOMContentLoaded', function () {
         fetch('/Carrito/Total')
-            .then(response => response.json())
-            .then(data => {
-                document.getElementById('cart-total').textContent = data;
+            .then(response => {
+                if (!response.ok) return null;
+                return response.json();
             })
-            .catch(error => console.error('Error al cargar la cantidad total:', error));
+            .then(data => {
+                const cartTotalElement = document.getElementById('cart-total');
+                if (cartTotalElement && data != null) {
+                    cartTotalElement.textContent = data;
+                }
+            })
+            .catch(() => {
+                // Silenciar el error sin mostrar nada en consola
+            });
     });
 </script>
+
