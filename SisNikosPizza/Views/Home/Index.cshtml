@@ -1,573 +1,144 @@
 ﻿@model IEnumerable<SisNikosPizza.Domain.Models.Producto>
+
 @{
-    ViewData["Title"] = "Bienvenido";
+    ViewData["Title"] = "Bienvenido - Nikos Pizza";
+    ViewData["Description"] = "Descubre las mejores pizzas artesanales de Nikos Pizza. Ingredientes frescos y auténtico sabor italiano.";
     Layout = "~/Views/Shared/_Admin.cshtml";
 }
 
-<link href="https://cdn.jsdelivr.net/npm/aos@2.3.4/dist/aos.css" rel="stylesheet" />
+@section Styles {
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link rel="preconnect" href="https://cdn.jsdelivr.net">
 
-<div class="hero-nikos">
-    <div class="hero-bg"></div>
-    <div class="hero-glass" data-aos="zoom-in" data-aos-duration="1200">
-        <img src="/Imagenes/logo.png" alt="Nikos Pizza Logo" class="logo-hero-nikos" data-aos="flip-left"
-            data-aos-delay="300" />
-        <h1 class="hero-title-nikos animated-gradient" data-aos="fade-down" data-aos-delay="500">
-            <span class="bienvenida-letras">¡Bienvenido a Nikos Pizza!</span>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@700;800;900&family=Roboto:wght@400;500&display=swap" rel="stylesheet">
+
+    <!-- Corregido: preload con @Url.Content -->
+    <link rel="preload" as="image" href="@Url.Content("~/Imagenes/logo.webp")" type="image/webp">
+    <!-- Este preload es opcional, solo si se usa como <img> -->
+    <link rel="preload" as="image" href="@Url.Content("~/Imagenes/register.webp")" type="image/webp">
+
+    <link rel="stylesheet" href="@Url.Content("~/css/home.css")" />
+}
+
+<!-- Hero Section -->
+<section class="hero-nikos" aria-labelledby="hero-title">
+    <div class="hero-bg" role="img" aria-label="Imagen de fondo con pizzas"></div>
+    <div class="hero-glass">
+        <img src="@Url.Content("~/Imagenes/logo.webp")"
+             alt="Logo de Nikos Pizza"
+             class="logo-hero-nikos"
+             width="120"
+             height="120"
+             loading="eager">
+        <h1 id="hero-title" class="hero-title-nikos">
+            <span class="animated-gradient bienvenida-letras">¡Bienvenido a Nikos Pizza!</span>
         </h1>
-        <p class="hero-subtitle-nikos" data-aos="fade-up" data-aos-delay="700">
-            Donde cada mordida es una fiesta de sabor 🍕✨<br>
+        <p class="hero-subtitle-nikos">
+            Donde cada mordida es una fiesta de sabor 🍕✨
             <span class="hero-frase">¡Déjate sorprender por la mejor pizza artesanal!</span>
         </p>
-        <a href="#pizzas" class="btn-hero-nikos glow-btn" data-aos="fade-up" data-aos-delay="900">
+        <a href="#pizzas" class="btn btn--primary" aria-describedby="hero-cta-description">
             Ver nuestras pizzas
         </a>
+        <div id="hero-cta-description" class="sr-only">
+            Navegar a la sección de pizzas disponibles
+        </div>
     </div>
-</div>
+</section>
 
-<section class="bienvenida-nikos" data-aos="fade-up" data-aos-duration="1200">
-    <h2 class="bienvenida-titulo">¡La pizza más deliciosa de la ciudad te espera!</h2>
+<!-- Welcome Section -->
+<section class="bienvenida-nikos" aria-labelledby="welcome-title">
+    <h2 id="welcome-title" class="bienvenida-titulo">
+        ¡La pizza más deliciosa de la ciudad te espera!
+    </h2>
     <p>
-        Descubre nuestras recetas artesanales, ingredientes frescos y el auténtico sabor italiano en cada porción.<br>
-        <span class="emoji">🍕❤️</span> ¡Haz de tu día una fiesta con Nikos Pizza! <span class="emoji">🎉</span>
+        Descubre nuestras recetas artesanales, ingredientes frescos y el auténtico sabor italiano en cada porción.
+        <span class="emoji" aria-label="pizza">🍕</span>
+        <span class="emoji" aria-label="corazón">❤️</span>
+        ¡Haz de tu día una fiesta con Nikos Pizza!
+        <span class="emoji" aria-label="celebración">🎉</span>
     </p>
 </section>
 
-<section id="pizzas" class="pizzas-section-nikos">
-    <h2 class="section-title-nikos" data-aos="fade-down" data-aos-duration="1000">
-        Nuestras Pizzas Estrella
-    </h2>
+<!-- Pizzas Section -->
+<section id="pizzas" class="pizzas-section-nikos" aria-labelledby="pizzas-title">
+    <h2 id="pizzas-title" class="section-title-nikos">Nuestras Pizzas Estrella</h2>
     <div class="pizzas-grid-nikos">
-        <div class="pizza-card-nikos" data-aos="flip-left" data-aos-delay="100">
+        <article class="pizza-card-nikos" tabindex="0" role="button" aria-label="Pizza Niko's - La favorita de la casa" data-pizza="nikos">
             <div class="pizza-img-wrap">
-                <img src="/Imagenes/nikos.jpg" alt="Niko's" />
-                <div class="pizza-badge">⭐</div>
+                <img src="@Url.Content("~/Imagenes/nikos.webp")"
+                     alt="Pizza Niko's con ingredientes especiales de la casa"
+                     width="280" height="200" loading="lazy">
+                <div class="pizza-badge" aria-label="Pizza destacada">⭐</div>
             </div>
             <div class="pizza-info-nikos">
                 <h3>NIKO'S</h3>
                 <p>La favorita de la casa, ¡pruébala!</p>
             </div>
-        </div>
-        <div class="pizza-card-nikos" data-aos="flip-left" data-aos-delay="200">
+        </article>
+
+        <article class="pizza-card-nikos" tabindex="0" role="button" aria-label="Pizza Pepperoni - Clásica e irresistible" data-pizza="pepperoni">
             <div class="pizza-img-wrap">
-                <img src="/Imagenes/pepenori.jpg" alt="Peperoni" />
-                <div class="pizza-badge">🔥</div>
+                <img src="@Url.Content("~/Imagenes/pepenori.webp")"
+                     alt="Pizza Pepperoni con deliciosas rodajas de pepperoni"
+                     width="280" height="200" loading="lazy">
+                <div class="pizza-badge" aria-label="Pizza picante">🔥</div>
             </div>
             <div class="pizza-info-nikos">
-                <h3>PEPERONI</h3>
+                <h3>PEPPERONI</h3>
                 <p>Clásica, irresistible y siempre deliciosa.</p>
             </div>
-        </div>
-        <div class="pizza-card-nikos" data-aos="flip-left" data-aos-delay="300">
+        </article>
+
+        <article class="pizza-card-nikos" tabindex="0" role="button" aria-label="Pizza Frutas - Explosión de sabores tropicales" data-pizza="frutas">
             <div class="pizza-img-wrap">
-                <img src="/Imagenes/frutas.jpg" alt="Frutas" />
-                <div class="pizza-badge">🍍</div>
+                <img src="@Url.Content("~/Imagenes/frutas.webp")"
+                     alt="Pizza con frutas tropicales frescas"
+                     width="280" height="200" loading="lazy">
+                <div class="pizza-badge" aria-label="Pizza tropical">🍍</div>
             </div>
             <div class="pizza-info-nikos">
                 <h3>FRUTAS</h3>
                 <p>Una explosión de sabores tropicales.</p>
             </div>
-        </div>
-        <div class="pizza-card-nikos" data-aos="flip-left" data-aos-delay="400">
+        </article>
+
+        <article class="pizza-card-nikos" tabindex="0" role="button" aria-label="Pizza Española - Sabores auténticos" data-pizza="espanola">
             <div class="pizza-img-wrap">
-                <img src="/Imagenes/española.jpg" alt="Española" />
-                <div class="pizza-badge">🇪🇸</div>
+                <img src="@Url.Content("~/Imagenes/espanola.webp")"
+                     alt="Pizza Española con ingredientes tradicionales"
+                     width="280" height="200" loading="lazy">
+                <div class="pizza-badge" aria-label="Pizza española">🇪🇸</div>
             </div>
             <div class="pizza-info-nikos">
                 <h3>ESPAÑOLA</h3>
                 <p>Sabores intensos y auténticos.</p>
             </div>
-        </div>
-        <div class="pizza-card-nikos" data-aos="flip-left" data-aos-delay="500">
+        </article>
+
+        <article class="pizza-card-nikos" tabindex="0" role="button" aria-label="Pizza Hawaiana - Perfecta combinación dulce y salado" data-pizza="hawaiana">
             <div class="pizza-img-wrap">
-                <img src="/Imagenes/hawaina.jpg" alt="Hawaina" />
-                <div class="pizza-badge">🌺</div>
+                <img src="@Url.Content("~/Imagenes/hawaina.webp")"
+                     alt="Pizza Hawaiana con piña y jamón"
+                     width="280" height="200" loading="lazy">
+                <div class="pizza-badge" aria-label="Pizza hawaiana">🌺</div>
             </div>
             <div class="pizza-info-nikos">
-                <h3>HAWAINA</h3>
+                <h3>HAWAIANA</h3>
                 <p>La combinación perfecta de dulce y salado.</p>
             </div>
-        </div>
+        </article>
     </div>
 </section>
 
-<a href="/Carta" class="cta-float-nikos pulse-glow" data-aos="zoom-in-up" data-aos-delay="1200">
+<!-- CTA Flotante -->
+<a href="@Url.Action("Index", "Carta")"
+   class="cta-float-nikos"
+   aria-label="Ir a la carta para realizar pedido">
     <span>¡Haz tu pedido ahora!</span>
 </a>
 
-<script src="https://cdn.jsdelivr.net/npm/aos@2.3.4/dist/aos.js"></script>
-<script>
-    AOS.init({
-        once: false,
-        duration: 1200,
-        offset: 80
-    });
-    document.addEventListener("DOMContentLoaded", function () {
-        const letras = document.querySelector('.bienvenida-letras');
-        if (letras) {
-            letras.classList.add('letras-animadas');
-        }
-    });
-</script>
-
-<style>
-    .hero-nikos {
-        position: relative;
-        height: 80vh;
-        min-height: 420px;
-        display: flex;
-        align-items: center;
-        justify-content: center;
-        overflow: hidden;
-    }
-
-    .hero-bg {
-        position: absolute;
-        width: 100%;
-        height: 100%;
-        background: url('/Imagenes/register.png') center center/cover no-repeat;
-        z-index: 1;
-    }
-    .hero-bg::before {
-        content: "";
-        position: absolute;
-        top: 0;
-        left: 0;
-        width: 100%;
-        height: 100%;
-        background: rgba(0, 0, 0, 0.8);
-        animation: bgMove 10s linear infinite;
-    }
-
-    @@keyframes bgMove {
-        0% {
-            background-position: 0% 50%;
-        }
-
-        100% {
-            background-position: 100% 50%;
-        }
-    }
-
-    .hero-glass {
-        position: relative;
-        z-index: 2;
-        border-radius: 40px;
-        padding: 3rem 4rem;
-        text-align: center;
-        border: none;
-        animation: fadeInDown 1.2s;
-    }
-
-    .logo-hero-nikos {
-        width: 120px;
-        height: 120px;
-        border-radius: 50%;
-        background: #fff;
-        box-shadow: 0 4px 24px #ffe259aa;
-        margin-bottom: 1.2rem;
-        border: 5px solid #ffe259;
-        animation: popIn 1.2s;
-        object-fit: cover;  
-    }
-
-    .hero-title-nikos {
-        font-size: 3.5rem;
-        font-family: 'Poppins', sans-serif;
-        font-weight: 900;
-        letter-spacing: 2px;
-        color: #fff;
-        text-shadow: 0 6px 24px rgba(0, 0, 0, 0.365), 0 1px 0 #ffffff;
-        margin-bottom: 0.7rem;
-    }
-
-    .animated-gradient {
-        background: linear-gradient(90deg, #ffe259 0%, #ffa751 50%, #ff7300 100%);
-        -webkit-background-clip: text;
-        -webkit-text-fill-color: transparent;
-        background-clip: text;
-    }
-
-    .letras-animadas {
-        display: inline-block;
-        animation: letrasEntrada 1.6s cubic-bezier(.68, -0.55, .27, 1.55);
-    }
-
-    @@keyframes letrasEntrada {
-        0% {
-            opacity: 0;
-            transform: scale(0.7) translateY(-40px);
-        }
-
-        80% {
-            opacity: 1;
-            transform: scale(1.1) translateY(10px);
-        }
-
-        100% {
-            opacity: 1;
-            transform: scale(1) translateY(0);
-        }
-    }
-
-    .hero-subtitle-nikos {
-        font-size: 1.5rem;
-        font-family: 'Roboto', sans-serif;
-        margin-bottom: 2rem;
-        color: #fffbe6;
-        text-shadow: 0 2px 8px #0007;
-    }
-
-    .hero-frase {
-        display: block;
-        font-size: 1.1rem;
-        color: #cc6600;
-        margin-top: 0.7rem;
-        font-style: italic;
-        letter-spacing: 1px;
-    }
-
-    .btn-hero-nikos {
-        background: linear-gradient(90deg, #ff6f00 0%, #ffa600 100%);
-        color: #ffffff;
-        font-weight: bold;
-        padding: 1rem 2.7rem;
-        border-radius: 0px 0px 30px 30px;
-        font-size: 1.3rem;
-        text-decoration: none;
-        box-shadow: 0 0px 34px #ffffff80, 0 2px 8px #ffffff60;
-        transition: transform 0.3s ease-in-out, box-shadow 0.3s ease-in-out, border-radius 3s ease-in-out;
-        border: none;
-        outline: none;
-        display: inline-block;
-        position: relative;
-        overflow: hidden;
-    }
-
-    .btn-hero-nikos.glow-btn::after {
-        content: "";
-        position: absolute;
-        left: -50%;
-        top: -50%;
-        width: 200%;
-        height: 200%;
-        opacity: 0.18;
-        z-index: 0;
-        animation: btnGlow 2.5s infinite alternate;
-    }
-
-    @@keyframes btnGlow {
-        0% {
-            opacity: 0.18;
-        }
-
-        100% {
-            opacity: 0.32;
-        }
-    }
-
-    .btn-hero-nikos:hover {
-        color: #fff;
-        transform: scale(1.07);
-        box-shadow: 0 0px 34px #88ff0080, 0 2px 8px #3cff0060;
-    }
-
-    .pizza-decor {
-        position: absolute;
-        opacity: 0.10;
-        border-radius: 50%;
-        z-index: 0;
-        filter: blur(2px);
-        background-size: cover;
-        background-repeat: no-repeat;
-    }
-
-    .bienvenida-nikos {
-        background: #fffbe6;
-        text-align: center;
-        padding: 2.5rem 1rem 1.5rem 1rem;
-        margin-top: -2rem;
-        border-radius: 0;
-        box-shadow: 0 8px 32px #ffa75120;
-        position: relative;
-        z-index: 2;
-        border: none;
-    }
-
-    .bienvenida-titulo {
-        font-size: 2.1rem;
-        color: #ff7300;
-        font-family: 'Poppins', sans-serif;
-        margin-bottom: 1rem;
-        font-weight: 700;
-        letter-spacing: 1px;
-    }
-
-    .bienvenida-nikos p {
-        color: #444;
-        font-size: 1.2rem;
-        font-family: 'Roboto', sans-serif;
-    }
-
-    .emoji {
-        font-size: 1.5rem;
-    }
-
-    .pizzas-section-nikos {
-        background: #FFFBE6;
-        padding: 2rem;
-        text-align: center;
-    }
-
-    .section-title-nikos {
-        font-size: 2.5rem;
-        color: #ff7300;
-        font-family: 'Poppins', sans-serif;
-        margin-bottom: 2rem;
-        letter-spacing: 1px;
-        font-weight: 800;
-        text-shadow: 0 2px 8px #ffa75120;
-    }
-
-    .pizzas-grid-nikos {
-        display: grid;
-        grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
-        gap: 2.5rem;
-        max-width: 1200px;
-        margin: 0 auto;
-    }
-
-    .pizza-card-nikos {
-        background: rgba(255, 255, 255, 0.93);
-        border-radius: 32px;
-        box-shadow: 0 12px 32px #ffa75130, 0 2px 8px #ffe25940;
-        overflow: hidden;
-        transition: transform .3s cubic-bezier(.68, -0.55, .27, 1.55), box-shadow 0.3s, border 0.3s;
-        cursor: pointer;
-        position: relative;
-        border: 2px solid #ffe259;
-        backdrop-filter: blur(3px);
-        animation: fadeInUp .6s;
-    }
-
-    .pizza-card-nikos:hover {
-        transform: translateY(-18px) scale(1.08) rotate(-2deg);
-        box-shadow: 0 24px 64px #ffa75160, 0 4px 16px #ffe25960;
-        border-color: #ffa751;
-    }
-
-    .pizza-img-wrap {
-        width: 100%;
-        height: 180px;
-        overflow: hidden;
-        background: linear-gradient(90deg, #ffe259 0%, #fffbe6 100%);
-        display: flex;
-        align-items: center;
-        justify-content: center;
-        position: relative;
-    }
-
-    .pizza-card-nikos img {
-        width: 100%;
-        height: 100%;
-        object-fit: cover;
-        transition: transform 0.7s cubic-bezier(.68, -0.55, .27, 1.55), filter 0.3s;
-        border-bottom: 2px solid #ff7300;
-        filter: brightness(0.98) saturate(1.1);
-    }
-
-    .pizza-card-nikos:hover img {
-        transform: scale(1.17) rotate(-3deg);
-        filter: brightness(1.08) saturate(1.3) drop-shadow(0 0 24px #ffa75160);
-    }
-
-    .pizza-badge {
-        position: absolute;
-        top: 12px;
-        right: 18px;
-        background: linear-gradient(90deg, #ff5100 0%, #ff3300 100%);
-        color: #ffffff;
-        font-size: 1.5rem;
-        padding: 0.3rem 0.8rem;
-        border-radius: 18px;
-        font-weight: bold;
-        box-shadow: 0 2px 12px #ffa75160;
-        pointer-events: none;
-        z-index: 2;
-        animation: badgePop 1.2s;
-    }
-
-    @@keyframes badgePop {
-        0% {
-            transform: scale(0.5);
-            opacity: 0;
-        }
-
-        80% {
-            transform: scale(1.2);
-        }
-
-        100% {
-            transform: scale(1);
-            opacity: 1;
-        }
-    }
-
-    .pizza-info-nikos {
-        padding: 1.4rem 1rem 1.2rem 1rem;
-    }
-
-    .pizza-info-nikos h3 {
-        font-family: 'Poppins', sans-serif;
-        color: #cc5200;
-        font-size: 1.4rem;
-        margin-bottom: 0.3rem;
-        font-weight: 700;
-        letter-spacing: 1px;
-    }
-
-    .pizza-info-nikos p {
-        color: #444;
-        font-size: 1.08rem;
-        font-family: 'Roboto', sans-serif;
-    }
-
-    .cta-float-nikos {
-        position: fixed;
-        right: 2.5vw;
-        bottom: 3vh;
-        background: lime;
-        color: #000000;
-        font-weight: bold;
-        padding: 1rem 2rem;
-        border-radius: 40px;
-        font-size: 1.3rem;
-        text-decoration: none;
-        border: none;
-        outline: none;
-        z-index: 100;
-        transition: background 0.3s, color 0.3s, transform 0.2s, box-shadow 0.3s;
-        display: flex;
-        align-items: center;
-        justify-content: center;
-        font-family: 'Poppins', sans-serif;
-    }
-
-    .cta-float-nikos span {
-        position: relative;
-        z-index: 2;
-    }
-
-    .cta-float-nikos::after {
-        content: "";
-        position: absolute;
-        width: 100%;
-        height: 100%;
-        opacity: 0.13;
-        z-index: -2;
-        border-radius: 40px;
-        background: lime;
-        pointer-events: none;
-        animation: pulseGlow 1s infinite;
-    }
-
-    @@keyframes pulseGlow {
-        0% {
-            transform: scaleX(1) scaleY(1);
-            opacity: 1;
-        }
-
-        70% {
-            transform: scaleX(1.1) scaleY(1.4);
-            opacity: 0;
-        }
-
-        100% {
-            transform: scaleX(1.1) scaleY(1.4);
-            opacity: 0;
-        }
-    }
-
-    @@keyframes fadeInDown {
-        from {
-            opacity: 0;
-            transform: translateY(-40px);
-        }
-
-        to {
-            opacity: 1;
-            transform: translateY(0);
-        }
-    }
-
-    @@keyframes fadeInUp {
-        from {
-            opacity: 0;
-            transform: translateY(40px);
-        }
-
-        to {
-            opacity: 1;
-            transform: translateY(0);
-        }
-    }
-
-    @@keyframes popIn {
-        0% {
-            transform: scale(0.7);
-        }
-
-        80% {
-            transform: scale(1.1);
-        }
-
-        100% {
-            transform: scale(1);
-        }
-    }
-
-    @@media (max-width: 900px) {
-        .hero-title-nikos {
-            font-size: 2.2rem;
-        }
-
-        .pizzas-grid-nikos {
-            grid-template-columns: 1fr 1fr;
-        }
-
-        .hero-glass {
-            padding: 1.5rem 1rem;
-        }
-    }
-
-    @@media (max-width: 600px) {
-        .hero-nikos {
-            height: 48vh;
-            min-height: 260px;
-        }
-
-        .hero-title-nikos {
-            font-size: 1.2rem;
-        }
-
-        .section-title-nikos {
-            font-size: 1.3rem;
-        }
-
-        .pizzas-grid-nikos {
-            grid-template-columns: 1fr;
-        }
-
-        .pizza-img-wrap {
-            height: 120px;
-        }
-
-        .bienvenida-titulo {
-            font-size: 1.2rem;
-        }
-
-        .cta-float-nikos {
-            font-size: 1rem;
-            padding: 0.7rem 1.5rem;
-        }
-    }
-</style>
+@section Scripts {
+    <script src="@Url.Content("~/js/home.js")" asp-append-version="true"></script>
+}

@@ -12,7 +12,7 @@ using Microsoft.AspNetCore.Identity.UI.Services;
 var builder = WebApplication.CreateBuilder(args);
 
 // Agregar la cadena de conexión a utilizar
-var conexion = builder.Configuration.GetConnectionString("ConnectionSQLServer");
+var conexion = builder.Configuration.GetConnectionString("ConnectionLocal");
 builder.Services.AddDbContext<SisNikosPizzaBbContext>(options => options.UseSqlServer(conexion));
 
 // Configurar Identity con opciones mejoradas
@@ -66,6 +66,26 @@ builder.Services.AddScoped<IDbInitialize, DbInitialize>();
 
 var app = builder.Build();
 
+app.Use(async (context, next) =>
+{
+    context.Response.Headers.Add("Content-Security-Policy",
+        "default-src 'self'; img-src 'self' data:; script-src 'self' https://cdn.jsdelivr.net; style-src 'self' https://fonts.googleapis.com https://cdn.jsdelivr.net 'unsafe-inline'; font-src https://fonts.gstatic.com;");
+    await next();
+});
+
+app.Use(async (context, next) =>
+{
+    context.Response.Headers.Add("Cross-Origin-Opener-Policy", "same-origin");
+    await next();
+});
+
+app.Use(async (context, next) =>
+{
+    context.Response.Headers.Add("X-Frame-Options", "DENY");
+    await next();
+});
+
+
 // Inicializar datos
 using (var scope = app.Services.CreateScope())
 {
@@ -105,8 +125,9 @@ app.UseStaticFiles(new StaticFileOptions
 
 app.UseRouting();
 
-// ⚠️ IMPORTANTE: Agregar UseAuthentication() ANTES de UseAuthorization()
-app.UseAuthentication(); // 👈 ESTO FALTABA EN TU CÓDIGO
+app.UseHsts();
+
+app.UseAuthentication();
 app.UseAuthorization();
 
 app.MapControllerRoute(
