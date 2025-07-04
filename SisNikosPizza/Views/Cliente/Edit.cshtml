@@ -3,12 +3,13 @@
 
 @{
     ViewData["Title"] = "Editar Usuario";
-    Layout = "~/Views/Shared/_Admin.cshtml";
+    Layout = "~/Views/Shared/_Layout.cshtml";
 }
 
-<link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css" rel="stylesheet">
-<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.5/font/bootstrap-icons.css">
-<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Poppins:wght@600;700&display=swap" rel="stylesheet">
+
+<link
+    href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Poppins:wght@600;700&display=swap"
+    rel="stylesheet">
 
 <style>
     body {
@@ -21,24 +22,24 @@
         animation: slideIn 0.7s ease-out;
     }
 
-    
+
 
     .form-control {
         transition: all 0.3s ease;
     }
 
-        .form-control:focus {
-            border-color: #f59e0b;
-            box-shadow: 0 0 0 3px rgba(245, 158, 11, 0.2);
-        }
+    .form-control:focus {
+        border-color: #f59e0b;
+        box-shadow: 0 0 0 3px rgba(245, 158, 11, 0.2);
+    }
 
     .btn {
         transition: all 0.3s ease;
     }
 
-        .btn:hover {
-            transform: scale(1.05);
-        }
+    .btn:hover {
+        transform: scale(1.05);
+    }
 </style>
 
 <div class="container mx-auto py-12 px-4 sm:px-6 lg:px-8" role="main">
@@ -49,34 +50,40 @@
         </div>
         <div class="p-6 bg-yellow-50">
             <form asp-action="Edit" method="post">
-                <div asp-validation-summary="ModelOnly" class="text-red-600 mb-4 text-sm bg-red-100 p-3 rounded-lg"></div>
+                <div asp-validation-summary="ModelOnly" class="text-red-600 mb-4 text-sm bg-red-100 p-3 rounded-lg">
+                </div>
                 <input type="hidden" asp-for="Id" />
 
                 <div class="mb-4">
                     <label asp-for="UserName" class="block text-gray-700 font-semibold mb-2">Nombre de Usuario</label>
-                    <input asp-for="UserName" class="form-control w-full border border-gray-300 rounded-lg px-4 py-2 focus:outline-none focus:ring-2 focus:ring-yellow-500" />
+                    <input asp-for="UserName"
+                        class="form-control w-full border border-gray-300 rounded-lg px-4 py-2 focus:outline-none focus:ring-2 focus:ring-yellow-500" />
                     <span asp-validation-for="UserName" class="text-red-600 text-sm mt-1"></span>
                 </div>
 
                 <div class="mb-4">
                     <label asp-for="Email" class="block text-gray-700 font-semibold mb-2">Email</label>
-                    <input asp-for="Email" class="form-control w-full border border-gray-300 rounded-lg px-4 py-2 focus:outline-none focus:ring-2 focus:ring-yellow-500" />
+                    <input asp-for="Email"
+                        class="form-control w-full border border-gray-300 rounded-lg px-4 py-2 focus:outline-none focus:ring-2 focus:ring-yellow-500" />
                     <span asp-validation-for="Email" class="text-red-600 text-sm mt-1"></span>
                 </div>
 
                 <div class="mb-4">
                     <label asp-for="PhoneNumber" class="block text-gray-700 font-semibold mb-2">Teléfono</label>
-                    <input asp-for="PhoneNumber" class="form-control w-full border border-gray-300 rounded-lg px-4 py-2 focus:outline-none focus:ring-2 focus:ring-yellow-500" />
+                    <input asp-for="PhoneNumber"
+                        class="form-control w-full border border-gray-300 rounded-lg px-4 py-2 focus:outline-none focus:ring-2 focus:ring-yellow-500" />
                     <span asp-validation-for="PhoneNumber" class="text-red-600 text-sm mt-1"></span>
                 </div>
 
-              
+
 
                 <div class="flex justify-end space-x-3 mt-6">
-                    <button type="submit" class="btn inline-flex items-center px-4 py-2 bg-green-600 text-white rounded-full hover:bg-green-700 transition duration-300 shadow-md">
+                    <button type="submit"
+                        class="btn inline-flex items-center px-4 py-2 bg-green-600 text-white rounded-full hover:bg-green-700 transition duration-300 shadow-md">
                         <i class="bi bi-check-circle mr-2"></i> Guardar Cambios
                     </button>
-                    <a asp-action="Index" class="btn inline-flex items-center px-4 py-2 bg-gray-600 text-white rounded-full hover:bg-gray-700 transition duration-300 shadow-md">
+                    <a asp-action="Index"
+                        class="btn inline-flex items-center px-4 py-2 bg-gray-600 text-white rounded-full hover:bg-gray-700 transition duration-300 shadow-md">
                         <i class="bi bi-x-circle mr-2"></i> Cancelar
                     </a>
                 </div>

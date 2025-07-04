@@ -3,12 +3,11 @@
 
 @{
     ViewData["Title"] = "Lista de Pedidos Delivery";
-    Layout = "~/Views/Shared/_Admin.cshtml";
+    Layout = "~/Views/Shared/_Layout.cshtml";
 }
 
 @section Styles {
     <script src="https://cdn.tailwindcss.com"></script>
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.7.1/css/all.min.css" />
     <script src="https://cdn.jsdelivr.net/npm/@@tailwindcss/browser@4"></script>
     <script defer src="https://unpkg.com/alpinejs@3.x.x/dist/cdn.min.js"></script>
     <script defer src="https://unpkg.com/@@alpinejs/collapse@3.x.x/dist/cdn.min.js"></script>
@@ -46,24 +45,24 @@
             transition: transform 0.3s ease, box-shadow 0.3s ease;
         }
 
-            .card:hover {
-                transform: translateY(-5px);
-                box-shadow: 0 15px 40px rgba(0, 0, 0, 0.2);
-            }
+        .card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 15px 40px rgba(0, 0, 0, 0.2);
+        }
 
-            .card::before {
-                content: '';
-                position: absolute;
-                top: -30%;
-                left: -30%;
-                width: 160%;
-                height: 160%;
-                background: radial-gradient(circle, rgba(241, 196, 15, 0.1) 0%, transparent 70%);
-                animation: rotate 12s linear infinite;
-                z-index: 0;
-            }
+        .card::before {
+            content: '';
+            position: absolute;
+            top: -30%;
+            left: -30%;
+            width: 160%;
+            height: 160%;
+            background: radial-gradient(circle, rgba(241, 196, 15, 0.1) 0%, transparent 70%);
+            animation: rotate 12s linear infinite;
+            z-index: 0;
+        }
 
-       
+
 
         .card-content {
             position: relative;
@@ -101,11 +100,11 @@
             width: 100%;
         }
 
-            .toggle-button:hover {
-                background: linear-gradient(45deg, #27ae60, #219653);
-                transform: translateY(-2px);
-                box-shadow: 0 4px 12px rgba(46, 204, 113, 0.3);
-            }
+        .toggle-button:hover {
+            background: linear-gradient(45deg, #27ae60, #219653);
+            transform: translateY(-2px);
+            box-shadow: 0 4px 12px rgba(46, 204, 113, 0.3);
+        }
 
         .collapsible-content {
             margin-top: 0.5rem;
@@ -137,11 +136,11 @@
             cursor: pointer;
         }
 
-            .status-select:hover {
-                background: linear-gradient(45deg, #2980b9, #2471a3);
-                transform: translateY(-2px);
-                box-shadow: 0 4px 12px rgba(52, 152, 219, 0.3);
-            }
+        .status-select:hover {
+            background: linear-gradient(45deg, #2980b9, #2471a3);
+            transform: translateY(-2px);
+            box-shadow: 0 4px 12px rgba(52, 152, 219, 0.3);
+        }
 
         .action-button {
             background: linear-gradient(45deg, #3498db, #2980b9);
@@ -153,17 +152,11 @@
             transition: all 0.3s ease;
         }
 
-            .action-button:hover {
-                background: linear-gradient(45deg, #2980b9, #2471a3);
-                transform: translateY(-2px);
-                box-shadow: 0 4px 12px rgba(52, 152, 219, 0.3);
-            }
-
-       
-        
-
-        
-       
+        .action-button:hover {
+            background: linear-gradient(45deg, #2980b9, #2471a3);
+            transform: translateY(-2px);
+            box-shadow: 0 4px 12px rgba(52, 152, 219, 0.3);
+        }
     </style>
 }
 
@@ -183,8 +176,11 @@
                                     imageUrl = $"/images/{imageUrl}";
                                 }
                             }
-                            <img src="/logo/logo.png" alt="Product Image for @firstDetalle?.Producto?.Nombre" class="w-full h-40 object-cover rounded-t-lg" />
-                            <span class="absolute top-2 right-2 bg-red-500 text-white px-2 py-1 rounded-full text-xs font-medium">
+                            <img fetchpriority="high" decoding="async" src="/logo/logo.avif" alt="Product Imag
+                                  e          for @firstDetalle?.Producto?.Nombre"
+                                class="w-full h-40 object-cover rounded-t-lg" />
+                            <span
+                                class="absolute top-2 right-2 bg-red-500 text-white px-2 py-1 rounded-full text-xs font-medium">
                                 Delivery
                             </span>
                         </div>
@@ -224,7 +220,8 @@
                                     Ver lista de pedido
                                 </button>
 
-                                <div class="collapsible-content" x-cloak x-show="reportsOpen" x-collapse x-collapse.duration.500ms>
+                                <div class="collapsible-content" x-cloak x-show="reportsOpen" x-collapse
+                                    x-collapse.duration.500ms>
                                     <ul class="flex flex-col gap-1">
                                         @foreach (var pedido in item.Detalles)
                                         {

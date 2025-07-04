@@ -2,7 +2,7 @@
 
 @{
     ViewData["Title"] = "Eliminar Categoría";
-    Layout = "~/Views/Shared/_Admin.cshtml";
+    Layout = "~/Views/Shared/_Layout.cshtml";
 }
 
 <style>
@@ -64,7 +64,8 @@
         display: block;
     }
 
-    .form-control, .form-select {
+    .form-control,
+    .form-select {
         border: 2px solid #e0e0e0;
         border-radius: 10px;
         padding: 12px;
@@ -74,12 +75,14 @@
         background: #f9f9f9;
     }
 
-    .form-control:disabled, .form-select:disabled {
+    .form-control:disabled,
+    .form-select:disabled {
         background: #e9ecef;
         cursor: not-allowed;
     }
 
-    .form-control:focus, .form-select:focus {
+    .form-control:focus,
+    .form-select:focus {
         border-color: #f1c40f;
         box-shadow: 0 0 8px rgba(241, 196, 15, 0.3);
         outline: none;
@@ -168,7 +171,8 @@
                 <input asp-for="CategoriaId" hidden />
                 <div class="mb-3">
                     <label for="Nombre" class="form-label">Nombre</label>
-                    <input type="text" asp-for="nombre" class="form-control" id="Nombre" placeholder="Nombre de la Categoría" disabled aria-describedby="nombre-error" />
+                    <input type="text" asp-for="nombre" class="form-control" id="Nombre"
+                        placeholder="Nombre de la Categoría" disabled aria-describedby="nombre-error" />
                     <span asp-validation-for="nombre" class="text-danger" id="nombre-error"></span>
                 </div>
                 <div class="mb-3">
@@ -183,7 +187,8 @@
                     <button type="submit" class="btn btn-danger" aria-label="Eliminar categoría">
                         <i class="bi bi-trash"></i> Eliminar
                     </button>
-                    <a asp-controller="Categoria" asp-action="Index" class="btn btn-primary" aria-label="Cancelar y volver">
+                    <a asp-controller="Categoria" asp-action="Index" class="btn btn-primary"
+                        aria-label="Cancelar y volver">
                         <i class="bi bi-arrow-left"></i> Cancelar
                     </a>
                 </div>
