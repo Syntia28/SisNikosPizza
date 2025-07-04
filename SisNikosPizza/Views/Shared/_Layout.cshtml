@@ -1,92 +1,329 @@
-﻿
-<!DOCTYPE html>
+﻿<!DOCTYPE html>
 <html lang="en">
+
 <head>
     <meta charset="utf-8" />
     <meta http-equiv="X-UA-Compatible" content="IE=edge" />
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no" />
-    <title>@ViewData["Title"] </title>
+    <title>@ViewData["Title"] - SisNikosPizza</title>
 
-    <link href="https://cdn.jsdelivr.net/npm/simple-datatables@7.1.2/dist/style.min.css" rel="stylesheet" />
-    <link href="/css/styles.css" rel="stylesheet" />
-    <script src="https://use.fontawesome.com/releases/v6.3.0/js/all.js" crossorigin="anonymous"></script>
-    @RenderSection("Styles", required: false)
     <style>
+
+        @@font-face {
+            font-family: "Font Awesome 6 Free";
+            font-style: normal;
+            font-weight: 900;
+            font-display: swap;
+            src: url("/fonts/fa-solid-900.woff2") format("woff2");
+        }
+
+        i[class^="fa-"],
+        i[class*=" fa-"] {
+            width: 1em;
+            display: inline-block;
+        }
+        
+        /* Reset y Base */
+        body,
+        html {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: sans-serif;
+        }
+
+        /* Estilos del Layout */
         body {
-            background-color: #f9e79f; 
+            background-color: #f9e79f;
         }
 
-        .navbar {
-            background-color: #f9e79f !important;
-            color: #333 !important;
+        .sb-nav-fixed {
+            display: flex;
+            flex-direction: column;
+            height: 100vh;
+            overflow: hidden;
         }
 
-            .navbar a.navbar-brand {
-                color: #333 !important;
-                font-weight: bold;
-            }
+        /* Barra de Navegación Superior */
+        .top-navbar {
+            height: 10vh;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            padding: 0.5rem 1rem;
+            box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06);
+            background-color: #f9e79f;
+            /* Color de fondo para que coincida */
+        }
 
-                .navbar a.navbar-brand:hover {
-                    color: #555 !important;
-                }
+        .navbar-brand-container {
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+        }
+
+        .navbar-brand {
+            display: flex;
+            align-items: center;
+            color: #1f2937;
+            /* text-gray-800 */
+            text-decoration: none;
+            transition: color 0.2s;
+        }
+
+        .navbar-brand:hover {
+            color: #4b5563;
+            /* hover:text-gray-600 */
+        }
+
+        .navbar-logo {
+            height: 2.5rem;
+            /* 40px */
+            width: 2.5rem;
+            /* 40px */
+            margin-right: 0.75rem;
+            object-fit: contain;
+        }
+
+        .navbar-brand-text {
+            font-size: 1.25rem;
+            /* text-xl */
+            font-weight: 700;
+            /* font-bold */
+        }
+
+        .sidebar-toggle-button {
+            color: #1f2937;
+            background: transparent;
+            border: none;
+            padding: 0.5rem;
+            cursor: pointer;
+            transition: color 0.2s;
+        }
+
+        .sidebar-toggle-button:hover {
+            color: #4b5563;
+        }
+
+        .sidebar-toggle-button .fas {
+            font-size: 1.125rem;
+            /* text-lg */
+        }
+
+        /* Layout Principal */
+        #layoutSidenav {
+            display: flex;
+            flex: 1;
+            overflow: hidden;
+        }
+
+        #layoutSidenav_nav {
+            width: 225px;
+            flex-shrink: 0;
+            transition: width 0.15s ease-in-out;
+            overflow: hidden;
+            background-color: #fef3c7;
+            /* bg-amber-100 */
+        }
 
         .sb-sidenav {
-            background-color: #f9e79f !important;
-            color: #333 !important;
+            height: 100%;
+            overflow-y: auto;
+            overflow-x: hidden;
+            background-color: #fef3c7;
         }
 
-            .sb-sidenav a {
-                color: #333 !important;
+        .sidebar-content {
+            padding: 1rem;
+        }
+
+        .sb-nav-fixed.sb-sidenav-toggled #layoutSidenav_nav {
+            width: 0;
+        }
+
+        #layoutSidenav_content {
+            flex: 1;
+            position: relative;
+            overflow-y: auto;
+        }
+
+        .main-content {
+            position: relative;
+            min-height: 90vh;
+            padding: 1.5rem;
+        }
+
+        /* Footer (estilos listos si se descomenta) */
+        .footer {
+            padding: 1rem 1.5rem;
+            background-color: #f9e79f;
+        }
+
+        .footer-content {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            font-size: 0.875rem;
+            color: #4b5563;
+            /* text-gray-600 */
+        }
+
+        .footer-links {
+            display: flex;
+            gap: 0.5rem;
+        }
+
+        .footer-links a {
+            color: #4b5563;
+            text-decoration: none;
+            transition: color 0.2s;
+        }
+
+        .footer-links a:hover {
+            color: #1f2937;
+            /* hover:text-gray-800 */
+        }
+
+        /* Overlay */
+        .sidebar-overlay {
+            position: fixed;
+            top: 0;
+            right: 0;
+            bottom: 0;
+            left: 0;
+            background-color: rgba(0, 0, 0, 0.5);
+            z-index: 30;
+            display: none;
+        }
+
+        /* Responsive */
+        @@media (max-width: 991.98px) {
+            #layoutSidenav_nav {
+                position: absolute;
+                top: 0;
+                left: 0;
+                height: 100%;
+                z-index: 1040;
+                transform: translateX(-225px);
+                transition: transform 0.15s ease-in-out;
             }
 
-                .sb-sidenav a:hover {
-                    background-color: #f8c471;
-                    color: white !important;
-                }
-
-        .sb-sidenav-footer {
-            background-color: #f9e79f !important;
-            color: #333 !important;
-        }
-
-        footer {
-            background-color: #f9e79f !important;
-            color: #333 !important;
-        }
-
-            footer a {
-                color: #333 !important;
-                text-decoration: none;
+            .sb-nav-fixed.sb-sidenav-toggled #layoutSidenav_nav {
+                transform: translateX(0);
             }
 
-                footer a:hover {
-                    text-decoration: underline;
-                }
-
-        .btn-primary {
-            background-color: #f8c471 !important;
-            border: none;
-        }
-
-            .btn-primary:hover {
-                background-color: #f7b248 !important;
+            .sidebar-overlay.visible {
+                display: block;
             }
+        }
     </style>
+
+
+    <link rel="preload" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.3.0/css/all.min.css"
+        integrity="sha512-SzlrxWUlpfuzQ+pcUCosxcglQRNAq/DZjVsC0lE40xsADsfeQoEypE+enwcOiGjk/bSuGGKHEyjSoQ1zVisanQ=="
+        crossorigin="anonymous" referrerpolicy="no-referrer" as="style"
+        onload="this.onload=null;this.rel='stylesheet'" />
+    <noscript>
+        <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.3.0/css/all.min.css"
+            integrity="sha512-SzlrxWUlpfuzQ+pcUCosxcglQRNAq/DZjVsC0lE40xsADsfeQoEypE+enwcOiGjk/bSuGGKHEyjSoQ1zVisanQ=="
+            crossorigin="anonymous" referrerpolicy="no-referrer" />
+    </noscript>
+
+    <link href="https://cdn.jsdelivr.net/npm/simple-datatables@7.1.2/dist/style.min.css" rel="preload" as="style"
+        onload="this.onload=null;this.rel='stylesheet'" />
+    <noscript>
+        <link href="https://cdn.jsdelivr.net/npm/simple-datatables@7.1.2/dist/style.min.css" rel="stylesheet" />
+    </noscript>
+
+    <script src="https://cdn.jsdelivr.net/npm/@@tailwindcss/browser@4" defer></script>
+
+    @RenderSection("Styles", required: false)
+
 </head>
-<body class="vh-100">
-    <nav class="sb-topnav navbar navbar-expand navbar-light">
-        <a class="navbar-brand ps-3 d-flex align-items-center" href="@Url.Action("Index", "Home")">
-            <img src="/logo/logo.png" alt="Logo" style="height: 40px; margin-right: 10px; object-fit: contain" />
-        </a>
-        <div class="d-none d-md-inline-block ms-auto me-0 me-md-3 my-2 my-md-0">
+
+<body class="sb-nav-fixed">
+    <!-- Top Navigation -->
+    <nav class="top-navbar">
+        <div class="navbar-brand-container">
+            <a href="@Url.Action("Index", "Home")" class="navbar-brand">
+                <img fetchpriority="high" decoding="async" src="/logo/logo.avif" alt="Logo" class="navbar-logo"
+                    width="40" height="40" />
+                <span class="navbar-brand-text">SisNikosPizza</span>
+            </a>
+            <button class="sidebar-toggle-button" id="sidebarToggle" aria-label="Toggle sidebar" name="menu">
+                <i class="fas fa-bars"></i>
+            </button>
         </div>
         <partial name="_LoginPartial" />
     </nav>
-    <main style="position: relative; width: 100%;">
-        @RenderBody()
-    </main>
-    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.3/dist/js/bootstrap.bundle.min.js" crossorigin="anonymous"></script>
-    <script src="/js/scripts.js"></script>
+
+    <!-- Layout Structure -->
+    <div id="layoutSidenav">
+        <!-- Sidebar -->
+        <div id="layoutSidenav_nav">
+            <nav class="sb-sidenav">
+                <div class="sidebar-content">
+                    <partial name="_NavPartial" />
+                </div>
+            </nav>
+        </div>
+
+        <!-- Main Content -->
+        <div id="layoutSidenav_content">
+            <main class="main-content">
+                @RenderBody()
+            </main>
+
+            @* <!-- Footer -->
+            <footer class="footer">
+                <div class="footer-content">
+                    <div>Copyright &copy; SisNikosPizza 2025</div>
+                    <div class="footer-links">
+                        <a href="#">Política de Privacidad</a>
+                        <span>&middot;</span>
+                        <a href="#">Términos y Condiciones</a>
+                    </div>
+                </div>
+            </footer> *@
+        </div>
+    </div>
+
+    <!-- Overlay y Scripts -->
+    <div id="sidebar-overlay" class="sidebar-overlay"></div>
+    <script>
+        window.addEventListener('DOMContentLoaded', event => {
+            const sidebarToggle = document.body.querySelector('#sidebarToggle');
+            const overlay = document.getElementById('sidebar-overlay');
+
+            if (sidebarToggle) {
+                sidebarToggle.addEventListener('click', event => {
+                    event.preventDefault();
+                    document.body.classList.toggle('sb-sidenav-toggled');
+
+                    if (window.innerWidth < 992) {
+                        overlay.classList.toggle('visible');
+                    }
+
+                    localStorage.setItem('sb|sidebar-toggle', document.body.classList.contains('sb-sidenav-toggled'));
+                });
+            }
+
+            if (overlay) {
+                overlay.addEventListener('click', () => {
+                    document.body.classList.remove('sb-sidenav-toggled');
+                    overlay.classList.remove('visible');
+                    localStorage.setItem('sb|sidebar-toggle', 'false');
+                });
+            }
+
+            if (localStorage.getItem('sb|sidebar-toggle') === 'true' && window.innerWidth >= 992) {
+                document.body.classList.add('sb-sidenav-toggled');
+            }
+        });
+    </script>
     @RenderSection("Scripts", required: false)
 </body>
+
 </html>
+
+   {

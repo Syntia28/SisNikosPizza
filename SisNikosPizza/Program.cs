@@ -1,5 +1,6 @@
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.FileProviders;
+using Microsoft.AspNetCore.StaticFiles;
 using SisNikosPizza.Infrastructure.Context;
 using SisNikosPizza.Repository.Implements;
 using SisNikosPizza.Repository.Interfaces;
@@ -11,12 +12,21 @@ using Microsoft.AspNetCore.Identity.UI.Services;
 
 var builder = WebApplication.CreateBuilder(args);
 
+// Add response compression
+builder.Services.AddResponseCompression(options =>
+{
+    options.EnableForHttps = true;
+    options.Providers.Add<Microsoft.AspNetCore.ResponseCompression.BrotliCompressionProvider>();
+    options.Providers.Add<Microsoft.AspNetCore.ResponseCompression.GzipCompressionProvider>();
+});
+
 // Agregar la cadena de conexión a utilizar
-var conexion = builder.Configuration.GetConnectionString("ConnectionSQLServer");
+var conexion = builder.Configuration.GetConnectionString("rdev");
 builder.Services.AddDbContext<SisNikosPizzaBbContext>(options => options.UseSqlServer(conexion));
 
 // Configurar Identity con opciones mejoradas
-builder.Services.AddIdentity<IdentityUser, IdentityRole>(options => {
+builder.Services.AddIdentity<IdentityUser, IdentityRole>(options =>
+{
     // Configuración de cuenta
     options.SignIn.RequireConfirmedAccount = false;
     options.SignIn.RequireConfirmedEmail = false;
@@ -93,14 +103,20 @@ if (!app.Environment.IsDevelopment())
 }
 
 app.UseHttpsRedirection();
-app.UseStaticFiles();
 
-// Configurar una ruta específica para las imágenes
+// Create a new FileExtensionContentTypeProvider and add the AVIF mapping
+var provider = new FileExtensionContentTypeProvider();
+provider.Mappings[".avif"] = "image/avif";
+
+// Configure static files to use a long cache lifetime and the custom content type provider
 app.UseStaticFiles(new StaticFileOptions
 {
-    FileProvider = new PhysicalFileProvider(
-        Path.Combine(builder.Environment.ContentRootPath, "wwwroot", "images")),
-    RequestPath = "/images"
+    ContentTypeProvider = provider,
+    OnPrepareResponse = ctx =>
+    {
+        const int durationInSeconds = 60 * 60 * 24 * 365; // 1 year
+        ctx.Context.Response.Headers.Append("Cache-Control", $"public, max-age={durationInSeconds}");
+    }
 });
 
 app.UseRouting();
@@ -108,6 +124,9 @@ app.UseRouting();
 // ⚠️ IMPORTANTE: Agregar UseAuthentication() ANTES de UseAuthorization()
 app.UseAuthentication(); // 👈 ESTO FALTABA EN TU CÓDIGO
 app.UseAuthorization();
+
+// Use response compression
+app.UseResponseCompression();
 
 app.MapControllerRoute(
     name: "default",

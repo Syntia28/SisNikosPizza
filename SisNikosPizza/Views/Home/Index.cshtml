@@ -1,16 +1,25 @@
 ﻿@model IEnumerable<SisNikosPizza.Domain.Models.Producto>
 @{
     ViewData["Title"] = "Bienvenido";
-    Layout = "~/Views/Shared/_Admin.cshtml";
+    Layout = "~/Views/Shared/_Layout.cshtml";
 }
 
-<link href="https://cdn.jsdelivr.net/npm/aos@2.3.4/dist/aos.css" rel="stylesheet" />
+<!-- Cargar CSS de AOS sin bloquear el renderizado -->
+<link rel="preload" href="https://cdn.jsdelivr.net/npm/aos@2.3.4/dist/aos.css" as="style"
+    onload="this.onload=null;this.rel='stylesheet'">
+<noscript>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/aos@2.3.4/dist/aos.css">
+</noscript>
+
+<!-- Cargar JS de AOS sin bloquear el HTML -->
+<script src="https://cdn.jsdelivr.net/npm/aos@2.3.4/dist/aos.js" defer></script>
+
 
 <div class="hero-nikos">
     <div class="hero-bg"></div>
     <div class="hero-glass" data-aos="zoom-in" data-aos-duration="1200">
-        <img src="/Imagenes/logo.png" alt="Nikos Pizza Logo" class="logo-hero-nikos" data-aos="flip-left"
-            data-aos-delay="300" />
+        <img fetchpriority="high" decoding="async" src="/logo/logo.avif" alt="Nikos Pizza Logo" class="logo-hero-nikos"
+            data-aos="flip-left" data-aos-delay="300" height="120" width="120" />
         <h1 class="hero-title-nikos animated-gradient" data-aos="fade-down" data-aos-delay="500">
             <span class="bienvenida-letras">¡Bienvenido a Nikos Pizza!</span>
         </h1>
@@ -39,7 +48,7 @@
     <div class="pizzas-grid-nikos">
         <div class="pizza-card-nikos" data-aos="flip-left" data-aos-delay="100">
             <div class="pizza-img-wrap">
-                <img src="/Imagenes/nikos.jpg" alt="Niko's" />
+                <img fetchpriority="high" decoding="async" src="/Imagenes/nikos.avif" alt="Niko's" />
                 <div class="pizza-badge">⭐</div>
             </div>
             <div class="pizza-info-nikos">
@@ -49,7 +58,7 @@
         </div>
         <div class="pizza-card-nikos" data-aos="flip-left" data-aos-delay="200">
             <div class="pizza-img-wrap">
-                <img src="/Imagenes/pepenori.jpg" alt="Peperoni" />
+                <img fetchpriority="high" decoding="async" src="/Imagenes/pepenori.avif" alt="Peperoni" />
                 <div class="pizza-badge">🔥</div>
             </div>
             <div class="pizza-info-nikos">
@@ -59,7 +68,7 @@
         </div>
         <div class="pizza-card-nikos" data-aos="flip-left" data-aos-delay="300">
             <div class="pizza-img-wrap">
-                <img src="/Imagenes/frutas.jpg" alt="Frutas" />
+                <img fetchpriority="high" decoding="async" src="/Imagenes/frutas.avif" alt="Frutas" />
                 <div class="pizza-badge">🍍</div>
             </div>
             <div class="pizza-info-nikos">
@@ -69,7 +78,7 @@
         </div>
         <div class="pizza-card-nikos" data-aos="flip-left" data-aos-delay="400">
             <div class="pizza-img-wrap">
-                <img src="/Imagenes/española.jpg" alt="Española" />
+                <img fetchpriority="high" decoding="async" src="/Imagenes/española.avif" alt="Española" />
                 <div class="pizza-badge">🇪🇸</div>
             </div>
             <div class="pizza-info-nikos">
@@ -79,7 +88,7 @@
         </div>
         <div class="pizza-card-nikos" data-aos="flip-left" data-aos-delay="500">
             <div class="pizza-img-wrap">
-                <img src="/Imagenes/hawaina.jpg" alt="Hawaina" />
+                <img fetchpriority="high" decoding="async" src="/Imagenes/hawaina.avif" alt="Hawaina" />
                 <div class="pizza-badge">🌺</div>
             </div>
             <div class="pizza-info-nikos">
@@ -94,29 +103,45 @@
     <span>¡Haz tu pedido ahora!</span>
 </a>
 
-<script src="https://cdn.jsdelivr.net/npm/aos@2.3.4/dist/aos.js"></script>
+
 <script>
-    AOS.init({
-        once: false,
-        duration: 1200,
-        offset: 80
-    });
     document.addEventListener("DOMContentLoaded", function () {
+        // Inicializar AOS si está disponible
+        if (typeof AOS !== 'undefined') {
+            AOS.init({
+                startEvent: 'DOMContentLoaded',
+                offset: 80,
+                duration: 1200,
+                once: false,
+                anchorPlacement: 'top-bottom',
+            });
+        }
+
+        // Agregar animación a letras de bienvenida
         const letras = document.querySelector('.bienvenida-letras');
         if (letras) {
             letras.classList.add('letras-animadas');
         }
+
+        // Refrescar AOS si el scroll no está en window
+        const scrollContainer = document.querySelector('#layoutSidenav_content');
+        if (scrollContainer) {
+            scrollContainer.addEventListener('scroll', () => {
+                if (typeof AOS !== 'undefined') {
+                    AOS.refresh();
+                }
+            });
+        }
     });
 </script>
+
 
 <style>
     .hero-nikos {
         position: relative;
-        height: 80vh;
+        height: 90vh;
         min-height: 420px;
         display: flex;
-        align-items: center;
-        justify-content: center;
         overflow: hidden;
     }
 
@@ -124,9 +149,10 @@
         position: absolute;
         width: 100%;
         height: 100%;
-        background: url('/Imagenes/register.png') center center/cover no-repeat;
+        background: url('/Imagenes/register.avif') center center/cover no-repeat;
         z-index: 1;
     }
+
     .hero-bg::before {
         content: "";
         position: absolute;
@@ -151,10 +177,15 @@
     .hero-glass {
         position: relative;
         z-index: 2;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        justify-content: center;
         border-radius: 40px;
         padding: 3rem 4rem;
         text-align: center;
         border: none;
+        width: 100%;
         animation: fadeInDown 1.2s;
     }
 
@@ -540,7 +571,7 @@
 
     @@media (max-width: 600px) {
         .hero-nikos {
-            height: 48vh;
+            height: 90vh;
             min-height: 260px;
         }
 

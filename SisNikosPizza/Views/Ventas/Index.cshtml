@@ -7,14 +7,17 @@
 
 @{
     ViewData["Title"] = "Ventas";
-    Layout = "~/Views/Shared/_Admin.cshtml";
+    Layout = "~/Views/Shared/_Layout.cshtml";
 }
 
 @section Styles {
-    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-QWTKZyjpPEjISv5WaRU9OFeRpok6YctnYmDr5pNlyT2bRjXh0JMhjY6hW+ALEwIH" crossorigin="anonymous">
-    <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons/font/bootstrap-icons.css" rel="stylesheet">
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Poppins:wght@600;700&display=swap" rel="stylesheet">
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" integrity="sha512-iecdLmaskl7CVkqkXNQ/ZH/XLlvWZOJyj7Yy7tcenmpD1ypASozpmT/E0iPtmFIB46ZmdtAc9eNBvH0H/ZpiBw==" crossorigin="anonymous" referrerpolicy="no-referrer">
+    <!-- Preconnect para optimizar conexiones -->
+    <link rel="preconnect" href="https://cdn.jsdelivr.net" />
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link rel="preconnect" href="https://cdnjs.cloudflare.com" />
+
+    <!-- CSS crítico inline primero -->
     <style>
         body {
             font-family: 'Inter', sans-serif;
@@ -30,6 +33,37 @@
             margin: 0 auto;
         }
 
+        .card {
+            border-radius: 20px;
+            box-shadow: 0 12px 35px rgba(0, 0, 0, 0.2);
+            background: #ffffff;
+            border: 2px solid #ffca28;
+        }
+    </style>
+
+    <!-- Bootstrap CSS con carga asíncrona -->
+    <link rel="preload" href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" as="style"
+        onload="this.onload=null;this.rel='stylesheet'"
+        integrity="sha384-QWTKZyjpPEjISv5WaRU9OFeRpok6YctnYmDr5pNlyT2bRjXh0JMhjY6hW+ALEwIH" crossorigin="anonymous" />
+    <noscript>
+        <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet"
+            integrity="sha384-QWTKZyjpPEjISv5WaRU9OFeRpok6YctnYmDr5pNlyT2bRjXh0JMhjY6hW+ALEwIH" crossorigin="anonymous" />
+    </noscript>
+
+    <!-- Bootstrap Icons con carga asíncrona -->
+    <link rel="preload" href="https://cdn.jsdelivr.net/npm/bootstrap-icons/font/bootstrap-icons.css" as="style"
+        onload="this.onload=null;this.rel='stylesheet'" />
+    <noscript>
+        <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons/font/bootstrap-icons.css" rel="stylesheet" />
+    </noscript>
+
+    <!-- Google Fonts con display=swap -->
+    <link
+        href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Poppins:wght@600;700&display=swap"
+        rel="stylesheet" />
+
+    <style>
+        /* Resto de tus estilos CSS */
         .card {
             border-radius: 20px;
             box-shadow: 0 12px 35px rgba(0, 0, 0, 0.2);
@@ -67,7 +101,8 @@
             padding: 2rem;
         }
 
-        .table th, .table td {
+        .table th,
+        .table td {
             text-align: center;
             padding: 1rem;
             font-size: 1rem;
@@ -87,13 +122,14 @@
             transition: all 0.3s ease;
         }
 
-            .table tbody tr:hover {
-                background: #fff3e0;
-                transform: translateY(-2px);
-                box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
-            }
+        .table tbody tr:hover {
+            background: #fff3e0;
+            transform: translateY(-2px);
+            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+        }
 
-        .form-select, .form-control {
+        .form-select,
+        .form-control {
             border-radius: 30px;
             height: 45px;
             padding-left: 15px;
@@ -101,12 +137,14 @@
             transition: all 0.3s ease;
         }
 
-            .form-select:focus, .form-control:focus {
-                border-color: #ff8f00;
-                box-shadow: 0 0 8px rgba(255, 143, 0, 0.3);
-            }
+        .form-select:focus,
+        .form-control:focus {
+            border-color: #ff8f00;
+            box-shadow: 0 0 8px rgba(255, 143, 0, 0.3);
+        }
 
-        .btn-info, .btn-success {
+        .btn-info,
+        .btn-success {
             background: linear-gradient(90deg, #ff8f00, #ffca28);
             border: none;
             color: #fff;
@@ -121,11 +159,12 @@
             box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
         }
 
-            .btn-info:hover, .btn-success:hover {
-                background: linear-gradient(90deg, #e67e22, #ffb300);
-                transform: translateY(-2px);
-                box-shadow: 0 6px 15px rgba(255, 143, 0, 0.3);
-            }
+        .btn-info:hover,
+        .btn-success:hover {
+            background: linear-gradient(90deg, #e67e22, #ffb300);
+            transform: translateY(-2px);
+            box-shadow: 0 6px 15px rgba(255, 143, 0, 0.3);
+        }
 
         .btn-outline-warning {
             border: 2px solid #ffca28;
@@ -137,12 +176,12 @@
             transition: all 0.3s ease;
         }
 
-            .btn-outline-warning:hover {
-                background: #ffca28;
-                color: #212121;
-                transform: translateY(-2px);
-                box-shadow: 0 6px 15px rgba(255, 143, 0, 0.3);
-            }
+        .btn-outline-warning:hover {
+            background: #ffca28;
+            color: #212121;
+            transform: translateY(-2px);
+            box-shadow: 0 6px 15px rgba(255, 143, 0, 0.3);
+        }
 
         .btn-details {
             background: linear-gradient(90deg, #ff8f00, #ffca28);
@@ -160,33 +199,34 @@
             box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
         }
 
-            .btn-details:hover {
-                background: linear-gradient(90deg, #e67e22, #ffb300);
-                transform: translateY(-2px);
-                box-shadow: 0 6px 15px rgba(255, 143, 0, 0.3);
-            }
+        .btn-details:hover {
+            background: linear-gradient(90deg, #e67e22, #ffb300);
+            transform: translateY(-2px);
+            box-shadow: 0 6px 15px rgba(255, 143, 0, 0.3);
+        }
 
-        .search-container, .date-container {
+        .search-container,
+        .date-container {
             position: relative;
         }
 
-            .search-container input {
-                padding-left: 40px;
-                background: #ffffff;
-            }
+        .search-container input {
+            padding-left: 40px;
+            background: #ffffff;
+        }
 
-            .search-container .bi-search {
-                left: 12px;
-                top: 50%;
-                transform: translateY(-50%);
-                font-size: 1.2rem;
-                color: #ff8f00;
-                transition: color 0.3s ease;
-            }
+        .search-container .bi-search {
+            left: 12px;
+            top: 50%;
+            transform: translateY(-50%);
+            font-size: 1.2rem;
+            color: #ff8f00;
+            transition: color 0.3s ease;
+        }
 
-            .search-container input:focus + .bi-search {
-                color: #e67e22;
-            }
+        .search-container input:focus+.bi-search {
+            color: #e67e22;
+        }
 
         .pagination .page-item a {
             background: #ff8f00;
@@ -230,17 +270,22 @@
                 padding: 1.5rem;
             }
 
-            .table th, .table td {
+            .table th,
+            .table td {
                 font-size: 0.9rem;
                 padding: 0.8rem;
             }
 
-            .form-select, .form-control {
+            .form-select,
+            .form-control {
                 height: 40px;
                 max-width: 100%;
             }
 
-            .btn-info, .btn-success, .btn-outline-warning, .btn-details {
+            .btn-info,
+            .btn-success,
+            .btn-outline-warning,
+            .btn-details {
                 padding: 0.4rem 1rem;
                 font-size: 0.9rem;
             }
@@ -251,12 +296,16 @@
                 font-size: 1.3rem;
             }
 
-            .table th, .table td {
+            .table th,
+            .table td {
                 font-size: 0.85rem;
                 padding: 0.6rem;
             }
 
-            .btn-info, .btn-success, .btn-outline-warning, .btn-details {
+            .btn-info,
+            .btn-success,
+            .btn-outline-warning,
+            .btn-details {
                 font-size: 0.85rem;
                 padding: 0.3rem 0.8rem;
             }
@@ -266,14 +315,16 @@
                 align-items: stretch;
             }
 
-            .search-container, .date-container {
+            .search-container,
+            .date-container {
                 width: 100%;
             }
 
-                .search-container input, .date-container input {
-                    width: 100%;
-                    max-width: none;
-                }
+            .search-container input,
+            .date-container input {
+                width: 100%;
+                max-width: none;
+            }
         }
     </style>
 }
@@ -287,7 +338,8 @@
             <div class="d-flex flex-wrap gap-3 mb-4">
                 <div class="d-flex align-items-center gap-2">
                     <label for="entries" class="form-label mb-0">Mostrar</label>
-                    <select id="entries" name="pageSize" class="form-select" style="width: auto; border-color: #ffca28;">
+                    <select id="entries" name="pageSize" class="form-select"
+                        style="width: auto; border-color: #ffca28;">
                         <option value="10" selected="@(ViewBag.PageSize == 10)">10</option>
                         <option value="25" selected="@(ViewBag.PageSize == 25)">25</option>
                         <option value="50" selected="@(ViewBag.PageSize == 50)">50</option>
@@ -296,15 +348,19 @@
                     <span>registros por página</span>
                 </div>
                 <div class="search-container position-relative flex-grow-1">
-                    <input type="text" name="searchEmail" class="form-control" placeholder="Buscar por email..." value="@ViewBag.SearchEmail" style="width: 100%; max-width: 300px; border-color: #ffca28;" />
+                    <input type="text" name="searchEmail" class="form-control" placeholder="Buscar por email..."
+                        value="@ViewBag.SearchEmail" style="width: 100%; max-width: 300px; border-color: #ffca28;" />
                     <i class="bi bi-search position-absolute"></i>
                 </div>
                 <div class="date-container position-relative">
-                    <input type="date" name="searchDate" class="form-control" value="@(ViewBag.SearchDate != null ? ViewBag.SearchDate.ToString("yyyy-MM-dd") : "")" style="width: 100%; max-width: 200px; border-color: #ffca28;" />
+                    <input type="date" name="searchDate" class="form-control"
+                        value="@(ViewBag.SearchDate != null ? ViewBag.SearchDate.ToString("yyyy-MM-dd") : "")"
+                        style="width: 100%; max-width: 200px; border-color: #ffca28;" />
                 </div>
                 <div class="d-flex align-items-center gap-2">
                     <label for="exportPeriod" class="form-label mb-0">Exportar por</label>
-                    <select id="exportPeriod" name="exportPeriod" class="form-select" style="width: auto; border-color: #ffca28;">
+                    <select id="exportPeriod" name="exportPeriod" class="form-select"
+                        style="width: auto; border-color: #ffca28;">
                         <option value="daily">Diario</option>
                         <option value="weekly">Semanal</option>
                         <option value="monthly">Mensual</option>
@@ -345,7 +401,8 @@
                                     <td class="text-success fw-bold">@venta.Detalles.Sum(total => total.PrecioTotal)</td>
                                     <td>@venta.Detalles.Count()</td>
                                     <td class="text-center">
-                                        <a asp-controller="Ventas" asp-action="Detalles" asp-route-id="@venta.PedidoId" class="btn-details">
+                                        <a asp-controller="Ventas" asp-action="Detalles" asp-route-id="@venta.PedidoId"
+                                            class="btn-details">
                                             <i class="bi bi-eye-fill"></i>
                                         </a>
                                     </td>
@@ -362,16 +419,21 @@
         <nav aria-label="Page navigation">
             <ul class="pagination">
                 <li class="page-item @(ViewBag.CurrentPage == 1 ? "disabled" : "")">
-                    <a class="page-link" href="@Url.Action("Index", new { page = ViewBag.CurrentPage - 1, pageSize = ViewBag.PageSize, searchEmail = ViewBag.SearchEmail, searchDate = ViewBag.SearchDate })" aria-label="Anterior">Anterior</a>
+                    <a class="page-link"
+                        href="@Url.Action("Index", new { page = ViewBag.CurrentPage - 1, pageSize = ViewBag.PageSize, searchEmail = ViewBag.SearchEmail, searchDate = ViewBag.SearchDate })"
+                        aria-label="Anterior">Anterior</a>
                 </li>
                 @for (int i = 1; i <= ViewBag.TotalPages; i++)
                 {
                     <li class="page-item @(i == ViewBag.CurrentPage ? "active" : "")">
-                        <a class="page-link" href="@Url.Action("Index", new { page = i, pageSize = ViewBag.PageSize, searchEmail = ViewBag.SearchEmail, searchDate = ViewBag.SearchDate })">@i</a>
+                        <a class="page-link"
+                            href="@Url.Action("Index", new { page = i, pageSize = ViewBag.PageSize, searchEmail = ViewBag.SearchEmail, searchDate = ViewBag.SearchDate })">@i</a>
                     </li>
                 }
                 <li class="page-item @(ViewBag.CurrentPage == ViewBag.TotalPages ? "disabled" : "")">
-                    <a class="page-link" href="@Url.Action("Index", new { page = ViewBag.CurrentPage + 1, pageSize = ViewBag.PageSize, searchEmail = ViewBag.SearchEmail, searchDate = ViewBag.SearchDate })" aria-label="Siguiente">Siguiente</a>
+                    <a class="page-link"
+                        href="@Url.Action("Index", new { page = ViewBag.CurrentPage + 1, pageSize = ViewBag.PageSize, searchEmail = ViewBag.SearchEmail, searchDate = ViewBag.SearchDate })"
+                        aria-label="Siguiente">Siguiente</a>
                 </li>
             </ul>
         </nav>
@@ -379,7 +441,9 @@
 </div>
 
 @section Scripts {
-    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js" integrity="sha384-YvpcrYf0tY3lHB60NNkmXc5s9fDVZLESaAA55NDKzOxhy9GkcIdslK1eN7N6jIeHz" crossorigin="anonymous"></script>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"
+        integrity="sha384-YvpcrYf0tY3lHB60NNkmXc5s9fDVZLESaAA55NDKzOxhy9GkcIdslK1eN7N6jIeHz" crossorigin="anonymous"
+        defer></script>
     <script>
         document.addEventListener('DOMContentLoaded', () => {
             const searchInput = document.querySelector('input[name="searchEmail"]');
@@ -396,7 +460,7 @@
 
                 tableRows.forEach(row => {
                     const email = row.cells[1].textContent.toLowerCase();
-                    const date = row.cells[0].textContent.split(' ')[0]; 
+                    const date = row.cells[0].textContent.split(' ')[0];
                     const formattedDate = selectedDate ? new Date(selectedDate).toLocaleDateString('es-ES', { day: '2-digit', month: '2-digit', year: 'numeric' }) : '';
 
                     const matchesEmail = query ? email.includes(query) : true;
@@ -421,7 +485,7 @@
             searchInput.addEventListener('input', filterRows);
             dateInput.addEventListener('change', filterRows);
             entriesSelect.addEventListener('change', () => {
-                filterRows(); 
+                filterRows();
             });
         });
     </script>

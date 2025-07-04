@@ -2,6 +2,7 @@
 using SisNikosPizza.Domain.Models;
 using SisNikosPizza.Domain.ViewModels;
 using SisNikosPizza.Repository.Interfaces;
+using SisNikosPizza.Utilidades;
 
 namespace SisNikosPizza.Controllers
 {
@@ -63,9 +64,15 @@ namespace SisNikosPizza.Controllers
                 if (!Directory.Exists(subidas)) Directory.CreateDirectory(subidas);
 
                 var archivo = archivos[0];
-                var extension = Path.GetExtension(archivo.FileName);
+                // var extension = Path.GetExtension(archivo.FileName);
+                var extension = ".webp";
+                var rutaCompleta = Path.Combine(subidas, nombreArchivo + extension);
 
-                using (var fileStreams = new FileStream(Path.Combine(subidas, nombreArchivo + extension), FileMode.Create)) await archivo.CopyToAsync(fileStreams);
+                // Redimensionar la imagen a 255px de ancho manteniendo la relación de aspecto
+                using (var stream = archivo.OpenReadStream())
+                {
+                    await ImageResizer.ResizeImageAsync(stream, rutaCompleta, 255);
+                }
 
                 VMDP.producto.ImagenUrl = @"\productos\" + nombreArchivo + extension;
             }
@@ -81,7 +88,7 @@ namespace SisNikosPizza.Controllers
                     {
                         ProductoInsumo productoInsumo = new ProductoInsumo()
                         {
-                            ProductoId = VMDP.producto.ProductoId, 
+                            ProductoId = VMDP.producto.ProductoId,
                             InsumoId = item.InsumoId,
                             Cantidad = item.Cantidad
                         };
@@ -143,19 +150,19 @@ namespace SisNikosPizza.Controllers
 
                 if (imageFile != null && imageFile.Length > 0)
                 {
-                    string uploadsFolder = Path.Combine(_webHostEnvironment.WebRootPath, "images");
-                    string uniqueFileName = Guid.NewGuid().ToString() + "_" + Path.GetFileName(imageFile.FileName);
+                    string uploadsFolder = Path.Combine(_webHostEnvironment.WebRootPath, "productos");
+                    string uniqueFileName = Guid.NewGuid().ToString() + "_" + Path.GetExtension(imageFile.FileName);
                     string filePath = Path.Combine(uploadsFolder, uniqueFileName);
 
                     Directory.CreateDirectory(uploadsFolder);
 
-                    using (var fileStream = new FileStream(filePath, FileMode.Create))
+                    // Redimensionar la imagen a 255px de ancho manteniendo la relación de aspecto
+                    using (var stream = imageFile.OpenReadStream())
                     {
-                        await imageFile.CopyToAsync(fileStream);
+                        await ImageResizer.ResizeImageAsync(stream, filePath, 255);
                     }
 
-
-                    productoDB.ImagenUrl = uniqueFileName;
+                    productoDB.ImagenUrl = @"\productos\" + uniqueFileName;
                 }
 
 
