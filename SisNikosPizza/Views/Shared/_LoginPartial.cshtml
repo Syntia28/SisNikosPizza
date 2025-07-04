@@ -3,116 +3,73 @@
 @inject SignInManager<IdentityUser> SignInManager
 @inject UserManager<IdentityUser> UserManager
 
-<ul class="navbar-nav">
+<div class="flex items-center gap-3">
     @if (SignInManager.IsSignedIn(User))
     {
-        <li class="nav-item">
-            <a class="nav-link btn border-1 border-warning text-white me-2" asp-controller="Carrito" asp-action="Index">
-                <span class="text-dark"> <i class="fas fa-shopping-cart"></i></span>
-                <span id="cart-total" class="badge bg-danger">0</span>
-            </a>
-        </li>
-        <ul class="navbar-nav ms-auto ms-md-0 me-3 me-lg-4">
-            <li class="nav-item dropdown">
-                <a class="nav-link dropdown-toggle" id="navbarDropdown" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false"><i class="fas fa-user fa-fw"></i></a>
-                <ul class="dropdown-menu dropdown-menu-end" aria-labelledby="navbarDropdown">
-                    <li>
-                            <a id="manage" class="dropdown-item text-black me-2" asp-area="Identity" asp-page="/Account/Manage/Index" title="Manage">
-                              Perfil
-                            </a>
-                 </li>
-                    <li><hr class="dropdown-divider" /></li>
-                    <li>
-                            <form id="logoutForm" class="form-inline dropdown-item" asp-area="Identity" asp-page="/Account/Logout" asp-route-returnUrl="@Url.Action("Index", "Home", new { area = "" })">
-                                <button id="logout" type="submit" class="text-danger border-0">
-                                    Cerrar Sesión
-                                </button>
-                            </form>
-                  </li>
-                </ul>
-            </li>
-        </ul>
+        <a href="@Url.Action("Index", "Carrito")"
+            class="relative flex items-center px-3 py-2 text-gray-700 hover:text-gray-900 transition-colors duration-200 border border-yellow-400 rounded-md hover:bg-yellow-50">
+            <i class="fas fa-shopping-cart text-gray-700"></i>
+            <span id="cart-total"
+                class="absolute -top-2 -right-2 bg-red-500 text-white text-xs rounded-full h-5 w-5 flex items-center justify-center">0</span>
+        </a>
 
-        <li class="nav-item">
-           
-        </li>
-        <li class="nav-item">
-           
-        </li>
+        <div class="relative inline-block text-left" x-data="{ open: false }">
+            <button @@click="open = !open"
+                class="flex items-center px-3 py-2 text-gray-700 hover:text-gray-900 transition-colors duration-200 rounded-md hover:bg-gray-100"
+                aria-expanded="false">
+                <i class="fas fa-user fa-fw"></i>
+                <i class="fas fa-chevron-down ml-1 text-xs"></i>
+            </button>
+
+            <div x-show="open" @@click.away="open = false" x-transition:enter="transition ease-out duration-100"
+                x-transition:enter-start="transform opacity-0 scale-95"
+                x-transition:enter-end="transform opacity-100 scale-100" x-transition:leave="transition ease-in duration-75"
+                x-transition:leave-start="transform opacity-100 scale-100"
+                x-transition:leave-end="transform opacity-0 scale-95"
+                class="absolute right-0 z-10 mt-2 w-48 origin-top-right rounded-md bg-white shadow-lg ring-1 ring-black ring-opacity-5 focus:outline-none">
+                <div class="py-1">
+                    <a href="@Url.Page("/Account/Manage/Index", new { area = "Identity" })"
+                        class="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100 hover:text-gray-900 transition-colors duration-150">
+                        <i class="fas fa-user mr-2"></i>Perfil
+                    </a>
+                    <hr class="border-gray-200 my-1">
+                    <form asp-area="Identity" asp-page="/Account/Logout"
+                        asp-route-returnUrl="@Url.Action("Index", "Home", new { area = "" })" class="block">
+                        <button type="submit"
+                            class="w-full text-left px-4 py-2 text-sm text-red-600 hover:bg-red-50 hover:text-red-700 transition-colors duration-150">
+                            <i class="fas fa-sign-out-alt mr-2"></i>Cerrar Sesión
+                        </button>
+                    </form>
+                </div>
+            </div>
+        </div>
     }
     else
     {
-        <li class="nav-item">
-            <a class="nav-link btn btn-outline-primary text-black me-2" id="register" asp-area="Identity" asp-page="/Account/Register">
-                Registrar
-            </a>
-        </li>
-        <li class="nav-item">
-            <a class="nav-link btn btn-primary text-white id="login" asp-area="Identity" asp-page="/Account/Login">
-                Iniciar Sesión
-            </a>
-        </li>
-    }
-</ul>
+        <a href="@Url.Page("/Account/Register", new { area = "Identity" })" aria-label="Registrar"
+            class="flex items-center gap-x-2 px-3 sm:px-4 py-2 text-orange-600 border border-orange-600 rounded-md hover:bg-orange-600 hover:text-white transition-all duration-300 font-medium">
+            <i class="fas fa-user-plus" aria-hidden="true"></i>
+        </a>
 
-<style>
-    .btn {
-        padding: 10px 20px;
-        border-radius: 5px;
-        font-weight: bold;
-        transition: all 0.3s ease;
+        <a href="@Url.Page("/Account/Login", new { area = "Identity" })" aria-label="Iniciar Sesión"
+            class="flex items-center gap-x-2 px-3 sm:px-4 py-2 bg-orange-600 text-white rounded-md hover:bg-orange-500 transition-all duration-300 font-medium shadow-sm">
+            <i class="fas fa-sign-in-alt" aria-hidden="true"></i>
+        </a>
     }
+</div>
 
-    .btn-primary {
-        background-color: #d35400 !important;
-        border: none;
-    }
-
-    .btn-primary:hover {
-            background: #FCAF7C !important;
-            color: #000 !important;
-    }
-
-    .btn-danger {
-        background-color: #dc3545;
-        border: none;
-    }
-
-    .btn-danger:hover {
-        background-color: #a71d2a;
-        color: white;
-    }
-
-    .btn-success {
-        background-color: #28a745;
-        border: none;
-    }
-
-    .btn-success:hover {
-        background-color: #218838;
-        color: white;
-    }
-
-    .btn-outline-primary {
-        border-color: #d35400 !important;
-    }
-
-    .btn-outline-primary:hover {
-            background-color: #d35400 !important;
-            color: #fff !important;
-    }
-
-    .nav-item {
-        margin-right: 10px;
-    }
-</style>
+<!-- Alpine.js para el dropdown -->
+<script src="https://unpkg.com/alpinejs@3.x.x/dist/cdn.min.js" defer></script>
 
 <script>
     document.addEventListener('DOMContentLoaded', function () {
         fetch('/Carrito/Total')
             .then(response => response.json())
             .then(data => {
-                document.getElementById('cart-total').textContent = data;
+                const cartTotal = document.getElementById('cart-total');
+                if (cartTotal) {
+                    cartTotal.textContent = data;
+                }
             })
             .catch(error => console.error('Error al cargar la cantidad total:', error));
     });
