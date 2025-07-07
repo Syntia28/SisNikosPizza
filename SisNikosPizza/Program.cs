@@ -21,7 +21,7 @@ builder.Services.AddResponseCompression(options =>
 });
 
 // Agregar la cadena de conexión a utilizar
-var conexion = builder.Configuration.GetConnectionString("ConnectionSQLServer");
+var conexion = builder.Configuration.GetConnectionString("ConectionProduction");
 builder.Services.AddDbContext<SisNikosPizzaBbContext>(options => options.UseSqlServer(conexion));
 
 // Configurar Identity con opciones mejoradas
