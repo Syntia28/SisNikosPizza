@@ -64,17 +64,25 @@ namespace SisNikosPizza.Controllers
                 if (!Directory.Exists(subidas)) Directory.CreateDirectory(subidas);
 
                 var archivo = archivos[0];
-                // var extension = Path.GetExtension(archivo.FileName);
                 var extension = ".webp";
                 var rutaCompleta = Path.Combine(subidas, nombreArchivo + extension);
 
-                // Redimensionar la imagen a 255px de ancho manteniendo la relación de aspecto
                 using (var stream = archivo.OpenReadStream())
                 {
                     await ImageResizer.ResizeImageAsync(stream, rutaCompleta, 255);
                 }
 
                 VMDP.producto.ImagenUrl = @"\productos\" + nombreArchivo + extension;
+            }
+
+            // Validar que no exista un producto con el mismo nombre y categoría
+            var existeProducto = (await _unitWork.ProductoRepo.ObtenerTodosAsync(
+                filtro: p => p.Nombre.ToLower() == VMDP.producto.Nombre.ToLower() && p.CategoriaId == VMDP.producto.CategoriaId
+            )).Any();
+
+            if (existeProducto)
+            {
+                ModelState.AddModelError("producto.Nombre", "Ya existe un producto con el mismo nombre en esta categoría.");
             }
 
             if (ModelState.IsValid)
@@ -97,10 +105,13 @@ namespace SisNikosPizza.Controllers
                     await _unitWork.GuardarAsync();
                 }
 
-
                 TempData["Satisfactorio"] = "Producto creado correctamente.";
                 return RedirectToAction("Details", new { id = VMDP.producto.ProductoId });
             }
+
+            // Recargar listas si hay error
+            VMDP.CategoriasList = _unitWork.ProductoRepo.ListarCategorias("categorias");
+            VMDP.InsumosList = _unitWork.ProductoRepo.ListarInsumos("insumos");
             return View(VMDP);
         }
 
