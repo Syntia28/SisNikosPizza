@@ -41,36 +41,36 @@ public class DbInitialize : IDbInitialize
 
         var admin = new ApplicationUser
         {
-            Email = "admin@dev.cs",
-            UserName = "admin@dev.cs",
+            Email = "admin@sys.cs",
+            UserName = "admin@sys.cs",
             PhoneNumber = "123456789",
         };
 
         var employe = new ApplicationUser
         {
-            Email = "employe@dev.cs",
-            UserName = "employe@dev.cs",
+            Email = "employe@sys.cs",
+            UserName = "employe@sys.cs",
             PhoneNumber = "123456789",
         };
 
         var user = new ApplicationUser
         {
-            Email = "user@dev.cs",
-            UserName = "user@dev.cs",
+            Email = "user@sys.cs",
+            UserName = "user@sys.cs",
             PhoneNumber = "123456789",
         };
 
         var manager = new ApplicationUser
         {
-            Email = "manager@dev.cs",
-            UserName = "manager@dev.cs",
+            Email = "manager@sys.cs",
+            UserName = "manager@sys.cs",
             PhoneNumber = "123456789",
         };
 
         var delivery = new ApplicationUser
         {
-            Email = "delivery@dev.cs",
-            UserName = "delivery@dev.cs",
+            Email = "delivery@sys.cs",
+            UserName = "delivery@sys.cs",
             PhoneNumber = "123456789",
         };
 
