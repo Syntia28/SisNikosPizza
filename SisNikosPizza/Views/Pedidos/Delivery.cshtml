@@ -1,4 +1,4 @@
-@using SisNikosPizza.Utilidades
+﻿@using SisNikosPizza.Utilidades
 @model IEnumerable<SisNikosPizza.Domain.ViewModels.VMDDetallesPedido>
 
 @{
@@ -160,8 +160,21 @@
     </style>
 }
 
-<div class="flex items-center justify-center min-h-screen bg-gradient-to-tr from-gray-100 to-gray-200" role="main">
-    <div class="container">
+<div class="container">
+    @if (!Model.Any())
+    {
+        <div class="card relative text-center" role="alert">
+            <div class="card-content p-4">
+                <h2 class="header-text text-2xl mb-2">¡Todo tranquilo por ahora!</h2>
+                <p class="text-gray-600 text-lg">No hay pedidos por entregar. Relájate y disfruta de un momento de calma. 🍕</p>
+                <div class="mt-4">
+                    <i class="fa-solid fa-pizza-slice text-yellow-600 text-4xl animate-pulse"></i>
+                </div>
+            </div>
+        </div>
+    }
+    else
+    {
         <div class="grid" role="list">
             @foreach (var item in Model)
             {
@@ -176,11 +189,9 @@
                                     imageUrl = $"/images/{imageUrl}";
                                 }
                             }
-                            <img fetchpriority="high" decoding="async" src="/logo/logo.avif" alt="Product Imag
-                                  e          for @firstDetalle?.Producto?.Nombre"
-                                class="w-full h-40 object-cover rounded-t-lg" />
-                            <span
-                                class="absolute top-2 right-2 bg-red-500 text-white px-2 py-1 rounded-full text-xs font-medium">
+                            <img fetchpriority="high" decoding="async" src="@(imageUrl ?? "/logo/logo.avif")" alt="Product Image for @(firstDetalle?.Producto?.Nombre ?? "Producto")"
+                                 class="w-full h-40 object-cover rounded-t-lg" />
+                            <span class="absolute top-2 right-2 bg-red-500 text-white px-2 py-1 rounded-full text-xs font-medium">
                                 Delivery
                             </span>
                         </div>
@@ -189,7 +200,7 @@
                             <div>
                                 <div class="detail-item">
                                     <i class="fa-solid fa-truck-fast text-yellow-600"></i>
-                                    <h3 class="header-text">@firstDetalle?.Producto?.Nombre ?? "Producto 1"</h3>
+                                    <h3 class="header-text">@(firstDetalle?.Producto?.Nombre ?? "Producto 1")</h3>
                                 </div>
                                 <div class="detail-item">
                                     <i class="fa-solid fa-user text-yellow-600"></i>
@@ -221,7 +232,7 @@
                                 </button>
 
                                 <div class="collapsible-content" x-cloak x-show="reportsOpen" x-collapse
-                                    x-collapse.duration.500ms>
+                                     x-collapse.duration.500ms>
                                     <ul class="flex flex-col gap-1">
                                         @foreach (var pedido in item.Detalles)
                                         {
@@ -260,7 +271,7 @@
                 </div>
             }
         </div>
-    </div>
+    }
 </div>
 
 @section Scripts {
