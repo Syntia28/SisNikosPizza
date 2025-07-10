@@ -13,6 +13,8 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "SisNikosPizza.Repository", 
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "SisNikosPizza.Utilidades", "SisNikosPizza.Utilidades\SisNikosPizza.Utilidades.csproj", "{165ECCB2-FA02-4576-A9F2-AFAEA6CDFCC7}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Pruebas_Unitarias", "Pruebas_Unitarias\Pruebas_Unitarias.csproj", "{7668B1F8-6505-475F-ACCA-D0ED7961C648}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -39,6 +41,10 @@ Global
 		{165ECCB2-FA02-4576-A9F2-AFAEA6CDFCC7}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{165ECCB2-FA02-4576-A9F2-AFAEA6CDFCC7}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{165ECCB2-FA02-4576-A9F2-AFAEA6CDFCC7}.Release|Any CPU.Build.0 = Release|Any CPU
+		{7668B1F8-6505-475F-ACCA-D0ED7961C648}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{7668B1F8-6505-475F-ACCA-D0ED7961C648}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{7668B1F8-6505-475F-ACCA-D0ED7961C648}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{7668B1F8-6505-475F-ACCA-D0ED7961C648}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
