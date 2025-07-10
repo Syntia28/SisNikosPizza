@@ -75,6 +75,7 @@ namespace Pruebas_Unitarias
             Assert.IsNull(producto.ProductoInsumos);
         }
 
+
         [TestMethod]
         public void Producto_SinImagenUrl_EsOpcional()
         {
