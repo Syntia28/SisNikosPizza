@@ -41,44 +41,44 @@ public class DbInitialize : IDbInitialize
 
         var admin = new ApplicationUser
         {
-            Email = "adminNikos@sys.cs",
-            UserName = "admin@sys.cs",
+            Email = "adminNikos@sys.ss",
+            UserName = "admin@sys.ss",
             PhoneNumber = "123456789",
         };
 
         var employe = new ApplicationUser
         {
-            Email = "employe@sys.cs",
-            UserName = "employe@sys.cs",
+            Email = "employe@sys.ss",
+            UserName = "employe@sys.ss",
             PhoneNumber = "123456789",
         };
 
         var user = new ApplicationUser
         {
-            Email = "user@sys.cs",
-            UserName = "user@sys.cs",
+            Email = "user@sys.ss",
+            UserName = "user@sys.ss",
             PhoneNumber = "123456789",
         };
 
         var manager = new ApplicationUser
         {
-            Email = "manager@sys.cs",
-            UserName = "manager@sys.cs",
+            Email = "manager@sys.ss",
+            UserName = "manager@sys.ss",
             PhoneNumber = "123456789",
         };
 
         var delivery = new ApplicationUser
         {
-            Email = "delivery@dev.cs",
-            UserName = "delivery@dev.cs",
+            Email = "delivery@dev.ss",
+            UserName = "delivery@dev.ss",
             PhoneNumber = "123456789",
         };
 
-        _userManager.CreateAsync(admin, "Admin123*").GetAwaiter().GetResult();
-        _userManager.CreateAsync(user, "Usuario123*").GetAwaiter().GetResult();
-        _userManager.CreateAsync(employe, "Empleado123*").GetAwaiter().GetResult();
-        _userManager.CreateAsync(manager, "Manager123*").GetAwaiter().GetResult();
-        _userManager.CreateAsync(delivery, "Delivery123*").GetAwaiter().GetResult();
+        _userManager.CreateAsync(admin, "Admin123").GetAwaiter().GetResult();
+        _userManager.CreateAsync(user, "Usuario123").GetAwaiter().GetResult();
+        _userManager.CreateAsync(employe, "Empleado123").GetAwaiter().GetResult();
+        _userManager.CreateAsync(manager, "Manager123").GetAwaiter().GetResult();
+        _userManager.CreateAsync(delivery, "Delivery123").GetAwaiter().GetResult();
 
         _userManager.AddToRoleAsync(admin, VCG.Role_Admin).GetAwaiter().GetResult();
         _userManager.AddToRoleAsync(user, VCG.Role_Usuario).GetAwaiter().GetResult();
