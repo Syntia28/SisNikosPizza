@@ -39,8 +39,19 @@ namespace SisNikosPizza.Controllers
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> Create(Categoria categorias)
         {
-            if (ModelState.IsValid) 
+            if (ModelState.IsValid)
             {
+                // Verificar si ya existe una categoría con el mismo nombre (ignorando mayúsculas/minúsculas)
+                var existe = await _unitWork.CategoriaRepo.ObtenerPrimeroAsync(
+                    filtro: c => c.nombre.ToLower() == categorias.nombre.ToLower()
+                );
+                if (existe != null)
+                {
+                    ModelState.AddModelError("nombre", "Ya existe una categoría con ese nombre.");
+                    TempData[VCG.Errado] = "No se pudo guardar la categoría, ya existe una con ese nombre.";
+                    return View(categorias);
+                }
+
                 categorias.CreatedAt = DateTime.Now;
                 categorias.UpdatedAt = DateTime.Now;
                 await _unitWork.CategoriaRepo.AgregarAsync(categorias);
@@ -51,7 +62,6 @@ namespace SisNikosPizza.Controllers
 
             TempData[VCG.Errado] = "No se pudo guardar la categoría, intente de nuevo.";
             return View(categorias);
-
         }
 
         [HttpGet]

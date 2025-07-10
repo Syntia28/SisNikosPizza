@@ -45,6 +45,14 @@ namespace SisNikosPizza.Controllers
             insumo.CreatedAt = DateTime.Now;
             insumo.UpdatedAt = DateTime.Now;
 
+            // Validación de nombre duplicado
+            var existeNombre = (await _unitWork.InsumoRepo.ObtenerTodosAsync())
+                .Any(i => i.Nombre.Trim().ToLower() == insumo.Nombre.Trim().ToLower());
+            if (existeNombre)
+            {
+                ModelState.AddModelError("Nombre", "Ya existe un insumo con ese nombre.");
+            }
+
             if (ModelState.IsValid)
             {
                 try

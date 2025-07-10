@@ -33,6 +33,16 @@ namespace SisNikosPizza.Controllers
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> Create(Proveedor proveedor)
         {
+            // Validar si ya existe un proveedor con el mismo nombre (ignorando mayúsculas/minúsculas)
+            var proveedorExistente = await _unitWork.ProveedorRepo.ObtenerPrimeroAsync(
+                p => p.Nombre.ToLower() == proveedor.Nombre.Trim().ToLower()
+            );
+
+            if (proveedorExistente != null)
+            {
+                ModelState.AddModelError("Nombre", "Ya existe un proveedor con este nombre.");
+            }
+
             if (ModelState.IsValid)
             {
                 proveedor.CreatedAt = DateTime.Now;
