@@ -51,13 +51,15 @@ namespace SisNikosPizza.Controllers
                     TempData[VCG.Errado] = "No se pudo guardar la categoría, ya existe una con ese nombre.";
                     return View(categorias);
                 }
-
-                categorias.CreatedAt = DateTime.Now;
-                categorias.UpdatedAt = DateTime.Now;
-                await _unitWork.CategoriaRepo.AgregarAsync(categorias);
-                await _unitWork.GuardarAsync();
-                TempData[VCG.Satisfactorio] = "Categoría actualizada correctamente";
-                return RedirectToAction("Details", new { id = categorias.CategoriaId });
+                else
+                {
+                    categorias.CreatedAt = DateTime.Now;
+                    categorias.UpdatedAt = DateTime.Now;
+                    await _unitWork.CategoriaRepo.AgregarAsync(categorias);
+                    await _unitWork.GuardarAsync();
+                    TempData[VCG.Satisfactorio] = "Categoría actualizada correctamente";
+                    return RedirectToAction("Details", new { id = categorias.CategoriaId });
+                }
             }
 
             TempData[VCG.Errado] = "No se pudo guardar la categoría, intente de nuevo.";
