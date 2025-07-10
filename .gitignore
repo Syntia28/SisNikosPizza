@@ -364,4 +364,3 @@ FodyWeavers.xsd
 
 # eliminamos la catpeta de imagenes para que no se siban las imagenes cargadas en ek servidor
 ./wwwroot/imagenes/*
-/SisNikosPizza/wwwroot/productos/621fc3a6-ddc3-4ba9-b652-1fda5a9e753a.webp
